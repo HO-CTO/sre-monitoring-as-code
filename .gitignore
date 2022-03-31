@@ -1,0 +1,11 @@
+.DS_Store
+
+# Any temporary
+**/.tmp
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+/.idea/
