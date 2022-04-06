@@ -1,0 +1,94 @@
+---
+title: Onboarding to monitoring-as-code framework
+weight: 3
+---
+
+# Onboarding to monitoring-as-code framework
+
+## Define user journeys and service-level indicators for your service
+
+1. [Run a Service Level Indicator (SLI) workshop](https://gds-way.cloudapps.digital/standards/slis.html)
+2. List out critical user journeys and order them by business impact.
+3. Define what good means to users.
+4. Map out high-level system components.
+5. Define your SLIs.
+6. [Agree baseline SLOs for each SLI](#agree-baseline-slos-heading)
+7. [Implement SLI Definitions](#create-implementation-tasks-heading)
+8. [Observe and iterate](#observe-and-iterate-heading)
+
+## Agree baseline SLOs for each SLI {#agree-baseline-slos-heading}
+
+Current performance based on SLIs is usually a good place to start, especially if you do not have any other information. It also helps to set a baseline that you can improve to reflect service objectives.
+
+## Implement SLI Definitions (sre-monitoring-as-code) {#create-implementation-tasks-heading}
+
+![Low level diagram showing workflow](monaco-pg-lld.drawio.png)
+
+Teams must create a Monaco definition file (mixin) for each product they wish to monitor. A boiler plate mixin is provided in the sre-monitoring-as-code repository.
+
+Within the definition file you need to pass in the following global variables for your service: -
+
+| Global variables            | Description        | Formatting Best Practice | Example |
+| ----------------------------| -------------------|--------------------------|---------|
+| product                     | Short Product Name | Lower case or hypenated  | flapi   |
+| technow_technical_service   | ServiceNow Primary Impacted Service Name |         |
+| technow_resolver_group      | ServiceNow Assignment Group |         ||
+| configuration_item          | ServiceNow Technical Service Subcomponent name |||
+| environment                 | Environment being provisioned |         ||
+| max_alert_severity          | Severity of the event. ServiceNow values for severity range from 1 – Critical to 5 – OK, with the severity of 0 – Clear. Original severity values should be sent as part of the additional information.|||
+
+Once setting global variables you will then need to break down each user journey into a different yaml stanza. See "writeback" example below.
+
+    local slo_spec = {
+      # user journey name
+      writeback: {
+        # sli per critical user journey step
+        SLI01: {
+          title: 'requests to flapi writeback case api are successful',
+          metric_description: 'All requests to FLAPI writeback',
+          period: '7d',
+          metric: 'http_server_requests_seconds_count',
+          metric_target: 0.1,
+          eval_interval: '1m',
+          selectors: [config.host, 'job=~".*/fetm-flapi-wb"'],
+          errorSelectors: ['status=~"4..|5.."'],
+          slo_target: 0.1,
+          type: 'http-errors',
+        },
+        SLI02: {
+          title: 'requests to flapi writeback are fast enough',
+          metric_description: 'All requests to FLAPI writeback',
+          period: '7d',
+          metric: 'http_server_requests_seconds',
+          metric_target: 0.75,
+          latency_percentile: 0.95,
+          eval_interval: '1m',
+          selectors: [config.host, 'job=~".*/fetm-flapi-wb"'],
+          slo_target: 0.1,
+          type: 'http-latency',
+        },
+      },
+    };
+
+Local variables should be supplied for each SLI as follows: -
+
+| Local variables            | Description        | Formatting Best Practice | Example |
+| ----------------------------| -------------------|--------------------------|---------|
+| title                     ||||
+| metric_description   ||||
+| period      ||||
+| metric          ||||
+| metric_target   ||||
+| latency_percentile ||||
+| eval_interval ||||
+| selectors ||||
+| slo_target ||||
+| http-latency ||||
+
+## Observe and iterate {#observe-and-iterate-heading}
+
+After implementing your SLI configuration, observe the dashboard journeys over a period of time (for example 1 sprint). After this time, iterate your SLIs to better understand your service’s performance and how the SLIs help your team make decisions.
+
+
+
+

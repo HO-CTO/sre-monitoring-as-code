@@ -1,0 +1,38 @@
+---
+title: How to monitor your service
+weight: 3
+---
+
+# How to monitor your service
+
+Following the design principe of "Hierarchical dashboards with drill-downs to the next level" <sup>1</sup>, we have developed a five tier dashboard structure to fulfil different persona needs as follows: -
+
+| Dashboard            | Description                                                      | Persona / User           |
+| ---------------------| -----------------------------------------------------------------|--------------------------|
+| All Tenant View      | Observability of all services and tenants running on a platform. | Service Manager          |
+| Service View         | Observability of all products which makeup a specific service.   | Product Manager and Team |
+| Product View         | Observability of all the user journeys running on an individual product. | Product Manager and Team |
+| User Journey View    | Observability of all the SLIs in a single user journey. | Product Manager and Team |
+| Troubleshooting View | Observability of all whitebox and blackbox metrics which contribute to SLIs and Service Health. | Engineers |
+
+
+## Dashboard Design Principles
+
+* Methodical dashboards according to an SLI/SLO stragegy.
+* Hierarchical dashboards with drill-downs to the next level.
+* Actively reduce sprawl.
+    * Regularly review existing dashboards to make sure they are still relevant.
+    * Only approved dashboards added to master dashboard list.
+    * Tracking dashboard use.
+* Scripting libraries to generate dashboards, ensure consistency in pattern and style. grafonnet (Jsonnet)
+    * No editing in the browser. Dashboard viewers change views with variables.
+* Browsing for dashboards is the exception, not the rule.
+* Perform experimentation and testing on a feature branch (consider nonprod environment to be production).
+* Expressive charts with meaningful use of color and normalizing axes where you can.
+    * Example of meaningful color: Blue means it’s good, red means it’s bad. Thresholds can help with that.
+    * Example of normalizing axes: When comparing CPU usage, measure by percentage rather than raw number, because machines can have a different number of cores. Normalizing CPU usage by the number of cores reduces cognitive load because the viewer can trust that at 100% all cores are being used, without having to know the number of CPUs.
+
+
+
+
+
