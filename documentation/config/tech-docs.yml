@@ -4,15 +4,15 @@ host: docs.homeoffice.service.gov.uk
 # Header-related options
 show_govuk_logo: false
 service_name: sre-monitoring-as-code
-service_link: https://www.larry-the-cat.service.gov.uk
+service_link:
 phase: INTERNAL
 
 # Links to show on right-hand-side of header
 header_links:
-  About: https://www.larry-the-cat.service.gov.uk/about
-  Get Started: https://www.larry-the-cat.service.gov.uk/get-started
   Documentation: /
-  Support: https://www.larry-the-cat.service.gov.uk/support
+  #  Support: https://www.larry-the-cat.service.gov.uk/support
+  #  About: https://www.larry-the-cat.service.gov.uk/about
+  #  Get Started: https://www.larry-the-cat.service.gov.uk/get-started
 
 # Enables search functionality. This indexes pages only and is not recommended for single-page sites.
 enable_search: true
@@ -33,3 +33,6 @@ prevent_indexing: false
 
 show_contribution_banner: false
 github_repo: https://github.com/UKHomeOffice/sre-monitoring-as-code
+github_branch: main
+owner_slack_workspace: homeofficedigital
+default_owner_slack: '#sas-l2-transformer'

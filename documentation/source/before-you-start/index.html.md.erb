@@ -1,15 +1,19 @@
 ---
-title: Adopting SRE with Service-level objectives
-weight: 3
+title: Before you start
+weight: 10
 ---
 
-# Adopting SRE with Service-level objectives
+# Before you start
+
+To start using the SRE Monitoring-as-Code framework, you should read the following Adopting SRE with Service Level Objectives documentation to understand the fundamental concepts.
+
+## Adopting SRE with Service Level Objectives
 
 In Home Office DDaT, we follow the GDS Service Manual guidance on how to [monitor the status of services](https://www.gov.uk/service-manual/technology/monitoring-the-status-of-your-service) and set performance metrics.
 
 We frame the monitoring of our services around the Site Reliability Engineering (SRE) pillar of Service-level objectives (SLOs). SLOs provide a "framework for defining clear targets around application performance, which ultimately help teams provide a consistent customer experience, balance feature development with platform stability, and improve communication with internal and external users" <sup>1</sup>.
 
-## Concepts in monitoring using SLOs
+### Concepts in monitoring using SLOs
 
 The core notions of DDaT's service monitoring include the following:
 
@@ -25,7 +29,7 @@ Service monitoring has a set of core concepts, which are introduced here:
 - Service-level objective (SLO): a statement of desired performance.
 - Error budget: a measurement of the difference between actual and desired performance.
 
-### Service-level indicators
+#### Service-level indicators
 
 Home office DDaT platforms expose and capture metrics that measure the performance of the applications and underpinning service infrastructure. Examples of performance metrics include the following:
 
@@ -39,7 +43,7 @@ The performance metrics are the basis of the SLIs for your service. An SLI descr
     An availability SLI is the ratio of the number of successful responses to the number of all responses.
     A latency SLI is the ratio of the number of calls below a latency threshold to the number of all calls.
 
-### Service-level objectives
+#### Service-level objectives
 
 An SLO is a target value for an SLI, measured over a period of time. The service determines the available SLIs, and you specify SLOs based on the SLIs. The SLO defines what qualifies as good service.
 
@@ -54,7 +58,7 @@ For example, you might have requirements like these:
 - Latency can exceed 300 ms in only 5 percent of the requests over a rolling 30-day period.
 - The system must have 99% availability measured over a rolling 30-day period.
 
-### Error budgets
+#### Error budgets
 
 An SLO specifies the degree to which a service must perform during a compliance period.The error budget quantifies the degree to which a service can fail to perform during the compliance period and still meet the SLO.
 
@@ -62,7 +66,7 @@ Error budgets let you track how many bad individual events (like requests) are a
 
 Your error budget for a compliance period is (1 − SLO goal) × (eligible events in compliance period). For example, if your SLO is for 85% of requests to be good in a 7-day rolling period, then your error budget allows 15% of these requests to be bad. If you received, say, 60,480 requests in the past week, your error budget is 15% of that total, or 9,072 requests that are permitted to be bad. If you served more errors than this, your service was out of SLO for the 7-day compliance period.
 
-### Windows vs Request Based SLIs
+#### Windows vs Request Based SLIs
 
 You can also set up service-specific SLIs for some other measure of what “good performance” means. These SLIs generally fall into two categories:
 
@@ -71,15 +75,15 @@ You can also set up service-specific SLIs for some other measure of what “good
 
 These SLIs are described in more detail in Compliance in request- and windows-based SLOs.
 
-## How we measure reliability
+### How we measure reliability
 
 Placeholder for symptoms vs causes.
 
-## Setting Service Level Indicators for your service
+### Setting Service Level Indicators for your service
 
-## Continuous improvement of SLOs
+### Continuous improvement of SLOs
 
-## Further Reading
+### Further Reading
 
 <sup>1</sup> https://docs.datadoghq.com/monitors/service_level_objectives/
 

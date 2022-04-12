@@ -1,1 +1,0 @@
-# sre-monitoring-as-code
