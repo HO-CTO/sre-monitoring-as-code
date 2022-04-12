@@ -2,7 +2,7 @@
 
 ## Background
 
-This repo was created as part of a Proof of Concept for the Common Pipeline Team at HO.
+The documentation is available to view online [here][tbc].
 
 The repo contains a basic skeleton directory structure created by Middleman App with minimal customisation of index.html.erb in /source. It can be built to local static website files, or run in preview by Middleman server.
 
