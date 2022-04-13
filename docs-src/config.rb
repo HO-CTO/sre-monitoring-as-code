@@ -5,7 +5,6 @@ GovukTechDocs.configure(self)
 # Build-specific configuration
 configure :build do
   set :build_dir, '../public'
-  set :http_prefix, '##PAGES_PATH##'
   set :relative_links, true
 end
 
