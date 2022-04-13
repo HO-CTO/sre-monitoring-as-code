@@ -1,0 +1,12 @@
+version: '3.7'
+
+services: 
+  middleman:
+    container_name: middleman
+    image: sre-middleman:latest
+    build: .
+    entrypoint: bundle exec middleman server
+    volumes:
+      - '.:/app'
+    ports:
+      - '4567:4567'
