@@ -40,7 +40,23 @@ You can add content by editing the `.html.md.erb` files. These files support con
 
 👉 Learn more about [producing more complex page structures][multipage] for your website.
 
-## Preview your changes locally
+## Preview and build your changes locally in Docker (preferred)
+
+Intead of building and running locally and having to install the required dependencies, you can instead run this in Docker.
+
+Run the following command to start the container: 
+
+```
+docker-compose up -d
+```
+
+To make changes update the required files and restart the container with:
+
+```
+docker-compose restart
+```
+
+## Preview your changes locally (without Docker)
 
 To preview your new website locally, navigate to your project folder and run:
 
@@ -54,7 +70,7 @@ To shut down the Middleman instance running on your machine, use `ctrl+C`.
 
 If you make changes to the `config/tech-docs.yml` configuration file, you need to restart Middleman to see the changes.
 
-## Build
+## Build (without Docker)
 
 To build the HTML pages from content in your `source` folder, run:
 
