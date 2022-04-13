@@ -1,0 +1,24 @@
+---
+title: Manage your alerts
+weight: 30
+---
+
+# Manage your alerts
+
+## Alert methodology
+
+We base alerts on the Error Budget Burn Rate, which is measured against the SLO target set by the Product team. If monitoring indicates that an SLO is in danger of being breached it will trigger an alert. Depending on how quickly the Error Budget is forecast to breach will determine what level of alert is triggered.
+
+    Burn rate is how fast, relative to the SLO, the service consumes the error budget.
+
+Our alerting methodology uses [multiple burn rates and time windows](https://sre.google/workbook/alerting-on-slos/). "We generate alerts when burn rates surpass a specified threshold. This option retains the benefits of alerting on burn rates and ensures that you don’t overlook lower (but still significant) error rates."
+
+As a baseline we have implemented a 2% budget consumption in one hour, 5% budget consumption in six hours, 7.5% consumption in one day and 10% budget consumption in three days for ticket alerts. Further detail provided below: -
+
+| SLO budget consumption | Time window        | Burn rate | Notification |
+| -----------------------| -------------------|-----------|--------------|
+| 2%                     | 1 hour             | 14.4      | tbc          |
+| 5%                     | 6 hours            | 6         | tbc          |
+| 7.5%                   | 1 day              | 3         | tbc          |
+| 10%                    | 3 days             | 1         | tbc          |
+

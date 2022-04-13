@@ -1,0 +1,38 @@
+# Host to use for canonical URL generation (without trailing slash)
+host: docs.homeoffice.service.gov.uk
+
+# Header-related options
+show_govuk_logo: false
+service_name: sre-monitoring-as-code
+service_link:
+phase: INTERNAL
+
+# Links to show on right-hand-side of header
+header_links:
+  Documentation: /
+  #  Support: https://www.larry-the-cat.service.gov.uk/support
+  #  About: https://www.larry-the-cat.service.gov.uk/about
+  #  Get Started: https://www.larry-the-cat.service.gov.uk/get-started
+
+# Enables search functionality. This indexes pages only and is not recommended for single-page sites.
+enable_search: true
+
+# Enable multipage navigation in the sidebar
+multipage_nav: true
+
+# Enable collapsible navigation in the sidebar
+collapsible_nav: true
+
+# Table of contents depth – how many levels to include in the table of contents.
+# If your ToC is too long, reduce this number and we'll only show higher-level
+# headings.
+max_toc_heading_level: 3
+
+# Prevent robots from indexing (e.g. whilst in development)
+prevent_indexing: false
+
+show_contribution_banner: false
+github_repo: https://github.com/UKHomeOffice/sre-monitoring-as-code
+github_branch: main
+owner_slack_workspace: homeofficedigital
+default_owner_slack: '#sas-l2-transformer'
