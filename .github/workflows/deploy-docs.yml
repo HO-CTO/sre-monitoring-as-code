@@ -1,0 +1,38 @@
+name: deploy-docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
+    permissions:
+      contents: write
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/docs-src/Gemfile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+          bundler-cache: true
+
+      - name: Build 'public' folder ready for deployment
+        working-directory: ./docs-src
+        run: bundle exec middleman build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: main
+          folder: public
+          target-folder: /docs
