@@ -21,7 +21,7 @@ You’re welcome to use the template even if your service isn’t considered par
 
 ## Before you start
 
-To use the Tech Docs Template you need:
+To use the Tech Docs Template you need the applications list below, however you can bypass by using Docker build/Compse process below:
 
 - [Ruby][install-ruby]
 - [Middleman][install-middleman]
@@ -44,11 +44,22 @@ You can add content by editing the `.html.md.erb` files. These files support con
 
 Intead of building and running locally and having to install the required dependencies, you can instead run this in Docker.
 
-Run the following command to start the container: 
+Run the following command to start the container detached mode: 
 
 ```
 docker-compose up -d
 ```
+
+Run the following command to start the containers in non detached mode: 
+
+```
+docker-compose up
+```
+This will display the logs output web url
+```
+http://localhost:4567
+```
+
 
 To make changes update the required files and restart the container with:
 
