@@ -1,0 +1,29 @@
+apiVersion: 1
+
+providers:
+- name: 'management'
+  folder: 'management'
+  type: file
+  disableDeletion: true
+  editable: true
+  updateIntervalSeconds: 30
+  options:
+    path: /etc/grafana/provisioning/dashboards/monitoring
+
+- name: 'flapi'
+  folder: 'flapi'
+  type: file
+  disableDeletion: true
+  editable: true
+  updateIntervalSeconds: 30
+  options:
+    path: /etc/grafana/provisioning/dashboards/flapi
+
+- name: 'platform'
+  folder: 'platform'
+  type: file
+  disableDeletion: true
+  editable: true
+  updateIntervalSeconds: 30
+  options:
+    path: /etc/grafana/provisioning/dashboards/platform
