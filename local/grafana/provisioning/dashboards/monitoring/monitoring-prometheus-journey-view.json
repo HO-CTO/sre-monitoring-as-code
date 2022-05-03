@@ -1,0 +1,955 @@
+{
+   "__inputs": [ ],
+   "__requires": [ ],
+   "annotations": {
+      "list": [ ]
+   },
+   "editable": true,
+   "gnetId": null,
+   "graphTooltip": 0,
+   "hideControls": false,
+   "id": null,
+   "links": [
+      {
+         "asDropdown": false,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "summary-view"
+         ],
+         "title": "summary-view",
+         "type": "dashboards"
+      },
+      {
+         "asDropdown": false,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "monitoring",
+            "product-view"
+         ],
+         "title": "navigate",
+         "type": "dashboards"
+      },
+      {
+         "asDropdown": true,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "monitoring",
+            "journey-view"
+         ],
+         "title": "SLO Dashboards",
+         "type": "dashboards"
+      },
+      {
+         "asDropdown": true,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "monitoring",
+            "detail"
+         ],
+         "title": "Detail Views",
+         "type": "dashboards"
+      }
+   ],
+   "panels": [
+      {
+         "collapse": false,
+         "collapsed": false,
+         "id": 2,
+         "panels": [ ],
+         "repeat": null,
+         "repeatIteration": null,
+         "repeatRowId": null,
+         "showTitle": true,
+         "title": "SLI01: Percentage of time all prometheus scrape targets are available",
+         "titleSize": "h6",
+         "type": "row"
+      },
+      {
+         "datasource": "prometheus",
+         "fieldConfig": {
+            "defaults": {
+               "links": [ ],
+               "mappings": [ ],
+               "noValue": "No SLO Data Available",
+               "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                     {
+                        "color": "red",
+                        "value": null
+                     },
+                     {
+                        "color": "orange",
+                        "value": 0.90000000000000002
+                     },
+                     {
+                        "color": "green",
+                        "value": 0.94999999999999996
+                     }
+                  ]
+               },
+               "unit": "percentunit"
+            }
+         },
+         "gridPos": {
+            "h": 6,
+            "w": 4,
+            "x": 0,
+            "y": 0
+         },
+         "id": 3,
+         "links": [ ],
+         "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+               "calcs": [
+                  "lastNotNull"
+               ],
+               "fields": "",
+               "values": false
+            },
+            "textMode": "Value and name"
+         },
+         "pluginVersion": "7",
+         "targets": [
+            {
+               "expr": "sum(sum_over_time(slo_ok{service='monitoring',slo='SLI01',environment='$environment',journey='prometheus'}[7d])) / sum(sum_over_time(slo_sample{service='monitoring',slo='SLI01',environment='$environment',journey='prometheus'}[7d]) > 0)",
+               "format": "time_series",
+               "instant": true,
+               "intervalFactor": 2,
+               "legendFormat": "SLO Target 90%",
+               "refId": "A"
+            }
+         ],
+         "title": "SLO Performance (7d)",
+         "transparent": false,
+         "type": "stat"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "decimals": 3,
+         "fill": 1,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 4,
+            "y": 0
+         },
+         "id": 4,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 3,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "(0.10000000000000001 - (1 - (sum(sum_over_time( slo_ok{service='monitoring',slo='SLI01',environment='$environment',journey='prometheus'}[7d] ))  / sum(sum_over_time(slo_sample{service='monitoring',slo='SLI01',environment='$environment',journey='prometheus'}[7d]) ) ) ) ) / 0.10000000000000001",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Remaining Error Budget",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0
+            },
+            {
+               "colorMode": "warning",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0.5
+            }
+         ],
+         "timeFrom": "$error_budget_span",
+         "timeShift": null,
+         "title": "Error budget remaining over previous 7d",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "decimals": 3,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            },
+            {
+               "decimals": 3,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            }
+         ]
+      },
+      {
+         "content": "",
+         "datasource": null,
+         "gridPos": {
+            "h": 1,
+            "w": 0.5,
+            "x": 14,
+            "y": 0
+         },
+         "id": 5,
+         "mode": "markdown",
+         "title": null,
+         "transparent": true,
+         "type": "text"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "the average of Average of prometheus scrape target status should be == 1.0",
+         "fill": 10,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 1,
+            "w": 9,
+            "x": 14.5,
+            "y": 0
+         },
+         "id": 6,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 0,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/SLO OK/",
+               "color": "#73BF69"
+            },
+            {
+               "alias": "/SLO Fail/",
+               "color": "red"
+            }
+         ],
+         "spaceLength": 10,
+         "stack": true,
+         "steppedLine": true,
+         "targets": [
+            {
+               "expr": "sum_over_time ( slo_ok { service='monitoring',slo='SLI01',environment='$environment',journey='prometheus' } [ $__interval ] )\n/ \nsum_over_time ( slo_sample { service='monitoring',slo='SLI01',environment='$environment',journey='prometheus' } [ $__interval ] )\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO OK",
+               "refId": "A"
+            },
+            {
+               "expr": "1 - (\n  sum_over_time ( slo_ok { service='monitoring',slo='SLI01',environment='$environment',journey='prometheus' } [ $__interval ] )\n  / \n  sum_over_time ( slo_sample { service='monitoring',slo='SLI01',environment='$environment',journey='prometheus' } [ $__interval ] )\n)\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO Fail",
+               "refId": "B"
+            }
+         ],
+         "thresholds": [ ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": null,
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": false,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            }
+         ]
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "* Sample interval is 1m \n",
+         "fill": 0,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 5,
+            "w": 10,
+            "x": 14,
+            "y": 0
+         },
+         "id": 7,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 1,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "sum(sum_over_time(up{host=\"$environment\"}[1m])) / sum(count_over_time(up{host=\"$environment\"}[1m])) ",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Average Average of prometheus scrape target status",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": "true",
+               "line": "true",
+               "op": "gt",
+               "value": 1
+            }
+         ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": "Average of prometheus scrape target status",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            }
+         ]
+      },
+      {
+         "collapse": false,
+         "collapsed": false,
+         "id": 8,
+         "panels": [ ],
+         "repeat": null,
+         "repeatIteration": null,
+         "repeatRowId": null,
+         "showTitle": true,
+         "title": "SLI02: Percentage of time prometheus scraping of Yace is fast enough",
+         "titleSize": "h6",
+         "type": "row"
+      },
+      {
+         "datasource": "prometheus",
+         "fieldConfig": {
+            "defaults": {
+               "links": [ ],
+               "mappings": [ ],
+               "noValue": "No SLO Data Available",
+               "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                     {
+                        "color": "red",
+                        "value": null
+                     },
+                     {
+                        "color": "orange",
+                        "value": 0.90000000000000002
+                     },
+                     {
+                        "color": "green",
+                        "value": 0.94999999999999996
+                     }
+                  ]
+               },
+               "unit": "percentunit"
+            }
+         },
+         "gridPos": {
+            "h": 6,
+            "w": 4,
+            "x": 0,
+            "y": 0
+         },
+         "id": 9,
+         "links": [ ],
+         "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+               "calcs": [
+                  "lastNotNull"
+               ],
+               "fields": "",
+               "values": false
+            },
+            "textMode": "Value and name"
+         },
+         "pluginVersion": "7",
+         "targets": [
+            {
+               "expr": "sum(sum_over_time(slo_ok{service='monitoring',slo='SLI02',environment='$environment',journey='prometheus'}[7d])) / sum(sum_over_time(slo_sample{service='monitoring',slo='SLI02',environment='$environment',journey='prometheus'}[7d]) > 0)",
+               "format": "time_series",
+               "instant": true,
+               "intervalFactor": 2,
+               "legendFormat": "SLO Target 90%",
+               "refId": "A"
+            }
+         ],
+         "title": "SLO Performance (7d)",
+         "transparent": false,
+         "type": "stat"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "decimals": 3,
+         "fill": 1,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 4,
+            "y": 0
+         },
+         "id": 10,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 3,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "(0.10000000000000001 - (1 - (sum(sum_over_time( slo_ok{service='monitoring',slo='SLI02',environment='$environment',journey='prometheus'}[7d] ))  / sum(sum_over_time(slo_sample{service='monitoring',slo='SLI02',environment='$environment',journey='prometheus'}[7d]) ) ) ) ) / 0.10000000000000001",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Remaining Error Budget",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0
+            },
+            {
+               "colorMode": "warning",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0.5
+            }
+         ],
+         "timeFrom": "$error_budget_span",
+         "timeShift": null,
+         "title": "Error budget remaining over previous 7d",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "decimals": 3,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            },
+            {
+               "decimals": 3,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            }
+         ]
+      },
+      {
+         "content": "",
+         "datasource": null,
+         "gridPos": {
+            "h": 1,
+            "w": 0.5,
+            "x": 14,
+            "y": 0
+         },
+         "id": 11,
+         "mode": "markdown",
+         "title": null,
+         "transparent": true,
+         "type": "text"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "the average of Average duration of Prometheus scrape of Yace should be < 15.0",
+         "fill": 10,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 1,
+            "w": 9,
+            "x": 14.5,
+            "y": 0
+         },
+         "id": 12,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 0,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/SLO OK/",
+               "color": "#73BF69"
+            },
+            {
+               "alias": "/SLO Fail/",
+               "color": "red"
+            }
+         ],
+         "spaceLength": 10,
+         "stack": true,
+         "steppedLine": true,
+         "targets": [
+            {
+               "expr": "sum_over_time ( slo_ok { service='monitoring',slo='SLI02',environment='$environment',journey='prometheus' } [ $__interval ] )\n/ \nsum_over_time ( slo_sample { service='monitoring',slo='SLI02',environment='$environment',journey='prometheus' } [ $__interval ] )\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO OK",
+               "refId": "A"
+            },
+            {
+               "expr": "1 - (\n  sum_over_time ( slo_ok { service='monitoring',slo='SLI02',environment='$environment',journey='prometheus' } [ $__interval ] )\n  / \n  sum_over_time ( slo_sample { service='monitoring',slo='SLI02',environment='$environment',journey='prometheus' } [ $__interval ] )\n)\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO Fail",
+               "refId": "B"
+            }
+         ],
+         "thresholds": [ ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": null,
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": false,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            }
+         ]
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "* Sample interval is 1m \n",
+         "fill": 0,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 5,
+            "w": 10,
+            "x": 14,
+            "y": 0
+         },
+         "id": 13,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 1,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "sum(sum_over_time(scrape_duration_seconds{job=\"yace\",host=\"$environment\"}[1m])) / sum(count_over_time(scrape_duration_seconds{job=\"yace\",host=\"$environment\"}[1m])) ",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Average Average duration of Prometheus scrape of Yace",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": "true",
+               "line": "true",
+               "op": "gt",
+               "value": 15
+            }
+         ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": "Average duration of Prometheus scrape of Yace",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            }
+         ]
+      }
+   ],
+   "refresh": "5m",
+   "rows": [ ],
+   "schemaVersion": 18,
+   "style": "dark",
+   "tags": [
+      "monitoring",
+      "prometheus",
+      "journey-view"
+   ],
+   "templating": {
+      "list": [
+         {
+            "allValue": null,
+            "current": {
+               "text": "7d",
+               "value": "7d"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Error Budget Display",
+            "multi": false,
+            "name": "error_budget_span",
+            "options": [
+               {
+                  "text": "10m",
+                  "value": "10m"
+               },
+               {
+                  "text": "1h",
+                  "value": "1h"
+               },
+               {
+                  "text": "1d",
+                  "value": "1d"
+               },
+               {
+                  "text": "7d",
+                  "value": "7d"
+               },
+               {
+                  "text": "21d",
+                  "value": "21d"
+               },
+               {
+                  "text": "30d",
+                  "value": "30d"
+               },
+               {
+                  "text": "90d",
+                  "value": "90d"
+               }
+            ],
+            "query": "10m,1h,1d,7d,21d,30d,90d",
+            "refresh": 0,
+            "type": "custom"
+         },
+         {
+            "allValue": null,
+            "current": {
+               "text": "all",
+               "value": "$__all"
+            },
+            "datasource": "prometheus",
+            "hide": 0,
+            "includeAll": false,
+            "label": "Environment",
+            "multi": false,
+            "name": "environment",
+            "options": [ ],
+            "query": "label_values(environment)",
+            "refresh": 1,
+            "regex": "",
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [ ],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+         }
+      ]
+   },
+   "time": {
+      "from": "now-3h",
+      "to": "now"
+   },
+   "timepicker": {
+      "refresh_intervals": [
+         "5s",
+         "10s",
+         "30s",
+         "1m",
+         "5m",
+         "15m",
+         "30m",
+         "1h",
+         "2h",
+         "1d"
+      ],
+      "time_options": [
+         "5m",
+         "15m",
+         "1h",
+         "6h",
+         "12h",
+         "24h",
+         "2d",
+         "7d",
+         "30d"
+      ]
+   },
+   "timezone": "browser",
+   "title": "monitoring-prometheus-journey-view",
+   "uid": "monitoring-prometheus-journey-sli",
+   "version": 0
+}
