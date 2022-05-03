@@ -9,3 +9,11 @@
 *.iml
 *.ipr
 /.idea/
+
+# Prometheus rules
+prometheus/*rules.yaml
+
+# Grafana dashboards
+grafana/provisioning/dashboards/flapi/*.json
+grafana/provisioning/dashboards/monitoring/*.json
+grafana/provisioning/dashboards/platform/*.json
