@@ -1,0 +1,1123 @@
+"groups":
+- "name": "monitoring_localhost_alertrules"
+  "rules":
+  - "alert": "monitoring_grafana_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "requests to the Grafana landing page are successful"
+      "slo": "SLI01"
+      "title": "1 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "requests to the Grafana landing page are successful"
+      "slo": "SLI01"
+      "title": "2 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "requests to the Grafana landing page are successful"
+      "slo": "SLI01"
+      "title": "3 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "type": "http-errors"
+      "wait_for": "1h"
+  - "alert": "monitoring_grafana_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI01',environment='localhost',journey='grafana'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "requests to the Grafana landing page are successful"
+      "slo": "SLI01"
+      "title": "4 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "type": "http-errors"
+      "wait_for": "3h"
+  - "alert": "monitoring_grafana_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "requests to the Grafana login are successful"
+      "slo": "SLI02"
+      "title": "1 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "requests to the Grafana login are successful"
+      "slo": "SLI02"
+      "title": "2 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "requests to the Grafana login are successful"
+      "slo": "SLI02"
+      "title": "3 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "type": "http-errors"
+      "wait_for": "1h"
+  - "alert": "monitoring_grafana_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI02',environment='localhost',journey='grafana'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "requests to the Grafana login are successful"
+      "slo": "SLI02"
+      "title": "4 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "type": "http-errors"
+      "wait_for": "3h"
+  - "alert": "monitoring_grafana_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "requests to the Grafana datasources are successful"
+      "slo": "SLI03"
+      "title": "1 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "requests to the Grafana datasources are successful"
+      "slo": "SLI03"
+      "title": "2 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "requests to the Grafana datasources are successful"
+      "slo": "SLI03"
+      "title": "3 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "type": "http-errors"
+      "wait_for": "1h"
+  - "alert": "monitoring_grafana_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-grafana-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI03',environment='localhost',journey='grafana'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "grafana"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "requests to the Grafana datasources are successful"
+      "slo": "SLI03"
+      "title": "4 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "type": "http-errors"
+      "wait_for": "3h"
+  - "alert": "monitoring_prometheus_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "all prometheus scrape targets are available"
+      "slo": "SLI01"
+      "title": "1 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "type": "generic_avgovertimem"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "all prometheus scrape targets are available"
+      "slo": "SLI01"
+      "title": "2 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "type": "generic_avgovertimem"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "all prometheus scrape targets are available"
+      "slo": "SLI01"
+      "title": "3 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "type": "generic_avgovertimem"
+      "wait_for": "1h"
+  - "alert": "monitoring_prometheus_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI01',environment='localhost',journey='prometheus'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "all prometheus scrape targets are available"
+      "slo": "SLI01"
+      "title": "4 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "type": "generic_avgovertimem"
+      "wait_for": "3h"
+  - "alert": "monitoring_prometheus_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "prometheus scraping of Yace is fast enough"
+      "slo": "SLI02"
+      "title": "1 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "type": "generic_avgovertimem"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "prometheus scraping of Yace is fast enough"
+      "slo": "SLI02"
+      "title": "2 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "type": "generic_avgovertimem"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "prometheus scraping of Yace is fast enough"
+      "slo": "SLI02"
+      "title": "3 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "type": "generic_avgovertimem"
+      "wait_for": "1h"
+  - "alert": "monitoring_prometheus_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-prometheus-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI02',environment='localhost',journey='prometheus'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "prometheus"
+      "metric_name": "generic_avgovertimem"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "prometheus scraping of Yace is fast enough"
+      "slo": "SLI02"
+      "title": "4 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "type": "generic_avgovertimem"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "instant query requests to Thanos"
+      "slo": "SLI01"
+      "title": "1 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "instant query requests to Thanos"
+      "slo": "SLI01"
+      "title": "2 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "instant query requests to Thanos"
+      "slo": "SLI01"
+      "title": "3 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "1h"
+  - "alert": "monitoring_thanos_SLI01_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI01',environment='localhost',journey='thanos'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "instant query requests to Thanos"
+      "slo": "SLI01"
+      "title": "4 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "instant query requests to Thanos are fast enough"
+      "slo": "SLI02"
+      "title": "1 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "instant query requests to Thanos are fast enough"
+      "slo": "SLI02"
+      "title": "2 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "instant query requests to Thanos are fast enough"
+      "slo": "SLI02"
+      "title": "3 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "1h"
+  - "alert": "monitoring_thanos_SLI02_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI02',environment='localhost',journey='thanos'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "instant query requests to Thanos are fast enough"
+      "slo": "SLI02"
+      "title": "4 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "range query requests to Thanos"
+      "slo": "SLI03"
+      "title": "1 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "range query requests to Thanos"
+      "slo": "SLI03"
+      "title": "2 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "range query requests to Thanos"
+      "slo": "SLI03"
+      "title": "3 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "1h"
+  - "alert": "monitoring_thanos_SLI03_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI03',environment='localhost',journey='thanos'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "thanos"
+      "metric_name": "http-errors"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "range query requests to Thanos"
+      "slo": "SLI03"
+      "title": "4 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "type": "http-errors"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI04_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "range query requests to Thanos are fast enough"
+      "slo": "SLI04"
+      "title": "1 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI04_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "range query requests to Thanos are fast enough"
+      "slo": "SLI04"
+      "title": "2 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI04_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "range query requests to Thanos are fast enough"
+      "slo": "SLI04"
+      "title": "3 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "1h"
+  - "alert": "monitoring_thanos_SLI04_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI04',environment='localhost',journey='thanos'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "thanos"
+      "metric_name": "http-latency"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "range query requests to Thanos are fast enough"
+      "slo": "SLI04"
+      "title": "4 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "type": "http-latency"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI05_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} > 14.40000
+      and
+      slo_burnrate:1h{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} >  14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "14.4"
+      "journey": "thanos"
+      "metric_name": "generic-error"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "1"
+      "short_description": "compactions by thanos-compact"
+      "slo": "SLI05"
+      "title": "1 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "type": "generic-error"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI05_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} > 6.00000
+      and
+      slo_burnrate:6h{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} >  6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "6"
+      "journey": "thanos"
+      "metric_name": "generic-error"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "2"
+      "short_description": "compactions by thanos-compact"
+      "slo": "SLI05"
+      "title": "2 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "type": "generic-error"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI05_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:2h{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} > 3.00000
+      and
+      slo_burnrate:1d{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} >  3.00000
+    "for": "1h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 2.33 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "3"
+      "journey": "thanos"
+      "metric_name": "generic-error"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "3"
+      "short_description": "compactions by thanos-compact"
+      "slo": "SLI05"
+      "title": "3 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "type": "generic-error"
+      "wait_for": "1h"
+  - "alert": "monitoring_thanos_SLI05_ErrorBudgetBurn"
+    "annotations":
+      "dashboardurl": "http://localhost:3000/d/monitoring-localhost-thanos-journey-sli"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} > 1.00000
+      and
+      slo_burnrate:3d{service='monitoring',slo='SLI05',environment='localhost',journey='thanos'} >  1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "configuration_item": "EBSA Prometheus, Grafana and Thanos"
+      "description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "environment": "localhost"
+      "event_class": "EBSA Prometheus"
+      "factor": "1"
+      "journey": "thanos"
+      "metric_name": "generic-error"
+      "node": "EBSA Monitoring and Logging Components"
+      "resource": "EBSA Monitoring and Logging Components"
+      "service": "monitoring"
+      "severity": "4"
+      "short_description": "compactions by thanos-compact"
+      "slo": "SLI05"
+      "title": "4 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "type": "generic-error"
+      "wait_for": "3h"
