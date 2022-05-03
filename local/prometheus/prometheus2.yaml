@@ -1,0 +1,90 @@
+# my global config
+global:
+  scrape_interval: 15s  # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s  # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    host: 'localhost'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - '*-rules.yaml'
+  # - "first.rules"
+  # - "second.rules"
+
+# alert
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+            - 'alertmanager:9093'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'yace'
+    scrape_interval: 1m
+    static_configs:
+      - targets: ['yace:5000']
+        labels:
+          host: 'localhost'
+
+  - job_name: thanos-sidecar
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - "thanos-sidecar-1:10902"
+          - "thanos-sidecar-2:10902"
+        labels:
+          host: 'localhost'
+
+  - job_name: thanos-store-gateway
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - "thanos-store-gateway:10902"
+        labels:
+          host: 'localhost'
+
+  - job_name: thanos-query
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - "thanos-querier:10902"
+        labels:
+          host: 'localhost'
+
+  - job_name: thanos-compactor
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - "thanos-compactor:10902"
+        labels:
+          host: 'localhost'
+
+  - job_name: thanos-ruler
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - "thanos-ruler:10902"
+        labels:
+          host: 'localhost'
+
+  - job_name: grafana
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - "grafana:3000"
+        labels:
+          host: 'localhost'
+
+  - job_name: localhost/fetm-flapi-wb
+    scrape_interval: 5s
+    metrics_path: /ipt-fetm-flapi-wb/actuator/prometheus
+    static_configs:
+      - targets:
+          - "host.docker.internal:8080"
