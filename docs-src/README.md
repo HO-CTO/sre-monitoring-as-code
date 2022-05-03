@@ -21,7 +21,7 @@ You’re welcome to use the template even if your service isn’t considered par
 
 ## Before you start
 
-To use the Tech Docs Template you need the applications list below, however you can bypass by using Docker build/Compse process below:
+To use the Tech Docs Template you need the applications listed below, however you can bypass by running Docker Compose process below:
 
 - [Ruby][install-ruby]
 - [Middleman][install-middleman]
