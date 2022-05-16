@@ -35,12 +35,15 @@ jobs:
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        id: trivy-scan
+        continue-on-error: true
         with:
          image-ref: deploydocs:latest
          format: 'sarif'
          output: 'trivy-results.sarif'
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      - name: Upload Trivy scan results to GitHub Security tab\
+        if: always()
         uses: github/codeql-action/upload-sarif@v1
         with:
          sarif_file: 'trivy-results.sarif'
