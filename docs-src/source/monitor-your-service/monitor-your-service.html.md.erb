@@ -7,13 +7,13 @@ weight: 40
 
 Following the design principe of "Hierarchical dashboards with drill-downs to the next level" <sup>1</sup>, we have developed a five tier dashboard structure to fulfil different persona needs as follows: -
 
-| Dashboard            | Description                                                      | Persona / User           | Dashboard Name  |
+| Dashboard            | Description                                                      | Persona / User           | Dashboard Name/s  |
 | ---------------------| -----------------------------------------------------------------|--------------------------|-----------------|
-| All Tenant View      | Observability of all services and tenants running on a platform. | Service Manager          | operations-view     |
+| All Tenant View      | Observability of all services and tenants running on a platform. | Service Manager          | summary-view    |
 | Service View         | Observability of all products which makeup a specific service.   | Product Manager and Team | {service}-service-view |
 | Product View         | Observability of all the user journeys running on an individual product. | Product Manager and Team | {product}-product-view |
-| User Journey View    | Observability of all the SLIs in a single user journey. | Product Manager and Team | {journey}-journey-view |
-| Troubleshooting View | Observability of all whitebox and blackbox metrics which contribute to SLIs and Service Health. | Engineers | debugging-view  |
+| User Journey View    | Observability of all the SLIs in a single user journey. | Product Manager and Team | {product}{journey1}-journey-view |
+| Troubleshooting View | Observability of all whitebox and blackbox metrics which contribute to SLIs and Service Health. | Engineers | detail-view  |
 
 These hierarchical dashboards support a generic troubleshooting workflow: -
 
