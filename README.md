@@ -1,13 +1,13 @@
 # sre-monitoring-as-code
 
-SRE Monitoring-as-Code (MaC) is a Jsonnet Mixin implementation of SLIs/SLO/Error Budgets using the open-source monitoring and alerting eco-system of Prometheus and Grafana. Our documentation is available to view online [here](https://improved-disco-310e77ab.pages.github.io/).
+SRE Monitoring-as-Code (MaC) is a Jsonnet Mixin implementation of SLIs/SLO/Error Budgets using the open-source monitoring and alerting eco-system of Prometheus and Grafana. [Our documentation is available to view online.](https://improved-disco-310e77ab.pages.github.io/).
 
 ## About the framework
 
-Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and Runbooks into a single package. Engineers commit a monitoring definition file and this triggers the packaging of Prometheus Rules and Grafana Dashboards and injects them into the monitoring tools. This way, we can ease up Engineers burden of writing alerting rules, manually drawing up Grafana dashboards, and scribing runbooks.
+Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and Runbooks into a single package. Engineers commit a monitoring definition file and this triggers the packaging of Prometheus Rules and Grafana Dashboards and injects them into the monitoring tools. This way, we can ease up engineers' burden of writing alerting rules, manually drawing up Grafana dashboards, and scribing runbooks.
 
 - Monitoring Mixins<sup>1</sup> are a lightweight flexible configuration, which don’t mandate specific labels or expressions. You can configure and overwrite everything.
-- Mixins use data templating language called Jsonnet. The only templating language which has fully supported libraries for Grafana and Prometheus.
+- Mixins use data templating language called Jsonnet, which is the only templating language which has fully supported libraries for Grafana and Prometheus.
 - jsonnet-bundler is used for package management. Once you have a Monitoring Mixin package, you need to install it, keep track of versions and update them
 - SRE MaC will be open-sourced and live on UKHomeOffice GitHub and can be integrated with any Platform which supports pulling containers from GitHub.
 - SLI/SLO/Error Budget configurations match Google SRE<sup>2</sup> industry patterns.
