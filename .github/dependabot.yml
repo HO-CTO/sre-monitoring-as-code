@@ -4,14 +4,14 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
       
   - package-ecosystem: "docker"
     directory: "/docs"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
       
   - package-ecosystem: "bundler"
     directory: "/docs"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
