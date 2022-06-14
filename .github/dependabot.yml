@@ -1,0 +1,17 @@
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      
+  - package-ecosystem: "docker"
+    directory: "/docs"
+    schedule:
+      interval: "monthly"
+      
+  - package-ecosystem: "bundler"
+    directory: "/docs"
+    schedule:
+      interval: "monthly"
