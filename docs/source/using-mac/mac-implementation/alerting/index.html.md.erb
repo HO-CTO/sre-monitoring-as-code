@@ -1,9 +1,9 @@
 ---
-title: Manage your alerts
-weight: 25
+title: Alerting
+weight: 12
 ---
 
-# Alert methodology
+# Alerting
 
 We base alerts on the Error Budget Burn Rate, which is measured against the SLO target set by the Product team. If monitoring indicates that an SLO is in danger of being breached it will trigger an alert. Depending on how quickly the Error Budget is forecast to breach will determine what level of alert is triggered.
 
@@ -19,3 +19,29 @@ As a baseline we have implemented a 2% budget consumption in one hour, 5% budget
 | 5%                     | 6 hours            | 6         | tbc          |
 | 7.5%                   | 1 day              | 3         | tbc          |
 | 10%                    | 3 days             | 1         | tbc          |
+
+
+## Alerting
+One of the features provided by the monitoring framework is standardised alerts. These alerts are triggered in response to a significant rise in the error burn-rate of an SLO (for example, if a service starts responding slowly the error burn-rate of the SLO for latency would increase and trigger an alert). When an alert is triggered a message is sent to a specified Slack channel containing details of the alert as a list of labels. Most of the labels are outlined in Design ing Service Alerting and Planning for Alerts however there are some additional labels as well. The labels are:
+alertname
+assignment_group
+ci_type
+configuration_item
+description
+environment
+event_class
+factor
+instance
+journey
+metric_name
+node
+replica
+resource
+service
+severity
+short_description
+slo
+title
+type
+wait_for
+time_of_event

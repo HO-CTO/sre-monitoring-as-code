@@ -1,0 +1,64 @@
+---
+title: SLI recording rules
+weight: 13
+---
+
+# SLI recording rules
+
+## SLI Value
+
+The SLI value recording rule is used for calculating whether a time window was good or not by comparing the output of the rule to the metric target. The expression used by SLI value varies depending on the type of SLI, the default comparison used is SLI value is less than metric target for a window to be good, but different comparison operators can be defined for each SLI in the mixin file. Following are examples of two types of SLI value rules.
+
+## HTTP Availability
+
+Lets say you had an HTTP availability SLI with 5 minute time windows, a metric target of 0.1 and bad requests defined as any returning 400 or 500 status codes. If over a 5 minute window you had 9 good requests, 1 bad request meaning a total of 10 requests, the calculation for SLI value would be 1 (number of bad requests) / 10 (total number of requests) which equals 0.1. Since the default comparison is less than and the SLI value of 0.1 is not less than the metric target of 0.1 it would be a bad window.
+
+If over the next 5 minutes you had 19 good requests, 1 bad request meaning a total of 10 requests, the calculation for SLI value would be 1 (number of bad requests) / 20 (total number of request) which equals 0.05. Since 0.05 is less than the metric target of 0.1 it would be a good window.
+
+## HTTP Latency
+
+Lets say you had an HTTP latency SLI with 5 minute time windows, a metric target of 0.5 and a latency percentile of 0.9. Below are the ordered results for latency of 10 requests over a 5 minute period:
+
+|Latency|
+|-------|
+|0.1|
+|0.13|
+|0.2|
+|0.21|
+|0.22|
+|0.25|
+|0.27|
+|0.31|
+|0.4|
+|0.52|
+
+Because the latency percentile is 0.9 or 90% and there are 10 values in total, we take the 9th value from the ordered list. This value is 0.4 which is less than the metric target of 0.5 so it is a good window. Lets look at another 5 minute time period with 20 requests:
+
+|Latency|
+|-------|
+|0.1|
+|0.13|
+|0.15|
+|0.2|
+|0.21|
+|0.21|
+|0.22|
+|0.22|
+|0.25|
+|0.26|
+|0.28|
+|0.28|
+|0.29|
+|0.3|
+|0.35|
+|0.41|
+|0.47|
+|0.52|
+|0.61|
+|0.64|
+
+Because the latency percentile is 0.9 or 90% and there are 20 values in total, we take the 18th value from the ordered list. This value is 0.52 which is greater than the metric target of 0.5 so it is a bad window.
+
+##SLI Percentage
+
+The SLI percentage recording rule is used for comparing the overall percentage of good time windows for different services in the summary view dashboard. It takes the number of good windows in the last 30 days and divides by the total number of windows where data was received in the last 30 days.
