@@ -1,0 +1,40 @@
+---
+title: Get MaC up and running
+weight: 12
+---
+
+# Get MaC up and running on your local environment
+To get started with MaC, download the pre-requisites and set up your test environment using a test implementation.
+
+This allows you to test that the product works on your local environment.
+
+## Clone the repository onto your local machine
+
+To install the framework, clone the [sre-monitoring-as-code](https://github.com/HO-CTO/sre-monitoring-as-code) repository onto your local machine.
+This is currently a private repo. If you’d like access to the files, please email [Team email address here]().
+
+For detailed installation instructions, see the Readme file in the 'sast' folder.
+
+## Install pre-requisites
+
+To start using Monitoring-as-Code, you also need to:
+
+- [install Prometheus](https://prometheus.io/download/)
+- [install Grafana](https://grafana.com/get/?plcmt=top-nav&cta=downloads)
+- [install Docker](https://www.docker.com/get-started/)
+
+## Test your installation
+You can use the monitoring-grafana-journey-view mixin file to test that the product works as expected. The mixing file uses the Monitoring-as-code product itself as an input to test.
+
+1. Start monitoring-local.
+In terminal, navigate to your monitoring-local folder and enter: <code>docker-compose up</code>
+  , or start the service in Docker.
+2. Start Grafana.
+In your browser window, navigate to ''localhost:3000'. Sign into Grafana using the following credentials:
+username: admin
+password: l2password
+
+3. In Grafana, navigate to 'monitoring-grafana-journey-view'.
+4. Select 'localhost' from the Environment drop-down list.
+5. Refresh the home page a couple of times to start building a history.
+6. To create errors, you can log out and try logging in with incorrect credentials.

@@ -1,30 +1,35 @@
 ---
-title: Get started
-weight: 20
+title: Define and implement your SLIs and SLOs
+weight: 13
 ---
+# Define and implement your SLIs and SLOs
+To implement the SRE Monitoring-as-Code framework in your environment you must:
 
-# Get started
+1. Define user journeys and service-level indicators for your service.
+2. Agree baseline SLOs for each SLI.
+3. Implement SLI Definitions.
+4. Observe and iterate.
 
-To start using the SRE Monitoring-as-Code framework you must: -
-
-## Define user journeys and service-level indicators for your service
+## Define user journeys and service-level indicators for your service {#define-user-journeys-heading}
 
 1. [Run a Service Level Indicator (SLI) workshop](https://gds-way.cloudapps.digital/standards/slis.html)
 2. List out critical user journeys and order them by business impact.
 3. Define what good means to users.
 4. Map out high-level system components.
 5. Define your SLIs.
-6. [Agree baseline SLOs for each SLI](#agree-baseline-slos-heading)
-7. [Implement SLI Definitions](#create-implementation-tasks-heading)
-8. [Observe and iterate](#observe-and-iterate-heading)
+
+NOTE need to add more here about each of the steps.
 
 ## Agree baseline SLOs for each SLI {#agree-baseline-slos-heading}
 
 Current performance based on SLIs is usually a good place to start, especially if you do not have any other information. It also helps to set a baseline that you can improve to reflect service objectives.
 
+Once you have everything in place, you can (implement your SLIs and SLOs)[#implement-slis-task-heading]
+
+
 ## Implement SLI Definitions (sre-monitoring-as-code) {#create-implementation-tasks-heading}
 
-![Low level diagram showing workflow](monaco-pg-lld.drawio.png)
+![Low level diagram showing workflow](../../images/monaco-pg-lld.drawio.png)
 
 Teams must create a Monaco definition file (mixin) for each product they wish to monitor. A boiler plate mixin is provided in the sre-monitoring-as-code repository.
 
@@ -87,10 +92,6 @@ Local variables should be supplied for each SLI as follows: -
 | slo_target | Your statement of desired performance. | Currently set to the inverse so 0.01 represents 99%  | 0.01 |
 | type | This is the SLI category based on the SLI menu | Must match SLI type provided in SLI Menu | http-errors |
 
-## Observe and iterate {#observe-and-iterate-heading}
+## Observe and iterate (sre-monitoring-as-code) {#observe-and-iterate-heading}
 
 After implementing your SLI configuration, observe the dashboard journeys over a period of time (for example 1 sprint). After this time, iterate your SLIs to better understand your service’s performance and how the SLIs help your team make decisions.
-
-
-
-
