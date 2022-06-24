@@ -1,6 +1,6 @@
 # sre-monitoring-as-code
 
-SRE Monitoring-as-Code (MaC) is a Jsonnet Mixin implementation of SLIs/SLO/Error Budgets using the open-source monitoring and alerting eco-system of Prometheus and Grafana. [Our documentation is available to view online](https://improved-disco-310e77ab.pages.github.io/).
+SRE Monitoring-as-Code (MaC) is a Jsonnet Mixin implementation of SLIs/SLO/Error Budgets using the open-source monitoring and alerting eco-system of Prometheus and Grafana. [Our documentation is available to view online](https://ho-cto.github.io/sre-monitoring-as-code/).
 
 ## About the framework
 
