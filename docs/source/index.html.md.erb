@@ -9,21 +9,19 @@ It's a Jsonnet Mixin implementation of Service Level Indicators (SLIs), Service 
 
 Monitoring-as-code allows platform teams to:
 
-- create a consistent Grafana dashboards across the entire service portfolio
+- create consistent Grafana dashboards and Prometheus rules across the entire service portfolio
 - monitor defined SLOs targets
 - measure service reliability
 
 The Monitoring-as-Code implementation follows SRE best practices.
 
-## How MaC works
+![Monitoring-as-Code how it works](monaco-how-it-works.png)
 
 MaC takes a Mixin.jsonnet file as an input. Mixin is a monitoring definition file, a set of SLIs and SLOs rules and alerts, packaged together in a reuseable and extensible bundle. The monitoring mixin files (NOTE name them here) bundle up your SLI configuration, alerting, Grafana dashboards, and runbooks into a single package.
 
 MaC contains configuration libraries you can use out of the box, or configure them yourself. NOTE TO REVIEWERS: NEED MORE HERE. WHAT DOES THIS MEAN/DO
 
 MaC creates a dashboard json and associated recording and alert rules for Prometheus and Grafana. When you commit the mixin file MaC packages the Prometheus rules and Grafana dashboards and injects them into the monitoring tools.
-
-![Monitoring-as-Code how it works](monaco-how-it-works.png)
 
 
 <!-- NOTE Commented out but leaving here to rework into text
