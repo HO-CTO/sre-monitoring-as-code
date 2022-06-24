@@ -2,11 +2,8 @@ require 'govuk_tech_docs'
 
 GovukTechDocs.configure(self)
 
-# Build-specific configuration
-configure :build do
-  set :build_dir, '../public'
-  set :relative_links, true
-end
+activate :relative_assets
+set :relative_links, true
 
 set :markdown_engine, :kramdown
 set :markdown,
