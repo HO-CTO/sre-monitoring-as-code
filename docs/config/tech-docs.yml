@@ -1,10 +1,10 @@
 # Host to use for canonical URL generation (without trailing slash)
-host: docs.homeoffice.service.gov.uk
+host: https://ho-cto.github.io/sre-monitoring-as-code
 
 # Header-related options
 show_govuk_logo: false
 service_name: sre-monitoring-as-code
-service_link:
+service_link: /sre-monitoring-as-code
 phase: INTERNAL
 
 # Links to show on right-hand-side of header
