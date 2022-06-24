@@ -7,7 +7,7 @@
 
     <title>Responding to alerts - sre-monitoring-as-code</title>
 
-    <link href="/stylesheets/manifest.css" rel="stylesheet" />
+    <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
     <link rel="canonical" href="https://ho-cto.github.io/sre-monitoring-as-code/responding-to-alerts/responding-to-alerts.html">
 
@@ -221,7 +221,7 @@
 
 <p>Debugging a digital service is never as clean as the idealized model presented below. However, using a combination of alerts, system metrics in dashboards and logs can help understand the current operating state. Google SRE has presented some useful steps below that can make the process less painful and more productive. We have overlayed how our Monitoring-as-Code framework can support those users responding to system problems.</p>
 
-<p><img src="/responding-to-alerts/responding-to-alerts.png" alt="responding to alerts" /></p>
+<p><img src="responding-to-alerts.png" alt="responding to alerts" /></p>
 
 <p>Diagram courtesy of <a href="https://sre.google/sre-book/effective-troubleshooting/">Effective Troublshooting - Google SRE Workbook</a></p>
 
@@ -270,19 +270,19 @@ Alert from HO-Monitoring &lt;dashboard-link&gt; &lt;silence-link&gt; &lt;runbook
 
 <p>Consult the product-view dashboard (pictured below) to confirm the SLI which is at risk of breaching its SLO. Select the associated SLI to drill-down into the journey-view.</p>
 
-<p><img src="/responding-to-alerts/product-view.png" alt="Product view dashboard" /></p>
+<p><img src="product-view.png" alt="Product view dashboard" /></p>
 
 <h3 id="journey-view">journey-view</h3>
 
 <p>Use the journey-view dashboard (pictured below) to discover remaining error budget, the error rate spikes that have caused the forecasted breack of SLO before drilling down to the detail view.</p>
 
-<p><img src="/responding-to-alerts/journey-view.png" alt="Journey view dashboard" /></p>
+<p><img src="journey-view.png" alt="Journey view dashboard" /></p>
 
 <h3 id="detail-view">detail-view</h3>
 
 <p>Use the detail-view dashboard (pictured below) to drill into the telemetry label values in greater detail. For example with availability http errors use the dashboard to identify which paths and status codes are contributing to the error budget burn.</p>
 
-<p><img src="/responding-to-alerts/detail-view.png" alt="Detail view dashboard" /></p>
+<p><img src="detail-view.png" alt="Detail view dashboard" /></p>
 
 <h2 id="diagnose">Diagnose</h2>
 
@@ -342,6 +342,6 @@ Alert from HO-Monitoring &lt;dashboard-link&gt; &lt;silence-link&gt; &lt;runbook
     </div>
 
     
-    <script src="/javascripts/application.js"></script>
+    <script src="../javascripts/application.js"></script>
   </body>
 </html>
