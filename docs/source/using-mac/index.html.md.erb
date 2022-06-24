@@ -1,10 +1,10 @@
 ---
-title: Using Monitoring-as-code
+title: Using Monitoring-as-Code
 weight: 20
 ---
 
 
-# How MaC works
+# Using Monitoring-as-Code
 
 ## Error budget burn-rate rules
 
@@ -86,13 +86,13 @@ time_of_event
 
 The SLI value recording rule is used for calculating whether a time window was good or not by comparing the output of the rule to the metric target. The expression used by SLI value varies depending on the type of SLI, the default comparison used is SLI value is less than metric target for a window to be good, but different comparison operators can be defined for each SLI in the mixin file. Following are examples of two types of SLI value rules.
 
-### HTTP Availability
+### HTTP availability
 
 Lets say you had an HTTP availability SLI with 5 minute time windows, a metric target of 0.1 and bad requests defined as any returning 400 or 500 status codes. If over a 5 minute window you had 9 good requests, 1 bad request meaning a total of 10 requests, the calculation for SLI value would be 1 (number of bad requests) / 10 (total number of requests) which equals 0.1. Since the default comparison is less than and the SLI value of 0.1 is not less than the metric target of 0.1 it would be a bad window.
 
 If over the next 5 minutes you had 19 good requests, 1 bad request meaning a total of 10 requests, the calculation for SLI value would be 1 (number of bad requests) / 20 (total number of request) which equals 0.05. Since 0.05 is less than the metric target of 0.1 it would be a good window.
 
-### HTTP Latency
+### HTTP latency
 
 Lets say you had an HTTP latency SLI with 5 minute time windows, a metric target of 0.5 and a latency percentile of 0.9. Below are the ordered results for latency of 10 requests over a 5 minute period:
 
@@ -136,12 +136,12 @@ Because the latency percentile is 0.9 or 90% and there are 10 values in total, w
 
 Because the latency percentile is 0.9 or 90% and there are 20 values in total, we take the 18th value from the ordered list. This value is 0.52 which is greater than the metric target of 0.5 so it is a bad window.
 
-###SLI Percentage
+###SLI percentage
 
 The SLI percentage recording rule is used for comparing the overall percentage of good time windows for different services in the summary view dashboard. It takes the number of good windows in the last 30 days and divides by the total number of windows where data was received in the last 30 days.
 
 
-##  Time Window Based SLOs
+##  Time window based SLOs
 A time window based SLO works by taking the number of good windows over a time period and dividing them by the total number of time windows in that period where the metric being used for the SLI was updated. This is easiest to explain with an example:
 Lets say you have an SLI for HTTP requests, the time windows for this SLI are 5 minutes long and your SLO performance is being calculated over the past 1 hour. That means 12 time windows will be used for calculating your SLO performance (there are 12 5 minute time windows in 1 hour). The target for your SLO is 80% and the criterion for a time window being good is that at least 90% of the requests performed within that 5 minute window responded with good status codes. The monitoring starts at 14:00, below is the first hour:
 
@@ -179,3 +179,45 @@ As you can see, within the first hour there were 7 good windows, 3 bad windows a
 |15:05|13           |15                     |15                      |100%              |Good         |
 
 Since the SLO performance is being calculated over an hour, window 1 is not included in the calculation. That means we now have 8 good windows, 2 bad windows and 2 windows where no requests were made. The calculation for SLO performance is 8 (number of good windows) / 10 (total number of windows) which equals 0.8 or 80%. This is the same as our SLO target of 80%, so over the past hour the SLO was met.
+
+
+## Service-level indicator menu {#sli-menu}
+
+NOTE: This section will be fully reviewed and written as user tasks.
+
+### Overview
+
+We have built on Google's concept of an SLI Menu by developing a standard suite of extensible and reusable SLIs that can be selected as part of a products monitoring configuration.
+
+| SLI Menu GUID | Self-service SLIs                                         | Data source                              | Google SLI Type | Google SLI Category |
+|--------- | -------------------------------------------------------------- | ---------------------------------------- |---------------  | --------------------|
+| 1        | HTTP errors                                                    | Java Spring Boot Actuator                | Availability    | Request-driven      |
+| 2        | AWS Application Load Balancer http errors                      | AWS Cloudwatch ApplicationELB Namespace  | Availability    | Request-driven      |
+| 3        | HTTP latency                                                   | Java Spring Boot Actuator                | Latency         | Request-driven      |
+| 4        | AWS Application Load Balancer http latency                     | AWS Cloudwatch ApplicationELB Namespace  | Latency         | Request-driven      |
+| 5        | -                                                              | -                                        | Quality         | Request-driven      |
+| 6        | AWS Simple Queue Service high latency in standard queue        | AWS Cloudwatch SQS Namespace             | Freshness       | Pipeline            |
+| 7        | AWS Simple Queue Service message received in dead letter queue | AWS Cloudwatch SQS Namespace             | Pipeline        | Pipeline            |
+| -        |  -                                                             | -                                        | Coverage        | Pipeline            |
+| -        |  -                                                             | -                                        | Durability      | Storage             |
+
+#### SLI worksheet - Sprint Boot Actuator http errors
+
+**Google SLI Category:** Request-driven
+
+**Google SLI Type:** Availability
+
+**SLI Specification:**
+    The proportion of journey requests that return successful HTTP status code
+
+**SLI Implementation:**
+    <to be added>
+
+**Rationale:**
+    <to be added>
+
+**Error Budget:**
+    <to be added>
+
+**Clarifications and Caveats:**
+    <to be added>
