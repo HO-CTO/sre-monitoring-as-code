@@ -31,7 +31,7 @@ jobs:
         run: bundle exec middleman build
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           branch: docs
           folder: public
