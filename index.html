@@ -88,6 +88,11 @@
                       <ul>
   <li>
     <a href="./index.html"><span>Home Office Monitoring-as-Code Overview</span></a>
+    <ul>
+      <li>
+        <a href="./index.html#how-mac-works"><span>How MaC works</span></a>
+      </li>
+    </ul>
   </li>
 <li><a href="./get-started/index.html"><span>Get started</span></a>
 <ul>
@@ -111,52 +116,52 @@
 </ul>
 </li>
   <li>
-    <a href="./using-mac/index.html"><span>Using Monitoring-as-Code</span></a>
+    <a href="./interpret-mac/index.html"><span>Interpret Monitoring-as-Code outputs</span></a>
     <ul>
       <li>
-        <a href="./using-mac/index.html#error-budget-burn-rate-rules"><span>Error budget burn-rate rules</span></a>
+        <a href="./interpret-mac/index.html#error-budget-burn-rate-rules"><span>Error budget burn-rate rules</span></a>
         <ul>
           <li>
-            <a href="./using-mac/index.html#burn-rate-windows"><span>Burn-rate windows</span></a>
+            <a href="./interpret-mac/index.html#burn-rate-windows"><span>Burn-rate windows</span></a>
           </li>
           <li>
-            <a href="./using-mac/index.html#burn-rate-rules"><span>Burn-rate rules</span></a>
+            <a href="./interpret-mac/index.html#burn-rate-rules"><span>Burn-rate rules</span></a>
           </li>
         </ul>
       </li>
       <li>
-        <a href="./using-mac/index.html#alerting"><span>Alerting</span></a>
+        <a href="./interpret-mac/index.html#alerting"><span>Alerting</span></a>
         <ul>
           <li>
-            <a href="./using-mac/index.html#standardised-alerts"><span>Standardised alerts</span></a>
+            <a href="./interpret-mac/index.html#standardised-alerts"><span>Standardised alerts</span></a>
           </li>
         </ul>
       </li>
       <li>
-        <a href="./using-mac/index.html#sli-recording-rules"><span>SLI recording rules</span></a>
+        <a href="./interpret-mac/index.html#sli-recording-rules"><span>SLI recording rules</span></a>
         <ul>
           <li>
-            <a href="./using-mac/index.html#sli-value"><span>SLI Value</span></a>
+            <a href="./interpret-mac/index.html#sli-value"><span>SLI Value</span></a>
           </li>
           <li>
-            <a href="./using-mac/index.html#http-availability"><span>HTTP availability</span></a>
+            <a href="./interpret-mac/index.html#http-availability"><span>HTTP availability</span></a>
           </li>
           <li>
-            <a href="./using-mac/index.html#http-latency"><span>HTTP latency</span></a>
+            <a href="./interpret-mac/index.html#http-latency"><span>HTTP latency</span></a>
           </li>
           <li>
-            <a href="./using-mac/index.html#sli-percentage"><span>SLI percentage</span></a>
+            <a href="./interpret-mac/index.html#sli-percentage"><span>SLI percentage</span></a>
           </li>
         </ul>
       </li>
       <li>
-        <a href="./using-mac/index.html#time-window-based-slos"><span>Time window based SLOs</span></a>
+        <a href="./interpret-mac/index.html#time-window-based-slos"><span>Time window based SLOs</span></a>
       </li>
       <li>
-        <a href="./using-mac/index.html#sli-menu"><span>Service-level indicator menu</span></a>
+        <a href="./interpret-mac/index.html#sli-menu"><span>Service-level indicator menu</span></a>
         <ul>
           <li>
-            <a href="./using-mac/index.html#overview"><span>Overview</span></a>
+            <a href="./interpret-mac/index.html#overview"><span>Overview</span></a>
           </li>
         </ul>
       </li>
@@ -249,15 +254,16 @@ It's a Jsonnet Mixin implementation of Service Level Indicators (SLIs), Service 
   <li>measure service reliability</li>
 </ul>
 
-<p>The Monitoring-as-Code implementation follows SRE best practices.</p>
+<p>The Monitoring-as-Code implementation follows <a href="https://sre.google/sre-book/table-of-contents/">SRE best practices</a>.</p>
 
-<p><img src="monaco-how-it-works.png" alt="Monitoring-as-Code how it works" /></p>
+<h2 id="how-mac-works">How MaC works</h2>
+<p>MaC takes a Mixin.jsonnet file as an input. Mixin is a monitoring definition file, a set of SLIs and SLOs rules and alerts, packaged together in a reuseable and extensible bundle. The monitoring mixin files bundle up your SLI configuration, alerting and Grafana dashboards into a single package. At the moment, you will need to compose runbooks separately afterwards.</p>
 
-<p>MaC takes a Mixin.jsonnet file as an input. Mixin is a monitoring definition file, a set of SLIs and SLOs rules and alerts, packaged together in a reuseable and extensible bundle. The monitoring mixin files (NOTE name them here) bundle up your SLI configuration, alerting, Grafana dashboards, and runbooks into a single package.</p>
-
-<p>MaC contains configuration libraries you can use out of the box, or configure them yourself. NOTE TO REVIEWERS: NEED MORE HERE. WHAT DOES THIS MEAN/DO</p>
+<p>MaC contains configuration libraries you can use out of the box. In the future you can also configure them yourself.</p>
 
 <p>MaC creates a dashboard json and associated recording and alert rules for Prometheus and Grafana. When you commit the mixin file MaC packages the Prometheus rules and Grafana dashboards and injects them into the monitoring tools.</p>
+
+<p><img src="images/monaco-how-it-works.png" alt="Monitoring-as-Code how it works" /></p>
 
 <!-- NOTE Commented out but leaving here to rework into text
 
