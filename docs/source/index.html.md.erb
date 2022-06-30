@@ -13,16 +13,16 @@ Monitoring-as-code allows platform teams to:
 - monitor defined SLOs targets
 - measure service reliability
 
-The Monitoring-as-Code implementation follows SRE best practices.
+The Monitoring-as-Code implementation follows [SRE best practices](https://sre.google/sre-book/table-of-contents/).
 
-![Monitoring-as-Code how it works](monaco-how-it-works.png)
+## How MaC works
+MaC takes a Mixin.jsonnet file as an input. Mixin is a monitoring definition file, a set of SLIs and SLOs rules and alerts, packaged together in a reuseable and extensible bundle. The monitoring mixin files bundle up your SLI configuration, alerting and Grafana dashboards into a single package. At the moment, you will need to compose runbooks separately afterwards.
 
-MaC takes a Mixin.jsonnet file as an input. Mixin is a monitoring definition file, a set of SLIs and SLOs rules and alerts, packaged together in a reuseable and extensible bundle. The monitoring mixin files (NOTE name them here) bundle up your SLI configuration, alerting, Grafana dashboards, and runbooks into a single package.
-
-MaC contains configuration libraries you can use out of the box, or configure them yourself. NOTE TO REVIEWERS: NEED MORE HERE. WHAT DOES THIS MEAN/DO
+MaC contains configuration libraries you can use out of the box. In the future you can also configure them yourself.
 
 MaC creates a dashboard json and associated recording and alert rules for Prometheus and Grafana. When you commit the mixin file MaC packages the Prometheus rules and Grafana dashboards and injects them into the monitoring tools.
 
+![Monitoring-as-Code how it works](../images/monaco-how-it-works.png)
 
 <!-- NOTE Commented out but leaving here to rework into text
 
