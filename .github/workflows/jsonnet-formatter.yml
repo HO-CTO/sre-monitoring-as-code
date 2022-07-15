@@ -12,3 +12,5 @@ jobs:
 
     - name: formatter jsonnet
       uses: kakkoyun/action-jsonnetfmt
+      with:
+          targets: ./
