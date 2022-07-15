@@ -11,4 +11,4 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: formatter jsonnet
-      uses: kakkoyun/action-jsonnetfmt@61-jsonnetfmt
+      uses: kakkoyun/action-jsonnetfmt
