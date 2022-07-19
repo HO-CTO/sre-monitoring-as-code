@@ -1,0 +1,11 @@
+[
+  {
+    "labels": {
+      "job": "yace",
+      "namespace": "localhost"
+    },
+    "targets": [
+      "yace:5000"
+    ]
+  }
+]
