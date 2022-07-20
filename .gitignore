@@ -10,3 +10,22 @@
 *.iml
 *.ipr
 /.idea/
+
+# monitoring-as-code artefacts
+monitoring-as-code/monitoring-config/output
+
+# Prometheus rules and Grafana dashboards
+local/prometheus/rule_configs/*-rules.yaml
+local/grafana/provisioning/dashboards/*/
+
+# YACE config substitution file
+local/yace/config/newconfig.yml
+
+# Alertmanager config substitution file
+local/alertmanager/config/newconfig.yaml
+
+# Prometheus client app config
+local/prometheus/file_sd_configs/client_application_targets.json
+
+# Global Environment Variable file
+local/global.env
