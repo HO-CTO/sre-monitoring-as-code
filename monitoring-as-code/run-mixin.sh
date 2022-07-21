@@ -49,56 +49,55 @@ if [ ! -f "./monitoring-config/mixin-defs/${mixin}-mixin.jsonnet" ]; then
 fi
 
 # Errors if account is not np, pr or localhost
-if ! [[ "$account" =~ ^(np|pr|localhost)$ ]]; then
-  echo "Invalid account type" >&2
+(echo "$account" | grep -v -Eq "^(np|pr|localhost)$") && 
+  echo "Invalid account type" >&2 &&
   exit 1
-fi
 
 # Generate Prometheus recording rules should the -r flag be included
-if [ "$generate_rules" == "true" ]; then
+if [ "$generate_rules" = "true" ]; then
   # Gets environment arguments
   shift "$(( OPTIND - 1 ))"
-  environments=$@
+  environments="$*"
 
   # If environment arguments excluded default to localhost
   if [ -z "$environments" ]; then
-    environments=("localhost")
+    environments="localhost"
   fi
 
   # Create monitoring-config/output directory for prometheus rules
-  mkdir -p `pwd`/monitoring-config/output/prometheus-rules
+  mkdir -p "$(pwd)"/monitoring-config/output/prometheus-rules
 
   for environment in $environments
   do
     # Generate Prometheus recording rules YAML
-    docker run -a stdin -a stdout -a stderr -v `pwd`/monitoring-config:/monitoring-config $MAC_IMAGE jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"/monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").prometheusRules)" > `pwd`/monitoring-config/output/prometheus-rules/${mixin}-${environment}-recording-rules.yaml
+    docker run -a stdin -a stdout -a stderr -v "$(pwd)"/monitoring-config:/monitoring-config $MAC_IMAGE jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"/monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").prometheusRules)" > "$(pwd)"/monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run recording rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Generate Prometheus alert rules YAML
-    docker run -a stdin -a stdout -a stderr -v `pwd`/monitoring-config:/monitoring-config $MAC_IMAGE jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"/monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").prometheusAlerts)" > `pwd`/monitoring-config/output/prometheus-rules/${mixin}-${environment}-alert-rules.yaml
+    docker run -a stdin -a stdout -a stderr -v "$(pwd)"/monitoring-config:/monitoring-config $MAC_IMAGE jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"/monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").prometheusAlerts)" > "$(pwd)"/monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Test prometheus rules with promtool
-    docker run -a stdin -a stdout -a stderr -v `pwd`/monitoring-config:/monitoring-config --entrypoint promtool $PROMETHEUS_IMAGE check rules /monitoring-config/output/prometheus-rules/${mixin}-${environment}-alert-rules.yaml /monitoring-config/output/prometheus-rules/${mixin}-${environment}-recording-rules.yaml
+    docker run -a stdin -a stdout -a stderr -v "$(pwd)"/monitoring-config:/monitoring-config --entrypoint promtool $PROMETHEUS_IMAGE check rules /monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml /monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
     if [ $? -ne 0 ]; then echo "Validation of rules files failed for ${mixin} (environment ${environment}) - exiting"; exit 1; fi
   done
 
   # Copy Prometheus rules to monitoring local
-  cp -a `pwd`/monitoring-config/output/prometheus-rules/. $MONITORING_LOCAL_PATH/local/prometheus/rule_configs
+  cp -a "$(pwd)"/monitoring-config/output/prometheus-rules/. "$MONITORING_LOCAL_PATH"/local/prometheus/rule_configs
 
 fi
 
 # Generate Grafana dashboards should the -d flag be included
-if [ "$generate_dashboards" == "true" ]; then
+if [ "$generate_dashboards" = "true" ]; then
 
   # Create output directory for grafana dashboards
-  mkdir -p `pwd`/monitoring-config/output/grafana-dashboards
+  mkdir -p "$(pwd)"/monitoring-config/output/grafana-dashboards
 
   # Generate Grafana dashboards JSON
-  docker run -a stdin -a stdout -a stderr -v `pwd`/monitoring-config:/monitoring-config $MAC_IMAGE jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="${MAC_VERSION}" -m /monitoring-config/output/grafana-dashboards -e "(import \"/monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").grafanaDashboards"
+  docker run -a stdin -a stdout -a stderr -v "$(pwd)"/monitoring-config:/monitoring-config $MAC_IMAGE jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="${MAC_VERSION}" -m /monitoring-config/output/grafana-dashboards -e "(import \"/monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").grafanaDashboards"
   if [ $? -ne 0 ]; then echo "Failed to run dashboard generation rules for ${mixin} - exiting"; exit; fi
 
-  # transfer Grafana dashboards to monitoring local
-  mkdir -p $MONITORING_LOCAL_PATH/local/grafana/provisioning/dashboards/${mixin} && cp -a `pwd`/monitoring-config/output/grafana-dashboards/${mixin}* $MONITORING_LOCAL_PATH/local/grafana/provisioning/dashboards/${mixin}
+  # Transfer Grafana dashboards to monitoring local
+  mkdir -p "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}" && cp -a "$(pwd)"/monitoring-config/output/grafana-dashboards/"${mixin}"* "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}"
 
 fi
