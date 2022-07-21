@@ -251,7 +251,7 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
     template.new(
       name = 'environment',
       datasource = 'prometheus',
-      query = 'label_values(environment)',
+      query = 'label_values({__name__=~"sli_value"}, environment)',
       refresh = 'time',
       label = 'Environment',
     )
