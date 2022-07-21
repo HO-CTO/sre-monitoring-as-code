@@ -1,13 +1,12 @@
-FROM golang:1.18-alpine3.15
+#Builder image to download binaries
+FROM golang:1.18-alpine3.15 AS builder
 
 WORKDIR /jsonnet-generator
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories && \
- apk add --no-cache git=2.34.4-r0 && \
- go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
- go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
- go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
+#Download git, jsonnet and jsonnet-bundler. Initialise jsonnet-bundler and install grafonnet and grafana-builder.
+RUN  apk add --no-cache git=2.34.4-r0 && \
+ go install github.com/google/go-jsonnet/cmd/jsonnet@v0.18.0 && \
+ go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1 && \
  jb init && \
  jb install https://github.com/grafana/grafonnet-lib/grafonnet && \
- jb install https://github.com/grafana/jsonnet-libs/grafana-builder && \
- apk add --no-cache busybox=1.34.1-r5
+ jb install https://github.com/grafana/jsonnet-libs/grafana-builder
