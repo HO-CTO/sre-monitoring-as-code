@@ -17,7 +17,6 @@ RUN jb init && \
 
 COPY monitoring-config /monitoring-config
 COPY run-mixin.sh /
-COPY deploy.sh /
-RUN chmod a+x /usr/local/bin/jb /usr/local/bin/jsonnet /deploy.sh
+RUN chmod a+x /usr/local/bin/jb /usr/local/bin/jsonnet /run-mixin.sh
 
-ENTRYPOINT ["/deploy.sh"]
+ENTRYPOINT ["/run-mixin.sh"]

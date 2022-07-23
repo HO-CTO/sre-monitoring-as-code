@@ -24,10 +24,14 @@ PROMETHEUS_IMAGE='prom/prometheus'
 account="localhost"
 generate_rules="false"
 generate_dashboards="false"
+input_path="/monitoring-config/mixin-defs"
+output_path="/monitoring-config/output"
 
 # Ingests flags
-while getopts ':m:a:rd' OPT; do
+while getopts ':i:o:m:a:rd' OPT; do
   case "${OPT}" in
+    i) input_path="${OPTARG}";;
+    o) output_path="${OPTARG}";;
     m) mixin="${OPTARG}";;
     a) account="${OPTARG}";;
     r) generate_rules="true";;
@@ -42,6 +46,9 @@ if [ -z "$mixin" ]; then
   echo "Missing -m flag" >&2
   exit 1
 fi
+
+# clear and copy mixin files to mixin-defs path
+rm -rf ./monitoring-config/output/*/ && cp -a "${input_path}"/* ./monitoring-config/mixin-defs
 
 # Errors if mixin file cannot be located
 if [ ! -f "./monitoring-config/mixin-defs/${mixin}-mixin.jsonnet" ]; then
@@ -100,5 +107,8 @@ if [ "$generate_dashboards" = "true" ]; then
 
   # Transfer Grafana dashboards to monitoring local
  # mkdir -p "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}" && cp -a "$(pwd)"/monitoring-config/output/grafana-dashboards/"${mixin}"* "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}"
+
+ # Transfer Prometheus rules and Grafana dashboards to output path
+  cp -a "$(pwd)"/monitoring-config/output/. "${output_path}"
 
 fi
