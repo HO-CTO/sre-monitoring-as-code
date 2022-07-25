@@ -24,8 +24,7 @@ PROMETHEUS_IMAGE='prom/prometheus'
 account="localhost"
 generate_rules="false"
 generate_dashboards="false"
-input_path="/monitoring-config/mixin-defs"
-output_path="/monitoring-config/output"
+input_path="./monitoring-config/mixin-defs"
 
 # Ingests flags
 while getopts ':i:o:m:a:rd' OPT; do
@@ -48,13 +47,13 @@ if [ -z "$mixin" ]; then
 fi
 
 # clear and copy mixin files to mixin-defs path
-rm -rf ./monitoring-config/output/*/ && cp -a "${input_path}"/* ./monitoring-config/mixin-defs
+cp "${input_path}"/${mixin}-mixin.jsonnet ./monitoring-config/mixin-defs/TMP-MIXIN.jsonnet
 
 # Errors if mixin file cannot be located
-if [ ! -f "./monitoring-config/mixin-defs/${mixin}-mixin.jsonnet" ]; then
-  echo "Mixin file does not exist" >&2
-  exit 1
-fi
+#if [ ! -f "./monitoring-config/mixin-defs/${mixin}-mixin.jsonnet" ]; then
+#  echo "Mixin file does not exist" >&2
+#  exit 1
+#fi
 
 # Errors if account is not np, pr or localhost
 (echo "$account" | grep -v -Eq "^(np|pr|localhost)$") &&
@@ -78,11 +77,11 @@ if [ "$generate_rules" = "true" ]; then
   for environment in $environments
   do
     # Generate Prometheus recording rules YAML
-    jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").prometheusRules)" > "$(pwd)"/monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
+    jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"monitoring-config/mixin-defs/TMP-MIXIN.jsonnet\").prometheusRules)" > "$(pwd)"/monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run recording rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Generate Prometheus alert rules YAML
-    jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").prometheusAlerts)" > "$(pwd)"/monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml
+    jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"monitoring-config/mixin-defs/TMP-MIXIN.jsonnet\").prometheusAlerts)" > "$(pwd)"/monitoring-config/output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Test prometheus rules with promtool
@@ -102,13 +101,18 @@ if [ "$generate_dashboards" = "true" ]; then
   mkdir -p "$(pwd)"/monitoring-config/output/grafana-dashboards
 
   # Generate Grafana dashboards JSON
-  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="${MAC_VERSION}" -m monitoring-config/output/grafana-dashboards -e "(import \"monitoring-config/mixin-defs/${mixin}-mixin.jsonnet\").grafanaDashboards"
+  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="${MAC_VERSION}" -m monitoring-config/output/grafana-dashboards -e "(import \"monitoring-config/mixin-defs/TMP-MIXIN.jsonnet\").grafanaDashboards"
   if [ $? -ne 0 ]; then echo "Failed to run dashboard generation rules for ${mixin} - exiting"; exit; fi
 
   # Transfer Grafana dashboards to monitoring local
  # mkdir -p "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}" && cp -a "$(pwd)"/monitoring-config/output/grafana-dashboards/"${mixin}"* "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}"
 
- # Transfer Prometheus rules and Grafana dashboards to output path
-  cp -a "$(pwd)"/monitoring-config/output/. "${output_path}"
-
 fi
+
+# Transfer Prometheus rules and Grafana dashboards to output path
+if [ -n "$output_path" ]; then
+   cp -a "$(pwd)"/monitoring-config/output/. "${output_path}"
+fi
+
+#remove the tmp-mixin file
+rm -rf ./monitoring-config/mixin-defs/TMP-MIXIN.jsonnet
