@@ -2,10 +2,14 @@
 # Script to run a given mixin file
 
 # Flags:
-# -m: The name of the mixin to target
-# -a (optional): The type of account (np, pr or localhost), if not included defaults to localhost
-# -r (optional): Include if you want to generate Prometheus rules
-# -d (optional): Include if you want to generate Grafana dashboards
+# -m: The name of the mixin to target, must be included
+# -i: The path to the directory containing the mixin file, if not included defaults to mixin-defs
+#     directory
+# -o: The path to the directory where you want the output to be copied to from the output directory,
+#     will not copy if no output path included
+# -a: The type of account (np, pr or localhost), if not included defaults to localhost
+# -r: Include if you only want to generate Prometheus rules, both generated if neither included
+# -d: Include if you only want to generate Grafana dashboards, both generated if neither included
 
 # Additional arguments are the namespaces/environments, if none included defaults to localhost
 
@@ -27,11 +31,11 @@ generate_dashboards="false"
 input_path="./mixin-defs"
 
 # Ingests flags
-while getopts ':i:o:m:a:rd' OPT; do
+while getopts ':m:i:o:a:rd' OPT; do
   case "${OPT}" in
+    m) mixin="${OPTARG}";;
     i) input_path="${OPTARG}";;
     o) output_path="${OPTARG}";;
-    m) mixin="${OPTARG}";;
     a) account="${OPTARG}";;
     r) generate_rules="true";;
     d) generate_dashboards="true";;
@@ -46,19 +50,25 @@ if [ -z "$mixin" ]; then
   exit 1
 fi
 
-# Copy mixin file to TEMP-MIXIN file
-cp "${input_path}"/${mixin}-mixin.jsonnet ./temporary-mixin/TEMP-MIXIN.jsonnet
-
 # Errors if mixin file cannot be located
-#if [ ! -f "./monitoring-config/mixin-defs/${mixin}-mixin.jsonnet" ]; then
-#  echo "Mixin file does not exist" >&2
-#  exit 1
-#fi
+if [ ! -f "${input_path}/${mixin}-mixin.jsonnet" ]; then
+  echo "Mixin file does not exist" >&2
+  exit 1
+fi
+
+# Copy mixin file to TEMP-MIXIN file
+cp "${input_path}"/"${mixin}"-mixin.jsonnet ./temporary-mixin/TEMP-MIXIN.jsonnet
 
 # Errors if account is not np, pr or localhost
 (echo "$account" | grep -v -Eq "^(np|pr|localhost)$") &&
   echo "Invalid account type" >&2 &&
   exit 1
+
+# If neither -r or -d flags included set both to true
+if [ "$generate_rules" = "false" ] && [ "$generate_dashboards" = "false" ]; then
+  generate_rules="true"
+  generate_dashboards="true"
+fi
 
 # Generate Prometheus recording rules should the -r flag be included
 if [ "$generate_rules" = "true" ]; then
