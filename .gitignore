@@ -11,8 +11,8 @@
 *.ipr
 /.idea/
 
-# monitoring-as-code artefacts
-monitoring-as-code/monitoring-config/output
+# Monitoring-as-code artefacts
+monitoring-as-code/output
 
 # Prometheus rules and Grafana dashboards
 local/prometheus/rule_configs/*-rules.yaml
