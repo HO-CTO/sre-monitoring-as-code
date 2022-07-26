@@ -2,9 +2,9 @@
 # Tactical script to deploy monitoring framework
 
 # Clear down MaC output directory
-rm -rf `pwd`/output/*/
+rm -rf "$PWD"/output/*/
 
-# Executes run-mixin.sh script to create rules and dashboards for given mixin files
-sh run-mixin.sh -m monitoring -rd
+# Executes docker image to create rules and dashboards for monitoring and summary mixin files
+docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it mac:latest -m monitoring -rd -i input -o output
 
-sh run-mixin.sh -m summary -d
+docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it mac:latest -m summary -d -i input -o output
