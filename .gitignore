@@ -13,8 +13,8 @@
 
 # Monitoring-as-code artefacts
 monitoring-as-code/output
+monitoring-as-code/_input
 monitoring-as-code/_output
-monitoring-as-code/temporary-mixin/*.jsonnet
 
 # Prometheus rules and Grafana dashboards
 local/prometheus/rule_configs/*-rules.yaml
