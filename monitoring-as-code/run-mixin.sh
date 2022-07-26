@@ -3,10 +3,9 @@
 
 # Flags:
 # -m: The name of the mixin to target, must be included
+# -o: The path to the directory where you want the output to be copied to, must be included
 # -i: The path to the directory containing the mixin file, if not included defaults to mixin-defs
 #     directory inside container
-# -o: The path to the directory where you want the output to be copied to, will not copy if no
-#     output path included
 # -a: The type of account (np, pr or localhost), if not included defaults to localhost
 # -r: Include if you only want to generate Prometheus rules, both generated if neither included
 # -d: Include if you only want to generate Grafana dashboards, both generated if neither included
@@ -14,27 +13,27 @@
 # Additional arguments are the namespaces/environments, if none included defaults to localhost
 
 # Global variables
-# Sets users monitoring-local path
-MONITORING_LOCAL_PATH="${PWD}/.."
 # Sets Git branch/tag currently checked out to be used in dashboard tags and rule labels
 #MAC_VERSION=$(git symbolic-ref -q --short HEAD || git describe --tags --exact-match)
-MAC_VERSION='v2.0.0'
-# MaC container image to be used to package Prometheus and Grafana artefacts.
-MAC_IMAGE='mac:latest'
+MAC_VERSION="v2.0.0"
+
+# Remove temporary directories if not removed after previous execution
+rm -rf "$PWD"/_input
+rm -rf "$PWD"/_output
 
 # Default values
 account="localhost"
 generate_rules="false"
 generate_dashboards="false"
-input_path="./mixin-defs"
+input_path="$PWD"/mixin-defs
 
 # Ingests flags
-while getopts ':m:i:o:a:rd' OPT; do
-  case "${OPT}" in
-    m) mixin="${OPTARG}";;
-    i) input_path="${OPTARG}";;
-    o) output_path="${OPTARG}";;
-    a) account="${OPTARG}";;
+while getopts ":m:o:i:a:rd" OPT; do
+  case "$OPT" in
+    m) mixin="$OPTARG";;
+    o) output_path="$OPTARG";;
+    i) input_path="$OPTARG";;
+    a) account="$OPTARG";;
     r) generate_rules="true";;
     d) generate_dashboards="true";;
     ?) echo "Unknown flag" >&2
@@ -43,19 +42,22 @@ while getopts ':m:i:o:a:rd' OPT; do
 done
 
 # Errors if any required flags not included
-if [ -z "$mixin" ]; then
-  echo "Missing -m flag" >&2
+if [ -z "$mixin" ] || [ -z "$output_path" ]; then
+  echo "Missing required flags" >&2
   exit 1
 fi
 
 # Errors if mixin file cannot be located
-if [ ! -f "${input_path}/${mixin}-mixin.jsonnet" ]; then
+if [ ! -f "$input_path"/"$mixin"-mixin.jsonnet ]; then
   echo "Mixin file does not exist" >&2
   exit 1
 fi
 
-# Copy mixin file to TEMP-MIXIN file
-cp "${input_path}"/"${mixin}"-mixin.jsonnet ./temporary-mixin/TEMP-MIXIN.jsonnet
+# Creates temporary _input directory
+mkdir "$PWD"/_input
+
+# Copy mixin file to _input directory
+cp "$input_path"/"$mixin"-mixin.jsonnet "$PWD"/_input/mixin.jsonnet
 
 # Errors if account is not np, pr or localhost
 (echo "$account" | grep -v -Eq "^(np|pr|localhost)$") &&
@@ -79,51 +81,38 @@ if [ "$generate_rules" = "true" ]; then
     environments="localhost"
   fi
 
-  # Create output directory for Prometheus rules
-  mkdir -p "$(pwd)"/_output/prometheus-rules
+  # Create temporary _output directory with Prometheus rules directory
+  mkdir -p "$PWD"/_output/prometheus-rules
 
   for environment in $environments
   do
     # Generate Prometheus recording rules YAML
-    jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"temporary-mixin/TEMP-MIXIN.jsonnet\").prometheusRules)" > "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
+    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusRules)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run recording rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Generate Prometheus alert rules YAML
-    jsonnet -J vendor --ext-str ENV="${environment}" --ext-str ACCOUNT="${account}" --ext-str MAC_VERSION="${MAC_VERSION}" -S -e "std.manifestYamlDoc((import \"temporary-mixin/TEMP-MIXIN.jsonnet\").prometheusAlerts)" > "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml
+    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusAlerts)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
-    # Test prometheus rules with promtool
-    promtool check rules "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
+    # Test Prometheus rules with promtool
+    promtool check rules "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml
     if [ $? -ne 0 ]; then echo "Validation of rules files failed for ${mixin} (environment ${environment}) - exiting"; exit 1; fi
   done
-
-  # Copy Prometheus rules to monitoring local
-  #cp -a "$(pwd)"/_output/prometheus-rules/. "$MONITORING_LOCAL_PATH"/local/prometheus/rule_configs
-
 fi
 
 # Generate Grafana dashboards should the -d flag be included
 if [ "$generate_dashboards" = "true" ]; then
-
-  # Create output directory for Grafana dashboards
-  mkdir -p "$(pwd)"/_output/grafana-dashboards
+  # Create temporary _output directory with Grafana dashboards directory
+  mkdir -p "$PWD"/_output/grafana-dashboards
 
   # Generate Grafana dashboards JSON
-  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="${MAC_VERSION}" -m "$(pwd)"/_output/grafana-dashboards -e "(import \"temporary-mixin/TEMP-MIXIN.jsonnet\").grafanaDashboards"
+  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="$MAC_VERSION" -m "$PWD"/_output/grafana-dashboards -e "(import \"${PWD}/_input/mixin.jsonnet\").grafanaDashboards"
   if [ $? -ne 0 ]; then echo "Failed to run dashboard generation rules for ${mixin} - exiting"; exit; fi
-
-  # Transfer Grafana dashboards to monitoring local
-  #mkdir -p "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}" && cp -a "$(pwd)"/_output/grafana-dashboards/"${mixin}"* "$MONITORING_LOCAL_PATH"/local/grafana/provisioning/dashboards/"${mixin}"
-
 fi
 
 # Transfer Prometheus rules and Grafana dashboards to output path
-if [ -n "$output_path" ]; then
-  cp -a "$(pwd)"/_output/. "${output_path}"
-fi
+cp -a "$PWD"/_output/. "$output_path"
 
-# Remove the TEMP-MIXIN file
-rm -rf ./temporary-mixin/TEMP-MIXIN.jsonnet
-
-# Remove the _output directory
-rm -rf ./_output
+# Remove temporary directories
+rm -rf "$PWD"/_input
+rm -rf "$PWD"/_output
