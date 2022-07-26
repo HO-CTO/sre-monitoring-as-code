@@ -126,3 +126,6 @@ fi
 
 # Remove the TEMP-MIXIN file
 rm -rf ./temporary-mixin/TEMP-MIXIN.jsonnet
+
+# Remove the _output directory
+rm -rf ./_output
