@@ -21,8 +21,6 @@ MONITORING_LOCAL_PATH="${PWD}/.."
 MAC_VERSION='v2.0.0'
 # MaC container image to be used to package Prometheus and Grafana artefacts.
 MAC_IMAGE='mac:latest'
-# Prometheus container image to be used to syntax check rules.
-PROMETHEUS_IMAGE='prom/prometheus'
 
 # Default values
 account="localhost"
@@ -95,8 +93,8 @@ if [ "$generate_rules" = "true" ]; then
     if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Test prometheus rules with promtool
-    #docker run -a stdin -a stdout -a stderr -v "$(pwd)"/monitoring-config:/monitoring-config --entrypoint promtool $PROMETHEUS_IMAGE check rules "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
-    #if [ $? -ne 0 ]; then echo "Validation of rules files failed for ${mixin} (environment ${environment}) - exiting"; exit 1; fi
+    promtool check rules "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-alert-rules.yaml "$(pwd)"/_output/prometheus-rules/"${mixin}"-"${environment}"-recording-rules.yaml
+    if [ $? -ne 0 ]; then echo "Validation of rules files failed for ${mixin} (environment ${environment}) - exiting"; exit 1; fi
   done
 
   # Copy Prometheus rules to monitoring local
