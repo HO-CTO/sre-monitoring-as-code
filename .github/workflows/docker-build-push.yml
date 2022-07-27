@@ -32,4 +32,10 @@ jobs:
           tags: |
             ghcr.io/ho-cto/sre-monitoring-as-code:test
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/ho-cto/sre-monitoring-as-code
+
 
