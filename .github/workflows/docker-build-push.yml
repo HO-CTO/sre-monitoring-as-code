@@ -30,6 +30,6 @@ jobs:
           file: ./monitoring-as-code/Dockerfile
           push: true
           tags: |
-            ghcr.io/ho-cto/sre-monitoring-as-code:latest
+            ghcr.io/ho-cto/sre-monitoring-as-code:test
 
 
