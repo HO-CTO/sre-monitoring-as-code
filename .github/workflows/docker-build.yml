@@ -27,7 +27,6 @@ jobs:
           file: ./monitoring-as-code/Dockerfile
           push: true
           tags: |
-            ghcr.io/ho-cto/humayunapp:latest
-            ghcr.io/ho-cto/humayunapp:1.0.0
+            ghcr.io/ho-cto/sre-monitoring-as-code:latest
 
 
