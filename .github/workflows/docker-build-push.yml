@@ -35,7 +35,9 @@ jobs:
           context: ./monitoring-as-code
           file: ./monitoring-as-code/Dockerfile
           push: true
-          tags: ghcr.io/ho-cto/sre-monitoring-as-code:test
+#          tags: ghcr.io/ho-cto/sre-monitoring-as-code:test
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
 
 
