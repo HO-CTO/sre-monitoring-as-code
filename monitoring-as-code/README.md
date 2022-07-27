@@ -29,7 +29,7 @@ git clone ssh://git@bitbucket.bics-collaboration.homeoffice.gov.uk/sast/monitori
 cd monitoring-as-code
 
 # Build the dockerfile 
-docker build -t mac:latest .
+docker build -t sre-monitoring-as-code:latest .
 ```
 
 ## Useage
