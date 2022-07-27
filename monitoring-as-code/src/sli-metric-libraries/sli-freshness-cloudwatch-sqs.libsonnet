@@ -97,7 +97,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
         (sum(count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s])) or vector(0))
       ||| % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
-        selectors: std.join(',', sliSpec.selectors),
+        selectors: std.join(',', ruleSelectors),
         queueSelector: metricConfig.queueSelector,
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
         evalInterval: sliSpec.evalInterval,
