@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./monitoring-as-code
-          file: Dockerfile
+          file: ./monitoring-as-code/Dockerfile
           push: true
           tags: |
             ghcr.io/humayunalamho/humayunapp:latest
