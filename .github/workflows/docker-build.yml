@@ -23,8 +23,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./monitoring-as-code/Dockerfile
+          context: ./monitoring-as-code
+          file: ./Dockerfile
           push: true
           tags: |
             ghcr.io/humayunalamho/humayunapp:latest
