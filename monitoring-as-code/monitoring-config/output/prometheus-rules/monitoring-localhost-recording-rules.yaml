@@ -1,0 +1,1271 @@
+"groups":
+- "name": "monitoring_localhost_recordingrules"
+  "rules":
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+      "type": "http-errors"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(rate(grafana_http_request_duration_seconds_count{job=~"grafana",handler=~"/api/dashboards/home",namespace=~"localhost",status_code=~"4..|5.."}[1m]) or vector(0)) / 
+      sum(rate(grafana_http_request_duration_seconds_count{job=~"grafana",handler=~"/api/dashboards/home",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+      "type": "http-errors"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='grafana'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+      "type": "http-errors"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(rate(grafana_http_request_duration_seconds_count{job=~"grafana",handler=~"/login",namespace=~"localhost",status_code=~"4..|5.."}[1m]) or vector(0)) / 
+      sum(rate(grafana_http_request_duration_seconds_count{job=~"grafana",handler=~"/login",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+      "type": "http-errors"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='grafana'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool 0.5)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+      "type": "http-errors"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(rate(grafana_http_request_duration_seconds_count{job=~"grafana",handler=~"/api/datasources/proxy/:id/.*",namespace=~"localhost",status_code=~"4..|5.."}[1m]) or vector(0)) / 
+      sum(rate(grafana_http_request_duration_seconds_count{job=~"grafana",handler=~"/api/datasources/proxy/:id/.*",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+      "type": "http-errors"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool 0.5)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool 0.5)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool 0.5)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool 0.5)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool 0.5)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='grafana'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "grafana"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} == bool 1)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+      "type": "generic_avgovertimem"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(sum_over_time(up{namespace=~"localhost"}[1m])) / 
+      sum(count_over_time(up{namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+      "type": "generic_avgovertimem"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} == bool 1)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} == bool 1)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} == bool 1)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} == bool 1)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} == bool 1)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='prometheus'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool 15)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+      "type": "generic_avgovertimem"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(sum_over_time(scrape_duration_seconds{job=~"yace",namespace=~"localhost"}[1m])) / 
+      sum(count_over_time(scrape_duration_seconds{job=~"yace",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+      "type": "generic_avgovertimem"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool 15)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool 15)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool 15)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool 15)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool 15)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='prometheus'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "prometheus"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+      "type": "http-errors"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(rate(http_requests_total{job=~"thanos-query",handler=~"query",namespace=~"localhost",code=~"4..|5.."}[1m]) or vector(0)) / 
+      sum(rate(http_requests_total{job=~"thanos-query",handler=~"query",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+      "type": "http-errors"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI01', environment='localhost',
+                journey='thanos'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI01"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool 15)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Latency"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+      "type": "http-latency"
+    "record": "sli_percentage"
+  - "expr": |
+      histogram_quantile(0.80, (sum by (le) (rate(http_request_duration_seconds_bucket{job=~"thanos-query",handler=~"query",namespace=~"localhost"}[1m]))))
+    "labels":
+      "category": "Latency"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+      "type": "http-latency"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool 15)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool 15)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool 15)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool 15)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool 15)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI02', environment='localhost',
+                journey='thanos'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI02"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+      "type": "http-errors"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(rate(http_requests_total{job=~"thanos-query",handler=~"query_range",namespace=~"localhost",code=~"4..|5.."}[1m]) or vector(0)) / 
+      sum(rate(http_requests_total{job=~"thanos-query",handler=~"query_range",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+      "type": "http-errors"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI03', environment='localhost',
+                journey='thanos'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI03"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool 10)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Latency"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+      "type": "http-latency"
+    "record": "sli_percentage"
+  - "expr": |
+      histogram_quantile(0.80, (sum by (le) (rate(http_request_duration_seconds_bucket{job=~"thanos-query",handler=~"query_range",namespace=~"localhost"}[1m]))))
+    "labels":
+      "category": "Latency"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+      "type": "http-latency"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool 10)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool 10)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool 10)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool 10)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool 10)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI04', environment='localhost',
+                journey='thanos'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI04"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool 0.01)[30d:1m]) 
+      or vector(0)) / sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool Inf)[30d:1m]) 
+      or vector(0))) >= 0
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+      "type": "generic-error"
+    "record": "sli_percentage"
+  - "expr": |
+      sum(rate(thanos_compact_group_compactions_failures_total{job=~"monitoring-thanos-compact.*",namespace=~"localhost"}[1m])) / 
+      sum(rate(thanos_compact_group_compactions_total{job=~"monitoring-thanos-compact.*",namespace=~"localhost"}[1m]))
+    "labels":
+      "category": "Availability"
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+      "type": "generic-error"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool 0.01)[1h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.01000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool 0.01)[30m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.01000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool 0.01)[3d:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.01000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool 0.01)[5m:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.01000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool 0.01)[6h:1m]))
+          /
+          (sum(sum_over_time((sli_value{service='monitoring', slo='SLI05', environment='localhost',
+                journey='thanos'} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.01000 or vector(0)
+    "labels":
+      "environment": "localhost"
+      "journey": "thanos"
+      "mac_version": "68-builder-dockerfile-refinement"
+      "service": "monitoring"
+      "slo": "SLI05"
+    "record": "slo_burnrate:6h"
