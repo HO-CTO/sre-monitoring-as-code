@@ -22,21 +22,20 @@ jobs:
         #Will setup Docker Buildx to create the builder instance using a BuildKit container under the hood.     
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.0.0
-     
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/ho-cto/sre-monitoring-as-code
+
       - name: Build and push
         uses: docker/build-push-action@v3.1.0
         with:
           context: ./monitoring-as-code
           file: ./monitoring-as-code/Dockerfile
           push: true
-          tags: |
-            ghcr.io/ho-cto/sre-monitoring-as-code:test
+          tags: ghcr.io/ho-cto/sre-monitoring-as-code:test
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/ho-cto/sre-monitoring-as-codeee
-#
 
 
