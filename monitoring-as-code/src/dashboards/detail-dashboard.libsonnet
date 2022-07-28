@@ -116,6 +116,27 @@ local getSelectorLabels(metricTypesList) =
     },
   };
 
+local getOtherConfigFields(metricTypesList) =
+  std.set([
+    field
+    for sliType in std.objectFields(metricTypesList)
+    for metricType in metricTypesList[sliType]
+    for field in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType])
+    if field != 'selectorLabels' && field != 'metrics' && field != 'outboundSelectorLabels' &&
+      field != 'outboundMetrics'
+  ]);
+
+local getOtherConfig(metricTypesList) = 
+  {
+    [field]: std.set([
+      macConfig.sliMetricLibs[sliType].metricTypes[metricType][field]
+      for sliType in std.objectFields(metricTypesList)
+      for metricType in metricTypesList[sliType]
+      if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], field)
+    ])
+    for field in getOtherConfigFields(metricTypesList)
+  };
+
 // Gets the list of products being used by SLIs in journey
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
@@ -171,7 +192,7 @@ local checkMetricsExist(direction, sliType, metrics) =
 // @param selectors Object containing Grafana selectors
 // @param direction Whether inbound or outbound metrics are being processed
 // @returns List of Grafana template objects for detail dashboard
-local createTemplates(metrics, selectorLabels, selectors, direction) =
+local createTemplates(metrics, selectorLabels, otherConfig, selectors, direction) =
   local allMetrics = std.set([
     metric
     for sliType in std.objectFields(metrics[direction])
@@ -200,7 +221,7 @@ local createTemplates(metrics, selectorLabels, selectors, direction) =
       for selectorLabel in selectorLabels[direction][selectorLabelField]
     ],
     std.flattenArrays([
-      macConfig.sliMetricLibs[sliType].library.createDetailDashboardTemplates(direction)
+      macConfig.sliMetricLibs[sliType].library.createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction)
       for sliType in std.objectFields(metrics[direction])
       if checkMetricsExist(direction, sliType, metrics)
     ]),
@@ -211,9 +232,9 @@ local createTemplates(metrics, selectorLabels, selectors, direction) =
 // @param selectorLabels Object containing selector labels
 // @param selectors Object containing Grafana selectors
 // @returns List of Grafana panel objects for detail dashboard
-local createPanels(metrics, selectorLabels, selectors) =
+local createPanels(metrics, selectorLabels, otherConfig, selectors) =
   std.flattenArrays([
-    macConfig.sliMetricLibs[sliType].library.createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction)
+    macConfig.sliMetricLibs[sliType].library.createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction)
     for direction in std.objectFields(metrics)
     for sliType in std.objectFields(metrics[direction])
     if checkMetricsExist(direction, sliType, metrics)
@@ -231,6 +252,8 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
   local metrics = getMetrics(metricTypesList);
 
   local selectorLabels = getSelectorLabels(metricTypesList);
+
+  local otherConfig = getOtherConfig(metricTypesList);
 
   local selectors = createSelectors(selectorLabels, journeyKey, sliSpecList);
 
@@ -257,11 +280,11 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
     )
   ).addTemplates(
     std.prune(std.flattenArrays([
-      createTemplates(metrics, selectorLabels, selectors, direction)
+      createTemplates(metrics, selectorLabels, otherConfig, selectors, direction)
       for direction in std.objectFields(metrics)
     ]))
   ).addPanels(
-    std.prune(createPanels(metrics, selectorLabels, selectors))
+    std.prune(createPanels(metrics, selectorLabels, otherConfig, selectors))
   );
 
 // Creates the list of detail dashboards for a mixin file
