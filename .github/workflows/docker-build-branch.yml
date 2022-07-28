@@ -1,10 +1,5 @@
 name: 'Docker Build Branch'
-on:
-  workflow_call:
-    inputs:
-      images:
-        required: true
-        type: string
+on: [push]
 
 jobs:
   publish:
@@ -28,7 +23,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ inputs.images }}
+          images: ghcr.io/ho-cto/sre-monitoring-as-code
           tags: |
             type=raw,value=${{ github.event.pull_request.head.sha }}
 
