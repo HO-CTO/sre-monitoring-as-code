@@ -11,6 +11,9 @@ on:
   pull_request:
     branches:
       - '94-container-image-build-and-push'
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   docker:
@@ -25,7 +28,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.0.0
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -37,7 +40,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/ho-cto/sre-monitoring-as-code
+#          images: ghcr.io/ho-cto/sre-monitoring-as-code
+           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             # minimal (short sha)
             type=sha
