@@ -10,7 +10,7 @@ jobs:
   publish:
     name: 'Branch Publish'
     runs-on: ubuntu-latest
-#    if: contains(github.event.pull_request.labels.*.name, 'test') == true
+    if: contains(github.event.pull_request.labels.*.name, 'smoketest') == true
     steps:
       #Checks-out our repository under $GITHUB_WORKSPACE, so our workflow can access it.
       - name: Checkout
