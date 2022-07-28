@@ -53,8 +53,8 @@ jobs:
           push: true
 #          tags: ghcr.io/ho-cto/sre-monitoring-as-code:test
 #          tags: ${{ steps.meta.outputs.tags }}
-          tags: ghcr.io/ho-cto/sre-monitoring-as-code:${{ steps.meta.outputs.sha }}
-          labels: ${{ steps.meta.outputs.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
 
 
