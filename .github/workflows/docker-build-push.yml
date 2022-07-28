@@ -44,7 +44,8 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             # minimal (short sha)
-            type=sha
+            #type=sha
+            type=semver,pattern={{major}}.{{minor}}
 
 
 
