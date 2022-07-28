@@ -7,6 +7,8 @@ local sliMetricLibraryFunctions = import '../util/sli-metric-library-functions.l
 local grafana = import 'grafonnet/grafana.libsonnet';
 local prometheus = grafana.prometheus;
 local graphPanel = grafana.graphPanel;
+local row = grafana.row;
+local template = grafana.template;
 
 // Creates Grafana dashboard graph panel for an SLI type
 // @param sliSpec The spec for the SLI having its dashboard created
@@ -34,7 +36,7 @@ local createGraphPanel(sliSpec) =
         [%(evalInterval)s]) or vector(0))' % {
           messagesDeletedMetric: metricConfig.metrics.messagesDeleted,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: metricConfig.queueSelector,
+          queueSelector: metricConfig.standardQueueSelector,
           evalInterval: sliSpec.evalInterval,
         },
       legendFormat='avg number of msgs delivered',
@@ -46,7 +48,7 @@ local createGraphPanel(sliSpec) =
         [%(evalInterval)s]) or vector(0))' % {
           oldestMessageMetric: metricConfig.metrics.oldestMessage,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: metricConfig.queueSelector,
+          queueSelector: metricConfig.standardQueueSelector,
           dashboardSliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
           evalInterval: sliSpec.evalInterval,
         },
@@ -57,7 +59,7 @@ local createGraphPanel(sliSpec) =
       'sum(avg_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]) or vector(0))' % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
         selectors: std.join(',', dashboardSelectors),
-        queueSelector: metricConfig.queueSelector,
+        queueSelector: metricConfig.standardQueueSelector,
         evalInterval: sliSpec.evalInterval,
       },
       legendFormat='avg age of oldest msg in standard queue (secs)',
@@ -98,7 +100,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: metricConfig.queueSelector,
+        queueSelector: metricConfig.standardQueueSelector,
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
         evalInterval: sliSpec.evalInterval,
       },
@@ -112,7 +114,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: metricConfig.queueSelector,
+        queueSelector: metricConfig.standardQueueSelector,
         metricTarget: sliSpec.metricTarget,
       },
       labels: sliSpec.sliLabels,
@@ -122,7 +124,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 // Creates additional detail dashboard templates for this SLI type
 // @param direction Whether the dashboard is for inbound or outbound metrics
 // @returns List of Grafana template objects
-local createDetailDashboardTemplates(direction) =
+local createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction) =
   [
 
   ];
@@ -134,7 +136,7 @@ local createDetailDashboardTemplates(direction) =
 // @param selectors List of selectors
 // @param direction Whether the dashboard is for inbound or outbound metrics
 // @returns List of Grafana panel objects
-local createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction) =
+local createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction) =
   std.flattenArrays([
     
   ]);
@@ -145,6 +147,6 @@ local createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, d
   category: 'Pipeline Freshness',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
-  createDetailDashboardTemplates(direction): createDetailDashboardTemplates(direction),
-  createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction): createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction),
+  createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction): createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction),
+  createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction): createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction),
 }
