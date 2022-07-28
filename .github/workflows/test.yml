@@ -5,6 +5,8 @@ on:
       images:
         required: true
         type: string
+  push,pull_request:
+
 
 jobs:
   publish:
