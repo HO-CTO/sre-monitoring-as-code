@@ -41,7 +41,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
 #          images: ghcr.io/ho-cto/sre-monitoring-as-code
-           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             # minimal (short sha)
             type=sha
