@@ -1,6 +1,16 @@
 name: docker-build-push
 
-on: [push,pull_request]
+#on: [push,pull_request]
+
+on:
+  push:
+    branches:
+      - '94-container-image-build-and-push'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - '94-container-image-build-and-push'
 
 jobs:
   docker:
@@ -28,6 +38,11 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/ho-cto/sre-monitoring-as-code
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Build and push
         uses: docker/build-push-action@v3.1.0
