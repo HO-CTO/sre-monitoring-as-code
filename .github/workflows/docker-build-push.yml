@@ -38,6 +38,11 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/ho-cto/sre-monitoring-as-code
+          tags: |
+            # minimal (short sha)
+            type=sha
+
+
 
 
       - name: Build and push
@@ -48,8 +53,8 @@ jobs:
           push: true
 #          tags: ghcr.io/ho-cto/sre-monitoring-as-code:test
 #          tags: ${{ steps.meta.outputs.tags }}
-          tags: ghcr.io/ho-cto/sre-monitoring-as-code:${{ steps.meta.outputs.digest }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.sha }}
+          labels: ${{ steps.meta.outputs.sha }}
 
 
 
