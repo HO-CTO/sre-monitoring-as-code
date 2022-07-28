@@ -1,11 +1,6 @@
 name: 'Docker Build Tag'
-on:
-  workflow_call:
-    inputs:
-      images:
-        required: true
-        type: string
-  push,pull_request:
+on: [push,pull_request]
+  
 
 
 jobs:
