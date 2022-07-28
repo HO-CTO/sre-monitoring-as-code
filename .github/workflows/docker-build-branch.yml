@@ -1,5 +1,6 @@
 name: 'Docker Build Branch'
-on: [pull_request]
+
+on: [push]
 
 env:
   REGISTRY: ghcr.io
