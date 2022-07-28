@@ -1,7 +1,5 @@
 name: 'Docker Build Branch'
-on:
-  pull_request:
-    types: [ labeled, opened, reopened, synchronize ]
+on: [pull_request]
 
 env:
   REGISTRY: ghcr.io
