@@ -43,9 +43,11 @@ jobs:
 #          images: ghcr.io/ho-cto/sre-monitoring-as-code
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # minimal (short sha)
-            #type=sha
-            type=semver,pattern={{version}},value=v1.0.0
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha
+            type=semver,pattern={{version}},value=v1.2.0
+            
 
 
 
