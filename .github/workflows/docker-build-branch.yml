@@ -1,6 +1,7 @@
 name: 'Docker Build Branch'
 
-on: [push]
+on:
+  - pull_request
 
 env:
   REGISTRY: ghcr.io
@@ -10,7 +11,7 @@ jobs:
   publish:
     name: 'Branch Publish'
     runs-on: ubuntu-latest
-#    if: contains(github.event.pull_request.labels.*.name, 'smoketest') == true
+    if: contains(github.event.pull_request.labels.*.name, 'smoketest') == true
     steps:
       #Checks-out our repository under $GITHUB_WORKSPACE, so our workflow can access it.
       - name: Checkout
