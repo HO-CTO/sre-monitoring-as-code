@@ -45,7 +45,7 @@ jobs:
           tags: |
             # minimal (short sha)
             #type=sha
-            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{version}},value=v1.0.0
 
 
 
