@@ -1,0 +1,45 @@
+---
+region: eu-west-2
+set_timestamp: false
+
+metrics:
+
+  - aws_namespace: AWS/SQS
+    aws_metric_name: ApproximateNumberOfMessagesVisible
+    aws_dimensions: [QueueName]
+    aws_tag_select:
+      tag_selections:
+        Environment: [ "" ]
+      resource_type_selection: sqs
+      resource_id_dimension: QueueName
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/SQS
+    aws_metric_name: NumberOfMessagesDeleted
+    aws_dimensions: [QueueName]
+    aws_tag_select:
+      tag_selections:
+        Environment: [ "" ]
+      resource_type_selection: sqs
+      resource_id_dimension: QueueName
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/SQS
+    aws_metric_name: ApproximateAgeOfOldestMessage
+    aws_dimensions: [QueueName]
+    aws_tag_select:
+      tag_selections:
+        Environment: [ "" ]
+      resource_type_selection: sqs
+      resource_id_dimension: QueueName
+    aws_statistics: [Sum]
+
+  - aws_namespace: AWS/SQS
+    aws_metric_name: NumberOfMessagesSent
+    aws_dimensions: [QueueName]
+    aws_tag_select:
+      tag_selections:
+        Environment: [ "" ]
+      resource_type_selection: sqs
+      resource_id_dimension: QueueName
+    aws_statistics: [Sum]

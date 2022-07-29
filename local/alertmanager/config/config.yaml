@@ -1,0 +1,38 @@
+# The root route on which each incoming alert enters.
+route:
+    receiver: sre_alerts_prod_monitoring
+    # The labels by which incoming alerts are grouped together. For example,
+    # multiple alerts coming in for cluster=A and alertname=LatencyHigh would
+    # be batched into a single group.
+    group_by: ['alertname', 'environment', 'service', 'journey']
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 1h
+    matchers:
+        - severity != test
+
+# A list of notification receivers.
+receivers:
+    - name: sre_alerts_prod_monitoring
+      slack_configs:
+          - send_resolved: true
+            api_url: '@@AM_SLACK_API_URL@@'
+            channel: '@@AM_SLACK_CHANNEL@@'
+            title: "ALERT: {{ .CommonLabels.service }} - severity {{ with index .Alerts 0 -}}{{ .Labels.severity }}{{ end }} - {{ .CommonLabels.short_description }}"
+            text: >-
+                Useful Links:
+                {{ with index .Alerts 0 -}}
+                  :chart_with_upwards_trend: *<{{ .Annotations.dashboard }}|Dashboard>*   :no_bell: *<{{ .Annotations.silenceurl }}|Silence>*
+                  {{- if .Annotations.runbook_url }}   :notebook: *<{{ .Annotations.runbook_url }}|Runbook>*{{ end }}
+                {{ end }}
+
+                {{ range .Alerts -}}
+                *New alert:*
+
+                {{ range .Labels.SortedPairs -}} 
+                  • *{{ .Name }}:* {{ .Value }}
+                {{ end }}
+                • *time_of_event:* {{ .StartsAt }}
+                
+
+                {{ end }}
