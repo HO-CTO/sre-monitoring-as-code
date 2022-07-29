@@ -34,116 +34,72 @@ local getMetricTypesList(journeyKey, sliSpecList) =
     for sliType in getSliTypesList(journeyKey, sliSpecList)
   };
 
+local getConfigItems(configField, metricTypesList) =
+  std.set([
+    configItem
+    for sliType in std.objectFields(metricTypesList)
+    for configItem in macConfig.sliMetricLibs[sliType].detailDashboardConfig[configField]
+  ]);
+
+local getDetailDashboardConfig(metricTypesList) =
+  {
+    [configField]: {
+      [configItem]: std.set(std.filterMap(
+        function(sliType) 0 < std.length(std.find(
+          configItem, macConfig.sliMetricLibs[sliType].detailDashboardConfig[configField])),
+        function(sliType) sliType,
+        std.objectFields(metricTypesList)
+      ))
+      for configItem in getConfigItems(configField, metricTypesList)
+    },
+    for configField in ['standardTemplates', 'elements']
+  };
+
 // Gets the list of fields used for metrics by an SLI type
 // @param target The name of the field in the MaC config containing metrics (inbound or outbound)
 // @param sliType The type of SLI currently being processed
 // @param metricTypesList The object containing metric types for each SLI type
 // @returns List of metric fields used by an SLI type
-local getMetricFields(target, sliType, metricTypesList) =
+local getTargetFields(target, sliTypes, metricTypesList) =
   std.set([
-    metricField
+    targetField
+    for sliType in sliTypes
     for metricType in metricTypesList[sliType]
     if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target)
-    for metricField in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target])
+    for targetField in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target])
   ]);
 
 // Gets the collection of metrics used by each SLI type
 // @param metricTypesList The object containing metric types for each SLI type
 // @returns Object containing metrics for each SLI type
-local getMetrics(metricTypesList) =
+local getTargets(target, direction, detailDashboardConfig, metricTypesList) =
   {
-    inbound: {
-      [sliType]: {
-        [metricField]: std.set([
-          macConfig.sliMetricLibs[sliType].metricTypes[metricType].metrics[metricField]
-          for metricType in metricTypesList[sliType]
-        ])
-        for metricField in getMetricFields('metrics', sliType, metricTypesList)
+    [direction]: {
+      [configField]: {
+        [configItem]: {
+          [targetField]: std.set([
+            macConfig.sliMetricLibs[sliType].metricTypes[metricType][target][targetField]
+            for sliType in detailDashboardConfig[configField][configItem]
+            for metricType in metricTypesList[sliType]
+            if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target) &&
+              std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target], targetField)
+          ])
+          for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem], metricTypesList)
+        }
+        for configItem in std.objectFields(detailDashboardConfig[configField])
       }
-      for sliType in std.objectFields(metricTypesList)
+      for configField in std.objectFields(detailDashboardConfig)
     },
-    outbound: {
-      [sliType]: {
-        [metricField]: std.set([
-          macConfig.sliMetricLibs[sliType].metricTypes[metricType].metrics[metricField]
-          for metricType in metricTypesList[sliType]
-          if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], 'outboundMetrics') &&
-            std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], 'outboundSelectorLabels')
-        ])
-        for metricField in getMetricFields('outboundMetrics', sliType, metricTypesList)
-      }
-      for sliType in std.objectFields(metricTypesList)
-    },
-  };
-
-// Gets the list of fields used for selector labels by SLI types in journey
-// @param target The name of the field in the MaC config containing selector labels (inbound or outbound)
-// @param metricTypesList The object containing metric types for each SLI type
-// @returns List of selector label fields
-local getSelectorLabelFields(target, metricTypesList) =
-  std.set([
-    selectorLabelField
-    for sliType in std.objectFields(metricTypesList)
-    for metricType in metricTypesList[sliType]
-    if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target)
-    for selectorLabelField in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target])
-  ]);
-
-// Gets the list of selector labels used by SLI types in the journey
-// @param metricTypesList The object containing metric types for each SLI type
-// @returns Object containing selector labels
-local getSelectorLabels(metricTypesList) =
-  {
-    inbound: {
-      [selectorLabelField]: std.set([
-        macConfig.sliMetricLibs[sliType].metricTypes[metricType].selectorLabels[selectorLabelField]
-        for sliType in std.objectFields(metricTypesList)
-        for metricType in metricTypesList[sliType]
-        if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType].selectorLabels, selectorLabelField)
-      ])
-      for selectorLabelField in getSelectorLabelFields('selectorLabels', metricTypesList)
-    },
-    outbound: {
-      [selectorLabelField]: std.set([
-        macConfig.sliMetricLibs[sliType].metricTypes[metricType].outboundSelectorLabels[selectorLabelField]
-        for sliType in std.objectFields(metricTypesList)
-        for metricType in metricTypesList[sliType]
-        if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], 'outboundMetrics') &&
-          std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], 'outboundSelectorLabels') &&
-          std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType].outboundSelectorLabels, selectorLabelField)
-      ])
-      for selectorLabelField in getSelectorLabelFields('outboundSelectorLabels', metricTypesList)
-    },
-  };
-
-local getOtherConfigFields(metricTypesList) =
-  std.set([
-    field
-    for sliType in std.objectFields(metricTypesList)
-    for metricType in metricTypesList[sliType]
-    for field in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType])
-    if field != 'selectorLabels' && field != 'metrics' && field != 'outboundSelectorLabels' &&
-      field != 'outboundMetrics'
-  ]);
-
-local getOtherConfig(metricTypesList) = 
-  {
-    [field]: std.set([
-      macConfig.sliMetricLibs[sliType].metricTypes[metricType][field]
-      for sliType in std.objectFields(metricTypesList)
-      for metricType in metricTypesList[sliType]
-      if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], field)
-    ])
-    for field in getOtherConfigFields(metricTypesList)
   };
 
 // Gets the list of products being used by SLIs in journey
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns The list of products used by SLIs
-local getProductList(journeyKey, sliSpecList) =
+local getProductList(sliTypes, journeyKey, sliSpecList) =
   std.join('|', std.set(std.filterMap(
-    function(sliSpec) std.objectHas(sliSpec.selectors, 'product'),
+    function(sliSpec) std.objectHas(sliSpec.selectors, 'product') &&
+      0 < std.length(std.find(sliSpec.sliType, sliTypes)),
     function(sliSpec) sliSpec.selectors.product,
     std.objectValues(sliSpecList[journeyKey])
   )));
@@ -153,26 +109,37 @@ local getProductList(journeyKey, sliSpecList) =
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing Grafana selectors
-local createSelectors(selectorLabels, journeyKey, sliSpecList) =
+local createSelectors(direction, selectorLabels, detailDashboardConfig, journeyKey, sliSpecList) =
   {
     [direction]: {
-      [selectorLabelField]: std.join(', ', std.map( 
-        function(selectorLabel) '%s=~"$%s|"' % [selectorLabel, '%s_%s' % [direction, selectorLabel]],
-        selectorLabels[direction][selectorLabelField]
-      ))
-      for selectorLabelField in std.objectFields(selectorLabels[direction])
-      if selectorLabelField != 'environment' && selectorLabelField != 'product'
+      [configField]: {
+        [configItem]: {
+          environment: std.join(', ', std.map( 
+            function(selectorLabel) '%s=~"$environment|"' % selectorLabel,
+            selectorLabels[direction][configField][configItem]['environment']
+          )),
+          product: std.join(', ', std.map( 
+            function(selectorLabel) '%s=~"%s|"' % [selectorLabel, 
+              getProductList(detailDashboardConfig[configField][configItem], journeyKey, sliSpecList)],
+            selectorLabels[direction][configField][configItem]['product']
+          )),
+        }
+        for configItem in std.objectFields(detailDashboardConfig[configField])
+      }
+      for configField in std.objectFields(detailDashboardConfig)
     } + {
-      environment: std.join(', ', std.map( 
-        function(selectorLabel) '%s=~"$environment|"' % selectorLabel,
-        selectorLabels[direction]['environment']
-      )),
-      product: std.join(', ', std.map( 
-        function(selectorLabel) '%s=~"%s|"' % [selectorLabel, getProductList(journeyKey, sliSpecList)],
-        selectorLabels[direction]['product']
-      )),
-    }
-    for direction in std.objectFields(selectorLabels)
+      elements+: {
+        [configItem]+: {
+          [selectorLabelField]: std.join(', ', std.map(
+            function(selectorLabel) '%s=~"$%s|"' % [selectorLabel, '%s_%s' % [direction, selectorLabel]],
+            selectorLabels[direction].elements[configItem][selectorLabelField]
+          ))
+          for selectorLabelField in std.objectFields(selectorLabels[direction].elements[configItem])
+          if 0 < std.length(std.find(selectorLabelField, std.objectFields(detailDashboardConfig.standardTemplates)))
+        } // + custom selectors
+        for configItem in std.objectFields(detailDashboardConfig.elements)
+      },
+    },
   };
 
 // Checks if any metrics were found for the direction and SLI type
@@ -192,23 +159,19 @@ local checkMetricsExist(direction, sliType, metrics) =
 // @param selectors Object containing Grafana selectors
 // @param direction Whether inbound or outbound metrics are being processed
 // @returns List of Grafana template objects for detail dashboard
-local createTemplates(metrics, selectorLabels, otherConfig, selectors, direction) =
-  local allMetrics = std.set([
-    metric
-    for sliType in std.objectFields(metrics[direction])
-    for metricField in std.objectFields(metrics[direction][sliType])
-    for metric in metrics[direction][sliType][metricField]
-  ]);
-
+local createTemplates(direction, metrics, selectorLabels, selectors, detailDashboardConfig) =
   std.set(std.flattenArrays([
     [
       template.new(
         name = '%s_%s' % [direction, selectorLabel],
         datasource = 'prometheus',
-        query = 'label_values({__name__=~"%(allMetrics)s", %(environmentSelectors)s, %(productSelectors)s}, %(selectorLabel)s)' % {
-          allMetrics: std.join('|', allMetrics),
-          environmentSelectors: selectors[direction].environment,
-          productSelectors: selectors[direction].product,
+        query = 'label_values({__name__=~"%(metrics)s", %(environmentSelectors)s, %(productSelectors)s}, %(selectorLabel)s)' % {
+          metrics: std.join('|', std.set(std.flattenArrays(std.map(
+            function(metricField) metrics[direction].standardTemplates[selectorLabelField][metricField],
+            std.objectFields(metrics[direction].standardTemplates[selectorLabelField])
+          )))),
+          environmentSelectors: selectors[direction].standardTemplates[selectorLabelField].environment,
+          productSelectors: selectors[direction].standardTemplates[selectorLabelField].product,
           selectorLabel: selectorLabel,
         },
         includeAll = true,
@@ -216,15 +179,14 @@ local createTemplates(metrics, selectorLabels, otherConfig, selectors, direction
         refresh = 'time',
         label = stringFormattingFunctions.capitaliseFirstLetters('%s %s' % [direction, std.strReplace(selectorLabel, '_', ' ')]),
       )
-      for selectorLabelField in std.objectFields(selectorLabels[direction])
-      if selectorLabelField != 'environment' && selectorLabelField != 'product'
-      for selectorLabel in selectorLabels[direction][selectorLabelField]
+      for selectorLabelField in std.objectFields(detailDashboardConfig.standardTemplates)
+      for selectorLabel in selectorLabels[direction].standardTemplates[selectorLabelField][selectorLabelField]
     ],
-    std.flattenArrays([
-      macConfig.sliMetricLibs[sliType].library.createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction)
-      for sliType in std.objectFields(metrics[direction])
-      if checkMetricsExist(direction, sliType, metrics)
-    ]),
+    // std.flattenArrays([
+    //   macConfig.sliMetricLibs[sliType].library.createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction)
+    //   for sliType in std.objectFields(metrics[direction])
+    //   if checkMetricsExist(direction, sliType, metrics)
+    // ]),
   ]), function(template) template.name);
 
 // Creates the Grafana panels for the detail dashboard
@@ -249,13 +211,17 @@ local createPanels(metrics, selectorLabels, otherConfig, selectors) =
 local createDetailDashboard(journeyKey, config, links, sliSpecList) =
   local metricTypesList = getMetricTypesList(journeyKey, sliSpecList);
 
-  local metrics = getMetrics(metricTypesList);
+  local detailDashboardConfig = getDetailDashboardConfig(metricTypesList);
 
-  local selectorLabels = getSelectorLabels(metricTypesList);
+  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig, metricTypesList);
 
-  local otherConfig = getOtherConfig(metricTypesList);
+  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig, metricTypesList);
 
-  local selectors = createSelectors(selectorLabels, journeyKey, sliSpecList);
+  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig, metricTypesList);
+
+  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig, metricTypesList);
+
+  local selectors = createSelectors('inbound', selectorLabels, detailDashboardConfig, journeyKey, sliSpecList);
 
   dashboard.new(
     title = '%(product)s-%(journey)s-detail-view' % { 
@@ -279,12 +245,10 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
       label = 'Environment',
     )
   ).addTemplates(
-    std.prune(std.flattenArrays([
-      createTemplates(metrics, selectorLabels, otherConfig, selectors, direction)
-      for direction in std.objectFields(metrics)
-    ]))
+    std.prune(createTemplates('inbound', metrics, selectorLabels, selectors, detailDashboardConfig))
   ).addPanels(
-    std.prune(createPanels(metrics, selectorLabels, otherConfig, selectors))
+    []
+    //std.prune(createPanels(metrics, selectorLabels, otherConfig, selectors))
   );
 
 // Creates the list of detail dashboards for a mixin file
@@ -304,3 +268,51 @@ local createDetailDashboards(config, links, sliSpecList) =
   createDetailDashboards(config, links, sliSpecList):
     createDetailDashboards(config, links, sliSpecList),
 }
+
+// metrics = {
+//   inbound: {
+//     standardTemplates: {
+//       resource: {
+//         count: ['a', 'b', 'c', 'x', 'y', 'z'],
+//         bucket: ['a', 'b', 'c'],
+//       },
+//       errorStatus: {
+//         count: ['x', 'y', 'z'],
+//       },
+//     },
+//     elements: {
+//       httpRequestsAvailability: {
+//         count: ['x', 'y', 'z'],
+//       },
+//       httpRequestsLatency: {
+//         count: ['a', 'b', 'c'],
+//         bucket: ['a', 'b', 'c'],
+//       },
+//     },
+//   },
+// },
+
+// selectorLabels = {
+//   inbound: {
+//     standardTemplates: {
+//       resource: {
+//         product: ['a', 'b'],
+//         environment: ['a', 'b'],
+//       },
+//       errorStatus: {
+//         product: ['b'],
+//         environment: ['b'],
+//       },
+//     },
+//     elements: {
+//       httpRequestsAvailability: {
+//         product: ['b'],
+//         environment: ['b'],
+//       },
+//       httpRequestsLatency: {
+//         product: ['a'],
+//         environment: ['a'],
+//       },
+//     },
+//   },
+// },

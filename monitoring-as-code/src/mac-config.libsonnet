@@ -62,8 +62,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: ['resource', 'errorStatus'],
-        customTemplates: ['latencyPercentile'],
-        panels: ['httpRequestsAvailability', 'httpRequestsLatency'],
+        elements: ['httpRequestsAvailability'],
       },
     },
     'http-latency': {
@@ -115,8 +114,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: ['resource'],
-        customTemplates: ['latencyPercentile'],
-        panels: ['httpRequestsLatency'],
+        elements: ['httpRequestsLatency'],
       },
     },
     'alb-target-group-http-errors': {
@@ -137,8 +135,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: [],
-        customTemplates: [],
-        panels: [],
+        elements: [],
       },
     },
     'alb-target-group-latency': {
@@ -157,8 +154,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: [],
-        customTemplates: [],
-        panels: [],
+        elements: [],
       },
     },
     'sqs-high-latency-in-queue': {
@@ -187,8 +183,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: [],
-        customTemplates: ['cloudwatchSQS'],
-        panels: ['cloudwatchSQS'],
+        elements: ['cloudwatchSqs'],
       },
     },
     'sqs-message-received-in-dlq': {
@@ -220,8 +215,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: [],
-        customTemplates: ['cloudwatchSQS'],
-        panels: ['cloudwatchSQS'],
+        elements: ['cloudwatchSqs'],
       },
     },
     'generic-error': {
@@ -240,8 +234,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: [],
-        customTemplates: [],
-        panels: [],
+        elements: [],
       },
     },
     'generic_avgovertimem': {
@@ -267,8 +260,7 @@
       },
       detailDashboardConfig: {
         standardTemplates: [],
-        customTemplates: [],
-        panels: [],
+        elements: [],
       },
     },
   },
