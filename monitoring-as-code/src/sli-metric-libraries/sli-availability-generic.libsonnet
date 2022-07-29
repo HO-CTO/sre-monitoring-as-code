@@ -90,7 +90,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 // Creates additional detail dashboard templates for this SLI type
 // @param direction Whether the dashboard is for inbound or outbound metrics
 // @returns List of Grafana template objects
-local createDetailDashboardTemplates(direction) =
+local createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction) =
   [
 
   ];
@@ -102,7 +102,7 @@ local createDetailDashboardTemplates(direction) =
 // @param selectors List of selectors
 // @param direction Whether the dashboard is for inbound or outbound metrics
 // @returns List of Grafana panel objects
-local createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction) =
+local createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction) =
   std.flattenArrays([
     
   ]);
@@ -113,6 +113,6 @@ local createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, d
   category: 'Availability',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
-  createDetailDashboardTemplates(direction): createDetailDashboardTemplates(direction),
-  createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction): createDetailDashboardPanels(sliType, metrics, selectorLabels, selectors, direction),
+  createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction): createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction),
+  createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction): createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction),
 }
