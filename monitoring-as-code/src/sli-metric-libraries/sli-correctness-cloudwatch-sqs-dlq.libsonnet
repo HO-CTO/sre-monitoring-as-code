@@ -37,7 +37,7 @@ local createGraphPanel(sliSpec) =
       'sum(avg_over_time(%(messagesVisibleMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]) or vector(0))' % {
         messagesVisibleMetric: metricConfig.metrics.messagesVisible,
         selectors: std.join(',', dashboardSelectors),
-        queueSelector: metricConfig.deadletterQueueNameSelector,
+        queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
         evalInterval: sliSpec.evalInterval,
       },
       legendFormat = 'avg number of msgs visible in dlq',
@@ -49,7 +49,7 @@ local createGraphPanel(sliSpec) =
         or vector(0))' % {
           messagesVisibleMetric: metricConfig.metrics.messagesVisible,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: metricConfig.deadletterQueueNameSelector,
+          queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
           dashboardSliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
           evalInterval: sliSpec.evalInterval,
         },
@@ -61,7 +61,7 @@ local createGraphPanel(sliSpec) =
         [%(evalInterval)s]) or vector(0))' % {
           oldestMessageMetric: metricConfig.metrics.oldestMessage,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: metricConfig.deadletterQueueNameSelector,
+          queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
           evalInterval: sliSpec.evalInterval,
         },
       legendFormat = 'avg age of oldest msg in dlq (secs)',
@@ -102,7 +102,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         messagesVisibleMetric: metricConfig.metrics.messagesVisible,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: metricConfig.deadletterQueueNameSelector,
+        queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
         evalInterval: sliSpec.evalInterval,
       },
@@ -116,7 +116,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         messagesVisibleMetric: metricConfig.metrics.messagesVisible,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: metricConfig.deadletterQueueNameSelector,
+        queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
       },
       labels: sliSpec.sliLabels,
     },

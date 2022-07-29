@@ -53,6 +53,9 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
     ['%s=~"%s"' % [metricConfig.selectorLabels.environment, config.environment]]
   ]);
 
+local getCustomSelector(selector, metricConfig) =
+  '%s=~"%s"' % [metricConfig.customSelectorLabels[selector], metricConfig.customSelectors[selector]];
+
 // File exports
 {
   getMetricConfig(sliSpec): getMetricConfig(sliSpec),
@@ -60,4 +63,5 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
   getSelectors(metricConfig, sliSpec): getSelectors(metricConfig, sliSpec),
   createDashboardSelectors(metricConfig, sliSpec): createDashboardSelectors(metricConfig, sliSpec),
   createRuleSelectors(metricConfig, sliSpec, config): createRuleSelectors(metricConfig, sliSpec, config),
+  getCustomSelector(selector, metricConfig): getCustomSelector(selector, metricConfig),
 }

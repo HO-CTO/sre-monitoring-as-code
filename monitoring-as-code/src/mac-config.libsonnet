@@ -60,6 +60,11 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: ['resource', 'errorStatus'],
+        customTemplates: ['latencyPercentile'],
+        panels: ['httpRequestsAvailability', 'httpRequestsLatency'],
+      },
     },
     'http-latency': {
       library: (import 'sli-metric-libraries/sli-latency-promclient.libsonnet'),
@@ -108,6 +113,11 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: ['resource'],
+        customTemplates: ['latencyPercentile'],
+        panels: ['httpRequestsLatency'],
+      },
     },
     'alb-target-group-http-errors': {
       library: (import 'sli-metric-libraries/sli-availability-cloudwatch-alb.libsonnet'),
@@ -125,6 +135,11 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        customTemplates: [],
+        panels: [],
+      },
     },
     'alb-target-group-latency': {
       library: (import 'sli-metric-libraries/sli-latency-cloudwatch-alb.libsonnet'),
@@ -140,6 +155,11 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        customTemplates: [],
+        panels: [],
+      },
     },
     'sqs-high-latency-in-queue': {
       library: (import 'sli-metric-libraries/sli-freshness-cloudwatch-sqs.libsonnet'),
@@ -153,10 +173,22 @@
             oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
             messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
           },
-          standardQueueSelector: 'queue_type!~"deadletter|"',
-          deadletterQueueSelector: 'queue_type=~"deadletter|"',
-          targetLabel: 'dimension_QueueName',
+          customSelectorLabels: {
+            queueType: 'queue_type',
+            targetQueue: 'dimension_QueueName',
+          },
+          customSelectors: {
+            queueType: 'deadletter',
+          },
+          // standardQueueSelector: 'queue_type!~"deadletter|"',
+          // deadletterQueueSelector: 'queue_type=~"deadletter|"',
+          // targetLabel: 'dimension_QueueName',
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        customTemplates: ['cloudwatchSQS'],
+        panels: ['cloudwatchSQS'],
       },
     },
     'sqs-message-received-in-dlq': {
@@ -171,11 +203,25 @@
             messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
             oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
           },
-          deadletterQueueNameSelector: 'queue_name=~".+dlq.+"',
-          standardQueueSelector: 'queue_type!~"deadletter|"',
-          deadletterQueueSelector: 'queue_type=~"deadletter|"',
-          targetLabel: 'dimension_QueueName',
+          customSelectorLabels: {
+            queueName: 'queue_name',
+            queueType: 'queue_type',
+            targetQueue: 'dimension_QueueName',
+          },
+          customSelectors: {
+            queueName: '.+dlq.+',
+            queueType: 'deadletter',
+          },
+          // deadletterQueueNameSelector: 'queue_name=~".+dlq.+"',
+          // standardQueueSelector: 'queue_type!~"deadletter|"',
+          // deadletterQueueSelector: 'queue_type=~"deadletter|"',
+          // targetLabel: 'dimension_QueueName',
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        customTemplates: ['cloudwatchSQS'],
+        panels: ['cloudwatchSQS'],
       },
     },
     'generic-error': {
@@ -191,6 +237,11 @@
             total: 'thanos_compact_group_compactions_total',
           },
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        customTemplates: [],
+        panels: [],
       },
     },
     'generic_avgovertimem': {
@@ -213,6 +264,11 @@
             duration: 'scrape_duration_seconds',
           },
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        customTemplates: [],
+        panels: [],
       },
     },
   },
