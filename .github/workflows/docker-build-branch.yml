@@ -1,0 +1,46 @@
+name: 'Docker Build Branch'
+
+on:
+  pull_request:
+    types: [ labeled, opened, reopened, synchronize ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  publish:
+    name: 'Branch Publish'
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'smoketest') == true
+    steps:
+      #Checks-out our repository under $GITHUB_WORKSPACE, so our workflow can access it.
+      - name: Checkout
+        uses: actions/checkout@v2
+
+        #Logs into Github registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Calculate metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ github.event.pull_request.head.sha }}
+
+      - name: Build container
+        uses: docker/build-push-action@v3
+        with:
+          context: ./monitoring-as-code
+          file: ./monitoring-as-code/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            PACKAGE_TOKEN=${{secrets.GITHUB_TOKEN}}
