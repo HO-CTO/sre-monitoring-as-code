@@ -2,7 +2,7 @@
 
 // Config items
 {
-  // Collection of imports for SLI metric library files for each SLI type
+  // Collection of imports and config for each SLI type
   sliMetricLibs: {
     'http-errors': {
       library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
@@ -263,6 +263,11 @@
         elements: [],
       },
     },
+  },
+  // Collection of imports for detail dashboard elements
+  detailDashboardElements: {
+    httpRequestsAvailability: (import 'dashboards/detail-dashboard-elements/http-requests-availability.libsonnet'),
+    httpRequestsLatency: (import 'dashboards/detail-dashboard-elements/http-requests-latency.libsonnet'),
   },
   // The list of error budget burn rate windows used for alerts
   burnRateWindowList: [
