@@ -34,11 +34,11 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       prometheus.target(|||
           sum by (%(errorSelectorLabels)s) (rate({__name__=~"%(countMetrics)s", %(selectors)s}[$__rate_interval]))
         ||| % {
-          errorSelectorLabels: std.join(', ', selectorLabels['errorStatus']),
+          errorSelectorLabels: std.join(', ', selectorLabels.errorStatus),
           countMetrics: std.join('|', metrics.count),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
-        legendFormat = '{{%s}}' % std.join(', ', selectorLabels['errorStatus']))
+        legendFormat = '{{%s}}' % std.join(', ', selectorLabels.errorStatus))
     ) + { gridPos: { w: 12, h: 10 } }],
     [graphPanel.new(
       title = 'Availability - requests per second by path',

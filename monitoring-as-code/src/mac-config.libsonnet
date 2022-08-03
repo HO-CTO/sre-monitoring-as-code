@@ -168,6 +168,8 @@
           metrics: {
             oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
             messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
+            messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
+            messagesSent: 'aws_sqs_number_of_messages_sent_sum',
           },
           customSelectorLabels: {
             queueType: 'queue_type',
@@ -176,9 +178,6 @@
           customSelectors: {
             queueType: 'deadletter',
           },
-          // standardQueueSelector: 'queue_type!~"deadletter|"',
-          // deadletterQueueSelector: 'queue_type=~"deadletter|"',
-          // targetLabel: 'dimension_QueueName',
         },
       },
       detailDashboardConfig: {
@@ -197,6 +196,8 @@
           metrics: {
             messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
             oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
+            messagesSent: 'aws_sqs_number_of_messages_sent_sum',
+            messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
           },
           customSelectorLabels: {
             queueName: 'queue_name',
@@ -207,10 +208,6 @@
             queueName: '.+dlq.+',
             queueType: 'deadletter',
           },
-          // deadletterQueueNameSelector: 'queue_name=~".+dlq.+"',
-          // standardQueueSelector: 'queue_type!~"deadletter|"',
-          // deadletterQueueSelector: 'queue_type=~"deadletter|"',
-          // targetLabel: 'dimension_QueueName',
         },
       },
       detailDashboardConfig: {
@@ -268,6 +265,7 @@
   detailDashboardElements: {
     httpRequestsAvailability: (import 'dashboards/detail-dashboard-elements/http-requests-availability.libsonnet'),
     httpRequestsLatency: (import 'dashboards/detail-dashboard-elements/http-requests-latency.libsonnet'),
+    cloudwatchSqs: (import 'dashboards/detail-dashboard-elements/cloudwatch-sqs.libsonnet'),
   },
   // The list of error budget burn rate windows used for alerts
   burnRateWindowList: [
