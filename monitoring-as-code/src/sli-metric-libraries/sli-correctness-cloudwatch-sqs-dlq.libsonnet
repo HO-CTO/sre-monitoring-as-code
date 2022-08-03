@@ -87,6 +87,7 @@ local createGraphPanel(sliSpec) =
 // Creates custom recording rules for an SLI type
 // @param sliSpec The spec for the SLI having its recording rules created
 // @param sliMetadata Metadata about the type and category of the SLI
+// @param config The config for the service defined in the mixin file
 // @returns JSON defining the recording rules
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
