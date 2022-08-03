@@ -102,6 +102,17 @@ local getTargets(target, direction, detailDashboardConfig, sliMetricTypes) =
     },
   };
 
+// Checks if the direction for item being processed has config
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param configField The field in the detail dashboard config
+// @param configItem The name of the item in the config field
+// @param metrics Object containing metrics
+// @param selectorLabels Object containing selector labels
+// @returns True if config exists for both metrics and selector labels, false otherwise
+local checkDirectionValid(direction, configField, configItem, metrics, selectorLabels) =
+  0 < std.length(std.objectValues(metrics[direction][configField][configItem])) &&
+  0 < std.length(std.objectValues(selectorLabels[direction][configField][configItem]));
+
 // Gets the unique list of products being used by SLIs of certain SLI types
 // @param sliTypes The list of SLI types
 // @param journeyKey The key of the journey having its detail dashboard generated
@@ -116,7 +127,7 @@ local getProductList(sliTypes, journeyKey, sliSpecList) =
   )));
 
 // Creates Grafana selectors for templates and dashboards
-// @param direction The type of dashboard elements being created, inbound or outbound
+// @param metrics Object containing metrics
 // @param selectorLabels Object containing selector labels
 // @param customSelectorLabels Object containing custom selector labels
 // @param customSelectorValues Object containing custom selector values
@@ -124,7 +135,7 @@ local getProductList(sliTypes, journeyKey, sliSpecList) =
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing Grafana selectors
-local createSelectors(direction, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList) =
+local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList) =
   {
     [direction]: {
       [configField]: {
@@ -140,6 +151,7 @@ local createSelectors(direction, selectorLabels, customSelectorLabels, customSel
           )),
         }
         for configItem in std.objectFields(detailDashboardConfig[configField])
+        if checkDirectionValid(direction, configField, configItem, metrics, selectorLabels)
       }
       for configField in std.objectFields(detailDashboardConfig)
     } + {
@@ -153,12 +165,13 @@ local createSelectors(direction, selectorLabels, customSelectorLabels, customSel
         } + macConfig.detailDashboardElements[element].createCustomSelectors(
           direction, customSelectorLabels[direction].elements[element], customSelectorValues[direction].elements[element])
         for element in std.objectFields(detailDashboardConfig.elements)
+        if checkDirectionValid(direction, 'elements', element, metrics, selectorLabels)
       },
-    },
+    }
+    for direction in ['inbound', 'outbound']
   };
 
 // Creates the Grafana templates for the detail dashboard
-// @param direction The type of dashboard elements being created, inbound or outbound
 // @param metrics Object containing metrics
 // @param selectorLabels Object containing selector labels
 // @param customSelectorLabels Object containing custom selector labels
@@ -166,7 +179,7 @@ local createSelectors(direction, selectorLabels, customSelectorLabels, customSel
 // @param selectors Object containing selectors
 // @param detailDashboardConfig Object containing the config for detail dashboard
 // @returns List of Grafana template objects for detail dashboard
-local createTemplates(direction, metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
+local createTemplates(metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
   std.set(std.flattenArrays([
     [
       template.new(
@@ -187,18 +200,19 @@ local createTemplates(direction, metrics, selectorLabels, customSelectorLabels, 
         label = stringFormattingFunctions.capitaliseFirstLetters('%s %s' % [direction, std.strReplace(selectorLabel, '_', ' ')]),
       )
       for selectorLabelField in std.objectFields(detailDashboardConfig.standardTemplates)
+      if checkDirectionValid(direction, 'standardTemplates', selectorLabelField, metrics, selectorLabels)
       for selectorLabel in selectorLabels[direction].standardTemplates[selectorLabelField][selectorLabelField]
-    ],
-    std.flattenArrays([
+    ] + std.flattenArrays([
       macConfig.detailDashboardElements[element].createCustomTemplates(
         direction, metrics[direction].elements[element], customSelectorLabels[direction].elements[element],
         customSelectorValues[direction].elements[element], selectors[direction].elements[element])
       for element in std.objectFields(detailDashboardConfig.elements)
-    ]),
+      if checkDirectionValid(direction, 'elements', element, metrics, selectorLabels)
+    ])
+    for direction in ['inbound', 'outbound']
   ]), function(template) template.name);
 
 // Creates the Grafana panels for the detail dashboard
-// @param direction The type of dashboard elements being created, inbound or outbound
 // @param metrics Object containing metrics
 // @param selectorLabels Object containing selector labels
 // @param customSelectorLabels Object containing custom selector labels
@@ -206,12 +220,14 @@ local createTemplates(direction, metrics, selectorLabels, customSelectorLabels, 
 // @param selectors Object containing selectors
 // @param detailDashboardConfig Object containing the config for detail dashboard
 // @returns List of Grafana panel objects for detail dashboard
-local createPanels(direction, metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
+local createPanels(metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
   std.flattenArrays([
     macConfig.detailDashboardElements[element].createPanels(
       direction, metrics[direction].elements[element], selectorLabels[direction].elements[element],
       customSelectorLabels[direction].elements[element], customSelectorValues[direction].elements[element], selectors[direction].elements[element])
+    for direction in ['inbound', 'outbound']
     for element in std.objectFields(detailDashboardConfig.elements)
+    if checkDirectionValid(direction, 'elements', element, metrics, selectorLabels)
   ]);
 
 // Creates a single detail dashboard for a journey
@@ -225,16 +241,20 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
 
   local detailDashboardConfig = getDetailDashboardConfig(sliMetricTypes);
 
-  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig, sliMetricTypes);
+  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig, sliMetricTypes) +
+    getTargets('outboundMetrics', 'outbound', detailDashboardConfig, sliMetricTypes);
 
-  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes);
+  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes) +
+    getTargets('outboundSelectorLabels', 'outbound', detailDashboardConfig, sliMetricTypes);
 
-  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes);
+  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes) +
+    getTargets('customSelectorLabels', 'outbound', detailDashboardConfig, sliMetricTypes);
 
-  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig, sliMetricTypes);
+  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig, sliMetricTypes) +
+    getTargets('customSelectors', 'outbound', detailDashboardConfig, sliMetricTypes);
 
   local selectors = createSelectors(
-    'inbound', selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList);
+    metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList);
 
   dashboard.new(
     title = '%(product)s-%(journey)s-detail-view' % { 
@@ -259,10 +279,10 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
     )
   ).addTemplates(
     std.prune(createTemplates(
-      'inbound', metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))
+      metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))
   ).addPanels(
     std.prune(createPanels(
-      'inbound', metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))
+      metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))
   );
 
 // Creates the list of detail dashboards for a mixin file
