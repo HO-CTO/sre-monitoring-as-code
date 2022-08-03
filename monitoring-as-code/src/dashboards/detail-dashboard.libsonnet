@@ -10,11 +10,11 @@ local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local template = grafana.template;
 
-// Gets the list of SLI types used in this journey
+// Gets the unique list of SLI types used in the journey
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
-// @returns List of SLI types used in this journey
-local getSliTypesList(journeyKey, sliSpecList) =
+// @returns List of SLI types used in the journey
+local getSliTypes(journeyKey, sliSpecList) =
   std.set([
     sliSpec.sliType
     for sliSpec in std.objectValues(sliSpecList[journeyKey])
@@ -24,55 +24,65 @@ local getSliTypesList(journeyKey, sliSpecList) =
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing metric types for each SLI type
-local getMetricTypesList(journeyKey, sliSpecList) =
+local getSliMetricTypes(journeyKey, sliSpecList) =
   {
     [sliType]: std.set(std.filterMap(
       function(sliSpec) sliSpec.sliType == sliType,
       function(sliSpec) sliSpec.metricType,
       std.objectValues(sliSpecList[journeyKey])
     ))
-    for sliType in getSliTypesList(journeyKey, sliSpecList)
+    for sliType in getSliTypes(journeyKey, sliSpecList)
   };
 
-local getConfigItems(configField, metricTypesList) =
+// Gets the unique list of items for config field in all SLI types detail dashboard config
+// @param configField The field in the detail dashboard config
+// @param sliMetricTypes The object containing metric types for each SLI type
+// @returns List of config items
+local getConfigItems(configField, sliMetricTypes) =
   std.set([
     configItem
-    for sliType in std.objectFields(metricTypesList)
+    for sliType in std.objectFields(sliMetricTypes)
     for configItem in macConfig.sliMetricLibs[sliType].detailDashboardConfig[configField]
   ]);
 
-local getDetailDashboardConfig(metricTypesList) =
+// Gets the combined detail dashboard config for all SLI types in journey
+// @param sliMetricTypes The object containing metric types for each SLI type
+// @returns Object containing the combined detail dashboard config
+local getDetailDashboardConfig(sliMetricTypes) =
   {
     [configField]: {
       [configItem]: std.set(std.filterMap(
         function(sliType) 0 < std.length(std.find(
           configItem, macConfig.sliMetricLibs[sliType].detailDashboardConfig[configField])),
         function(sliType) sliType,
-        std.objectFields(metricTypesList)
+        std.objectFields(sliMetricTypes)
       ))
-      for configItem in getConfigItems(configField, metricTypesList)
+      for configItem in getConfigItems(configField, sliMetricTypes)
     },
     for configField in ['standardTemplates', 'elements']
   };
 
-// Gets the list of fields used for metrics by an SLI type
-// @param target The name of the field in the MaC config containing metrics (inbound or outbound)
-// @param sliType The type of SLI currently being processed
-// @param metricTypesList The object containing metric types for each SLI type
-// @returns List of metric fields used by an SLI type
-local getTargetFields(target, sliTypes, metricTypesList) =
+// Gets the unique list of field names inside target attribute for list of SLI types
+// @param target The name of the target attribute
+// @param sliTypes The list of SLI types
+// @param sliMetricTypes The object containing metric types for each SLI type
+// @returns List of fields inside target attribute
+local getTargetFields(target, sliTypes, sliMetricTypes) =
   std.set([
     targetField
     for sliType in sliTypes
-    for metricType in metricTypesList[sliType]
+    for metricType in sliMetricTypes[sliType]
     if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target)
     for targetField in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target])
   ]);
 
-// Gets the collection of metrics used by each SLI type
-// @param metricTypesList The object containing metric types for each SLI type
-// @returns Object containing metrics for each SLI type
-local getTargets(target, direction, detailDashboardConfig, metricTypesList) =
+// Gets the unique list of all values of target attribute for each detail dashboard config item
+// @param target The name of the target attribute
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param detailDashboardConfig Object containing the config for detail dashboard
+// @param sliMetricTypes The object containing metric types for each SLI type
+// @returns Object containing list of values in target attribute for each config item
+local getTargets(target, direction, detailDashboardConfig, sliMetricTypes) =
   {
     [direction]: {
       [configField]: {
@@ -80,11 +90,11 @@ local getTargets(target, direction, detailDashboardConfig, metricTypesList) =
           [targetField]: std.set([
             macConfig.sliMetricLibs[sliType].metricTypes[metricType][target][targetField]
             for sliType in detailDashboardConfig[configField][configItem]
-            for metricType in metricTypesList[sliType]
+            for metricType in sliMetricTypes[sliType]
             if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target) &&
               std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target], targetField)
           ])
-          for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem], metricTypesList)
+          for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem], sliMetricTypes)
         }
         for configItem in std.objectFields(detailDashboardConfig[configField])
       }
@@ -92,10 +102,11 @@ local getTargets(target, direction, detailDashboardConfig, metricTypesList) =
     },
   };
 
-// Gets the list of products being used by SLIs in journey
+// Gets the unique list of products being used by SLIs of certain SLI types
+// @param sliTypes The list of SLI types
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
-// @returns The list of products used by SLIs
+// @returns List of products used by SLIs
 local getProductList(sliTypes, journeyKey, sliSpecList) =
   std.join('|', std.set(std.filterMap(
     function(sliSpec) std.objectHas(sliSpec.selectors, 'product') &&
@@ -104,8 +115,12 @@ local getProductList(sliTypes, journeyKey, sliSpecList) =
     std.objectValues(sliSpecList[journeyKey])
   )));
 
-// Creates Grafana selectors using templates for each selector label
+// Creates Grafana selectors for templates and dashboards
+// @param direction The type of dashboard elements being created, inbound or outbound
 // @param selectorLabels Object containing selector labels
+// @param customSelectorLabels Object containing custom selector labels
+// @param customSelectorValues Object containing custom selector values
+// @param detailDashboardConfig Object containing the config for detail dashboard
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing Grafana selectors
@@ -143,10 +158,13 @@ local createSelectors(direction, selectorLabels, customSelectorLabels, customSel
   };
 
 // Creates the Grafana templates for the detail dashboard
-// @param metrics Object containing metrics for each SLI type
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param metrics Object containing metrics
 // @param selectorLabels Object containing selector labels
-// @param selectors Object containing Grafana selectors
-// @param direction Whether inbound or outbound metrics are being processed
+// @param customSelectorLabels Object containing custom selector labels
+// @param customSelectorValues Object containing custom selector values
+// @param selectors Object containing selectors
+// @param detailDashboardConfig Object containing the config for detail dashboard
 // @returns List of Grafana template objects for detail dashboard
 local createTemplates(direction, metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
   std.set(std.flattenArrays([
@@ -180,9 +198,13 @@ local createTemplates(direction, metrics, selectorLabels, customSelectorLabels, 
   ]), function(template) template.name);
 
 // Creates the Grafana panels for the detail dashboard
-// @param metrics Object containing metrics for each SLI type
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param metrics Object containing metrics
 // @param selectorLabels Object containing selector labels
-// @param selectors Object containing Grafana selectors
+// @param customSelectorLabels Object containing custom selector labels
+// @param customSelectorValues Object containing custom selector values
+// @param selectors Object containing selectors
+// @param detailDashboardConfig Object containing the config for detail dashboard
 // @returns List of Grafana panel objects for detail dashboard
 local createPanels(direction, metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
   std.flattenArrays([
@@ -199,17 +221,17 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns JSON for a detail dashboard
 local createDetailDashboard(journeyKey, config, links, sliSpecList) =
-  local metricTypesList = getMetricTypesList(journeyKey, sliSpecList);
+  local sliMetricTypes = getSliMetricTypes(journeyKey, sliSpecList);
 
-  local detailDashboardConfig = getDetailDashboardConfig(metricTypesList);
+  local detailDashboardConfig = getDetailDashboardConfig(sliMetricTypes);
 
-  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig, metricTypesList);
+  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig, sliMetricTypes);
 
-  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig, metricTypesList);
+  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes);
 
-  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig, metricTypesList);
+  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes);
 
-  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig, metricTypesList);
+  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig, sliMetricTypes);
 
   local selectors = createSelectors(
     'inbound', selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList);

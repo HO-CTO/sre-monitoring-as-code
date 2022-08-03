@@ -1,5 +1,3 @@
-//
-
 // MaC imports
 local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';
 
@@ -11,6 +9,13 @@ local row = grafana.row;
 local template = grafana.template;
 local statPanel = grafana.statPanel;
 
+// Creates custom templates
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param metrics Object containing metrics
+// @param customSelectorLabels Object containing custom selector labels
+// @param customSelectorValues Object containing custom selector values
+// @param selectors Object containing selectors
+// @returns List of custom templates
 local createCustomTemplates(direction, metrics, customSelectorLabels, customSelectorValues, selectors) =
   std.flattenArrays([
     [
@@ -52,6 +57,11 @@ local createCustomTemplates(direction, metrics, customSelectorLabels, customSele
     ]
   ]);
 
+// Creates custom selectors
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param customSelectorLabels Object containing custom selector labels
+// @param customSelectorValues Object containing custom selector values
+// @returns List of custom selectors
 local createCustomSelectors(direction, customSelectorLabels, customSelectorValues) =
   {
     standardQueueTemplate: std.join(', ', std.map(
@@ -78,6 +88,14 @@ local createCustomSelectors(direction, customSelectorLabels, customSelectorValue
     )),
   };
 
+// Creates panels
+// @param direction The type of dashboard elements being created, inbound or outbound
+// @param metrics Object containing metrics
+// @param selectorLabels Object containing selector labels
+// @param customSelectorLabels Object containing custom selector labels
+// @param customSelectorValues Object containing custom selector values
+// @param selectors Object containing selectors
+// @returns List of panels
 local createPanels(direction, metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors) =
   std.flattenArrays([
     [row.new(
@@ -189,6 +207,7 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
     ) + { gridPos: { w: 12, h: 10, x: 12 } }],
   ]);
 
+// File exports
 {
   createCustomTemplates(direction, metrics, customSelectorLabels, customSelectorValues, selectors):
     createCustomTemplates(direction, metrics, customSelectorLabels, customSelectorValues, selectors),
