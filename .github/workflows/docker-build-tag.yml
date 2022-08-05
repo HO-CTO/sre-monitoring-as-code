@@ -36,7 +36,7 @@ jobs:
 
       - name: Calculate SemVer increment
         id: increment
-        uses: UKHomeOffice/semver-tag-action@v2
+        uses: UKHomeOffice/semver-tag-action@v3
         with:
           increment: ${{ steps.label.outputs.matchedLabels }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -65,7 +65,7 @@ jobs:
             MAC_VERSION=${{steps.increment.outputs.version}}
 
       - name: Tag repository with SemVer
-        uses: UKHomeOffice/semver-tag-action@v2
+        uses: UKHomeOffice/semver-tag-action@v3
         with:
           tag: ${{steps.increment.outputs.version}}
           github_token: ${{ secrets.GITHUB_TOKEN }}
