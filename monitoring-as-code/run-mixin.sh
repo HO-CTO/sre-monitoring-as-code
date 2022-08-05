@@ -13,9 +13,8 @@
 # Additional arguments are the namespaces/environments, if none included defaults to localhost
 
 # Global variables
-# Sets Git branch/tag currently checked out to be used in dashboard tags and rule labels
-#MAC_VERSION=$(git symbolic-ref -q --short HEAD || git describe --tags --exact-match)
-MAC_VERSION="v2.0.0"
+# Pass semver or PR from GitHub workflow to dashboard and rules label.
+MAC_VERSION=${MAC_VERSION:-'local'}
 
 # Remove temporary directories if not removed after previous execution
 rm -rf "$PWD"/_input
