@@ -27,3 +27,8 @@ updates:
     directory: "/monitoring-as-code"
     schedule:
       interval: "weekly"     
+
+  - package-ecosystem: "bundler"
+    directory: "/monitoring-as-code"
+    schedule:
+      interval: "weekly"   
