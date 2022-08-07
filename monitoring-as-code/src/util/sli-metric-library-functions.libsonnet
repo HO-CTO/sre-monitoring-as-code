@@ -53,6 +53,13 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
     ['%s=~"%s"' % [metricConfig.selectorLabels.environment, config.environment]]
   ]);
 
+// Gets a custom selector using the selector label and selector value from config
+// @param selector The field for the selector
+// @param metricConfig Object containing config for a metric type
+// @returns The selector as a string
+local getCustomSelector(selector, metricConfig) =
+  '%s=~"%s"' % [metricConfig.customSelectorLabels[selector], metricConfig.customSelectors[selector]];
+
 // File exports
 {
   getMetricConfig(sliSpec): getMetricConfig(sliSpec),
@@ -60,4 +67,5 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
   getSelectors(metricConfig, sliSpec): getSelectors(metricConfig, sliSpec),
   createDashboardSelectors(metricConfig, sliSpec): createDashboardSelectors(metricConfig, sliSpec),
   createRuleSelectors(metricConfig, sliSpec, config): createRuleSelectors(metricConfig, sliSpec, config),
+  getCustomSelector(selector, metricConfig): getCustomSelector(selector, metricConfig),
 }

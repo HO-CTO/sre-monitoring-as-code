@@ -2,7 +2,7 @@
 
 // Config items
 {
-  // Collection of imports for SLI metric library files for each SLI type
+  // Collection of imports and config for each SLI type
   sliMetricLibs: {
     'http-errors': {
       library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
@@ -60,6 +60,10 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: ['resource', 'errorStatus'],
+        elements: ['httpRequestsAvailability'],
+      },
     },
     'http-latency': {
       library: (import 'sli-metric-libraries/sli-latency-promclient.libsonnet'),
@@ -108,6 +112,10 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: ['resource'],
+        elements: ['httpRequestsLatency'],
+      },
     },
     'alb-target-group-http-errors': {
       library: (import 'sli-metric-libraries/sli-availability-cloudwatch-alb.libsonnet'),
@@ -125,6 +133,10 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        elements: [],
+      },
     },
     'alb-target-group-latency': {
       library: (import 'sli-metric-libraries/sli-latency-cloudwatch-alb.libsonnet'),
@@ -140,6 +152,10 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        elements: [],
+      },
     },
     'sqs-high-latency-in-queue': {
       library: (import 'sli-metric-libraries/sli-freshness-cloudwatch-sqs.libsonnet'),
@@ -152,11 +168,21 @@
           metrics: {
             oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
             messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
+            messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
+            messagesSent: 'aws_sqs_number_of_messages_sent_sum',
           },
-          standardQueueSelector: 'queue_type!~"deadletter|"',
-          deadletterQueueSelector: 'queue_type=~"deadletter|"',
-          targetLabel: 'dimension_QueueName',
+          customSelectorLabels: {
+            queueType: 'queue_type',
+            targetQueue: 'dimension_QueueName',
+          },
+          customSelectors: {
+            queueType: 'deadletter',
+          },
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        elements: ['cloudwatchSqs'],
       },
     },
     'sqs-message-received-in-dlq': {
@@ -170,12 +196,23 @@
           metrics: {
             messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
             oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
+            messagesSent: 'aws_sqs_number_of_messages_sent_sum',
+            messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
           },
-          deadletterQueueNameSelector: 'queue_name=~".+dlq.+"',
-          standardQueueSelector: 'queue_type!~"deadletter|"',
-          deadletterQueueSelector: 'queue_type=~"deadletter|"',
-          targetLabel: 'dimension_QueueName',
+          customSelectorLabels: {
+            queueName: 'queue_name',
+            queueType: 'queue_type',
+            targetQueue: 'dimension_QueueName',
+          },
+          customSelectors: {
+            queueName: '.+dlq.+',
+            queueType: 'deadletter',
+          },
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        elements: ['cloudwatchSqs'],
       },
     },
     'generic-error': {
@@ -191,6 +228,10 @@
             total: 'thanos_compact_group_compactions_total',
           },
         },
+      },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        elements: [],
       },
     },
     'generic_avgovertimem': {
@@ -214,7 +255,17 @@
           },
         },
       },
+      detailDashboardConfig: {
+        standardTemplates: [],
+        elements: [],
+      },
     },
+  },
+  // Collection of imports for detail dashboard elements
+  detailDashboardElements: {
+    httpRequestsAvailability: (import 'dashboards/detail-dashboard-elements/http-requests-availability.libsonnet'),
+    httpRequestsLatency: (import 'dashboards/detail-dashboard-elements/http-requests-latency.libsonnet'),
+    cloudwatchSqs: (import 'dashboards/detail-dashboard-elements/cloudwatch-sqs.libsonnet'),
   },
   // The list of error budget burn rate windows used for alerts
   burnRateWindowList: [
