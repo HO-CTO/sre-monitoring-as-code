@@ -187,6 +187,45 @@ local metricCategories = {
       elements: [],
     },
   },
+  'aws_rds_read': {
+    selectorLabels: {
+      environment: 'namespace',
+      product: 'job',
+    },
+    metrics: {
+      averageLatency: 'aws_rds_read_latency_average',
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+    },
+  },
+  'aws_rds_write': {
+    selectorLabels: {
+      environment: 'namespace',
+      product: 'job',
+    },
+    metrics: {
+      averageLatency: 'aws_rds_write_latency_average',
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+    },
+  },
+  'aws_es': {
+    selectorLabels: {
+      environment: 'namespace',
+      product: 'job',
+    },
+    metrics: {
+      averageLatency: 'aws_es_search_latency_average',
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+    },
+  },
 };
 
 // Collection of imports and config for each SLI type
@@ -244,6 +283,15 @@ local sliMetricLibs = {
       'up': metricCategories['up'],
       'scrape_duration_seconds': metricCategories['scrape_duration_seconds'],
     },
+  },
+  'average_latency': {
+    library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+    metricTypes: {
+      'aws_rds_read_latency_average': metricCategories['aws_rds_read'],
+      'aws_rds_write_latency_average': metricCategories['aws_rds_write'],
+      'aws_es_search_latency_average': metricCategories['aws_es'],
+    },
+    targetMetric: 'averageLatency',
   },
 };
 
