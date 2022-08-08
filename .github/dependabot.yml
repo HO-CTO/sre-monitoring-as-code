@@ -7,6 +7,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "gitleaks"
+        # For gitleaks, ignore all updates as new version then 1.6.0 are paid for
       
   - package-ecosystem: "docker"
     directory: "/docs"
@@ -26,7 +29,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/monitoring-as-code"
     schedule:
-      interval: "weekly"     
+      interval: "weekly"
 
   - package-ecosystem: "bundler"
     directory: "/monitoring-as-code"
