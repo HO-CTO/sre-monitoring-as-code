@@ -42,7 +42,8 @@ local getConfigItems(configField, sliMetricTypes) =
   std.set([
     configItem
     for sliType in std.objectFields(sliMetricTypes)
-    for configItem in macConfig.sliMetricLibs[sliType].detailDashboardConfig[configField]
+    for metricType in sliMetricTypes[sliType]
+    for configItem in macConfig.sliMetricLibs[sliType].metricTypes[metricType].detailDashboardConfig[configField]
   ]);
 
 // Gets the combined detail dashboard config for all SLI types in journey
@@ -51,12 +52,13 @@ local getConfigItems(configField, sliMetricTypes) =
 local getDetailDashboardConfig(sliMetricTypes) =
   {
     [configField]: {
-      [configItem]: std.set(std.filterMap(
-        function(sliType) 0 < std.length(std.find(
-          configItem, macConfig.sliMetricLibs[sliType].detailDashboardConfig[configField])),
-        function(sliType) sliType,
-        std.objectFields(sliMetricTypes)
-      ))
+      [configItem]: std.set([
+        sliType
+        for sliType in std.objectFields(sliMetricTypes)
+        for metricType in sliMetricTypes[sliType]
+        if 0 < std.length(std.find(
+          configItem, macConfig.sliMetricLibs[sliType].metricTypes[metricType].detailDashboardConfig[configField]))
+      ])
       for configItem in getConfigItems(configField, sliMetricTypes)
     },
     for configField in ['standardTemplates', 'elements']
