@@ -8,8 +8,8 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "gitleaks"
-        # For gitleaks, ignore all updates as new version then 1.6.0 are paid for
+      - dependency-name: "gitleaks/gitleaks-action"
+        # For gitleaks/gitleaks-action, ignore all updates as new version then 1.6.0 are paid for
       
   - package-ecosystem: "docker"
     directory: "/docs"
