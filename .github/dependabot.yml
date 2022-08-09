@@ -25,13 +25,10 @@ updates:
     directory: "/local"
     schedule:
       interval: "weekly"
-      
+      # Disable all pull requests for Docker dependencies in /local as dependabot doesnt yet support docker-compose
+    open-pull-requests-limit: 0
+    
   - package-ecosystem: "docker"
     directory: "/monitoring-as-code"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "bundler"
-    directory: "/monitoring-as-code"
-    schedule:
-      interval: "weekly"   
