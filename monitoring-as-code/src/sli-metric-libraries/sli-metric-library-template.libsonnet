@@ -16,7 +16,7 @@ local createGraphPanel(sliSpec) =
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.title,
+    title = '%s' % sliSpec.sliDescription,
     datasource = 'prometheus',
   );
 

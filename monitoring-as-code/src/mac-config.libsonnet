@@ -86,7 +86,7 @@ local metricCategories = {
       count: 'nginx_ingress_controller_requests',
     },
     detailDashboardConfig: {
-      standardTemplates: ['resource', 'errorStatus'],
+      standardTemplates: ['errorStatus'],
       elements: ['httpRequestsAvailability'],
     },
   },
@@ -102,7 +102,7 @@ local metricCategories = {
       bucket: 'nginx_ingress_controller_request_duration_seconds_bucket',
     },
     detailDashboardConfig: {
-      standardTemplates: ['resource', 'errorStatus'],
+      standardTemplates: ['errorStatus'],
       elements: ['httpRequestsAvailability', 'httpRequestsLatency'],
     },
   },
