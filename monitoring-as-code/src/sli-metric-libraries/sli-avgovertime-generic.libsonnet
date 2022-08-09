@@ -72,8 +72,6 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 
 // File exports
 {
-  description: 'the average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
-  category: 'Availability',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
 }

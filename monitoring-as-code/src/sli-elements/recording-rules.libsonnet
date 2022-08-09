@@ -10,7 +10,7 @@ local macConfig = import '../mac-config.libsonnet';
 local createSliMetadata(sliSpec) =
   {
     type: sliSpec.sliType,
-    category: macConfig.sliMetricLibs[sliSpec.sliType].library.category,
+    category: macConfig.sliMetricLibs[sliSpec.sliType].category,
   };
 
 // Creates standard recording rules that are the same for all SLI types

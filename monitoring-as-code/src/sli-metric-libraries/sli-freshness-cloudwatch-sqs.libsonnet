@@ -124,8 +124,6 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 
 // File exports
 {
-  description: 'Age of oldest message in SQS queue should be less than %(metricTarget)s seconds for %(sliDescription)s',
-  category: 'Pipeline Freshness',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
 }

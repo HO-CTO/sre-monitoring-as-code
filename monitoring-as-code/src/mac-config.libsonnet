@@ -238,6 +238,8 @@ local sliMetricLibs = {
       'http_requests_total': metricCategories['http_requests_total'],
       'nginx_ingress_controller_requests': metricCategories['nginx_ingress_controller_requests'],
     },
+    description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+    category: 'Availability',
   },
   'http-latency': {
     library: (import 'sli-metric-libraries/sli-latency-promclient.libsonnet'),
@@ -246,36 +248,48 @@ local sliMetricLibs = {
       'http_server_requests_seconds_bucket': metricCategories['http_server_requests_seconds'],
       'nginx_ingress_controller_request_duration_seconds_bucket': metricCategories['nginx_ingress_controller_request_duration_seconds'],
     },
+    description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+    category: 'Latency',
   },
   'alb-target-group-http-errors': {
     library: (import 'sli-metric-libraries/sli-availability-cloudwatch-alb.libsonnet'),
     metricTypes: {
       'aws_alb_request_count_sum': metricCategories['aws_alb'],
     },
+    description: 'the error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+    category: 'Availability',
   },
   'alb-target-group-latency': {
     library: (import 'sli-metric-libraries/sli-latency-cloudwatch-alb.libsonnet'),
     metricTypes: {
       'aws_alb_target_response_time': metricCategories['aws_alb'],
     },
+    description: 'Target latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+    category: 'Latency',
   },
   'sqs-high-latency-in-queue': {
     library: (import 'sli-metric-libraries/sli-freshness-cloudwatch-sqs.libsonnet'),
     metricTypes: {
       'aws_sqs_approximate_age_of_oldest_message_sum': metricCategories['aws_sqs'],
     },
+    description: 'Age of oldest message in SQS queue should be less than %(metricTarget)s seconds for %(sliDescription)s',
+    category: 'Pipeline Freshness',
   },
   'sqs-message-received-in-dlq': {
     library: (import 'sli-metric-libraries/sli-correctness-cloudwatch-sqs-dlq.libsonnet'),
     metricTypes: {
       'aws_sqs_approximate_number_of_messages_visible_sum': metricCategories['aws_sqs'],
     },
+    description: 'there should be no messages in the DLQ for %(sliDescription)s',
+    category: 'Pipeline Correctness',
   },
   'generic-error': {
     library: (import 'sli-metric-libraries/sli-availability-generic.libsonnet'),
     metricTypes: {
       'thanos_compact_group_compactions_total': metricCategories['thanos_compact_group_compactions'],
     },
+    description: 'the rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+    category: 'Availability',
   },
   'generic_avgovertimem': {
     library: (import 'sli-metric-libraries/sli-avgovertime-generic.libsonnet'),
@@ -283,6 +297,8 @@ local sliMetricLibs = {
       'up': metricCategories['up'],
       'scrape_duration_seconds': metricCategories['scrape_duration_seconds'],
     },
+    description: 'the average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+    category: 'Availability',
   },
   'average_latency': {
     library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
@@ -292,6 +308,8 @@ local sliMetricLibs = {
       'aws_es_search_latency_average': metricCategories['aws_es'],
     },
     targetMetric: 'averageLatency',
+    description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+    category: 'Latency',
   },
 };
 

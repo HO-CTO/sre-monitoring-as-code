@@ -13,7 +13,7 @@ local statPanel = grafana.statPanel;
 // @param sliSpec The spec for the SLI having its standard elements created
 // @returns The description for the SLI
 local createSliDescription(sliSpec) =
-  macConfig.sliMetricLibs[sliSpec.sliType].library.description % {
+  macConfig.sliMetricLibs[sliSpec.sliType].description % {
     sliDescription: sliSpec.sliDescription,
     metricTarget: sliSpec.metricTarget,
     metric_target_percent: sliSpec.metricTarget * 100,
