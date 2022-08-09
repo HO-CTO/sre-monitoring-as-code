@@ -14,10 +14,37 @@ local graphPanel = grafana.graphPanel;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetric = sliMetricLibraryFunctions.getTargetMetric(sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.title,
+    title = 'Latency - %s' % sliSpec.sliDescription,
+    description = |||
+      * Sample interval is %(evalInterval)s 
+      * Request selectors are %(selectors)s
+    ||| % {
+      evalInterval: sliSpec.evalInterval,
+      selectors: std.strReplace(std.join(', ', sliMetricLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
+    },
     datasource = 'prometheus',
+    fill = 0,
+    thresholds = [
+      {
+        value: sliSpec.metricTarget,
+        colorMode: 'critical',
+        op: 'gt',
+        line: true,
+        fill: false,
+      },
+    ],
+  ).addTarget(
+    prometheus.target(
+      'avg_over_time(%(metric)s{%(selectors)s}[%(evalInterval)s])' % {
+        metric: metricConfig.metrics[targetMetric],
+        selectors: std.join(',', dashboardSelectors),
+        evalInterval: sliSpec.evalInterval,
+      },
+      legendFormat = 'Average %s' % sliSpec.sliDescription,
+    )
   );
 
 // Creates custom recording rules for an SLI type

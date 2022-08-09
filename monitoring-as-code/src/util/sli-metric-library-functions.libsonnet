@@ -74,4 +74,5 @@ local getTargetMetric(sliSpec) =
   createDashboardSelectors(metricConfig, sliSpec): createDashboardSelectors(metricConfig, sliSpec),
   createRuleSelectors(metricConfig, sliSpec, config): createRuleSelectors(metricConfig, sliSpec, config),
   getCustomSelector(selector, metricConfig): getCustomSelector(selector, metricConfig),
+  getTargetMetric(sliSpec): getTargetMetric(sliSpec),
 }
