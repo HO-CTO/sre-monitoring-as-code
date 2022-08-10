@@ -16,7 +16,7 @@ local createGraphPanel(sliSpec) =
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.title,
+    title = '%s' % sliSpec.sliDescription,
     datasource = 'prometheus',
   );
 
@@ -42,8 +42,6 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 
 // File exports
 {
-  description: '',
-  category: '',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
 }

@@ -125,8 +125,6 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 
 // File exports
 {
-  description: 'there should be no messages in the DLQ for %(sliDescription)s',
-  category: 'Pipeline Correctness',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
 }

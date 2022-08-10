@@ -1,4 +1,4 @@
-// Library to generate Grafana and Prometheus config for generic availability
+// Library for average value metrics
 
 // MaC imports
 local sliMetricLibraryFunctions = import '../util/sli-metric-library-functions.libsonnet';
@@ -14,36 +14,37 @@ local graphPanel = grafana.graphPanel;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetric = sliMetricLibraryFunctions.getTargetMetric(sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.sliDescription,
+    title = 'Latency - %s' % sliSpec.sliDescription,
     description = |||
       * Sample interval is %(evalInterval)s 
+      * Request selectors are %(selectors)s
     ||| % {
       evalInterval: sliSpec.evalInterval,
+      selectors: std.strReplace(std.join(', ', sliMetricLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
     },
     datasource = 'prometheus',
-    min = 0,
     fill = 0,
     thresholds = [
       {
         value: sliSpec.metricTarget,
         colorMode: 'critical',
         op: 'gt',
-        line: 'true',
-        fill: 'true',
+        line: true,
+        fill: false,
       },
-    ]
+    ],
   ).addTarget(
     prometheus.target(
-      'sum(sum_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s])) / 
-        sum(count_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s]))' % {
-          durationMetric: metricConfig.metrics.duration,
-          selectors: std.join(',', dashboardSelectors),
-          evalInterval: sliSpec.evalInterval,
-        },
+      'avg_over_time(%(metric)s{%(selectors)s}[%(evalInterval)s])' % {
+        metric: metricConfig.metrics[targetMetric],
+        selectors: std.join(',', dashboardSelectors),
+        evalInterval: sliSpec.evalInterval,
+      },
       legendFormat = 'Average %s' % sliSpec.sliDescription,
-    ),
+    )
   );
 
 // Creates custom recording rules for an SLI type
@@ -54,15 +55,15 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
+  local targetMetric = sliMetricLibraryFunctions.getTargetMetric(sliSpec);
 
   [
     {
       record: 'sli_value',
       expr: |||
-        sum(sum_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s])) / 
-        sum(count_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s]))
+        avg_over_time(%(metric)s{%(selectors)s}[%(evalInterval)s])
       ||| % {
-        durationMetric: metricConfig.metrics.duration,
+        metric: metricConfig.metrics[targetMetric],
         selectors: std.join(',', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },

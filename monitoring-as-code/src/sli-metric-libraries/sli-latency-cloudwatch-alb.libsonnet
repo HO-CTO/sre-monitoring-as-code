@@ -105,8 +105,6 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
 
 // File exports
 {
-  description: 'Target latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
-  category: 'Latency',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
 }

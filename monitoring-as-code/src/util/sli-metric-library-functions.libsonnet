@@ -60,6 +60,12 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
 local getCustomSelector(selector, metricConfig) =
   '%s=~"%s"' % [metricConfig.customSelectorLabels[selector], metricConfig.customSelectors[selector]];
 
+// Gets target metric for an SLI type
+// @param sliSpec The spec for the SLI currently being processed
+// @returns The target metric as a string
+local getTargetMetric(sliSpec) =
+  macConfig.sliMetricLibs[sliSpec.sliType].targetMetric;
+
 // File exports
 {
   getMetricConfig(sliSpec): getMetricConfig(sliSpec),
@@ -68,4 +74,5 @@ local getCustomSelector(selector, metricConfig) =
   createDashboardSelectors(metricConfig, sliSpec): createDashboardSelectors(metricConfig, sliSpec),
   createRuleSelectors(metricConfig, sliSpec, config): createRuleSelectors(metricConfig, sliSpec, config),
   getCustomSelector(selector, metricConfig): getCustomSelector(selector, metricConfig),
+  getTargetMetric(sliSpec): getTargetMetric(sliSpec),
 }
