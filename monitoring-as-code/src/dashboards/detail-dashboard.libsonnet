@@ -43,7 +43,7 @@ local getConfigItems(configField, sliMetricTypes) =
     configItem
     for sliType in std.objectFields(sliMetricTypes)
     for metricType in sliMetricTypes[sliType]
-    for configItem in macConfig.sliMetricLibs[sliType].metricTypes[metricType].detailDashboardConfig[configField]
+    for configItem in macConfig.sliTypesConfig[sliType].metricTypes[metricType].detailDashboardConfig[configField]
   ]);
 
 // Gets the combined detail dashboard config for all SLI types in journey
@@ -57,7 +57,7 @@ local getDetailDashboardConfig(sliMetricTypes) =
         for sliType in std.objectFields(sliMetricTypes)
         for metricType in sliMetricTypes[sliType]
         if 0 < std.length(std.find(
-          configItem, macConfig.sliMetricLibs[sliType].metricTypes[metricType].detailDashboardConfig[configField]))
+          configItem, macConfig.sliTypesConfig[sliType].metricTypes[metricType].detailDashboardConfig[configField]))
       ])
       for configItem in getConfigItems(configField, sliMetricTypes)
     },
@@ -74,8 +74,8 @@ local getTargetFields(target, sliTypes, sliMetricTypes) =
     targetField
     for sliType in sliTypes
     for metricType in sliMetricTypes[sliType]
-    if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target)
-    for targetField in std.objectFields(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target])
+    if std.objectHas(macConfig.sliTypesConfig[sliType].metricTypes[metricType], target)
+    for targetField in std.objectFields(macConfig.sliTypesConfig[sliType].metricTypes[metricType][target])
   ]);
 
 // Gets the unique list of all values of target attribute for each detail dashboard config item
@@ -90,11 +90,11 @@ local getTargets(target, direction, detailDashboardConfig, sliMetricTypes) =
       [configField]: {
         [configItem]: {
           [targetField]: std.set([
-            macConfig.sliMetricLibs[sliType].metricTypes[metricType][target][targetField]
+            macConfig.sliTypesConfig[sliType].metricTypes[metricType][target][targetField]
             for sliType in detailDashboardConfig[configField][configItem]
             for metricType in sliMetricTypes[sliType]
-            if std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType], target) &&
-              std.objectHas(macConfig.sliMetricLibs[sliType].metricTypes[metricType][target], targetField)
+            if std.objectHas(macConfig.sliTypesConfig[sliType].metricTypes[metricType], target) &&
+              std.objectHas(macConfig.sliTypesConfig[sliType].metricTypes[metricType][target], targetField)
           ])
           for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem], sliMetricTypes)
         }

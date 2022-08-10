@@ -10,7 +10,7 @@ local macConfig = import '../mac-config.libsonnet';
 local createSliMetadata(sliSpec) =
   {
     type: sliSpec.sliType,
-    category: macConfig.sliMetricLibs[sliSpec.sliType].category,
+    category: macConfig.sliTypesConfig[sliSpec.sliType].category,
   };
 
 // Creates standard recording rules that are the same for all SLI types
@@ -43,7 +43,7 @@ local createRecordingRules(sliSpec, config) =
 
   {
     recording_rules+: std.flattenArrays([createStandardRecordingRules(sliSpec, sliMetadata),
-      macConfig.sliMetricLibs[sliSpec.sliType].library.createCustomRecordingRules(sliSpec, sliMetadata, config)]),
+      macConfig.sliTypesConfig[sliSpec.sliType].library.createCustomRecordingRules(sliSpec, sliMetadata, config)]),
   };
 
 // File exports

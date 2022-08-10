@@ -13,7 +13,7 @@ local statPanel = grafana.statPanel;
 // @param sliSpec The spec for the SLI having its standard elements created
 // @returns The description for the SLI
 local createSliDescription(sliSpec) =
-  macConfig.sliMetricLibs[sliSpec.sliType].description % {
+  macConfig.sliTypesConfig[sliSpec.sliType].description % {
     sliDescription: sliSpec.sliDescription,
     metricTarget: sliSpec.metricTarget,
     metric_target_percent: sliSpec.metricTarget * 100,
@@ -208,7 +208,7 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
     // Grafana panel showing SLO status over time
     slo_status_panel: createSloStatusPanel(sliDescription, sliSpec),
 
-    graph: macConfig.sliMetricLibs[sliSpec.sliType].library.createGraphPanel(sliSpec),
+    graph: macConfig.sliTypesConfig[sliSpec.sliType].library.createGraphPanel(sliSpec),
   };
 
 // File exports
