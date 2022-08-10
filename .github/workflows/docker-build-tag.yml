@@ -70,3 +70,8 @@ jobs:
           tag: ${{steps.increment.outputs.version}}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_use_head_tag: ${{ github.base_ref == 'main' }}
+
+      - name: Draft release notes
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
