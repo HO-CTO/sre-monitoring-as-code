@@ -2,11 +2,11 @@ name: Snyk Container
 
 on: push 
 
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "master" ]
-  schedule:
-    - cron: '0 */2 * * *'
+#  pull_request:
+#    # The branches below must be a subset of the branches above
+#    branches: [ "master" ]
+#  schedule:
+#    - cron: '0 */2 * * *'
 
 permissions:
   contents: read
