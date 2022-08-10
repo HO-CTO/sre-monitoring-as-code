@@ -27,6 +27,23 @@ local localhostUrls = {
   alertmanager: 'localhost:9093',
 };
 
+// The keys are the labels in the alert payload, the values are either the static value as a string,
+// a string reference to the variable name or a mix of both
+local alertPayload = {
+  source_instance: 'EBSA Prometheus',
+  node_id: '%(config.applicationServiceName)s',
+  resource_id: '%(config.applicationServiceName)s',
+  event_short_desc: '%(sliSpec.title)s',
+  event_description: '%(sliKey)s (%(journeyKey)s journey) is likely to exhaust error budget in less than %(exhaustionDays).2f days',
+  metric_name: '%(sliSpec.sliType)s',
+  event_type: '%(sliSpec.sliType)s',
+  message_key: 'EBSA Prometheus_%(config.applicationServiceName)s_%(sliSpec.sliType)s_%(config.applicationServiceName)s',
+  event_severity: '%(severity)s',
+  raw_event_payload: '"environment":"%(config.environment)s","journey":"%(journeyKey)s","sli":"%(sliKey)s","mac_version":"%(config.macVersion)s","monitoring_slackchannel":"%(config.alertingSlackChannel)s","service":"%(config.product)s","configuration_item":"%(configurationItem)s"',
+  assignment_group: '%(config.servicenowAssignmentGroup)s',
+  runbook_id: '%(runbookUrl)s',
+};
+
 // File exports
 {
   sliTypesConfig: sliMetricConfig.sliTypesConfig,
@@ -34,4 +51,5 @@ local localhostUrls = {
   burnRateWindowList: burnRateWindowList,
   burnRateRuleNameTemplate: burnRateRuleNameTemplate,
   localhostUrls: localhostUrls,
+  alertPayload: alertPayload,
 }
