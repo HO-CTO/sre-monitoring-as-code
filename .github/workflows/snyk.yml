@@ -34,7 +34,7 @@ jobs:
       with:
         image: your/image-to-test
         args: |
-          --file=Dockerfile
+          --file=./monitoring-as-code/Dockerfile
           --severity-threshold=medium
     
     - name: Upload result to GitHub Code Scanning
