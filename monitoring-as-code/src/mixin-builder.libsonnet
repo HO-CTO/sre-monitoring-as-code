@@ -78,7 +78,7 @@ local updateSliSpecList(config, passedSliSpecList) =
 local createSli(config, sliSpecList, sliKey, journeyKey) =
   local sliSpec = sliSpecList[journeyKey][sliKey];
 
-  if std.objectHas(macConfig.sliMetricLibs, sliSpec.sliType) then
+  if std.objectHas(macConfig.sliTypesConfig, sliSpec.sliType) then
     sliElementFunctions.createRecordingRules(sliSpec, config) +
     sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
     dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +

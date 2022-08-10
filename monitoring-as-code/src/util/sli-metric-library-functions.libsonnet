@@ -7,8 +7,8 @@ local macConfig = import '../mac-config.libsonnet';
 // @param sliSpec The spec for the SLI currently being processed
 // @returns Object containing config for a metric type
 local getMetricConfig(sliSpec) = 
-  if std.objectHas(macConfig.sliMetricLibs[sliSpec.sliType].metricTypes, sliSpec.metricType) then
-    macConfig.sliMetricLibs[sliSpec.sliType].metricTypes[sliSpec.metricType]
+  if std.objectHas(macConfig.sliTypesConfig[sliSpec.sliType].metricTypes, sliSpec.metricType) then
+    macConfig.sliTypesConfig[sliSpec.sliType].metricTypes[sliSpec.metricType]
   else error 'undefined metric type';
 
 // Gets a selector using the selector label and selector value from mixin
@@ -64,7 +64,7 @@ local getCustomSelector(selector, metricConfig) =
 // @param sliSpec The spec for the SLI currently being processed
 // @returns The target metric as a string
 local getTargetMetric(sliSpec) =
-  macConfig.sliMetricLibs[sliSpec.sliType].targetMetric;
+  macConfig.sliTypesConfig[sliSpec.sliType].targetMetric;
 
 // File exports
 {
