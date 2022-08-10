@@ -36,7 +36,7 @@ local createGraphPanel(sliSpec) =
         [%(evalInterval)s]) or vector(0))' % {
           messagesDeletedMetric: metricConfig.metrics.messagesDeleted,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: metricConfig.standardQueueSelector,
+          queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels['queueType'], metricConfig.customSelectors['queueType']],
           evalInterval: sliSpec.evalInterval,
         },
       legendFormat='avg number of msgs delivered',
@@ -48,7 +48,7 @@ local createGraphPanel(sliSpec) =
         [%(evalInterval)s]) or vector(0))' % {
           oldestMessageMetric: metricConfig.metrics.oldestMessage,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: metricConfig.standardQueueSelector,
+          queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels['queueType'], metricConfig.customSelectors['queueType']],
           dashboardSliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
           evalInterval: sliSpec.evalInterval,
         },
@@ -59,7 +59,7 @@ local createGraphPanel(sliSpec) =
       'sum(avg_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]) or vector(0))' % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
         selectors: std.join(',', dashboardSelectors),
-        queueSelector: metricConfig.standardQueueSelector,
+        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels['queueType'], metricConfig.customSelectors['queueType']],
         evalInterval: sliSpec.evalInterval,
       },
       legendFormat='avg age of oldest msg in standard queue (secs)',
@@ -85,6 +85,7 @@ local createGraphPanel(sliSpec) =
 // Creates custom recording rules for an SLI type
 // @param sliSpec The spec for the SLI having its recording rules created
 // @param sliMetadata Metadata about the type and category of the SLI
+// @param config The config for the service defined in the mixin file
 // @returns JSON defining the recording rules
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
@@ -100,7 +101,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: metricConfig.standardQueueSelector,
+        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels['queueType'], metricConfig.customSelectors['queueType']],
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
         evalInterval: sliSpec.evalInterval,
       },
@@ -114,39 +115,15 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         oldestMessageMetric: metricConfig.metrics.oldestMessage,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: metricConfig.standardQueueSelector,
+        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels['queueType'], metricConfig.customSelectors['queueType']],
         metricTarget: sliSpec.metricTarget,
       },
       labels: sliSpec.sliLabels,
     },
   ];
 
-// Creates additional detail dashboard templates for this SLI type
-// @param direction Whether the dashboard is for inbound or outbound metrics
-// @returns List of Grafana template objects
-local createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction) =
-  [
-
-  ];
-
-// Creates detail dashboard panels for this SLI type
-// @param sliType The type of SLI
-// @param metrics Collection of metrics used for each SLI type in dashboard
-// @param selectorLabels List of labels used by selectors
-// @param selectors List of selectors
-// @param direction Whether the dashboard is for inbound or outbound metrics
-// @returns List of Grafana panel objects
-local createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction) =
-  std.flattenArrays([
-    
-  ]);
-
 // File exports
 {
-  description: 'Age of oldest message in SQS queue should be less than %(metricTarget)s seconds for %(sliDescription)s',
-  category: 'Pipeline Freshness',
   createGraphPanel(sliSpec): createGraphPanel(sliSpec),
   createCustomRecordingRules(sliSpec, sliMetadata, config): createCustomRecordingRules(sliSpec, sliMetadata, config),
-  createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction): createDetailDashboardTemplates(sliType, metrics, otherConfig, selectors, direction),
-  createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction): createDetailDashboardPanels(sliType, metrics, selectorLabels, otherConfig, selectors, direction),
 }

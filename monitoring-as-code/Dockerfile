@@ -1,5 +1,5 @@
 # Builder image to download binaries
-FROM golang:1.18-alpine3.15 AS builder
+FROM golang:1.19.0-alpine3.15 AS builder
 
 # Download git, jsonnet and jsonnet-bundler
 RUN apk add --no-cache git=2.34.4-r0 curl jq wget && \
@@ -11,7 +11,7 @@ RUN VERSION=$(curl -Ls https://api.github.com/repos/prometheus/prometheus/releas
      wget -qO- "https://github.com/prometheus/prometheus/releases/download/v${VERSION}/prometheus-$VERSION.linux-amd64.tar.gz" \
      | tar xvzf - "prometheus-$VERSION.linux-amd64"/promtool --strip-components=1 && cp promtool /go/bin/promtool
 
-FROM alpine:3.15 AS runner
+FROM alpine:3.16.1 AS runner
 RUN apk --no-cache add git bash
 
 # Pass semver or PR from GitHub workflow

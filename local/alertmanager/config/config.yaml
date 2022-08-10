@@ -32,7 +32,7 @@ receivers:
                 {{ range .Labels.SortedPairs -}} 
                   • *{{ .Name }}:* {{ .Value }}
                 {{ end }}
-                • *time_of_event:* {{ .StartsAt }}
+                • *event_time:* {{ .StartsAt }}
                 
 
                 {{ end }}
