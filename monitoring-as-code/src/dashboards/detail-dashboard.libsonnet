@@ -46,19 +46,22 @@ local getConfigItems(configField, sliMetricTypes) =
     for configItem in macConfig.sliTypesConfig[sliType].metricTypes[metricType].detailDashboardConfig[configField]
   ]);
 
-// Gets the combined detail dashboard config for all SLI types in journey
-// @param sliMetricTypes The object containing metric types for each SLI type
+// Gets the combined detail dashboard config for all metric types in journey
+// @param journeyKey The key of the journey having its detail dashboard generated
+// @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing the combined detail dashboard config
-local getDetailDashboardConfig(sliMetricTypes) =
+local getDetailDashboardConfig(journeyKey, sliSpecList) =
+  local sliMetricTypes = getSliMetricTypes(journeyKey, sliSpecList);
+
   {
     [configField]: {
       [configItem]: std.set([
-        sliType
+        macConfig.sliTypesConfig[sliType].metricTypes[metricType]
         for sliType in std.objectFields(sliMetricTypes)
         for metricType in sliMetricTypes[sliType]
         if 0 < std.length(std.find(
           configItem, macConfig.sliTypesConfig[sliType].metricTypes[metricType].detailDashboardConfig[configField]))
-      ])
+      ], function(metricTypeConfig) std.toString(metricTypeConfig))
       for configItem in getConfigItems(configField, sliMetricTypes)
     },
     for configField in ['standardTemplates', 'elements']
@@ -66,37 +69,33 @@ local getDetailDashboardConfig(sliMetricTypes) =
 
 // Gets the unique list of field names inside target attribute for list of SLI types
 // @param target The name of the target attribute
-// @param sliTypes The list of SLI types
-// @param sliMetricTypes The object containing metric types for each SLI type
+// @param metricTypeConfigList The list of configs for the metric types
 // @returns List of fields inside target attribute
-local getTargetFields(target, sliTypes, sliMetricTypes) =
+local getTargetFields(target, metricTypeConfigList) =
   std.set([
     targetField
-    for sliType in sliTypes
-    for metricType in sliMetricTypes[sliType]
-    if std.objectHas(macConfig.sliTypesConfig[sliType].metricTypes[metricType], target)
-    for targetField in std.objectFields(macConfig.sliTypesConfig[sliType].metricTypes[metricType][target])
+    for metricTypeConfig in metricTypeConfigList
+    if std.objectHas(metricTypeConfig, target)
+    for targetField in std.objectFields(metricTypeConfig[target])
   ]);
 
 // Gets the unique list of all values of target attribute for each detail dashboard config item
 // @param target The name of the target attribute
 // @param direction The type of dashboard elements being created, inbound or outbound
 // @param detailDashboardConfig Object containing the config for detail dashboard
-// @param sliMetricTypes The object containing metric types for each SLI type
 // @returns Object containing list of values in target attribute for each config item
-local getTargets(target, direction, detailDashboardConfig, sliMetricTypes) =
+local getTargets(target, direction, detailDashboardConfig) =
   {
     [direction]: {
       [configField]: {
         [configItem]: {
           [targetField]: std.set([
-            macConfig.sliTypesConfig[sliType].metricTypes[metricType][target][targetField]
-            for sliType in detailDashboardConfig[configField][configItem]
-            for metricType in sliMetricTypes[sliType]
-            if std.objectHas(macConfig.sliTypesConfig[sliType].metricTypes[metricType], target) &&
-              std.objectHas(macConfig.sliTypesConfig[sliType].metricTypes[metricType][target], targetField)
+            metricTypeConfig[target][targetField]
+            for metricTypeConfig in detailDashboardConfig[configField][configItem]
+            if std.objectHas(metricTypeConfig, target) &&
+              std.objectHas(metricTypeConfig[target], targetField)
           ])
-          for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem], sliMetricTypes)
+          for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem])
         }
         for configItem in std.objectFields(detailDashboardConfig[configField])
       }
@@ -115,15 +114,13 @@ local checkDirectionValid(direction, configField, configItem, metrics, selectorL
   0 < std.length(std.objectValues(metrics[direction][configField][configItem])) &&
   0 < std.length(std.objectValues(selectorLabels[direction][configField][configItem]));
 
-// Gets the unique list of products being used by SLIs of certain SLI types
-// @param sliTypes The list of SLI types
+// Gets the unique list of products being used by SLIs
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns List of products used by SLIs
-local getProductList(sliTypes, journeyKey, sliSpecList) =
+local getProductList(journeyKey, sliSpecList) =
   std.join('|', std.set(std.filterMap(
-    function(sliSpec) std.objectHas(sliSpec.selectors, 'product') &&
-      0 < std.length(std.find(sliSpec.sliType, sliTypes)),
+    function(sliSpec) std.objectHas(sliSpec.selectors, 'product'),
     function(sliSpec) sliSpec.selectors.product,
     std.objectValues(sliSpecList[journeyKey])
   )));
@@ -138,6 +135,8 @@ local getProductList(sliTypes, journeyKey, sliSpecList) =
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing Grafana selectors
 local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList) =
+  local productList = getProductList(journeyKey, sliSpecList);
+  
   {
     [direction]: {
       [configField]: {
@@ -148,7 +147,7 @@ local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelec
           )),
           product: std.join(', ', std.map( 
             function(selectorLabel) '%s=~"%s|"' % [selectorLabel, 
-              getProductList(detailDashboardConfig[configField][configItem], journeyKey, sliSpecList)],
+              productList],
             selectorLabels[direction][configField][configItem]['product']
           )),
         }
@@ -239,21 +238,19 @@ local createPanels(metrics, selectorLabels, customSelectorLabels, customSelector
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns JSON for a detail dashboard
 local createDetailDashboard(journeyKey, config, links, sliSpecList) =
-  local sliMetricTypes = getSliMetricTypes(journeyKey, sliSpecList);
+  local detailDashboardConfig = getDetailDashboardConfig(journeyKey, sliSpecList);
 
-  local detailDashboardConfig = getDetailDashboardConfig(sliMetricTypes);
+  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig) +
+    getTargets('outboundMetrics', 'outbound', detailDashboardConfig);
 
-  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig, sliMetricTypes) +
-    getTargets('outboundMetrics', 'outbound', detailDashboardConfig, sliMetricTypes);
+  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig) +
+    getTargets('outboundSelectorLabels', 'outbound', detailDashboardConfig);
 
-  local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes) +
-    getTargets('outboundSelectorLabels', 'outbound', detailDashboardConfig, sliMetricTypes);
+  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig) +
+    getTargets('customSelectorLabels', 'outbound', detailDashboardConfig);
 
-  local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig, sliMetricTypes) +
-    getTargets('customSelectorLabels', 'outbound', detailDashboardConfig, sliMetricTypes);
-
-  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig, sliMetricTypes) +
-    getTargets('customSelectors', 'outbound', detailDashboardConfig, sliMetricTypes);
+  local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig) +
+    getTargets('customSelectors', 'outbound', detailDashboardConfig);
 
   local selectors = createSelectors(
     metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList);
