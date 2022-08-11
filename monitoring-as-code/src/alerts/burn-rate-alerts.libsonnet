@@ -38,7 +38,12 @@ local createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKe
     slo: sliKey,
   };
 
-//
+// Gets all of the items (excluding runbookUrl and configurationItem) from a given object and
+// creates a new object with the field names being the name of the object then a dot then the item
+// field name
+// @param objectName The name of the object as a string
+// @param object The actual object
+// @returns New object containing the items from the passed object with new field names
 local getObjectItems(objectName, object) =
   {
     ['%s.%s' % [objectName, itemField]]: object[itemField]
@@ -46,7 +51,16 @@ local getObjectItems(objectName, object) =
     if itemField != 'runbookUrl' && itemField != 'configurationItem'
   };
 
-//
+// Gets all of the values needed for the alert payload
+// @param alertName The name of the alert
+// @param severity The severity of the alert
+// @param alertTitle The title of the alert
+// @param errorBudgetBurnWindow The current burn rate window
+// @param config The config for the service defined in the mixin file
+// @param sliSpec The spec for the SLI having its alerting rules created
+// @param sliKey The key of the current SLI having rules generated
+// @param journeyKey The key of the journey containing the SLI having rules generated
+// @returns Object containing the values needed for the alert payload
 local getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey) =
   {
     alertName: alertName,
@@ -63,14 +77,19 @@ local getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWind
   +
   getObjectItems('sliSpec', sliSpec);
 
-//
+// Creates the alert payload by doing string substitution on the alertPayloadTemplate in macConfig
+// using the alertPayloadConfig
+// @param alertPayloadConfig The object containing the values needed for the alert payload
+// @returns Object containing the alert payload with formatted values
 local createAlertPayload(alertPayloadConfig) =
   {
     [alertPayloadTemplateField]: macConfig.alertPayloadTemplate[alertPayloadTemplateField] % alertPayloadConfig
     for alertPayloadTemplateField in std.objectFields(macConfig.alertPayloadTemplate)
   };
 
-//
+// Creates a string of the alert payload as a list of bullet points
+// @param alertPayload The alert payload object
+// @returns String of the alert payload
 local createAlertPayloadString(alertPayload) =
   std.join('\n• ', std.map(
     function(alertPayloadField) '*%s:* %s' % [alertPayloadField, alertPayload[alertPayloadField]],
