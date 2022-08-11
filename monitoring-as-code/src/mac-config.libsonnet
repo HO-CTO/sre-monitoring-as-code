@@ -29,7 +29,7 @@ local localhostUrls = {
 
 // The keys are the labels in the alert payload, the values are either the static value as a string,
 // a string reference to the variable name or a mix of both
-local alertPayload = {
+local alertPayloadTemplate = {
   source_instance: 'EBSA Prometheus',
   node_id: '%(config.applicationServiceName)s',
   resource_id: '%(config.applicationServiceName)s',
@@ -51,5 +51,5 @@ local alertPayload = {
   burnRateWindowList: burnRateWindowList,
   burnRateRuleNameTemplate: burnRateRuleNameTemplate,
   localhostUrls: localhostUrls,
-  alertPayload: alertPayload,
+  alertPayloadTemplate: alertPayloadTemplate,
 }

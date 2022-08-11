@@ -66,8 +66,8 @@ local getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWind
 //
 local createAlertPayload(alertPayloadConfig) =
   {
-    [alertPayloadField]: macConfig.alertPayload[alertPayloadField] % alertPayloadConfig
-    for alertPayloadField in std.objectFields(macConfig.alertPayload)
+    [alertPayloadTemplateField]: macConfig.alertPayloadTemplate[alertPayloadTemplateField] % alertPayloadConfig
+    for alertPayloadTemplateField in std.objectFields(macConfig.alertPayloadTemplate)
   };
 
 //
