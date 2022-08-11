@@ -115,15 +115,18 @@ local checkDirectionValid(direction, configField, configItem, metrics, selectorL
   0 < std.length(std.objectValues(selectorLabels[direction][configField][configItem]));
 
 // Gets the unique list of products being used by SLIs
+// @param metricTypeConfigList The list of configs for the metric types
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns List of products used by SLIs
-local getProductList(journeyKey, sliSpecList) =
-  std.join('|', std.set(std.filterMap(
-    function(sliSpec) std.objectHas(sliSpec.selectors, 'product'),
-    function(sliSpec) sliSpec.selectors.product,
-    std.objectValues(sliSpecList[journeyKey])
-  )));
+local getProductList(metricTypeConfigList, journeyKey, sliSpecList) =
+  std.join('|', std.set([
+    sliSpec.selectors.product
+    for sliSpec in std.objectValues(sliSpecList[journeyKey])
+    if std.objectHas(sliSpec.selectors, 'product')
+    for metricTypeConfig in metricTypeConfigList
+    if metricTypeConfig == macConfig.sliTypesConfig[sliSpec.sliType].metricTypes[sliSpec.metricType]
+  ]));
 
 // Creates Grafana selectors for templates and dashboards
 // @param metrics Object containing metrics
@@ -135,8 +138,6 @@ local getProductList(journeyKey, sliSpecList) =
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing Grafana selectors
 local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList) =
-  local productList = getProductList(journeyKey, sliSpecList);
-  
   {
     [direction]: {
       [configField]: {
@@ -147,7 +148,7 @@ local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelec
           )),
           product: std.join(', ', std.map( 
             function(selectorLabel) '%s=~"%s|"' % [selectorLabel, 
-              productList],
+              getProductList(detailDashboardConfig[configField][configItem], journeyKey, sliSpecList)],
             selectorLabels[direction][configField][configItem]['product']
           )),
         }
