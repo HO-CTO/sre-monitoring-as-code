@@ -39,9 +39,33 @@ jobs:
         with:
           context: ./monitoring-as-code
           file: ./monitoring-as-code/Dockerfile
-          push: true
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             PACKAGE_TOKEN=${{secrets.GITHUB_TOKEN}}
             MAC_VERSION='#${{ github.event.number }}'
+
+      - name: Run Snyk to check Docker image for vulnerabilities
+        id: snyk
+        continue-on-error: true
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ steps.meta.outputs.tags }}
+          args: |
+            --file=Dockerfile
+            --severity-threshold=medium
+
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
+
+      - name: Check on failures
+        if: steps.snyk.outcome != 'success'
+        run: exit 1
+
+      - name: Push image to GitHub Container Registry
+        run: docker push ${{ steps.meta.outputs.tags }}
