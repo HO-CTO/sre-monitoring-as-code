@@ -194,6 +194,8 @@ local metricTypesConfig = {
     },
     metrics: {
       averageLatency: 'aws_rds_read_latency_average',
+      averageIops: 'aws_rds_read_iops_average',
+      averageThroughput: 'aws_rds_read_throughput_average',
     },
     detailDashboardConfig: {
       standardTemplates: [],
@@ -207,6 +209,8 @@ local metricTypesConfig = {
     },
     metrics: {
       averageLatency: 'aws_rds_write_latency_average',
+      averageIops: 'aws_rds_write_iops_average',
+      averageThroughput: 'aws_rds_write_throughput_average',
     },
     detailDashboardConfig: {
       standardTemplates: [],
@@ -310,6 +314,26 @@ local sliTypesConfig = {
     targetMetric: 'averageLatency',
     description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
     category: 'Latency',
+  },
+  'average_iops': {
+    library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+    metricTypes: {
+      'aws_rds_read_iops_average': metricTypesConfig['aws_rds_read'],
+      'aws_rds_write_iops_average': metricTypesConfig['aws_rds_write'],
+    },
+    targetMetric: 'averageIops',
+    description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+    category: 'IOPS',
+  },
+  'average_throughput': {
+    library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+    metricTypes: {
+      'aws_rds_read_throughput_average': metricTypesConfig['aws_rds_read'],
+      'aws_rds_write_throughput_average': metricTypesConfig['aws_rds_write'],
+    },
+    targetMetric: 'averageThroughput',
+    description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+    category: 'Throughput',
   },
 };
 
