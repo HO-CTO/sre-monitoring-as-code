@@ -59,7 +59,7 @@ jobs:
           image: ${{ steps.meta.outputs.tags }}
           args: |
             --file=./monitoring-as-code/Dockerfile
-            --severity-threshold=medium
+            --severity-threshold=low
             --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
