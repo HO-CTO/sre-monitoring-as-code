@@ -10,40 +10,25 @@ local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local template = grafana.template;
 
-// Gets the unique list of SLI types used in the journey
+// Gets the unique list of metric types used by the SLI specs
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
-// @returns List of SLI types used in the journey
-local getSliTypes(journeyKey, sliSpecList) =
-  std.set([
-    sliSpec.sliType
-    for sliSpec in std.objectValues(sliSpecList[journeyKey])
-  ]);
-
-// Gets the list of metric types used for each SLI type in the journey
-// @param journeyKey The key of the journey having its detail dashboard generated
-// @param sliSpecList The list of SLI specs defined in the mixin file
-// @returns Object containing metric types for each SLI type
-local getSliMetricTypes(journeyKey, sliSpecList) =
-  {
-    [sliType]: std.set(std.filterMap(
-      function(sliSpec) sliSpec.sliType == sliType,
-      function(sliSpec) sliSpec.metricType,
-      std.objectValues(sliSpecList[journeyKey])
-    ))
-    for sliType in getSliTypes(journeyKey, sliSpecList)
-  };
+// @returns The list of metric types
+local getSliSpecMetricTypes(journeyKey, sliSpecList) =
+  std.set(std.map(
+    function(sliSpec) sliSpec.metricType,
+    std.objectValues(sliSpecList[journeyKey])
+  ));
 
 // Gets the unique list of items for config field in all SLI types detail dashboard config
 // @param configField The field in the detail dashboard config
-// @param sliMetricTypes The object containing metric types for each SLI type
+// @param sliSpecMetricTypes The object containing metric types for each SLI spec
 // @returns List of config items
-local getConfigItems(configField, sliMetricTypes) =
+local getConfigItems(configField, sliSpecMetricTypes) =
   std.set([
     configItem
-    for sliType in std.objectFields(sliMetricTypes)
-    for metricType in sliMetricTypes[sliType]
-    for configItem in macConfig.sliTypesConfig[sliType].metricTypes[metricType].detailDashboardConfig[configField]
+    for metricType in sliSpecMetricTypes
+    for configItem in macConfig.metricTypes[metricType].detailDashboardConfig[configField]
   ]);
 
 // Gets the combined detail dashboard config for all metric types in journey
@@ -51,32 +36,72 @@ local getConfigItems(configField, sliMetricTypes) =
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing the combined detail dashboard config
 local getDetailDashboardConfig(journeyKey, sliSpecList) =
-  local sliMetricTypes = getSliMetricTypes(journeyKey, sliSpecList);
+  local sliSpecMetricTypes = getSliSpecMetricTypes(journeyKey, sliSpecList);
 
   {
     [configField]: {
       [configItem]: std.set([
-        macConfig.sliTypesConfig[sliType].metricTypes[metricType]
-        for sliType in std.objectFields(sliMetricTypes)
-        for metricType in sliMetricTypes[sliType]
+        metricType
+        for metricType in sliSpecMetricTypes
         if 0 < std.length(std.find(
-          configItem, macConfig.sliTypesConfig[sliType].metricTypes[metricType].detailDashboardConfig[configField]))
+          configItem, macConfig.metricTypes[metricType].detailDashboardConfig[configField]))
       ], function(metricTypeConfig) std.toString(metricTypeConfig))
-      for configItem in getConfigItems(configField, sliMetricTypes)
+      for configItem in getConfigItems(configField, sliSpecMetricTypes)
     },
     for configField in ['standardTemplates', 'elements']
   };
 
-// Gets the unique list of field names inside target attribute for list of SLI types
+// Gets the unique list of metric field names for list of metric types
+// @param configItemMetricTypes The list of metric types for the config item
+// @returns List of metric fields
+local getTargetMetricFields(configItemMetricTypes) =
+  std.set([
+    metricField
+    for metricType in configItemMetricTypes
+    for metricField in std.objectFields(macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics)
+  ]);
+
+// Gets the unique list of all metrics for each detail dashboard config item
+// @param detailDashboardConfig Object containing the config for detail dashboard
+// @returns Object containing list of metrics for each config item
+local getMetrics(detailDashboardConfig) =
+  local metricAttributes = {
+    inbound: 'metrics',
+    outbound: 'outboundMetrics',
+  };
+
+  {
+    [direction]: {
+      [configField]: {
+        [configItem]: {
+          [targetMetricField]: std.set([
+            macConfig.metricTypes[metricType].metricTypeConfig[metricAttributes[direction]][
+              macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics[targetMetricField]]
+            for metricType in detailDashboardConfig[configField][configItem]
+            if std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig, metricAttributes[direction]) &&
+              std.objectHas(macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics, targetMetricField) &&
+              std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig[metricAttributes[direction]], 
+                macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics[targetMetricField])
+          ])
+          for targetMetricField in getTargetMetricFields(detailDashboardConfig[configField][configItem])
+        }
+        for configItem in std.objectFields(detailDashboardConfig[configField])
+      }
+      for configField in ['standardTemplates', 'elements']
+    }
+    for direction in std.objectFields(metricAttributes)
+  };
+
+// Gets the unique list of field names inside target attribute for list of metric types
 // @param target The name of the target attribute
-// @param metricTypeConfigList The list of configs for the metric types
+// @param configItemMetricTypes The list of metric types for the config item
 // @returns List of fields inside target attribute
-local getTargetFields(target, metricTypeConfigList) =
+local getTargetFields(target, configItemMetricTypes) =
   std.set([
     targetField
-    for metricTypeConfig in metricTypeConfigList
-    if std.objectHas(metricTypeConfig, target)
-    for targetField in std.objectFields(metricTypeConfig[target])
+    for metricType in configItemMetricTypes
+    if std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig, target)
+    for targetField in std.objectFields(macConfig.metricTypes[metricType].metricTypeConfig[target])
   ]);
 
 // Gets the unique list of all values of target attribute for each detail dashboard config item
@@ -90,10 +115,10 @@ local getTargets(target, direction, detailDashboardConfig) =
       [configField]: {
         [configItem]: {
           [targetField]: std.set([
-            metricTypeConfig[target][targetField]
-            for metricTypeConfig in detailDashboardConfig[configField][configItem]
-            if std.objectHas(metricTypeConfig, target) &&
-              std.objectHas(metricTypeConfig[target], targetField)
+            macConfig.metricTypes[metricType].metricTypeConfig[target][targetField]
+            for metricType in detailDashboardConfig[configField][configItem]
+            if std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig, target) &&
+              std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig[target], targetField)
           ])
           for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem])
         }
@@ -115,17 +140,17 @@ local checkDirectionValid(direction, configField, configItem, metrics, selectorL
   0 < std.length(std.objectValues(selectorLabels[direction][configField][configItem]));
 
 // Gets the unique list of products being used by SLIs
-// @param metricTypeConfigList The list of configs for the metric types
+// @param configItemMetricTypes The list of metric types for the config item
 // @param journeyKey The key of the journey having its detail dashboard generated
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns List of products used by SLIs
-local getProductList(metricTypeConfigList, journeyKey, sliSpecList) =
+local getProductList(configItemMetricTypes, journeyKey, sliSpecList) =
   std.join('|', std.set([
     sliSpec.selectors.product
     for sliSpec in std.objectValues(sliSpecList[journeyKey])
     if std.objectHas(sliSpec.selectors, 'product')
-    for metricTypeConfig in metricTypeConfigList
-    if metricTypeConfig == macConfig.sliTypesConfig[sliSpec.sliType].metricTypes[sliSpec.metricType]
+    for metricType in configItemMetricTypes
+    if metricType == sliSpec.metricType
   ]));
 
 // Creates Grafana selectors for templates and dashboards
@@ -241,8 +266,7 @@ local createPanels(metrics, selectorLabels, customSelectorLabels, customSelector
 local createDetailDashboard(journeyKey, config, links, sliSpecList) =
   local detailDashboardConfig = getDetailDashboardConfig(journeyKey, sliSpecList);
 
-  local metrics = getTargets('metrics', 'inbound', detailDashboardConfig) +
-    getTargets('outboundMetrics', 'outbound', detailDashboardConfig);
+  local metrics = getMetrics(detailDashboardConfig);
 
   local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig) +
     getTargets('outboundSelectorLabels', 'outbound', detailDashboardConfig);

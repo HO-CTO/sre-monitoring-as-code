@@ -1,8 +1,5 @@
 // This file is for storing the config of the MaC framework
 
-// MaC imports
-local sliMetricConfig = import 'sli-metric-config.libsonnet';
-
 // Config items
 // Collection of imports for detail dashboard elements
 local detailDashboardElements = {
@@ -46,7 +43,7 @@ local alertPayloadTemplate = {
 
 // File exports
 {
-  sliTypesConfig: sliMetricConfig.sliTypesConfig,
+  metricTypes: (import 'metric-types.libsonnet'),
   detailDashboardElements: detailDashboardElements,
   burnRateWindowList: burnRateWindowList,
   burnRateRuleNameTemplate: burnRateRuleNameTemplate,

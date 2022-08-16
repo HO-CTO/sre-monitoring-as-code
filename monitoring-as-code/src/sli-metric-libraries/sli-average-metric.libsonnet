@@ -14,7 +14,7 @@ local graphPanel = grafana.graphPanel;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
-  local targetMetric = sliMetricLibraryFunctions.getTargetMetric(sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = 'Latency - %s' % sliSpec.sliDescription,
@@ -39,7 +39,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'avg_over_time(%(metric)s{%(selectors)s}[%(evalInterval)s])' % {
-        metric: metricConfig.metrics[targetMetric],
+        metric: targetMetrics.average,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -55,7 +55,7 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
-  local targetMetric = sliMetricLibraryFunctions.getTargetMetric(sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   [
     {
@@ -63,7 +63,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       expr: |||
         avg_over_time(%(metric)s{%(selectors)s}[%(evalInterval)s])
       ||| % {
-        metric: metricConfig.metrics[targetMetric],
+        metric: targetMetrics.average,
         selectors: std.join(',', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },

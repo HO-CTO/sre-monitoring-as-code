@@ -79,12 +79,12 @@ local createCustomSelectors(direction, customSelectorLabels, customSelectorValue
       customSelectorLabels.targetQueue
     )),
     standardQueue: std.join(', ', std.map(
-      function(selectorLabel) '%s!~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.queueType)],
-      customSelectorLabels.queueType
+      function(selectorLabel) '%s!~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueType)],
+      customSelectorLabels.deadletterQueueType
     )),
     deadletterQueue: std.join(', ', std.map(
-      function(selectorLabel) '%s=~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.queueType)],
-      customSelectorLabels.queueType
+      function(selectorLabel) '%s=~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueType)],
+      customSelectorLabels.deadletterQueueType
     )),
   };
 

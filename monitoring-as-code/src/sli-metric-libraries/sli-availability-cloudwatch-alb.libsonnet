@@ -14,6 +14,7 @@ local graphPanel = grafana.graphPanel;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = 'Requests, errors, and error rate - %s' % sliSpec.sliDescription,
@@ -42,7 +43,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'sum(rate(%(requestCountMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))' % {
-        requestCountMetric: metricConfig.metrics.requestCount,
+        requestCountMetric: targetMetrics.requestCount,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -52,8 +53,8 @@ local createGraphPanel(sliSpec) =
     prometheus.target(
       '(sum(rate(%(count4xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0)) + 
         sum(rate(%(count5xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0)))' % {
-          count4xxMetric: metricConfig.metrics.count4xx,
-          count5xxMetric: metricConfig.metrics.count5xx,
+          count4xxMetric: targetMetrics.count4xx,
+          count5xxMetric: targetMetrics.count5xx,
           selectors: std.join(',', dashboardSelectors),
           evalInterval: sliSpec.evalInterval,
         },
@@ -64,9 +65,9 @@ local createGraphPanel(sliSpec) =
       '(sum(rate(%(count4xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0)) + 
         sum(rate(%(count5xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))) / 
         sum(rate(%(requestCountMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))' % {
-          count4xxMetric: metricConfig.metrics.count4xx,
-          count5xxMetric: metricConfig.metrics.count5xx,
-          requestCountMetric: metricConfig.metrics.requestCount,
+          count4xxMetric: targetMetrics.count4xx,
+          count5xxMetric: targetMetrics.count5xx,
+          requestCountMetric: targetMetrics.requestCount,
           selectors: std.join(',', dashboardSelectors),
           evalInterval: sliSpec.evalInterval,
         },
@@ -88,6 +89,7 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   [
     {
@@ -97,9 +99,9 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
         sum(rate(%(count5xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))) /
         sum(rate(%(requestCountMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
       ||| % {
-        count4xxMetric: metricConfig.metrics.count4xx,
-        count5xxMetric: metricConfig.metrics.count5xx,
-        requestCountMetric: metricConfig.metrics.requestCount,
+        count4xxMetric: targetMetrics.count4xx,
+        count5xxMetric: targetMetrics.count5xx,
+        requestCountMetric: targetMetrics.requestCount,
         selectors: std.join(',', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -111,7 +113,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
         (sum(sum_over_time(%(requestCountMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0)))
         >= 0
       ||| % {
-        requestCountMetric: metricConfig.metrics.requestCount,
+        requestCountMetric: targetMetrics.requestCount,
         selectors: std.join(',', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
