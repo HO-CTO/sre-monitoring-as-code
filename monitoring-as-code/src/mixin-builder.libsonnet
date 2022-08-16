@@ -78,13 +78,15 @@ local updateSliSpecList(config, passedSliSpecList) =
 local createSli(config, sliSpecList, sliKey, journeyKey) =
   local sliSpec = sliSpecList[journeyKey][sliKey];
 
-  if std.objectHas(macConfig.sliTypesConfig, sliSpec.sliType) then
-    sliElementFunctions.createRecordingRules(sliSpec, config) +
-    sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
-    dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +
-    alertFunctions.createBurnRateRules(sliSpec) +
-    alertFunctions.createBurnRateAlerts(config, sliSpec, sliKey, journeyKey)
-  else error 'undefined sli type';
+  if std.objectHas(macConfig.metricTypes, sliSpec.metricType) then
+    if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliSpec.sliType) then
+      sliElementFunctions.createRecordingRules(sliSpec, config) +
+      sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
+      dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +
+      alertFunctions.createBurnRateRules(sliSpec) +
+      alertFunctions.createBurnRateAlerts(config, sliSpec, sliKey, journeyKey)
+    else error 'Metric type does not have SLI type'
+  else error 'Undefined metric type';
 
 // Creates a list of all the SLIs in a service with their standard dashboard elements, unique
 // dashboard elements, recording rules, alerting rules and alerts

@@ -14,6 +14,7 @@ local graphPanel = grafana.graphPanel;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = '%s' % sliSpec.sliDescription,
@@ -38,7 +39,7 @@ local createGraphPanel(sliSpec) =
     prometheus.target(
       'sum(sum_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s])) / 
         sum(count_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s]))' % {
-          durationMetric: metricConfig.metrics.duration,
+          durationMetric: targetMetrics.duration,
           selectors: std.join(',', dashboardSelectors),
           evalInterval: sliSpec.evalInterval,
         },
@@ -54,6 +55,7 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   [
     {
@@ -62,7 +64,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
         sum(sum_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s])) / 
         sum(count_over_time(%(durationMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
-        durationMetric: metricConfig.metrics.duration,
+        durationMetric: targetMetrics.duration,
         selectors: std.join(',', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },

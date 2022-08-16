@@ -23,6 +23,7 @@ local getCloudwatchPercentile(sliSpec) =
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = 'Latency - %s' % sliSpec.sliDescription,
@@ -48,7 +49,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'avg (%(responseTimeMetric)s_average{%(selectors)s})' % {
-        responseTimeMetric: metricConfig.metrics.responseTime,
+        responseTimeMetric: targetMetrics.responseTime,
         selectors: std.join(',', dashboardSelectors)
       },
       legendFormat = 'Average Latency',
@@ -56,7 +57,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'max (%(responseTimeMetric)s_p90{%(selectors)s})' % {
-        responseTimeMetric: metricConfig.metrics.responseTime,
+        responseTimeMetric: targetMetrics.responseTime,
         selectors: std.join(',', dashboardSelectors)
       },
       legendFormat = 'Max p90 Latency',
@@ -64,7 +65,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'max (%(responseTimeMetric)s_p95{%(selectors)s})' % {
-        responseTimeMetric: metricConfig.metrics.responseTime,
+        responseTimeMetric: targetMetrics.responseTime,
         selectors: std.join(',', dashboardSelectors)
       },
       legendFormat = 'Max p95 Latency',
@@ -72,7 +73,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'max (%(responseTimeMetric)s_p99{%(selectors)s})' % {
-        responseTimeMetric: metricConfig.metrics.responseTime,
+        responseTimeMetric: targetMetrics.responseTime,
         selectors: std.join(',', dashboardSelectors)
       },
       legendFormat = 'Max p99 Latency',
@@ -87,6 +88,7 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
   local cloudwatchPercentile = getCloudwatchPercentile(sliSpec);
 
   [
@@ -95,7 +97,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       expr: |||
         max(%(responseTimeMetric)s_%(cloudwatchPercentile)s{%(selectors)s})
       ||| % {
-        responseTimeMetric: metricConfig.metrics.responseTime,
+        responseTimeMetric: targetMetrics.responseTime,
         selectors: std.join(',', ruleSelectors),
         cloudwatchPercentile: cloudwatchPercentile,
       },

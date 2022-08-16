@@ -7,9 +7,7 @@ local macConfig = import '../mac-config.libsonnet';
 // @param sliSpec The spec for the SLI currently being processed
 // @returns Object containing config for a metric type
 local getMetricConfig(sliSpec) = 
-  if std.objectHas(macConfig.sliTypesConfig[sliSpec.sliType].metricTypes, sliSpec.metricType) then
-    macConfig.sliTypesConfig[sliSpec.sliType].metricTypes[sliSpec.metricType]
-  else error 'undefined metric type';
+  macConfig.metricTypes[sliSpec.metricType].metricTypeConfig;
 
 // Gets a selector using the selector label and selector value from mixin
 // @param selector The field for the selector
@@ -60,11 +58,15 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
 local getCustomSelector(selector, metricConfig) =
   '%s=~"%s"' % [metricConfig.customSelectorLabels[selector], metricConfig.customSelectors[selector]];
 
-// Gets target metric for an SLI type
+// Gets target metrics for an SLI type
+// @param metricConfig Object containing config for a metric type
 // @param sliSpec The spec for the SLI currently being processed
 // @returns The target metric as a string
-local getTargetMetric(sliSpec) =
-  macConfig.sliTypesConfig[sliSpec.sliType].targetMetric;
+local getTargetMetrics(metricConfig, sliSpec) =
+  {
+    [targetMetricField]: metricConfig.metrics[macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].targetMetrics[targetMetricField]]
+    for targetMetricField in std.objectFields(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].targetMetrics)
+  };
 
 // File exports
 {
@@ -74,5 +76,5 @@ local getTargetMetric(sliSpec) =
   createDashboardSelectors(metricConfig, sliSpec): createDashboardSelectors(metricConfig, sliSpec),
   createRuleSelectors(metricConfig, sliSpec, config): createRuleSelectors(metricConfig, sliSpec, config),
   getCustomSelector(selector, metricConfig): getCustomSelector(selector, metricConfig),
-  getTargetMetric(sliSpec): getTargetMetric(sliSpec),
+  getTargetMetrics(metricConfig, sliSpec): getTargetMetrics(metricConfig, sliSpec),
 }

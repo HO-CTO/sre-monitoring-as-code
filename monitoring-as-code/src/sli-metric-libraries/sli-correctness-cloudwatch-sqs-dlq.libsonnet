@@ -18,6 +18,7 @@ local statPanel = grafana.statPanel;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = '%s' % sliSpec.sliDescription,
@@ -35,9 +36,9 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'sum(avg_over_time(%(messagesVisibleMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]) or vector(0))' % {
-        messagesVisibleMetric: metricConfig.metrics.messagesVisible,
+        messagesVisibleMetric: targetMetrics.messagesVisible,
         selectors: std.join(',', dashboardSelectors),
-        queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
+        queueSelector: sliMetricLibraryFunctions.getCustomSelector('deadletterQueueName', metricConfig),
         evalInterval: sliSpec.evalInterval,
       },
       legendFormat = 'avg number of msgs visible in dlq',
@@ -47,9 +48,9 @@ local createGraphPanel(sliSpec) =
       'sum(avg_over_time(sqs_message_received_in_dlq_avg{%(dashboardSliLabelSelectors)s}[%(evalInterval)s]) 
         or vector(0))/ sum(count_over_time(%(messagesVisibleMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]) 
         or vector(0))' % {
-          messagesVisibleMetric: metricConfig.metrics.messagesVisible,
+          messagesVisibleMetric: targetMetrics.messagesVisible,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
+          queueSelector: sliMetricLibraryFunctions.getCustomSelector('deadletterQueueName', metricConfig),
           dashboardSliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
           evalInterval: sliSpec.evalInterval,
         },
@@ -59,9 +60,9 @@ local createGraphPanel(sliSpec) =
     prometheus.target(
       'sum(avg_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}
         [%(evalInterval)s]) or vector(0))' % {
-          oldestMessageMetric: metricConfig.metrics.oldestMessage,
+          oldestMessageMetric: targetMetrics.oldestMessage,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
+          queueSelector: sliMetricLibraryFunctions.getCustomSelector('deadletterQueueName', metricConfig),
           evalInterval: sliSpec.evalInterval,
         },
       legendFormat = 'avg age of oldest msg in dlq (secs)',
@@ -92,6 +93,7 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   [
     {
@@ -101,9 +103,9 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
         /
         (sum(count_over_time(%(messagesVisibleMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s])) or vector(0))
       ||| % {
-        messagesVisibleMetric: metricConfig.metrics.messagesVisible,
+        messagesVisibleMetric: targetMetrics.messagesVisible,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
+        queueSelector: sliMetricLibraryFunctions.getCustomSelector('deadletterQueueName', metricConfig),
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
         evalInterval: sliSpec.evalInterval,
       },
@@ -115,9 +117,9 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       expr: |||
         (%(messagesVisibleMetric)s{%(selectors)s, %(queueSelector)s} >= bool 1) or vector(0)
       ||| % {
-        messagesVisibleMetric: metricConfig.metrics.messagesVisible,
+        messagesVisibleMetric: targetMetrics.messagesVisible,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: sliMetricLibraryFunctions.getCustomSelector('queueName', metricConfig),
+        queueSelector: sliMetricLibraryFunctions.getCustomSelector('deadletterQueueName', metricConfig),
       },
       labels: sliSpec.sliLabels,
     },

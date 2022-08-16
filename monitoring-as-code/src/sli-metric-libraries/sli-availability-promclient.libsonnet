@@ -16,6 +16,7 @@ local row = grafana.row;
 local createGraphPanel(sliSpec) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliMetricLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = 'Requests, errors, and error rate - %s' % sliSpec.sliDescription,
@@ -45,7 +46,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       'sum(rate(%(countMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))' % {
-        countMetric: metricConfig.metrics.count,
+        countMetric: targetMetrics.count,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -55,7 +56,7 @@ local createGraphPanel(sliSpec) =
     prometheus.target(
       'sum(rate(%(countMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))' %
       {
-        countMetric: metricConfig.metrics.count,
+        countMetric: targetMetrics.count,
         selectors: std.join(',', dashboardSelectors + [sliMetricLibraryFunctions.getSelector('errorStatus', metricConfig, sliSpec)]),
         evalInterval: sliSpec.evalInterval,
       },
@@ -65,7 +66,7 @@ local createGraphPanel(sliSpec) =
     prometheus.target(
       'sum(rate(%(countMetric)s{%(errorSelectors)s}[%(evalInterval)s]) or vector(0)) / 
         sum(rate(%(countMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))' % {
-          countMetric: metricConfig.metrics.count,
+          countMetric: targetMetrics.count,
           selectors: std.join(',', dashboardSelectors),
           errorSelectors: std.join(',', dashboardSelectors + [sliMetricLibraryFunctions.getSelector('errorStatus', metricConfig, sliSpec)]),
           evalInterval: sliSpec.evalInterval,
@@ -88,6 +89,7 @@ local createGraphPanel(sliSpec) =
 local createCustomRecordingRules(sliSpec, sliMetadata, config) =
   local metricConfig = sliMetricLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliMetricLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
+  local targetMetrics = sliMetricLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   [
     {
@@ -96,7 +98,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
         sum(rate(%(countMetric)s{%(errorSelectors)s}[%(evalInterval)s]) or vector(0)) / 
         sum(rate(%(countMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
-        countMetric: metricConfig.metrics.count,
+        countMetric: targetMetrics.count,
         selectors: std.join(',', ruleSelectors),
         errorSelectors: std.join(',', ruleSelectors + [sliMetricLibraryFunctions.getSelector('errorStatus', metricConfig, sliSpec)]),
         evalInterval: sliSpec.evalInterval,
