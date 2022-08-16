@@ -13,8 +13,8 @@ jobs:
     name: 'Branch Publish'
     permissions:
       contents: read
-      security-events: write
       packages: write
+      security-events: write
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'smoketest') == true
     steps:
