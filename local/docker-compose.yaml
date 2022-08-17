@@ -190,7 +190,7 @@ services:
             retries: 30
 
     alertmanager:
-        image: prom/alertmanager:v0.22.0
+        image: prom/alertmanager:v0.24.0
         ports:
             - 9093:9093
         volumes:
