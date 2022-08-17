@@ -9,6 +9,3 @@
     "config:base"
   ]
 }
-
-
-(^|/)jsonnetfile\.json$ for manager jsonnet-bundler
