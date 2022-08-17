@@ -35,7 +35,7 @@ local createCustomTemplates(direction, metrics, customSelectorLabels, customSele
         multi = true,
         refresh = 'time',
       )
-      for selectorLabel in customSelectorLabels.targetQueue
+      for selectorLabel in customSelectorLabels.deadletterQueueName
     ] + [
       template.new(
         name = '%s_deadletter_%s' % [direction, selectorLabel],
@@ -53,7 +53,7 @@ local createCustomTemplates(direction, metrics, customSelectorLabels, customSele
         multi = true,
         refresh = 'time',
       )
-      for selectorLabel in customSelectorLabels.targetQueue
+      for selectorLabel in customSelectorLabels.deadletterQueueName
     ]
   ]);
 
@@ -69,14 +69,14 @@ local createCustomSelectors(direction, customSelectorLabels, customSelectorValue
         selectorLabel: selectorLabel,
         direction: direction,
       },
-      customSelectorLabels.targetQueue
+      customSelectorLabels.deadletterQueueName
     )),
     deadletterQueueTemplate: std.join(', ', std.map(
       function(selectorLabel) '%(selectorLabel)s=~"$%(direction)s_deadletter_%(selectorLabel)s|"' % {
         selectorLabel: selectorLabel,
         direction: direction,
       },
-      customSelectorLabels.targetQueue
+      customSelectorLabels.deadletterQueueName
     )),
     standardQueue: std.join(', ', std.map(
       function(selectorLabel) '%s!~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueType)],
@@ -109,17 +109,17 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       justifyMode = 'center',
     ).addTarget(
       prometheus.target(|||
-          sum by (%(targetQueueSelectorLabels)s) ({__name__=~"%(oldestMessageMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(oldestMessageMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
-          targetQueueSelectorLabels: std.join(', ', customSelectorLabels.targetQueue),
+          deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
           oldestMessageMetrics: std.join('|', metrics.oldestMessage),
           queueSelectors: selectors.deadletterQueue,
           queueTemplateSelectors: selectors.deadletterQueueTemplate,
           environmentSelectors: selectors.environment,
           productSelectors: selectors.product,
         }, 
-        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.targetQueue))
+        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.deadletterQueueName))
     ) + { options+: { textMode: 'value_and_name' } } + { gridPos: { w: 12, h: 10 } }],
     [graphPanel.new(
       // SQS messages visible in DLQs
@@ -128,17 +128,17 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(targetQueueSelectorLabels)s) ({__name__=~"%(messagesVisibleMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesVisibleMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
-          targetQueueSelectorLabels: std.join(', ', customSelectorLabels.targetQueue),
+          deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
           messagesVisibleMetrics: std.join('|', metrics.messagesVisible),
           queueSelectors: selectors.deadletterQueue,
           queueTemplateSelectors: selectors.deadletterQueueTemplate,
           environmentSelectors: selectors.environment,
           productSelectors: selectors.product,
         },
-        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.targetQueue))
+        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.deadletterQueueName))
     ) + { gridPos: { w: 12, h: 10, x: 12 } }],
     [statPanel.new(
       // SQS messages age of oldest message in standard queues
@@ -151,14 +151,14 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
           sum by (dimension_QueueName) ({__name__=~"%(oldestMessageMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
-          targetQueueSelectorLabels: std.join(', ', customSelectorLabels.targetQueue),
+          deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
           oldestMessageMetrics: std.join('|', metrics.oldestMessage),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,
           productSelectors: selectors.product,
         }, 
-        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.targetQueue))
+        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.deadletterQueueName))
     ) + { options+: { textMode: 'value_and_name' } } + { gridPos: { w: 12, h: 10 } }],
     [graphPanel.new(
       // SQS messages visible in standard queues
@@ -167,17 +167,17 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(targetQueueSelectorLabels)s) ({__name__=~"%(messagesVisibleMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesVisibleMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
-          targetQueueSelectorLabels: std.join(', ', customSelectorLabels.targetQueue),
+          deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
           messagesVisibleMetrics: std.join('|', metrics.messagesVisible),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,
           productSelectors: selectors.product,
         },
-        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.targetQueue))
+        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.deadletterQueueName))
     ) + { gridPos: { w: 12, h: 10, x: 12 } }],
     [graphPanel.new(
       // SQS messages sent - standard queues
@@ -186,17 +186,17 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(targetQueueSelectorLabels)s) ({__name__=~"%(messagesSentMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesSentMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
-          targetQueueSelectorLabels: std.join(', ', customSelectorLabels.targetQueue),
+          deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
           messagesSentMetrics: std.join('|', metrics.messagesSent),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,
           productSelectors: selectors.product,
         },
-        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.targetQueue))
+        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.deadletterQueueName))
     ) + { gridPos: { w: 12, h: 10 } }],
     [graphPanel.new(
       // SQS messages deleted - in standard queues
@@ -205,17 +205,17 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(targetQueueSelectorLabels)s) ({__name__=~"%(messagesDeletedMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesDeletedMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
-          targetQueueSelectorLabels: std.join(', ', customSelectorLabels.targetQueue),
+          deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
           messagesDeletedMetrics: std.join('|', metrics.messagesDeleted),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,
           productSelectors: selectors.product,
         },
-        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.targetQueue))
+        legendFormat = '{{%s}}' % std.join(', ', customSelectorLabels.deadletterQueueName))
     ) + { gridPos: { w: 12, h: 10, x: 12 } }],
   ]);
 
