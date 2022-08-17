@@ -20,8 +20,8 @@ local burnRateRuleNameTemplate = 'slo_burnrate:%s';
 
 // The localhost urls for alerts
 local localhostUrls = {
-  grafana: 'localhost:3000',
-  alertmanager: 'localhost:9093',
+  grafana: 'http://localhost:3000',
+  alertmanager: 'http://localhost:9093',
 };
 
 // The keys are the labels in the alert payload, the values are either the static value as a string,
