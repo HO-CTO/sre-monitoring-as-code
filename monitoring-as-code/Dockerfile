@@ -2,7 +2,7 @@
 FROM golang:1.19.0-alpine3.15 AS builder
 
 # Download git, jsonnet and jsonnet-bundler
-RUN apk add --no-cache git=2.34.4-r0 curl jq wget && \
+RUN apk add --no-cache git=2.24.4-r0 curl jq wget && \
      go install github.com/google/go-jsonnet/cmd/jsonnet@v0.18.0 && \
      go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
 
