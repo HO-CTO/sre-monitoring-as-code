@@ -12,11 +12,11 @@ jobs:
       - uses: snyk/actions/setup@0.3.0
       - name: Snyk Code Test
         continue-on-error: true
-        run: snyk code test --sarif > snyk_sarif
+        run: snyk code test --sarif > snyk.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Upload results to Github Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk_sarif
+          sarif_file: snyk.sarif
  
