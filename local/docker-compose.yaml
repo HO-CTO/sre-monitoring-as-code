@@ -216,7 +216,7 @@ services:
         restart: on-failure:5
 
     yace:
-        image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.34.0-alpha
+        image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.38.0-alpha
         profiles: ["monitoring-fullstack"]
         user: root
         volumes:
