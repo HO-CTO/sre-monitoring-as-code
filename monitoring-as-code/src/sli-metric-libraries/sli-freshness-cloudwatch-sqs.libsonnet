@@ -21,7 +21,7 @@ local createGraphPanel(sliSpec) =
   graphPanel.new(
     title = '%s' % sliSpec.sliDescription,
     description = |||
-      * Sample interval is %(evalInterval)s 
+      * Sample interval is %(evalInterval)s
       * Resource selectors are %(selectors)s
       * Only queues where type is not deadletter
     ||| % {
@@ -37,19 +37,19 @@ local createGraphPanel(sliSpec) =
         [%(evalInterval)s]) or vector(0))' % {
           messagesDeletedMetric: targetMetrics.messagesDeleted,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueType, metricConfig.customSelectors.deadletterQueueType],
+          queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
           evalInterval: sliSpec.evalInterval,
         },
       legendFormat='avg number of msgs delivered',
     )
   ).addTarget(
     prometheus.target(
-      'sum(avg_over_time(sqs_high_latency_in_queue_avg{%(dashboardSliLabelSelectors)s}[%(evalInterval)s]) 
+      'sum(avg_over_time(sqs_high_latency_in_queue_avg{%(dashboardSliLabelSelectors)s}[%(evalInterval)s])
         or vector(0))/ sum(count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}
         [%(evalInterval)s]) or vector(0))' % {
           oldestMessageMetric: targetMetrics.oldestMessage,
           selectors: std.join(',', dashboardSelectors),
-          queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueType, metricConfig.customSelectors.deadletterQueueType],
+          queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
           dashboardSliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
           evalInterval: sliSpec.evalInterval,
         },
@@ -60,7 +60,7 @@ local createGraphPanel(sliSpec) =
       'sum(avg_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]) or vector(0))' % {
         oldestMessageMetric: targetMetrics.oldestMessage,
         selectors: std.join(',', dashboardSelectors),
-        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueType, metricConfig.customSelectors.deadletterQueueType],
+        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
         evalInterval: sliSpec.evalInterval,
       },
       legendFormat='avg age of oldest msg in standard queue (secs)',
@@ -103,7 +103,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         oldestMessageMetric: targetMetrics.oldestMessage,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueType, metricConfig.customSelectors.deadletterQueueType],
+        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
         evalInterval: sliSpec.evalInterval,
       },
@@ -117,7 +117,7 @@ local createCustomRecordingRules(sliSpec, sliMetadata, config) =
       ||| % {
         oldestMessageMetric: targetMetrics.oldestMessage,
         selectors: std.join(',', ruleSelectors),
-        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueType, metricConfig.customSelectors.deadletterQueueType],
+        queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
         metricTarget: sliSpec.metricTarget,
       },
       labels: sliSpec.sliLabels,

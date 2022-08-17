@@ -215,7 +215,7 @@
   'aws_alb': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
@@ -252,19 +252,18 @@
   'aws_sqs': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
-        messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
-        oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
+        messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_average',
+        oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_maximum',
         messagesSent: 'aws_sqs_number_of_messages_sent_sum',
         messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
       },
       customSelectorLabels: {
-        deadletterQueueName: 'queue_name',
+        deadletterQueueName: 'dimension_QueueName',
         deadletterQueueType: 'queue_type',
-        targetQueue: 'dimension_QueueName',
       },
       customSelectors: {
         deadletterQueueName: '.+dlq.+',
@@ -379,7 +378,7 @@
   'aws_rds_read': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
@@ -420,7 +419,7 @@
   'aws_rds_write': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
@@ -461,7 +460,7 @@
   'aws_es': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
