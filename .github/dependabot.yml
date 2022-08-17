@@ -6,7 +6,9 @@ updates:
     # default location of `.github/workflows`
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+      time: "07:00"
+      timezone: "Europe/London"     
     ignore:
       - dependency-name: "gitleaks/gitleaks-action"
         # For gitleaks/gitleaks-action, ignore all updates as new version then 1.6.0 are paid for
@@ -14,21 +16,20 @@ updates:
   - package-ecosystem: "docker"
     directory: "/docs"
     schedule:
-      interval: "weekly"
-      
+      interval: "daily"
+      time: "07:00"
+      timezone: "Europe/London"
+
   - package-ecosystem: "bundler"
     directory: "/docs"
     schedule:
-      interval: "weekly"
-      
-  - package-ecosystem: "docker"
-    directory: "/local"
-    schedule:
-      interval: "weekly"
-      # Disable all pull requests for Docker dependencies in /local as dependabot doesnt yet support docker-compose
-    open-pull-requests-limit: 0
+      interval: "daily"
+      time: "07:00"
+      timezone: "Europe/London"
     
   - package-ecosystem: "docker"
     directory: "/monitoring-as-code"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+      time: "07:00"
+      timezone: "Europe/London"
