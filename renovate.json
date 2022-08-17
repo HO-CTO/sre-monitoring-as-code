@@ -1,6 +1,8 @@
 {
   "ignoreDeps": ["gitleaks/gitleaks-action"],
   "labels": ["dependencies"],
+  "schedule": ["before 7am"],
+  "timezone": ["Europe/London"],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
