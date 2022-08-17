@@ -1,6 +1,10 @@
 name: 'Snyk iac scan'
 
 on:
+  push:
+    branches:
+      - 163-code-scanning-for-iac-files
+
   schedule:
     - cron: '0 */2 * * *'  
 
