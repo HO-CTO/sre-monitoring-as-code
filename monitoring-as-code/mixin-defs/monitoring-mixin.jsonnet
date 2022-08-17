@@ -13,8 +13,8 @@ local config = {
   maxAlertSeverity: 'P1',
   configurationItem: 'EBSA Prometheus, Grafana and Thanos',
   alertingSlackChannel: 'sas-monitoring-test',
-  grafanaUrl: 'https://grafana-it.service.np.iptho.co.uk',
-  alertmanagerUrl: 'https://alertmanager-kops10.service.np.iptho.co.uk',
+  grafanaUrl: 'http://localhost:3000',
+  alertmanagerUrl: 'http://localhost:9093',
 };
 
 local sliSpecList = {
