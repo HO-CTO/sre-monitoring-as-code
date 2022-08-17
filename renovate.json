@@ -1,8 +1,14 @@
 {
   "ignoreDeps": ["gitleaks/gitleaks-action"],
   "labels": ["dependencies"],
+   "jsonnet-bundler": {
+   "fileMatch": ["(^|/)jsonnetfile\.jsonnet$", "(^|/)jsonnetfile\.libsonnet$"]
+  }
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
   ]
 }
+
+
+(^|/)jsonnetfile\.json$ for manager jsonnet-bundler
