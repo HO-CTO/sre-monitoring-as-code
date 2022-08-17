@@ -1,7 +1,5 @@
 {
-  {
-  "ignoreDeps": ["gitleaks/gitleaks-action"]
-  }
+  "ignoreDeps": ["gitleaks/gitleaks-action"],
   "labels": ["dependencies"],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
