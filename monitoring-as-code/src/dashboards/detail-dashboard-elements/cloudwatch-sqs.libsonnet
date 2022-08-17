@@ -148,7 +148,7 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       justifyMode = 'center',
     ).addTarget(
       prometheus.target(|||
-          sum by (dimension_QueueName) ({__name__=~"%(oldestMessageMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(oldestMessageMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
           deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
