@@ -6,6 +6,6 @@
     "config:base"
   ],
    "jsonnet-bundler": {
-   "fileMatch": ["(^|/)jsonnetfile\.libsonnet$"]
+   "fileMatch": ["jsonnet"]
   }
 }
