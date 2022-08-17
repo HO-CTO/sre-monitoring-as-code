@@ -6,7 +6,7 @@ updates:
     # default location of `.github/workflows`
     directory: "/"
     schedule:
-      interval: "daliy"
+      interval: "daily"
       time: "07:00"
       timezone: "Europe/London"     
     ignore:
@@ -16,20 +16,20 @@ updates:
   - package-ecosystem: "docker"
     directory: "/docs"
     schedule:
-      interval: "daliy"
+      interval: "daily"
       time: "07:00"
       timezone: "Europe/London"
 
   - package-ecosystem: "bundler"
     directory: "/docs"
     schedule:
-      interval: "daliy"
+      interval: "daily"
       time: "07:00"
       timezone: "Europe/London"
     
   - package-ecosystem: "docker"
     directory: "/monitoring-as-code"
     schedule:
-      interval: "daliy"
+      interval: "daily"
       time: "07:00"
       timezone: "Europe/London"
