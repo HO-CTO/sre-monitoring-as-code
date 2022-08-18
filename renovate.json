@@ -18,7 +18,7 @@
       ],
       "versioningTemplate": "loose",
       "datasourceTemplate": "repology",
-      "lookupNameTemplate": "alpine_3_12/{{depName}}"
+      "lookupNameTemplate": "alpine_3_16/{{depName}}"
     }
   ]
 }
