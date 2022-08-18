@@ -24,7 +24,7 @@ jobs:
 
         #Checks-out our repository under $GITHUB_WORKSPACE, so our workflow can access it.
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
         #Logs into Github registry
       - name: Login to GitHub Container Registry
