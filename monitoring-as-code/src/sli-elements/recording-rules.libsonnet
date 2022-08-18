@@ -42,7 +42,7 @@ local createRecordingRules(sliSpec, config) =
 
   {
     recording_rules+: std.flattenArrays([createStandardRecordingRules(sliSpec, sliMetadata),
-      macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].library.createCustomRecordingRules(sliSpec, sliMetadata, config)]),
+      macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].library.createSliValueRule(sliSpec, sliMetadata, config)]),
   };
 
 // File exports
