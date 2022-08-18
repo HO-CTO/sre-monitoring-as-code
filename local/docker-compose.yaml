@@ -8,7 +8,7 @@ volumes:
 
 services:
     prometheus-1:
-        image: prom/prometheus:v2.21.0
+        image: prom/prometheus:v2.38.0
         volumes:
             - ./prometheus/:/etc/prometheus/
             - prometheus1_data:/prometheus
@@ -28,7 +28,7 @@ services:
         restart: on-failure:5
 
     prometheus-2:
-        image: prom/prometheus:v2.21.0
+        image: prom/prometheus:v2.38.0
         volumes:
             - ./prometheus/:/etc/prometheus/
             - prometheus2_data:/prometheus
