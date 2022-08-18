@@ -23,27 +23,27 @@ jobs:
         uses: actions/checkout@v3
 
       #Snyk security scan of Docker file only 
-      - name: Run Snyk to check Docker file for vulnerabilities
-        id: snyk-dockerfile
-        continue-on-error: true
-        uses: snyk/actions/docker@0.3.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ steps.meta.outputs.tags }}
-          args: |
-            --file=./monitoring-as-code/Dockerfile
-            --severity-threshold=medium
-            --sarif-file-output=snyk-dockerfile.sarif
-
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk-dockerfile.sarif
-
-      - name: Check on failures
-        if: steps.snyk-dockerfile.outcome != 'success'
-        run: exit 1            
+#      - name: Run Snyk to check Docker file for vulnerabilities
+#        id: snyk-dockerfile
+#        continue-on-error: true
+#        uses: snyk/actions/docker@0.3.0
+#        env:
+#          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#        with:
+#          image: ${{ steps.meta.outputs.tags }}
+#          args: |
+#            --file=./monitoring-as-code/Dockerfile
+#            --severity-threshold=medium
+#            --sarif-file-output=snyk-dockerfile.sarif
+#
+#      - name: Upload result to GitHub Code Scanning
+#        uses: github/codeql-action/upload-sarif@v2
+#        with:
+#          sarif_file: snyk-dockerfile.sarif
+#
+#      - name: Check on failures
+#        if: steps.snyk-dockerfile.outcome != 'success'
+#        run: exit 1            
 
         #Logs into Github registry
       - name: Login to GitHub Container Registry
@@ -84,6 +84,7 @@ jobs:
           image: ${{ steps.meta.outputs.tags }}
           args: |
             --app-vulns
+            --file=./monitoring-as-code/Dockerfile
             --severity-threshold=medium
             --sarif-file-output=snyk-image.sarif
 
