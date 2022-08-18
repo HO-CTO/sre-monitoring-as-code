@@ -3,7 +3,7 @@ name: 'Snyk Code Analysis'
 on:
   push:
     branches:
-      - 163-code-scanning-for-iac-files
+      - 149-code-scanning-alerts-for-snyk-code-sast
   schedule:
     - cron: '0 */2 * * *'  
 
