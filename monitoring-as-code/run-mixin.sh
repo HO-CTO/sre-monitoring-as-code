@@ -93,9 +93,6 @@ if [ "$generate_rules" = "true" ]; then
     jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusAlerts)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
-    # Test Prometheus rules with promtool
-    promtool check rules "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml
-    if [ $? -ne 0 ]; then echo "Validation of rules files failed for ${mixin} (environment ${environment}) - exiting"; exit 1; fi
   done
 fi
 
