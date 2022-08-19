@@ -62,12 +62,12 @@ jobs:
           args: |
             --file=./monitoring-as-code/Dockerfile
             --severity-threshold=medium
-            --sarif-file-output=snyk-dockerfile.sarif
+            --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk-dockerfile.sarif
+          sarif_file: snyk.sarif
 
       - name: Check on failures
         if: steps.snyk-dockerfile.outcome != 'success'
@@ -85,12 +85,12 @@ jobs:
           args: |
             --app-vulns
             --severity-threshold=medium
-            --sarif-file-output=snyk-image.sarif
+            --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk-image.sarif
+          sarif_file: snyk.sarif
 
       - name: Check on failures
         if: steps.snyk-image.outcome != 'success'
