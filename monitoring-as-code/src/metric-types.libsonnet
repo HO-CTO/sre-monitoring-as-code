@@ -489,4 +489,31 @@
       targetMetrics: {},
     },
   },
+  template: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: '',
+        product: '',
+      },
+      metrics: {
+
+      },
+    },
+    sliTypesConfig: {
+      sliType: {
+        library: (import ''),
+        description: '',
+        targetMetrics: {
+
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {
+        
+      },
+    },
+  },
 }
