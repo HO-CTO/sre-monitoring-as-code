@@ -336,6 +336,7 @@
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
+        product: 'job',
       },
       metrics: {
         duration: 'up',

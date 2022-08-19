@@ -60,6 +60,7 @@ local createGraphPanel(sliSpec) =
     description = |||
       * Sample interval is %(evalInterval)s
       * Selectors are %(selectors)s
+      * Errors are 4xx and 5xx requests
     ||| % {
       selectors: std.strReplace(std.join(', ', sliValueLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
       evalInterval: sliSpec.evalInterval,
