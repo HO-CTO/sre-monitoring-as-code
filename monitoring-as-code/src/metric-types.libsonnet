@@ -472,9 +472,21 @@
       },
       metrics: {
         averageLatency: 'aws_es_search_latency_average',
+        sum4xx: 'aws_es_4xx_sum',
+        sum5xx: 'aws_es_5xx_sum',
+        requestsSum: 'aws_es_open_search_requests_sum',
       },
     },
     sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
+        description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          code4xx: 'sum4xx',
+          code5xx: 'sum5xx',
+          codeAll: 'requestsSum',
+        },
+      },
       latency: {
         library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
