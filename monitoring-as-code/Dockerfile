@@ -7,7 +7,7 @@ RUN apk add --no-cache git=2.36.2-r0 curl jq wget && \
      go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
 
 FROM alpine:3.16.2 AS runner
-RUN apk --no-cache add git bash
+RUN apk add --no-cache git=2.36.2-r0 bash
 
 # Pass semver or PR from GitHub workflow
 ARG MAC_VERSION
