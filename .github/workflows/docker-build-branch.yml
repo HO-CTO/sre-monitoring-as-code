@@ -85,12 +85,6 @@ jobs:
           args: |
             --app-vulns
             --severity-threshold=medium
-            --sarif-file-output=snyk.sarif
-
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.sarif
 
       - name: Check on failures
         if: steps.snyk-image.outcome != 'success'
