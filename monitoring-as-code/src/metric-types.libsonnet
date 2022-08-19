@@ -49,8 +49,8 @@
       standardTemplates: ['resource', 'errorStatus'],
       elements: ['httpRequestsAvailability', 'httpRequestsLatency'],
       targetMetrics: {
-        count: 'count',
-        bucket: 'bucket',
+        requestCount: 'count',
+        requestBucket: 'bucket',
       },
     },
   },
@@ -79,7 +79,7 @@
       standardTemplates: ['resource', 'errorStatus'],
       elements: ['httpRequestsAvailability'],
       targetMetrics: {
-        count: 'count',
+        requestCount: 'count',
       },
     },
   },
@@ -108,7 +108,7 @@
       standardTemplates: ['resource', 'errorStatus'],
       elements: ['httpRequestsAvailability'],
       targetMetrics: {
-        count: 'count',
+        requestCount: 'count',
       },
     },
   },
@@ -140,7 +140,7 @@
       standardTemplates: ['resource'],
       elements: ['httpRequestsLatency'],
       targetMetrics: {
-        bucket: 'bucket',
+        requestBucket: 'bucket',
       },
     },
   },
@@ -168,7 +168,7 @@
       standardTemplates: ['errorStatus'],
       elements: ['httpRequestsAvailability'],
       targetMetrics: {
-        count: 'count',
+        requestCount: 'count',
       },
     },
   },
@@ -207,8 +207,8 @@
       standardTemplates: ['errorStatus'],
       elements: ['httpRequestsAvailability', 'httpRequestsLatency'],
       targetMetrics: {
-        count: 'count',
-        bucket: 'bucket',
+        requestCount: 'count',
+        requestBucket: 'bucket',
       },
     },
   },
@@ -299,9 +299,9 @@
       elements: ['cloudwatchSqs'],
       targetMetrics: {
         oldestMessage: 'oldestMessage',
-        messagesDeleted: 'messagesDeleted',
-        messagesVisible: 'messagesVisible',
-        messagesSent: 'messagesSent',
+        sentMessages: 'messagesSent',
+        visibleMessages: 'messagesVisisble',
+        deletedMessages: 'messagesDeleted',
       },
     },
   },

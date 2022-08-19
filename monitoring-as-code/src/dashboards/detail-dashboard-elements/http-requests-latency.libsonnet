@@ -1,3 +1,6 @@
+// Target metrics:
+// requestBucket - Metric representing the buckets histogram request latency values fall into
+
 // MaC imports
 local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';
 
@@ -56,9 +59,9 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       legend_show = true,
     ).addTarget(
       prometheus.target(|||
-          sum by (le) (increase({__name__=~"%(bucketMetrics)s", %(selectors)s}[$__rate_interval]))
+          sum by (le) (increase({__name__=~"%(requestBucketMetrics)s", %(selectors)s}[$__rate_interval]))
         ||| % {
-          bucketMetrics: std.join('|', metrics.bucket),
+          requestBucketMetrics: std.join('|', metrics.requestBucket),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
         legendFormat = '{{le}}', format = 'heatmap')
@@ -70,11 +73,11 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       format = 's',
     ).addTarget(
       prometheus.target(|||
-          histogram_quantile($%(direction)s_latency_percentile/100, (sum by (le) (rate({__name__=~"%(bucketMetrics)s",
+          histogram_quantile($%(direction)s_latency_percentile/100, (sum by (le) (rate({__name__=~"%(requestBucketMetrics)s",
           %(selectors)s}[$__rate_interval]))))
         ||| % {
           direction: direction,
-          bucketMetrics: std.join('|', metrics.bucket),
+          requestBucketMetrics: std.join('|', metrics.requestBucket),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
         legendFormat = 'Selected Percentile Latency')
