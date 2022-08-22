@@ -19,7 +19,15 @@ Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and
 - [docker](https://docs.docker.com)
 - [git](https://git-scm.com)
 
-**Now in a directory of your choosing run the following setup commands.**
+## Docker installation
+
+See GitHub Releases page for most recent tagged version and pull the Docker image: -
+
+`docker pull ghcr.io/ho-cto/sre-monitoring-as-code:{tag}`
+
+## GitHub clone installation
+
+**In a directory of your choosing run the following setup commands.**
 
 ```
 # Clone the repository to your local machine
@@ -34,17 +42,45 @@ docker build -t sre-monitoring-as-code:latest .
 
 ## Useage
 
+### Default mixin config 
+
+**To run the default monitoring and summary mixins bundles into the built container run the following command**
+
 ```
-# Add mixin file <service>-mixin.jsonnet to /montoring-config
-touch grapi-mixin.jsonnet
-
-# Add Global and SLI configuration as per sre-monitoring-as-code docs (see Resources)
-
 # Execute makefile script
 sh deploy.sh
-
-# Add artefacts (dashboard, alerts rules and recording rules) to Grafana and Prometheus package management tooling (Prometheus Operator)
 ```
+
+### Custom mixin
+
+**To run a custom mixin file **
+
+```
+# Add mixin file <service>-mixin.jsonnet to a directory
+touch grapi-mixin.jsonnet
+
+# Execute docker run command based on mounted directory where the mixin file has been added.
+docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output director},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output
+
+```
+
+### Configuration Arguments
+
+** Arguments to be passed to container at runtime **
+
+| Arguments | Descriptions |
+| -m | The name of the mixin to target, must be included |
+| -o | The path to the directory where you want the output to be copied to, must be included |
+| -i | The path to the directory containing the mixin file, if not included defaults to mixin-defs directory inside container |
+| -a | The type of account (np, pr or localhost), if not included defaults to localhost |
+| -r | Include if you only want to generate Prometheus rules, both generated if neither included |
+| -d | Include if you only want to generate Grafana dashboards, both generated if neither included |
+
+## Distribution 
+
+### Add artefacts (dashboard, alerts rules and recording rules) to Grafana and Prometheus package management tooling (Prometheus Operator)
+
+TBC
 
 ## Resources
 
