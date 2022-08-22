@@ -1,3 +1,15 @@
+// Target metrics:
+// sentMessages - Metric representing the number of messages sent
+// visibleMessages - Metric representing the number of visible messages
+// deletedMessages - Metric representing the number of deleted messages
+// oldestMessage - Metric representing the age of oldest message
+
+// Additional config:
+// deadletterQueueType custom selector label in metric type config
+// deadletterQueueName custom selector label in metric type config
+// deadletterQueueType custom selector in metric type config
+// deadletterQueueName custom selector in metric type config
+
 // MaC imports
 local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';
 
@@ -128,11 +140,11 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesVisibleMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(visibleMessagesMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
           deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
-          messagesVisibleMetrics: std.join('|', metrics.messagesVisible),
+          visibleMessagesMetrics: std.join('|', metrics.visibleMessages),
           queueSelectors: selectors.deadletterQueue,
           queueTemplateSelectors: selectors.deadletterQueueTemplate,
           environmentSelectors: selectors.environment,
@@ -167,11 +179,11 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesVisibleMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(visibleMessagesMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
           deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
-          messagesVisibleMetrics: std.join('|', metrics.messagesVisible),
+          visibleMessagesMetrics: std.join('|', metrics.visibleMessages),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,
@@ -186,11 +198,11 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesSentMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(sentMessagesMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
           deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
-          messagesSentMetrics: std.join('|', metrics.messagesSent),
+          sentMessagesMetrics: std.join('|', metrics.sentMessages),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,
@@ -205,11 +217,11 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       min = 0,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(messagesDeletedMetrics)s", %(queueSelectors)s,
+          sum by (%(deadletterQueueNameSelectorLabels)s) ({__name__=~"%(deletedMessagesMetrics)s", %(queueSelectors)s,
           %(queueTemplateSelectors)s, %(environmentSelectors)s, %(productSelectors)s})
         ||| % {
           deadletterQueueNameSelectorLabels: std.join(', ', customSelectorLabels.deadletterQueueName),
-          messagesDeletedMetrics: std.join('|', metrics.messagesDeleted),
+          deletedMessagesMetrics: std.join('|', metrics.deletedMessages),
           queueSelectors: selectors.standardQueue,
           queueTemplateSelectors: selectors.standardQueueTemplate,
           environmentSelectors: selectors.environment,

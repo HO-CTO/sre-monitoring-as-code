@@ -1,3 +1,6 @@
+// Target metrics:
+// requestCount - Metric representing the count of requests
+
 // MaC imports
 local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';
 
@@ -51,10 +54,10 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       legend_hideZero = true,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(errorSelectorLabels)s) (rate({__name__=~"%(countMetrics)s", %(selectors)s}[$__rate_interval]))
+          sum by (%(errorSelectorLabels)s) (rate({__name__=~"%(requestCountMetrics)s", %(selectors)s}[$__rate_interval]))
         ||| % {
           errorSelectorLabels: std.join(', ', selectorLabels.errorStatus),
-          countMetrics: std.join('|', metrics.count),
+          requestCountMetrics: std.join('|', metrics.requestCount),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
         legendFormat = '{{%s}}' % std.join(', ', selectorLabels.errorStatus))
@@ -71,10 +74,10 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       legend_hideZero = true,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(resourceSelectorLabels)s) (rate({__name__=~"%(countMetrics)s", %(selectors)s}[$__rate_interval]))
+          sum by (%(resourceSelectorLabels)s) (rate({__name__=~"%(requestCountMetrics)s", %(selectors)s}[$__rate_interval]))
         ||| % {
           resourceSelectorLabels: std.join(', ', selectorLabels.resource),
-          countMetrics: std.join('|', metrics.count),
+          requestCountMetrics: std.join('|', metrics.requestCount),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
         legendFormat = '{{%s}}' % std.join(', ', selectorLabels.resource))
