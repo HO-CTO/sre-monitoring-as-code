@@ -2,7 +2,30 @@
 
 This is the contribution guide for sre-monitoring-as-code. This guide will cover the primary way we
 expect contributions to be made, which is adding new metric types, SLI values and detail dashboard
-elements.
+elements, however general advice can be applied to other types of contribution as well.
+
+When making a contribution you should start by creating a GitHub issue. Once the issue is created
+you should then select the option to create a branch for the issue. Once this new branch has been
+created and checked out you can start working on the changes.
+
+Once you have made the changes you should commit them with an all lower case message describing the
+changes made and prefixed by the type of change, for example, "feat: added new metric type for
+grafana". Below are the different types of changes:
+
+- **feat**: New feature for the user, not a new feature for build script.
+- **fix**: Bug fix for the user, not a fix to a build script.
+- **docs**: Changes to the documentation.
+- **style**: Formatting, missing semi colons, etcetera, no production code change.
+- **refactor**: Refactoring production code, for example, renaming a variable.
+- **test**: Adding missing tests, refactoring tests, no production code change.
+- **chore**: Updating grunt tasks, etcetera, no production code change.
+
+Once the changes have been committed, push them to the origin and create a pull request. The
+description of the pull request should include a link to the issue, which can be done by adding
+\#x where x is the number of the issue.
+
+The pull request must be reviewed by two members of our team and pass the checks in our pipelines
+before it can be squashed and merged.
 
 # File and object layouts
 
