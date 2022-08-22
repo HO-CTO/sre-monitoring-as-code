@@ -2,18 +2,18 @@
 FROM golang:1.19.0-alpine3.16 AS builder
 
 # Download git, jsonnet and jsonnet-bundler
-RUN apk add --no-cache git && \
+RUN apk add --no-cache git=2.36.2-r0 && \
      go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0 && \
      go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
 
-WORKDIR grafonnet
+WORKDIR /go/grafonnet
 # Download grafonnet and grafana-builder
 RUN jb init && \
      jb install https://github.com/grafana/grafonnet-lib/grafonnet && \
      jb install https://github.com/grafana/jsonnet-libs/grafana-builder
 
 FROM alpine:3.16.2 AS runner
-RUN apk --no-cache add bash
+RUN apk --no-cache add bash=5.1.16-r2
 
 # Pass semver or PR from GitHub workflow
 ARG MAC_VERSION
