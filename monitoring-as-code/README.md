@@ -60,7 +60,7 @@ sh deploy.sh
 touch grapi-mixin.jsonnet
 
 # Execute docker run command based on mounted directory where the mixin file has been added.
-docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output director},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output
+docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output directory},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output
 ```
 
 ### Configuration Arguments
