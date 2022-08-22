@@ -13,7 +13,6 @@ RUN jb init && \
      jb install https://github.com/grafana/jsonnet-libs/grafana-builder
 
 FROM alpine:3.16.2 AS runner
-RUN apk --no-cache add bash=5.1.16-r2
 
 # Pass semver or PR from GitHub workflow
 ARG MAC_VERSION
