@@ -50,8 +50,9 @@ jobs:
             PACKAGE_TOKEN=${{secrets.GITHUB_TOKEN}}
             MAC_VERSION='#${{ github.event.number }}'
 
-      - name: Run Snyk to check Docker image for vulnerabilities
-        id: snyk
+      # Snyk security scan of Docker file only
+      - name: Run Snyk to check Docker file for vulnerabilities
+        id: snyk-dockerfile
         continue-on-error: true
         uses: snyk/actions/docker@0.3.0
         env:
@@ -69,7 +70,24 @@ jobs:
           sarif_file: snyk.sarif
 
       - name: Check on failures
-        if: steps.snyk.outcome != 'success'
+        if: steps.snyk-dockerfile.outcome != 'success'
+        run: exit 1
+
+      # Snyk security scan of Built Docker Image and unmanaged dependencies
+      - name: Run Snyk to check Docker image for vulnerabilities
+        id: snyk-image
+        continue-on-error: true
+        uses: snyk/actions/docker@0.3.0
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ steps.meta.outputs.tags }}
+          args: |
+            --app-vulns
+            --severity-threshold=medium
+
+      - name: Check on failures
+        if: steps.snyk-image.outcome != 'success'
         run: exit 1
 
       - name: Push image to GitHub Container Registry
