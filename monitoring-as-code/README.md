@@ -53,7 +53,7 @@ sh deploy.sh
 
 ### Custom mixin
 
-**To run a custom mixin file **
+**To run a custom mixin file**
 
 ```
 # Add mixin file <service>-mixin.jsonnet to a directory
@@ -61,20 +61,20 @@ touch grapi-mixin.jsonnet
 
 # Execute docker run command based on mounted directory where the mixin file has been added.
 docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output director},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output
-
 ```
 
 ### Configuration Arguments
 
-** Arguments to be passed to container at runtime **
+**Arguments to be passed to container at runtime**
 
-| Arguments | Descriptions |
-| -m | The name of the mixin to target, must be included |
-| -o | The path to the directory where you want the output to be copied to, must be included |
-| -i | The path to the directory containing the mixin file, if not included defaults to mixin-defs directory inside container |
-| -a | The type of account (np, pr or localhost), if not included defaults to localhost |
-| -r | Include if you only want to generate Prometheus rules, both generated if neither included |
-| -d | Include if you only want to generate Grafana dashboards, both generated if neither included |
+| Argument | Description                                                                                                            |
+|----------|------------------------------------------------------------------------------------------------------------------------|
+| -m       | The name of the mixin to target, must be included                                                                      |
+| -o       | The path to the directory where you want the output to be copied to, must be included                                  |
+| -i       | The path to the directory containing the mixin file, if not included defaults to mixin-defs directory inside container |
+| -a       | The type of account (np, pr or localhost), if not included defaults to localhost                                       |
+| -r       | Include if you only want to generate Prometheus rules, both generated if neither included                              |
+| -d       | Include if you only want to generate Grafana dashboards, both generated if neither included                            |
 
 ## Distribution 
 
