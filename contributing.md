@@ -4,6 +4,9 @@ This is the contribution guide for sre-monitoring-as-code. This guide will cover
 expect contributions to be made, which is adding new metric types, SLI values and detail dashboard
 elements, however general advice can be applied to other types of contribution as well.
 
+All of the files and directories listed in this guide can be found in the monitoring-as-code/src
+directory.
+
 When making a contribution you should start by creating a GitHub issue. Once the issue is created
 you should then select the option to create a branch for the issue. Once this new branch has been
 created and checked out you can start working on the changes.
@@ -34,8 +37,7 @@ metric types, SLI values and detail dashboard elements.
 
 ## metric-types.libsonnet
 
-The metric-types.libsonnet file in the monitoring-as-code/src directory contains the config for the
-different metric types.
+The metric-types.libsonnet file contains the config for the different metric types.
 
 ```
 {
@@ -339,7 +341,7 @@ Create a new libsonnet file with a descriptive name in the sli-value-libraries d
 the contents of the sli-value-library-template.libsonnet file and paste it into the new file. This
 template provides the basic layout for the file and functions.
 
-## createSliValueRule function
+### createSliValueRule function
 
 The createSliValueRule function from the template starts with the metricConfig, ruleSelectors and
 targetMetrics objects and the basic layout for the SLI value rule. The metricConfig object is the
@@ -368,7 +370,7 @@ already included. Metrics should come from the targetMetrics object and any othe
 come from either the sliSpec object (the SLI spec defined in the mixin file) or the metricConfig
 object.
 
-## createGraphPanel function
+### createGraphPanel function
 
 The createGraphPanel function from the template starts with the metricConfig, dashboardSelectors
 and targetMetrics objects and the basic layout for the graph panel. The metricConfig object is the
@@ -391,7 +393,60 @@ line is showing.
 More targets can be added to the graph panel as well as other options which can be found in the
 Grafonnet API docs here https://grafana.github.io/grafonnet-lib/api-docs/#graphpanelnew.
 
-## Writing file information
+### Writing file information
 
 The template includes the layout for the file information at the top with some basic explanations.
 Fill in the three sections (remove the additional config section if there is no additional config).
+
+# Adding new detail dashboard elements
+
+The detail dashboard elements files can be found in the detail-dashboard-elements directory in the
+dashboards directory. These files contain functions to create custom templates, custom selectors
+and panels for the detail dashboard. Similar to SLI value libraries, they also have comments at the
+top describing the target metrics and additional config required for a metric type to use them.
+
+The names of the detail dashboard elements file should give users an idea of what metric types
+these elements would be applicable for.
+
+## Creating a new file
+
+Create a new libsonnet file with a useful name in the detail-dashboard-elements directory, then
+copy the contents of the detail-dashboard-elements-template.libsonnet file and paste it into the
+new file. This template provides the basic layout for the file and functions.
+
+### Populating the functions
+
+There are three functions that must be included in the detail dashboard element files,
+createCustomTemplates that creates a list of Grafana template objects which are too specialised
+to be dynamically generated, createCustomSelectors that creates a JSON object for custom selectors
+which are also too specialised for dynamic generation and createPanels that creates a list of
+Grafana panels to be placed in the detail dashboard.
+
+The code will work if none of the functions are populated (as long as they return an empty list or
+object) so there is no need to fill in any of the functions that you do not need.
+
+As of the current version the detail-dashboard-elements-template.libsonnet file does not have a
+skeleton structure for the functions like the sli-value-library-template.libsonnet file. As such
+when creating a new detail dashboard elements file it would be best to view the other files that
+already exist for guidance, the cloudwatch-sqs.libsonnet detail dashboard elements file makes use
+of all the functions as well as custom selector labels and selectors so is best for examining.
+
+One thing to note is that the dashboards have a width of 24. Row panels should have a height of 1
+and a width of 24 (to cover the whole dashboard), other panels should have a height of 10 and the
+width should depend on how many panels you want side by side (two panels would be a width of 12
+with the second panel also having an x value of 12).
+
+Also make sure to include the direction variable in row panel names and template names so that
+it will work properly with outbound elements.
+
+### Writing file information
+
+The template includes the layout for the file information at the top with some basic explanations.
+Fill in the two sections (remove the additional config section if there is no additional config).
+
+## Adding to detailDashboardElements object
+
+Once the detail dashboard elements file has been created the final step is to add it to the
+detailDashboardElements object in mac-config.libsonnet. The key should be the name of the file
+(excluding the extension) written in camel case and the value should be an import for the file.
+Once this is done the detail dashboard elements can be used by metric types.
