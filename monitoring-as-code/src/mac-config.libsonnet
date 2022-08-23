@@ -41,6 +41,12 @@ local alertPayloadTemplate = {
   runbook_id: '%(runbookUrl)s',
 };
 
+// Bundles multiple SLI types that you might want to deploy together under a single keyword
+local multiSliTypes = {
+  'request-driven': ['availability', 'latency'],
+  'pipeline': ['freshness', 'correctness'],
+};
+
 // File exports
 {
   metricTypes: (import 'metric-types.libsonnet'),
@@ -49,4 +55,5 @@ local alertPayloadTemplate = {
   burnRateRuleNameTemplate: burnRateRuleNameTemplate,
   localhostUrls: localhostUrls,
   alertPayloadTemplate: alertPayloadTemplate,
+  multiSliTypes: multiSliTypes,
 }

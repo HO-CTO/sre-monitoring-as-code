@@ -68,6 +68,17 @@ local updateSliSpecList(config, passedSliSpecList) =
     for journeyKey in std.objectFields(passedSliSpecList)
   };
 
+// Updates the SLI type of the SLI spec to match actual SLI type being generated
+// @param sliType
+// @param sliSpec
+// @returns The SLI spec object but with updated SLI type
+local updateSliType(sliType, sliSpec) =
+  sliSpec
+  +
+  {
+    sliType: sliType,
+  };
+
 // Creates an SLI with its standard dashboard elements, unique dashboard elements, recording
 // rules, alerting rules and alerts
 // @param config The config for the service defined in the mixin file
@@ -78,15 +89,22 @@ local updateSliSpecList(config, passedSliSpecList) =
 local createSli(config, sliSpecList, sliKey, journeyKey) =
   local sliSpec = sliSpecList[journeyKey][sliKey];
 
-  if std.objectHas(macConfig.metricTypes, sliSpec.metricType) then
-    if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliSpec.sliType) then
-      sliElementFunctions.createRecordingRules(sliSpec, config) +
-      sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
-      dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +
-      alertFunctions.createBurnRateRules(sliSpec) +
-      alertFunctions.createBurnRateAlerts(config, sliSpec, sliKey, journeyKey)
-    else error 'Metric type does not have SLI type'
-  else error 'Undefined metric type';
+  local sliTypeList = if std.objectHas(macConfig.multiSliTypes, sliSpec.sliType) then
+      macConfig.multiSliTypes[sliSpec.sliType]
+    else [sliSpec.sliType];
+
+  {
+    [sliType]: if std.objectHas(macConfig.metricTypes, sliSpec.metricType) then
+        if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliType) then
+          sliElementFunctions.createRecordingRules(updateSliType(sliType, sliSpec), config) +
+          sliElementFunctions.createSliStandardElements(sliKey, updateSliType(sliType, sliSpec)) +
+          dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, updateSliType(sliType, sliSpec), config) +
+          alertFunctions.createBurnRateRules(updateSliType(sliType, sliSpec)) +
+          alertFunctions.createBurnRateAlerts(config, updateSliType(sliType, sliSpec), sliKey, journeyKey)
+        else error 'Metric type %s does not have SLI type %s' % [sliSpec.metricType, sliType]
+      else error 'Undefined metric type %s' % sliSpec.metricType
+    for sliType in sliTypeList
+  };
 
 // Creates a list of all the SLIs in a service with their standard dashboard elements, unique
 // dashboard elements, recording rules, alerting rules and alerts
@@ -153,7 +171,8 @@ local createPrometheusRules(config, sliList) =
       rules: std.flattenArrays([
         sli.recording_rules
         for journeyKey in std.objectFields(sliList)
-        for sli in std.objectValues(sliList[journeyKey])
+        for sliKey in std.objectFields(sliList[journeyKey])
+        for sli in std.objectValues(sliList[journeyKey][sliKey])
       ]),
     }],
   };
@@ -169,7 +188,8 @@ local createPrometheusAlerts(config, sliList) =
       rules: std.flattenArrays([
         sli.alerts
         for journeyKey in std.objectFields(sliList)
-        for sli in std.objectValues(sliList[journeyKey])
+        for sliKey in std.objectFields(sliList[journeyKey])
+        for sli in std.objectValues(sliList[journeyKey][sliKey])
       ]),
     }],
   };
@@ -189,10 +209,10 @@ local buildMixin(passedConfig, passedSliSpecList) =
   local links = createLinks(config);
 
   {
-    grafanaDashboardFolder: config.product,
-    grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
-      dashboardFunctions.createProductDashboard(config, sliList, links) +
-      dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
+    // grafanaDashboardFolder: config.product,
+    // grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
+    //   dashboardFunctions.createProductDashboard(config, sliList, links) +
+    //   dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
 
     prometheusRules+: createPrometheusRules(config, sliList),
     prometheusAlerts+: createPrometheusAlerts(config, sliList),

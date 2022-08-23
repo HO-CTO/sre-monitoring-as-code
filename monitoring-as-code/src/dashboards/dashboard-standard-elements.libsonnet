@@ -55,13 +55,14 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(sum_over_time((sli_value{%(sliLabelSelectors)s}
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
         %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]))
         /
-        sum(sum_over_time((sli_value{%(sliLabelSelectors)s}
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
         < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
+        sliType: sliSpec.sliType,
         period: sliSpec.period,
         target: sliSpec.metricTarget,
         evalInterval: sliSpec.evalInterval,
@@ -99,15 +100,16 @@ local createErrorBudgetPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        (%(target)s - (1 - (sum(sum_over_time((sli_value{%(sliLabelSelectors)s}
+        (%(target)s - (1 - (sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
         %(comparison)s bool %(metricTarget)s)[%(period)s:%(evalInterval)s]))
         /
-        sum(sum_over_time((sli_value{%(sliLabelSelectors)s}
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
         < bool Inf)[%(period)s:%(evalInterval)s])))))
         /
         %(target)s
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
+        sliType: sliSpec.sliType,
         period: sliSpec.period,
         evalInterval: sliSpec.evalInterval,
         target: (100 - sliSpec.sloTarget) / 100,
@@ -143,11 +145,12 @@ local createSloStatusPanel(sliDescription, sliSpec) =
     // Proportion of intervals SLO has pased
     prometheus.target(
       |||
-        sum_over_time((sli_value{%(sliLabelSelectors)s} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
+        sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
         / 
-        sum_over_time((sli_value{%(sliLabelSelectors)s} < bool Inf)[$__interval:%(evalInterval)s])
+        sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s])
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
+        sliType: sliSpec.sliType,
         evalInterval: sliSpec.evalInterval,
         target: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
@@ -159,12 +162,13 @@ local createSloStatusPanel(sliDescription, sliSpec) =
     prometheus.target(
       |||
         1 - (
-          sum_over_time((sli_value{%(sliLabelSelectors)s} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
+          sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
           / 
-          sum_over_time((sli_value{%(sliLabelSelectors)s} < bool Inf)[$__interval:%(evalInterval)s])
+          sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s])
         )
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
+        sliType: sliSpec.sliType,
         evalInterval: sliSpec.evalInterval,
         target: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
