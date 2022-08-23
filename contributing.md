@@ -317,3 +317,81 @@ of the new metric type, more information in the section **Adding new selector la
 Then follow instructions in sections **Adding new metrics** and **Adding new SLI types** to add the
 first set of metrics and the first SLI type. The metric type can now be used for an SLI spec in a
 mixin file.
+
+# Adding new SLI value libraries
+
+The SLI value library files can be found in the sli-value-libraries directory. These files contain
+two functions, createSliValueRule which creates the JSON for the SLI value recording rule that is
+ingested by Prometheus and createGraphPanel that creates a Grafana graph panel.
+
+Another important feature is the information at the top of the files, three sets of comments, one
+describing the calculation being performed for the SLI value, one describing the target metrics
+that are needed for this SLI value library and one describing any additional config
+(customSelectorLabels, customSelectors, errorStatus label or additional items in SLI spec) that is
+required.
+
+The names of the SLI value library files should be a basic explanation of what the SLI value
+represents and what differentiates it from similar SLI value library files.
+
+## Creating a new file
+
+Create a new libsonnet file with a descriptive name in the sli-value-libraries directory, then copy
+the contents of the sli-value-library-template.libsonnet file and paste it into the new file. This
+template provides the basic layout for the file and functions.
+
+## createSliValueRule function
+
+The createSliValueRule function from the template starts with the metricConfig, ruleSelectors and
+targetMetrics objects and the basic layout for the SLI value rule. The metricConfig object is the
+metricTypeConfig item for the metric type being used by the SLI having its rules created, the
+ruleSelectors object is the list of selectors for the metrics being used by the SLI value rule and
+the targetMetrics object is the collection of target metric keywords mapped to the actual metrics
+being used.
+
+All that needs to be done with this function is to write the SLI value expression between the two
+||| symbols. The expression is written using PromQL and should make use of string substitution, an
+example is shown below.
+
+```
+|||
+  sum_over_time(%(metric)s{%(selectors)s}[%(evalInterval)s])
+||| % {
+  metric: targetMetrics.metric,
+  selectors: std.join(',', ruleSelectors),
+  evalInterval: sliSpec.evalInterval,
+},
+```
+
+The string substitutions are the keywords wrapped in the %()s syntax, the keyword must match one of
+the keys in the attached JSON object. By default the selectors and evalInterval keys and values are
+already included. Metrics should come from the targetMetrics object and any other values should
+come from either the sliSpec object (the SLI spec defined in the mixin file) or the metricConfig
+object.
+
+## createGraphPanel function
+
+The createGraphPanel function from the template starts with the metricConfig, dashboardSelectors
+and targetMetrics objects and the basic layout for the graph panel. The metricConfig object is the
+metricTypeConfig item for the metric type being used by the SLI having its rules created, the
+dashboardSelectors object is the list of selectors for the metrics being used by the panel targets
+and the targetMetrics object is the collection of target metric keywords mapped to the actual
+metrics being used.
+
+The graph panel produced by the createGraphPanel function varies from file to file with some of the
+graph panels displaying detailed information with several targets. Due to how complicated and
+varied these panels can be, this guide will only cover the minimum to getting a working graph
+panel, which is to fill in the blank Prometheus target object.
+
+This object is very similar to the SLI value rule written in the previous section
+**createSliValueRule function** and can even be the same as the SLI value rule. The only new item
+required is the legendFormat item which is what will be used to label the line on the graph, it
+should be written all lower case with spaces separating the word and should help describe what the
+line is showing.
+
+More targets can be added to the graph panel as well as other options which can be found in the
+Grafonnet API docs here https://grafana.github.io/grafonnet-lib/api-docs/#graphpanelnew.
+
+## Writing file information
+
+The template includes the layout for the file information at the top with some basic explanations.
+Fill in the three sections (remove the additional config section if there is no additional config).
