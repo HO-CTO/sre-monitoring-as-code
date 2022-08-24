@@ -201,7 +201,7 @@ services:
         restart: on-failure:5 
 
     grafana:
-        image: grafana/grafana:9.1.0
+        image: grafana/grafana:9.1.1
         user: "104"
         depends_on:
             - prometheus-1
