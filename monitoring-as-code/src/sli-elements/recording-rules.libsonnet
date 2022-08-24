@@ -21,11 +21,12 @@ local createStandardRecordingRules(sliSpec, sliMetadata) =
     {
       record: 'sli_percentage',
       expr: |||
-        (sum(sum_over_time((sli_value{%(ruleSliLabelSelectors)s} %(comparison)s bool %(metricTarget)s)[30d:%(evalInterval)s]) 
-        or vector(0)) / sum(sum_over_time((sli_value{%(ruleSliLabelSelectors)s} < bool Inf)[30d:%(evalInterval)s]) 
+        (sum(sum_over_time((sli_value{%(ruleSliLabelSelectors)s, type="%(sliType)s"} %(comparison)s bool %(metricTarget)s)[30d:%(evalInterval)s]) 
+        or vector(0)) / sum(sum_over_time((sli_value{%(ruleSliLabelSelectors)s, type="%(sliType)s"} < bool Inf)[30d:%(evalInterval)s]) 
         or vector(0))) >= 0
       ||| % {
         ruleSliLabelSelectors: sliSpec.ruleSliLabelSelectors,
+        sliType: sliSpec.sliType,
         evalInterval: sliSpec.evalInterval,
         metricTarget: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',

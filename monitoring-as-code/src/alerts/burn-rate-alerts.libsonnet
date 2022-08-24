@@ -106,7 +106,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
   {
     alerts+: [
       {
-        local alertName = std.join('_', [config.product, journeyKey, sliKey, 'ErrorBudgetBurn']),
+        local alertName = std.join('_', [config.product, journeyKey, sliKey, sliSpec.sliType, 'ErrorBudgetBurn']),
         local severity = getSeverity(errorBudgetBurnWindow, config, sliSpec),
         local alertTitle = createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey),
 
@@ -115,13 +115,14 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
 
         alert: alertName,
         expr: |||
-          %(recordingRuleShort)s{%(sliLabelSelectors)s} > %(factor).5f
+          %(recordingRuleShort)s{%(sliLabelSelectors)s, type="%(sliType)s"} > %(factor).5f
           and
-          %(recordingRuleLong)s{%(sliLabelSelectors)s} > %(factor).5f
+          %(recordingRuleLong)s{%(sliLabelSelectors)s, type="%(sliType)s"} > %(factor).5f
         ||| % {
           recordingRuleShort: macConfig.burnRateRuleNameTemplate % errorBudgetBurnWindow.short,
           recordingRuleLong: macConfig.burnRateRuleNameTemplate % errorBudgetBurnWindow.long,
           sliLabelSelectors: sliSpec.ruleSliLabelSelectors,
+          sliType: sliSpec.sliType,
           factor: errorBudgetBurnWindow.factor,
         },
         labels: {
