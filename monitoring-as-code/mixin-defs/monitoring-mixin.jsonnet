@@ -24,7 +24,6 @@ local sliSpecList = {
       sliDescription: 'Grafana landing page requests',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
-      metricTarget: 0.1,
       evalInterval: '1m',
       selectors: {
         product: 'grafana',
@@ -32,14 +31,15 @@ local sliSpecList = {
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 0.1,
+      },
     },
     SLI02: {
       title: 'requests to the Grafana login are successful',
       sliDescription: 'Grafana login page requests',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
-      metricTarget: 0.1,
       evalInterval: '1m',
       selectors: {
         product: 'grafana',
@@ -47,14 +47,15 @@ local sliSpecList = {
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 0.1,
+      },
     },
     SLI03: {
       title: 'requests to the Grafana datasources are successful',
       sliDescription: 'Grafana  datasource API requests',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
-      metricTarget: 0.5,
       evalInterval: '1m',
       selectors: {
         product: 'grafana',
@@ -62,7 +63,9 @@ local sliSpecList = {
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 0.5,
+      },
     },
   },
   prometheus: {
@@ -71,25 +74,27 @@ local sliSpecList = {
       sliDescription: 'Average of prometheus scrape target status',
       period: '7d',
       metricType: 'up',
-      metricTarget: 1,
       comparison: '==',
       evalInterval: '1m',
       selectors: {},
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 1,
+      },
     },
     SLI02: {
       title: 'prometheus scraping of Yace is fast enough',
       sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '7d',
       metricType: 'scrape_duration_seconds',
-      metricTarget: 15,
       evalInterval: '1m',
       selectors: {
         product: 'yace'
       },
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 15,
+      },
     },
   },
   thanos: {
@@ -98,7 +103,6 @@ local sliSpecList = {
       sliDescription: 'Instant query requests to thanos-query',
       period: '7d',
       metricType: 'http_requests_total',
-      metricTarget: 0.1,
       evalInterval: '1m',
       selectors: {
         product: 'thanos-query',
@@ -106,21 +110,24 @@ local sliSpecList = {
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 0.1,
+      },
     },
     SLI02: {
       title: 'instant query requests to Thanos are fast enough',
       sliDescription: 'Instant query requests to thanos-query',
       period: '7d',
       metricType: 'http_request_duration_seconds',
-      metricTarget: 15,
       latencyPercentile: 0.8,
       evalInterval: '1m',
       selectors: {
         product: 'thanos-query',
         resource: 'query',
       },
-      sliType: 'latency',
+      sliTypes: {
+        latency: 15,
+      },
       sloTarget: 90,
     },
     SLI03: {
@@ -128,7 +135,6 @@ local sliSpecList = {
       sliDescription: 'Range query requests to thanos-query',
       period: '7d',
       metricType: 'http_requests_total',
-      metricTarget: 0.1,
       evalInterval: '1m',
       selectors: {
         product: 'thanos-query',
@@ -136,21 +142,24 @@ local sliSpecList = {
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 0.1,
+      },
     },
     SLI04: {
       title: 'range query requests to Thanos are fast enough',
       sliDescription: 'Range query requests to thanos-query',
       period: '7d',
       metricType: 'http_request_duration_seconds',
-      metricTarget: 10,
       latencyPercentile: 0.8,
       evalInterval: '1m',
       selectors: {
         product: 'thanos-query',
         resource: 'query_range',
       },
-      sliType: 'latency',
+      sliTypes: {
+        latency: 10,
+      },
       sloTarget: 90,
     },
     SLI05: {
@@ -158,13 +167,14 @@ local sliSpecList = {
       sliDescription: 'Thanos-compact operations and failures',
       period: '7d',
       metricType: 'thanos_compact_group_compactions',
-      metricTarget: 0.01,
       evalInterval: '1m',
       selectors: {
         product: 'monitoring-thanos-compact.*'
       },
       sloTarget: 99,
-      sliType: 'availability',
+      sliTypes: {
+        availability: 0.01,
+      },
     },
   },
 };
