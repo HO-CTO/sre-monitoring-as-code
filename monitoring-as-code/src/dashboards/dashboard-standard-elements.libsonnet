@@ -28,12 +28,14 @@ local createSliDescription(sliSpec) =
 local createRowTitles(sliKey, sliSpec) =
   // Row title to describe SLI/SLO
   {
-    rowTitle: '%(slo)s: %(title)s' % {
+    rowTitle: '%(slo)s %(sliType)s: %(title)s' % {
       slo: sliKey,
+      sliType: sliSpec.sliType,
       title: sliSpec.title,
     },
-    rowTitleShort: '%(slo)s (%(period)s)' % {
+    rowTitleShort: '%(slo)s %(sliType)s (%(period)s)' % {
       slo: sliKey,
+      sliType: sliSpec.sliType,
       period: sliSpec.period,
     },
   };

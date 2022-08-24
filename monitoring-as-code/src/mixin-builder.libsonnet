@@ -209,10 +209,10 @@ local buildMixin(passedConfig, passedSliSpecList) =
   local links = createLinks(config);
 
   {
-    // grafanaDashboardFolder: config.product,
-    // grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
-    //   dashboardFunctions.createProductDashboard(config, sliList, links) +
-    //   dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
+    grafanaDashboardFolder: config.product,
+    grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
+      dashboardFunctions.createProductDashboard(config, sliList, links) +
+      dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
 
     prometheusRules+: createPrometheusRules(config, sliList),
     prometheusAlerts+: createPrometheusAlerts(config, sliList),
