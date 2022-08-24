@@ -34,14 +34,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Calculate SemVer increment
-        id: increment
-        uses: UKHomeOffice/semver-tag-action@v3
+      - name: Calculate SemVer value
+        id: calculate
+        uses: UKHomeOffice/semver-calculate-action@v1
         with:
           increment: ${{ steps.label.outputs.matchedLabels }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_use_head_tag: ${{ github.base_ref == 'main' }}
-          dry_run: true
+          default_to_highest: ${{ github.base_ref == 'main' }}      
 
       - name: Calculate metadata
         id: meta
@@ -49,7 +48,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{steps.increment.outputs.version}}
+            type=raw,value=${{steps.calculate.outputs.version}}
             type=raw,value=latest,enable=${{ github.base_ref == 'main' }}
 
       - name: Build container
@@ -62,12 +61,12 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             PACKAGE_TOKEN=${{secrets.GITHUB_TOKEN}}
-            MAC_VERSION=${{steps.increment.outputs.version}}
+            MAC_VERSION=${{steps.calculate.outputs.version}}
 
       - name: Tag repository with SemVer
         uses: UKHomeOffice/semver-tag-action@v3
         with:
-          tag: ${{steps.increment.outputs.version}}
+          tag: ${{steps.calculate.outputs.version}}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_use_head_tag: ${{ github.base_ref == 'main' }}
 

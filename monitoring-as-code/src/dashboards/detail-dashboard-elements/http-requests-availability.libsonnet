@@ -1,3 +1,6 @@
+// Target metrics:
+// requestCount - Metric representing the count of requests
+
 // MaC imports
 local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';
 
@@ -39,7 +42,8 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
     [row.new(
       title = stringFormattingFunctions.capitaliseFirstLetters('%s HTTP Requests Availability' % direction),
     ) + { gridPos: { w: 24, h: 1 } }],
-    [graphPanel.new(
+    [if std.objectHas(selectorLabels, 'errorStatus') then 
+    graphPanel.new(
       title = 'Availability - requests per second by response code',
       datasource = 'prometheus',
       min = 0,
@@ -50,15 +54,16 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       legend_hideZero = true,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(errorSelectorLabels)s) (rate({__name__=~"%(countMetrics)s", %(selectors)s}[$__rate_interval]))
+          sum by (%(errorSelectorLabels)s) (rate({__name__=~"%(requestCountMetrics)s", %(selectors)s}[$__rate_interval]))
         ||| % {
           errorSelectorLabels: std.join(', ', selectorLabels.errorStatus),
-          countMetrics: std.join('|', metrics.count),
+          requestCountMetrics: std.join('|', metrics.requestCount),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
         legendFormat = '{{%s}}' % std.join(', ', selectorLabels.errorStatus))
-    ) + { gridPos: { w: 12, h: 10 } }],
-    [graphPanel.new(
+    ) + { gridPos: { w: if std.objectHas(selectorLabels, 'resource') then 12 else 24, h: 10 } }],
+    [if std.objectHas(selectorLabels, 'resource') then 
+    graphPanel.new(
       title = 'Availability - requests per second by path',
       datasource = 'prometheus',
       min = 0,
@@ -69,14 +74,18 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
       legend_hideZero = true,
     ).addTarget(
       prometheus.target(|||
-          sum by (%(resourceSelectorLabels)s) (rate({__name__=~"%(countMetrics)s", %(selectors)s}[$__rate_interval]))
+          sum by (%(resourceSelectorLabels)s) (rate({__name__=~"%(requestCountMetrics)s", %(selectors)s}[$__rate_interval]))
         ||| % {
           resourceSelectorLabels: std.join(', ', selectorLabels.resource),
-          countMetrics: std.join('|', metrics.count),
+          requestCountMetrics: std.join('|', metrics.requestCount),
           selectors: std.join(', ', std.objectValues(selectors)),
         },
         legendFormat = '{{%s}}' % std.join(', ', selectorLabels.resource))
-    ) + { gridPos: { w: 12, h: 10, x: 12 } }],
+    ) + { gridPos: {
+      w: if std.objectHas(selectorLabels, 'errorStatus') then 12 else 24,
+      h: 10,
+      x: if std.objectHas(selectorLabels, 'errorStatus') then 12 else 0,
+    } }],
   ]);
 
 // File exports

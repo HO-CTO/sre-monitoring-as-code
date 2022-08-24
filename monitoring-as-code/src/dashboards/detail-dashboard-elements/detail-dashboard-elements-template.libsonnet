@@ -1,4 +1,8 @@
-// Template for detail dashboard element files
+// Target metrics:
+// List the target metrics needed for this SLI value in format: keyword - Description of metric
+
+// Additional config:
+// List any additional required config either from metric type config or SLI spec
 
 // MaC imports
 local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';

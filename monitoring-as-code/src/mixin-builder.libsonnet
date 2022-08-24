@@ -68,25 +68,38 @@ local updateSliSpecList(config, passedSliSpecList) =
     for journeyKey in std.objectFields(passedSliSpecList)
   };
 
+// Adds the current SLI type and metric target to the SLI spec
+// @param sliType The current SLI type
+// @param sliSpec The spec for the SLI having its elements created
+// @returns The SLI spec object but with updated SLI type
+local updateSliSpec(sliType, sliSpec) =
+  sliSpec
+  +
+  {
+    metricTarget: sliSpec.sliTypes[sliType],
+    sliType: sliType,
+  };
+
 // Creates an SLI with its standard dashboard elements, unique dashboard elements, recording
 // rules, alerting rules and alerts
+// @param sliType The current SLI type
 // @param config The config for the service defined in the mixin file
-// @param sliSpecList The list of SLI specs defined in the mixin file
+// @param passedSliSpec The spec for the SLI having its elements created
 // @param sliKey The key of the current SLI having rules generated
 // @param journeyKey The key of the journey containing the SLI having rules generated
 // @returns The SLI with standard elements
-local createSli(config, sliSpecList, sliKey, journeyKey) =
-  local sliSpec = sliSpecList[journeyKey][sliKey];
+local createSli(sliType, config, passedSliSpec, sliKey, journeyKey) =
+  local sliSpec = updateSliSpec(sliType, passedSliSpec);
 
   if std.objectHas(macConfig.metricTypes, sliSpec.metricType) then
-    if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliSpec.sliType) then
+    if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliType) then
       sliElementFunctions.createRecordingRules(sliSpec, config) +
       sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
       dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +
       alertFunctions.createBurnRateRules(sliSpec) +
       alertFunctions.createBurnRateAlerts(config, sliSpec, sliKey, journeyKey)
-    else error 'Metric type does not have SLI type'
-  else error 'Undefined metric type';
+    else error 'Metric type %s does not have SLI type %s' % [sliSpec.metricType, sliType]
+  else error 'Undefined metric type %s' % sliSpec.metricType;
 
 // Creates a list of all the SLIs in a service with their standard dashboard elements, unique
 // dashboard elements, recording rules, alerting rules and alerts
@@ -96,8 +109,11 @@ local createSli(config, sliSpecList, sliKey, journeyKey) =
 local createSliList(config, sliSpecList) =
   {
     [journeyKey]+: {
-      [sliKey]+:
-        createSli(config, sliSpecList, sliKey, journeyKey)
+      [sliKey]+: {
+        [sliType]+:
+          createSli(sliType, config, sliSpecList[journeyKey][sliKey], sliKey, journeyKey)
+        for sliType in std.objectFields(sliSpecList[journeyKey][sliKey].sliTypes)
+      }
       for sliKey in std.objectFields(sliSpecList[journeyKey])
     }
     for journeyKey in std.objectFields(sliSpecList)
@@ -153,7 +169,8 @@ local createPrometheusRules(config, sliList) =
       rules: std.flattenArrays([
         sli.recording_rules
         for journeyKey in std.objectFields(sliList)
-        for sli in std.objectValues(sliList[journeyKey])
+        for sliKey in std.objectFields(sliList[journeyKey])
+        for sli in std.objectValues(sliList[journeyKey][sliKey])
       ]),
     }],
   };
@@ -169,7 +186,8 @@ local createPrometheusAlerts(config, sliList) =
       rules: std.flattenArrays([
         sli.alerts
         for journeyKey in std.objectFields(sliList)
-        for sli in std.objectValues(sliList[journeyKey])
+        for sliKey in std.objectFields(sliList[journeyKey])
+        for sli in std.objectValues(sliList[journeyKey][sliKey])
       ]),
     }],
   };

@@ -29,19 +29,19 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          count: 'count',
+          target: 'count',
         },
       },
       latency: {
-        library: (import 'sli-metric-libraries/sli-latency-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
+          bucket: 'bucket',
           sum: 'sum',
           count: 'count',
-          bucket: 'bucket',
         },
       },
     },
@@ -49,8 +49,8 @@
       standardTemplates: ['resource', 'errorStatus'],
       elements: ['httpRequestsAvailability', 'httpRequestsLatency'],
       targetMetrics: {
-        count: 'count',
-        bucket: 'bucket',
+        requestCount: 'count',
+        requestBucket: 'bucket',
       },
     },
   },
@@ -68,10 +68,10 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          count: 'count',
+          target: 'count',
         },
       },
     },
@@ -79,7 +79,7 @@
       standardTemplates: ['resource', 'errorStatus'],
       elements: ['httpRequestsAvailability'],
       targetMetrics: {
-        count: 'count',
+        requestCount: 'count',
       },
     },
   },
@@ -97,10 +97,10 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          count: 'count',
+          target: 'count',
         },
       },
     },
@@ -108,7 +108,7 @@
       standardTemplates: ['resource', 'errorStatus'],
       elements: ['httpRequestsAvailability'],
       targetMetrics: {
-        count: 'count',
+        requestCount: 'count',
       },
     },
   },
@@ -127,12 +127,12 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-metric-libraries/sli-latency-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
+          bucket: 'bucket',
           sum: 'sum',
           count: 'count',
-          bucket: 'bucket',
         },
       },
     },
@@ -140,7 +140,7 @@
       standardTemplates: ['resource'],
       elements: ['httpRequestsLatency'],
       targetMetrics: {
-        bucket: 'bucket',
+        requestBucket: 'bucket',
       },
     },
   },
@@ -157,10 +157,10 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          count: 'count',
+          target: 'count',
         },
       },
     },
@@ -168,7 +168,7 @@
       standardTemplates: ['errorStatus'],
       elements: ['httpRequestsAvailability'],
       targetMetrics: {
-        count: 'count',
+        requestCount: 'count',
       },
     },
   },
@@ -187,19 +187,19 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          count: 'count',
+          target: 'count',
         },
       },
       latency: {
-        library: (import 'sli-metric-libraries/sli-latency-promclient.libsonnet'),
+        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
+          bucket: 'bucket',
           sum: 'sum',
           count: 'count',
-          bucket: 'bucket',
         },
       },
     },
@@ -207,39 +207,45 @@
       standardTemplates: ['errorStatus'],
       elements: ['httpRequestsAvailability', 'httpRequestsLatency'],
       targetMetrics: {
-        count: 'count',
-        bucket: 'bucket',
+        requestCount: 'count',
+        requestBucket: 'bucket',
       },
     },
   },
   'aws_alb': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
         count4xx: 'aws_alb_httpcode_target_4_xx_count_sum',
         count5xx: 'aws_alb_httpcode_target_5_xx_count_sum',
         requestCount: 'aws_alb_request_count_sum',
-        responseTime: 'aws_alb_target_response_time',
+        responseTimeAverage: 'aws_alb_target_response_time_average',
+        responseTimeP90: 'aws_alb_target_response_time_p90',
+        responseTimeP95: 'aws_alb_target_response_time_p95',
+        responseTimeP99: 'aws_alb_target_response_time_p99',
       },
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-cloudwatch-alb.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          count4xx: 'count4xx',
-          count5xx: 'count5xx',
-          requestCount: 'requestCount',
+          code4xx: 'count4xx',
+          code5xx: 'count5xx',
+          codeAll: 'requestCount',
         },
       },
       latency: {
-        library: (import 'sli-metric-libraries/sli-latency-cloudwatch-alb.libsonnet'),
+        library: (import 'sli-value-libraries/max-latency-using-cloudwatch-percentile-metric.libsonnet'),
         description: 'Target latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
-          responseTime: 'responseTime',
+          p90: 'responseTimeP90',
+          p95: 'responseTimeP95',
+          p99: 'responseTimeP99',
+          average: 'responseTimeAverage',
         },
       },
     },
@@ -252,19 +258,18 @@
   'aws_sqs': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
-        messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_sum',
-        oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_sum',
+        messagesVisible: 'aws_sqs_approximate_number_of_messages_visible_average',
+        oldestMessage: 'aws_sqs_approximate_age_of_oldest_message_maximum',
         messagesSent: 'aws_sqs_number_of_messages_sent_sum',
         messagesDeleted: 'aws_sqs_number_of_messages_deleted_sum',
       },
       customSelectorLabels: {
-        deadletterQueueName: 'queue_name',
+        deadletterQueueName: 'dimension_QueueName',
         deadletterQueueType: 'queue_type',
-        targetQueue: 'dimension_QueueName',
       },
       customSelectors: {
         deadletterQueueName: '.+dlq.+',
@@ -273,18 +278,18 @@
     },
     sliTypesConfig: {
       freshness: {
-        library: (import 'sli-metric-libraries/sli-freshness-cloudwatch-sqs.libsonnet'),
+        library: (import 'sli-value-libraries/average-freshness-using-queue-metric.libsonnet'),
         description: 'Age of oldest message in SQS queue should be less than %(metricTarget)s seconds for %(sliDescription)s',
         targetMetrics: {
           oldestMessage: 'oldestMessage',
-          messagesDeleted: 'messagesDeleted',
+          deletedMessages: 'messagesDeleted',
         },
       },
       correctness: {
-        library: (import 'sli-metric-libraries/sli-correctness-cloudwatch-sqs-dlq.libsonnet'),
+        library: (import 'sli-value-libraries/average-correctness-using-queue-metric.libsonnet'),
         description: 'There should be no messages in the DLQ for %(sliDescription)s',
         targetMetrics: {
-          messagesVisible: 'messagesVisible',
+          visibleMessages: 'messagesVisible',
           oldestMessage: 'oldestMessage',
         },
       },
@@ -294,9 +299,9 @@
       elements: ['cloudwatchSqs'],
       targetMetrics: {
         oldestMessage: 'oldestMessage',
-        messagesDeleted: 'messagesDeleted',
-        messagesVisible: 'messagesVisible',
-        messagesSent: 'messagesSent',
+        sentMessages: 'messagesSent',
+        visibleMessages: 'messagesVisisble',
+        deletedMessages: 'messagesDeleted',
       },
     },
   },
@@ -313,11 +318,11 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-availability-generic.libsonnet'),
+        library: (import 'sli-value-libraries/proportion-of-errors-using-failure-metric.libsonnet'),
         description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
-          totalFailures: 'totalFailures',
-          total: 'total',
+          failure: 'totalFailures',
+          successAndFailure: 'total',
         },
       },
     },
@@ -331,6 +336,7 @@
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
+        product: 'job',
       },
       metrics: {
         duration: 'up',
@@ -338,10 +344,10 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-avgovertime-generic.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          duration: 'duration',
+          target: 'duration',
         },
       },
     },
@@ -363,10 +369,10 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-metric-libraries/sli-avgovertime-generic.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          duration: 'duration',
+          target: 'duration',
         },
       },
     },
@@ -379,7 +385,7 @@
   'aws_rds_read': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
@@ -390,24 +396,24 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageLatency',
+          target: 'averageLatency',
         },
       },
       iops: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageIops',
+          target: 'averageIops',
         },
       },
       throughput: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageThroughput',
+          target: 'averageThroughput',
         },
       },
     },
@@ -420,7 +426,7 @@
   'aws_rds_write': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
@@ -431,24 +437,24 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageLatency',
+          target: 'averageLatency',
         },
       },
       iops: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageIops',
+          target: 'averageIops',
         },
       },
       throughput: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageThroughput',
+          target: 'averageThroughput',
         },
       },
     },
@@ -461,19 +467,31 @@
   'aws_es': {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
+        environment: 'Environment',
         product: 'job',
       },
       metrics: {
         averageLatency: 'aws_es_search_latency_average',
+        sum4xx: 'aws_es_4xx_sum',
+        sum5xx: 'aws_es_5xx_sum',
+        requestsSum: 'aws_es_open_search_requests_sum',
       },
     },
     sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
+        description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          code4xx: 'sum4xx',
+          code5xx: 'sum5xx',
+          codeAll: 'requestsSum',
+        },
+      },
       latency: {
-        library: (import 'sli-metric-libraries/sli-average-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
-          average: 'averageLatency',
+          target: 'averageLatency',
         },
       },
     },
@@ -481,6 +499,33 @@
       standardTemplates: [],
       elements: [],
       targetMetrics: {},
+    },
+  },
+  template: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: '',
+        product: '',
+      },
+      metrics: {
+
+      },
+    },
+    sliTypesConfig: {
+      sliType: {
+        library: (import ''),
+        description: '',
+        targetMetrics: {
+
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {
+        
+      },
     },
   },
 }
