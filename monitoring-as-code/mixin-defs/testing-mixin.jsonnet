@@ -1,7 +1,7 @@
 local mixinFunctions = import '../src/lib/mixin-functions.libsonnet';
 
 local config = {
-  product: 'test',
+  product: 'testing',
   applicationServiceName: 'test',
   servicenowAssignmentGroup: 'test',
   maxAlertSeverity: 'test',
@@ -12,7 +12,7 @@ local config = {
 };
 
 local sliSpecList = {
-  journey1: {
+  testing: {
     SLI01: {
       title: 'test',
       sliDescription: 'test',
