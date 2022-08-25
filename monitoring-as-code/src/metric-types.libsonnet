@@ -300,7 +300,7 @@
       targetMetrics: {
         oldestMessage: 'oldestMessage',
         sentMessages: 'messagesSent',
-        visibleMessages: 'messagesVisisble',
+        visibleMessages: 'messagesVisible',
         deletedMessages: 'messagesDeleted',
       },
     },
