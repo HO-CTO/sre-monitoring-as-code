@@ -29,7 +29,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
         sum by (%(selectorLabels)s) (
           rate(%(targetMetric)s{%(selectors)s, %(errorStatusSelector)s}[%(evalInterval)s])
           or
-          0 * %(targetMetric)s
+          0 * %(targetMetric)s{%(selectors)s}
         )
         /
         sum by (%(selectorLabels)s) (rate(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
