@@ -27,16 +27,17 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       record: 'sli_value',
       expr: |||
         sum by (%(selectorLabels)s) (
-          rate(%(targetMetric)s{%(errorStatusSelector)s}[%(evalInterval)s])
+          rate(%(targetMetric)s{%(selectors)s, %(errorStatusSelector)s}[%(evalInterval)s])
           or
           0 * %(targetMetric)s
         )
         /
-        sum by (%(selectorLabels)s) (rate(%(targetMetric)s[%(evalInterval)s]))
+        sum by (%(selectorLabels)s) (rate(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
         targetMetric: targetMetrics.target,
         errorStatusSelector: sliValueLibraryFunctions.getSelector('errorStatus', metricConfig, sliSpec),
         selectorLabels: std.join(', ', [metricConfig.selectorLabels.environment, metricConfig.selectorLabels.product]),
+        selectors: std.join(',', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
       labels: sliSpec.sliLabels + sliMetadata,
