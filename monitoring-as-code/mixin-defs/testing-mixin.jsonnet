@@ -121,8 +121,6 @@ local sliSpecList = {
       sliTypes: {
         availability: 0.1,
         latency: 0.1,
-        genericAvailability: 0.1,
-        genericLatency: 0.1,
       },
     },
     SLI08: {

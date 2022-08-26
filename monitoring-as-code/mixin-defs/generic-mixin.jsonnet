@@ -29,8 +29,8 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        genericAvailability: 0.1,
-        genericLatency: 15,
+        availability: 0.1,
+        latency: 15,
       },
     },
   },

@@ -25,16 +25,18 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliValueLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
+  local selectorLabels = sliValueLibraryFunctions.getSelectorLabels(metricConfig);
 
   [
     {
       record: 'sli_value',
       expr: |||
-        histogram_quantile(%(latencyPercentile)0.2f, (sum by (le) (rate(%(bucketMetric)s{%(selectors)s}[%(evalInterval)s]))))
+        histogram_quantile(%(latencyPercentile)0.2f, (sum by (le, %(selectorLabels)s) (rate(%(bucketMetric)s{%(selectors)s}[%(evalInterval)s]))))
       ||| % {
         bucketMetric: targetMetrics.bucket,
         latencyPercentile: sliSpec.latencyPercentile,
-        selectors: std.join(',', ruleSelectors),
+        selectorLabels: std.join(', ', selectorLabels),
+        selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
       labels: sliSpec.sliLabels + sliMetadata,

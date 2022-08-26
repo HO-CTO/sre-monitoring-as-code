@@ -23,6 +23,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliValueLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
+  local selectorLabels = sliValueLibraryFunctions.getSelectorLabels(metricConfig);
 
   [
     {
@@ -30,7 +31,8 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         
       ||| % {
-        selectors: std.join(',', ruleSelectors),
+        selectorLabels: std.join(', ', selectorLabels),
+        selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
       labels: sliSpec.sliLabels + sliMetadata,

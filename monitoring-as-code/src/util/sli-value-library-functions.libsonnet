@@ -68,6 +68,12 @@ local getTargetMetrics(metricConfig, sliSpec) =
     for targetMetricField in std.objectFields(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].targetMetrics)
   };
 
+// Gets the environment and product selector labels for a metric type
+// @param metricConfig Object containing config for a metric type
+// @returns List of the labels
+local getSelectorLabels(metricConfig) =
+  [metricConfig.selectorLabels.environment, metricConfig.selectorLabels.product];
+
 // File exports
 {
   getMetricConfig(sliSpec): getMetricConfig(sliSpec),
@@ -77,4 +83,5 @@ local getTargetMetrics(metricConfig, sliSpec) =
   createRuleSelectors(metricConfig, sliSpec, config): createRuleSelectors(metricConfig, sliSpec, config),
   getCustomSelector(selector, metricConfig): getCustomSelector(selector, metricConfig),
   getTargetMetrics(metricConfig, sliSpec): getTargetMetrics(metricConfig, sliSpec),
+  getSelectorLabels(metricConfig): getSelectorLabels(metricConfig),
 }

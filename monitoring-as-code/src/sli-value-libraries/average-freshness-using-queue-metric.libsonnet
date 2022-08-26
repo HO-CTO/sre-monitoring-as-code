@@ -27,19 +27,21 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliValueLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
+  local selectorLabels = sliValueLibraryFunctions.getSelectorLabels(metricConfig);
 
   [
     {
       record: 'sli_value',
       expr: |||
-        sum(avg_over_time((%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        sum by(%(selectorLabels)s) (avg_over_time((%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
         /
-        sum(count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]))
+        sum by(%(selectorLabels)s) (count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]))
       ||| % {
         oldestMessageMetric: targetMetrics.oldestMessage,
         queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
         latencyTarget: sliSpec.latencyTarget,
-        selectors: std.join(',', ruleSelectors),
+        selectorLabels: std.join(', ', selectorLabels),
+        selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
       labels: sliSpec.sliLabels + sliMetadata,
