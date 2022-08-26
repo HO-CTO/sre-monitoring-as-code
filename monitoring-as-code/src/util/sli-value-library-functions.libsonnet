@@ -48,7 +48,7 @@ local createRuleSelectors(metricConfig, sliSpec, config) =
   std.flattenArrays([
     getSelectors(metricConfig, sliSpec)
     +
-    ['%s=~"%s"' % [metricConfig.selectorLabels.environment, config.environment]]
+    ['%s=~"%s"' % [metricConfig.selectorLabels.environment, if config.environment == 'generic' then '.*' else config.environment]]
   ]);
 
 // Gets a custom selector using the selector label and selector value from config
