@@ -202,6 +202,22 @@
           count: 'count',
         },
       },
+      genericAvailability: {
+        library: (import 'sli-value-libraries/generic-proportion-of-errors-using-label.libsonnet'),
+        description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          target: 'count',
+        },
+      },
+      genericLatency: {
+        library: (import 'sli-value-libraries/generic-histogram-quantile-latency.libsonnet'),
+        description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        targetMetrics: {
+          bucket: 'bucket',
+          sum: 'sum',
+          count: 'count',
+        },
+      },
     },
     detailDashboardConfig: {
       standardTemplates: ['errorStatus'],
