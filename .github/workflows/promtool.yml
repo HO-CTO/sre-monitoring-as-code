@@ -1,0 +1,36 @@
+name: 'docker-promtool'
+
+on:
+  workflow_dispatch
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: sre-promtool
+  USER: ho-cto
+
+jobs:
+  publish:
+    name: 'Build Promtool'
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+        #Logs into Github registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get the latest promtool version
+        run: echo "VERSION=$(curl -Ls https://api.github.com/repos/prometheus/prometheus/releases/latest | jq ".tag_name" | xargs | cut -c2-)" >> $GITHUB_ENV
+
+      - name: Build container
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE_NAME }}:${VERSION} ${GITHUB_WORKSPACE}/monitoring-as-code/tools/promtool
+
+      - name: Push image to GitHub Container Registry
+        run: docker push ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE_NAME }}:${VERSION}
