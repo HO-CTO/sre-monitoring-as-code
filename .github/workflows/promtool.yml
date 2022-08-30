@@ -26,11 +26,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Add short variable value for ${GITHUB_SHA}
-        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
+      - name: Get the latest promtool version
+        run: echo "VERSION=$(curl -Ls https://api.github.com/repos/prometheus/prometheus/releases/latest | jq ".tag_name" | xargs | cut -c2-)" >> $GITHUB_ENV
 
       - name: Build container
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE_NAME }}:${SHORT_SHA} ${GITHUB_WORKSPACE}/monitoring-as-code/tools/promtool
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE_NAME }}:${VERSION} ${GITHUB_WORKSPACE}/monitoring-as-code/tools/promtool
 
       - name: Push image to GitHub Container Registry
-        run: docker push ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE_NAME }}:${SHORT_SHA}
+        run: docker push ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.IMAGE_NAME }}:${VERSION}
