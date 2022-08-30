@@ -43,23 +43,21 @@ local updateSliSpecList(config, passedSliSpecList) =
       [sliKey]+: {
         sliLabels: {
           service: config.product,
-          slo: sliKey,
-          environment: config.environment,
+          sli: sliKey,
           journey: journeyKey,
           mac_version: config.macVersion,
         },
-        dashboardSliLabelSelectors: "service='%(service)s', slo='%(slo)s', environment='$environment',
+        dashboardSliLabelSelectors: "service='%(service)s', sli='%(sli)s', sli_environment='$environment',
           journey='%(journey)s'" % {
             service: config.product,
-            slo: sliKey,
-            environment: config.environment,
+            sli: sliKey,
             journey: journeyKey,
           },
-        ruleSliLabelSelectors: "service='%(service)s', slo='%(slo)s', environment='%(environment)s',
+        ruleSliLabelSelectors: "service='%(service)s', sli='%(sli)s', sli_environment='%(environment)s',
           journey='%(journey)s'" % {
             service: config.product,
-            slo: sliKey,
-            environment: config.environment,
+            sli: sliKey,
+            environment: if config.environment == 'generic' then '.*' else config.environment,
             journey: journeyKey,
           },
       }

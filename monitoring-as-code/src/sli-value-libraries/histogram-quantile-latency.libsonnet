@@ -31,11 +31,17 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
     {
       record: 'sli_value',
       expr: |||
-        histogram_quantile(%(latencyPercentile)0.2f, (sum by (le, %(selectorLabels)s) (rate(%(bucketMetric)s{%(selectors)s}[%(evalInterval)s]))))
+        sum without (%(selectorLabels)s) (label_replace(label_replace(
+          (
+            histogram_quantile(%(latencyPercentile)0.2f, (sum by (le, %(selectorLabels)s) (rate(%(bucketMetric)s{%(selectors)s}[%(evalInterval)s]))))
+          ),
+        "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
         bucketMetric: targetMetrics.bucket,
         latencyPercentile: sliSpec.latencyPercentile,
-        selectorLabels: std.join(', ', selectorLabels),
+        selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
+        environmentSelectorLabel: selectorLabels.environment,
+        productSelectorLabel: selectorLabels.product,
         selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },

@@ -37,10 +37,16 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
     {
       record: 'sli_value',
       expr: |||
-        max by(%(selectorLabels)s) (%(cloudwatchPercentileMetric)s{%(selectors)s})
+        sum without (%(selectorLabels)s) (label_replace(label_replace(
+          (
+            max by(%(selectorLabels)s) (%(cloudwatchPercentileMetric)s{%(selectors)s})
+          ),
+        "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
         cloudwatchPercentileMetric: targetMetrics[cloudwatchPercentile],
-        selectorLabels: std.join(', ', selectorLabels),
+        selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
+        environmentSelectorLabel: selectorLabels.environment,
+        productSelectorLabel: selectorLabels.product,
         selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },

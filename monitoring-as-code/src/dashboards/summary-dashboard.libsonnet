@@ -17,7 +17,7 @@ local envMap = {
 };
 
 // PromQL selector for environment label
-local environmentLabelSelector = 'environment="$environment"';
+local environmentLabelSelector = 'sli_environment="$environment"';
 
 // The panels for the summary dashboard
 local panels = [

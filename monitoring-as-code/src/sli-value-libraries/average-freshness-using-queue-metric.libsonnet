@@ -33,14 +33,20 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
     {
       record: 'sli_value',
       expr: |||
-        sum by(%(selectorLabels)s) (avg_over_time((%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
-        /
-        sum by(%(selectorLabels)s) (count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]))
+        sum without (%(selectorLabels)s) (label_replace(label_replace(
+          (
+            sum by(%(selectorLabels)s) (avg_over_time((%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            /
+            sum by(%(selectorLabels)s) (count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]))
+          ),
+        "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
         oldestMessageMetric: targetMetrics.oldestMessage,
         queueSelector: '%s!~"%s"' % [metricConfig.customSelectorLabels.deadletterQueueName, metricConfig.customSelectors.deadletterQueueName],
         latencyTarget: sliSpec.latencyTarget,
-        selectorLabels: std.join(', ', selectorLabels),
+        selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
+        environmentSelectorLabel: selectorLabels.environment,
+        productSelectorLabel: selectorLabels.product,
         selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },

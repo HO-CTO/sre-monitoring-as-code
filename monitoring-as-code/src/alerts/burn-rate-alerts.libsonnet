@@ -115,9 +115,9 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
 
         alert: alertName,
         expr: |||
-          %(recordingRuleShort)s{%(sliLabelSelectors)s, type="%(sliType)s"} > %(factor).5f
+          %(recordingRuleShort)s{%(sliLabelSelectors)s, sli_type="%(sliType)s"} > %(factor).5f
           and
-          %(recordingRuleLong)s{%(sliLabelSelectors)s, type="%(sliType)s"} > %(factor).5f
+          %(recordingRuleLong)s{%(sliLabelSelectors)s, sli_type="%(sliType)s"} > %(factor).5f
         ||| % {
           recordingRuleShort: macConfig.burnRateRuleNameTemplate % errorBudgetBurnWindow.short,
           recordingRuleLong: macConfig.burnRateRuleNameTemplate % errorBudgetBurnWindow.long,

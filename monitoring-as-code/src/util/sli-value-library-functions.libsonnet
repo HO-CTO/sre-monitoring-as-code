@@ -72,7 +72,10 @@ local getTargetMetrics(metricConfig, sliSpec) =
 // @param metricConfig Object containing config for a metric type
 // @returns List of the labels
 local getSelectorLabels(metricConfig) =
-  [metricConfig.selectorLabels.environment, metricConfig.selectorLabels.product];
+  {
+    environment: metricConfig.selectorLabels.environment, 
+    product: metricConfig.selectorLabels.product,
+  };
 
 // File exports
 {

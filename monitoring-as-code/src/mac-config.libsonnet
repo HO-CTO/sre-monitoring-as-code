@@ -36,7 +36,7 @@ local alertPayloadTemplate = {
   event_type: '%(sliSpec.sliType)s',
   message_key: 'EBSA Prometheus_%(config.applicationServiceName)s_%(sliSpec.sliType)s_%(config.applicationServiceName)s',
   event_severity: '%(severity)s',
-  raw_event_payload: '"environment":"%(config.environment)s","journey":"%(journeyKey)s","sli":"%(sliKey)s","mac_version":"%(config.macVersion)s","monitoring_slackchannel":"%(config.alertingSlackChannel)s","service":"%(config.product)s","configuration_item":"%(configurationItem)s"',
+  raw_event_payload: '"journey":"%(journeyKey)s","sli":"%(sliKey)s","mac_version":"%(config.macVersion)s","monitoring_slackchannel":"%(config.alertingSlackChannel)s","configuration_item":"%(configurationItem)s"',
   assignment_group: '%(config.servicenowAssignmentGroup)s',
   runbook_id: '%(runbookUrl)s',
 };
