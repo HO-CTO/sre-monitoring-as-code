@@ -30,6 +30,8 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
   [
     {
       record: 'sli_value',
+      // 0 * %(targetMetric)s{%(selectors)s} will replace the numerator with a 0 when there is no
+      // data for numerator metric with selectors
       expr: |||
         sum by(%(selectorLabels)s) (
           rate(%(targetMetric)s{%(selectors)s, %(errorStatusSelector)s}[%(evalInterval)s])
