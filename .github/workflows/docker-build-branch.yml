@@ -9,7 +9,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
   PROMTOOL_IMAGE_NAME: sre-promtool
   PROMTOOL_VERSION: 2.38.0
-  USER: mahrufiqbalho
+  USER: ho-cto
 
 jobs:
   publish:
