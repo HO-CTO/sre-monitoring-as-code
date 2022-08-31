@@ -228,6 +228,8 @@ local createServiceTemplates(config) =
       datasource = 'prometheus',
       query = 'label_values(sli_value{service="%s"}, sli_environment)' % config.product,
       refresh = 'time',
+      includeAll = true,
+      multi = true,
       label = 'Environment',
     ),
   ]
@@ -238,6 +240,8 @@ local createServiceTemplates(config) =
       datasource = 'prometheus',
       query = 'label_values(sli_value{service="%s", sli_environment="$environment"}, sli_product)' % config.product,
       refresh = 'time',
+      includeAll = true,
+      multi = true,
       label = 'Product',
     ),
   ] else [];

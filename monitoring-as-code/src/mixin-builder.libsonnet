@@ -48,15 +48,15 @@ local updateSliSpecList(config, passedSliSpecList) =
           journey: journeyKey,
           mac_version: config.macVersion,
         },
-        dashboardSliLabelSelectors: "service='%(service)s', sli='%(sli)s', journey='%(journey)s',
-          sli_environment='$environment'%(productSelector)s" % {
+        dashboardSliLabelSelectors: 'service="%(service)s", sli="%(sli)s", journey="%(journey)s",
+          sli_environment=~"$environment"%(productSelector)s' % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
-            productSelector: if std.objectHas(config, 'generic') && config.generic then ", sli_product='$product'" else '',
+            productSelector: if std.objectHas(config, 'generic') && config.generic then ', sli_product=~"$product"' else '',
           },
-        ruleSliLabelSelectors: "service='%(service)s', sli='%(sli)s', journey='%(journey)s',
-          sli_environment=~'%(environment)s'" % {
+        ruleSliLabelSelectors: 'service="%(service)s", sli="%(sli)s", journey="%(journey)s",
+          sli_environment=~"%(environment)s"' % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
