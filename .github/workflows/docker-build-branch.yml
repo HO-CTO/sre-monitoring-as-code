@@ -71,7 +71,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ steps.meta.outputs.tags }}
-          sarif_file: snyk.sarif
+          sarif: snyk.sarif
           args: |
             --severity-threshold=medium
             --app-vulns
