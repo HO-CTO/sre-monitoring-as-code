@@ -458,6 +458,17 @@ detailDashboardElements object in mac-config.libsonnet. The key should be the na
 (excluding the extension) written in camel case and the value should be an import for the file.
 Once this is done the detail dashboard elements can be used by metric types.
 
+# Editing the alert payload
+
+The alert payload template can be found in mac-config.libsonnet. It is stored in the
+alertPayloadConfig object. The labels you want to appear on the alert are the keys on the left and
+the values use string substitution with the config and SLI specifications defined in the mixin
+file (as well as some special variables defined in the alert functions).
+
+To edit the payload just change the template, if you think there is anything missing from the
+config or SLI specs that you need for the payload then raise the issue with us, since that would
+be a breaking change.
+
 # Testing
 
 TBC
