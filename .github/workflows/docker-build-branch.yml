@@ -62,7 +62,7 @@ jobs:
       - name: Run promtool checks
         run: for FILE in ${{ github.workspace }}/monitoring-as-code/output/prometheus-rules/*-rules.yaml; do docker run -v ${{ github.workspace }}/monitoring-as-code:${{ github.workspace }}/data ${{env.REGISTRY}}/${{env.USER}}/${{env.PROMTOOL_IMAGE_NAME}}:${{env.PROMTOOL_VERSION}} check rules ${{ github.workspace }}/data/output/prometheus-rules/$(basename $FILE); if [ $? -ne 0 ]; then echo "Validation of rules files failed for $(basename $FILE) - exiting"; exit 1; fi done
 
-      # Snyk security scan of Docker file only
+      # Snyk security scan of Docker file and Built Docker Image with unmanaged dependencies
       - name: Run Snyk to check Docker file for vulnerabilities
         id: snyk-dockerfile
         continue-on-error: true
@@ -71,10 +71,11 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ steps.meta.outputs.tags }}
+          sarif_file: snyk.sarif
           args: |
-            --file=./monitoring-as-code/Dockerfile
             --severity-threshold=medium
-            --sarif-file-output=snyk.sarif
+            --app-vulns
+#            --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
@@ -85,22 +86,21 @@ jobs:
         if: steps.snyk-dockerfile.outcome != 'success'
         run: exit 1
 
-      # Snyk security scan of Built Docker Image and unmanaged dependencies
-      - name: Run Snyk to check Docker image for vulnerabilities
-        id: snyk-image
-        continue-on-error: true
-        uses: snyk/actions/docker@0.3.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ steps.meta.outputs.tags }}
-          args: |
-            --app-vulns
-            --severity-threshold=medium
-
-      - name: Check on failures
-        if: steps.snyk-image.outcome != 'success'
-        run: exit 1
+#      - name: Run Snyk to check Docker image for vulnerabilities
+#        id: snyk-image
+#        continue-on-error: true
+#        uses: snyk/actions/docker@0.3.0
+#        env:
+#          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#        with:
+#          image: ${{ steps.meta.outputs.tags }}
+#          args: |
+#            --app-vulns
+#            --severity-threshold=medium
+#
+#      - name: Check on failures
+#        if: steps.snyk-image.outcome != 'success'
+#        run: exit 1
 
       - name: Push image to GitHub Container Registry
         run: docker push ${{ steps.meta.outputs.tags }}
