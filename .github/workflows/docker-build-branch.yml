@@ -71,8 +71,9 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ steps.meta.outputs.tags }}
-          sarif: snyk.sarif
+#          sarif: snyk.sarif
           args: |
+            --file=./monitoring-as-code/Dockerfile
             --severity-threshold=medium
             --app-vulns
 #            --sarif-file-output=snyk.sarif
