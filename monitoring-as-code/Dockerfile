@@ -15,7 +15,7 @@ RUN jb init && \
 FROM alpine:3.16.1 AS runner
 
 
-RUN apk add --no-cache git=2.34.4-r0
+RUN apk add --no-cache git=2.36.2-r0
 
 # Pass semver or PR from GitHub workflow
 ARG MAC_VERSION
