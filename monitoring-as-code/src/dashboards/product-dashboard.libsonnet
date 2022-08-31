@@ -137,14 +137,8 @@ local createProductDashboard(config, sliList, links) =
         refresh = '5m'
       ).addLinks(
         dashboardLinks = links
-      ).addTemplate(
-        template.new(
-          name = 'environment',
-          datasource = 'prometheus',
-          query = 'label_values({__name__=~"sli_value"}, environment)',
-          refresh = 'load',
-          label = 'Environment'
-        )
+      ).addTemplates(
+        config.templates
       ).addPanels(std.prune(panels)),
   };
 

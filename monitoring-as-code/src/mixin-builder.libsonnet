@@ -31,6 +31,7 @@ local updateConfig(passedConfig) =
     macVersion: macVersion,
     grafanaUrl: getUrl('grafana', passedConfig.grafanaUrl, account),
     alertmanagerUrl: getUrl('alertmanager', passedConfig.alertmanagerUrl, account),
+    templates: dashboardFunctions.createServiceTemplates(passedConfig),
   };
 
 // Updates the SLI spec list passed from mixin file by adding additional values
@@ -47,18 +48,19 @@ local updateSliSpecList(config, passedSliSpecList) =
           journey: journeyKey,
           mac_version: config.macVersion,
         },
-        dashboardSliLabelSelectors: "service='%(service)s', sli='%(sli)s', sli_environment='$environment',
-          journey='%(journey)s'" % {
+        dashboardSliLabelSelectors: "service='%(service)s', sli='%(sli)s', journey='%(journey)s',
+          sli_environment='$environment'%(productSelector)s" % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
+            productSelector: if std.objectHas(config, 'generic') && config.generic then ", sli_product='$product'" else '',
           },
-        ruleSliLabelSelectors: "service='%(service)s', sli='%(sli)s', sli_environment='%(environment)s',
-          journey='%(journey)s'" % {
+        ruleSliLabelSelectors: "service='%(service)s', sli='%(sli)s', journey='%(journey)s',
+          sli_environment=~'%(environment)s'" % {
             service: config.product,
             sli: sliKey,
-            environment: if config.environment == 'generic' then '.*' else config.environment,
             journey: journeyKey,
+            environment: if std.objectHas(config, 'generic') && config.generic then '.*' else config.environment,
           },
       }
       for sliKey in std.objectFields(passedSliSpecList[journeyKey])
@@ -163,7 +165,10 @@ local createLinks(config) =
 local createPrometheusRules(config, sliList) =
   {
     groups+: [{
-      name: config.product + '_' + config.environment + '_recordingrules',
+      name: '%s%srecordingrules' % [
+        config.product,
+        if std.objectHas(config, 'generic') && config.generic then '_' else '_%s_' % config.environment,
+      ],
       rules: std.flattenArrays([
         sli.recording_rules
         for journeyKey in std.objectFields(sliList)
@@ -180,7 +185,10 @@ local createPrometheusRules(config, sliList) =
 local createPrometheusAlerts(config, sliList) =
   {
     groups+: [{
-      name: config.product + '_' + config.environment + '_alertrules',
+      name: '%s%salertrules' % [
+        config.product,
+        if std.objectHas(config, 'generic') && config.generic then '_' else '_%s_' % config.environment,
+      ],
       rules: std.flattenArrays([
         sli.alerts
         for journeyKey in std.objectFields(sliList)

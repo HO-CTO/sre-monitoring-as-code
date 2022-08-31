@@ -327,7 +327,7 @@ local createSummaryDashboard(config) =
           template.new(
             name = 'environment',
             datasource = 'prometheus',
-            query = 'label_values({__name__=~"sli_value"}, environment)',
+            query = 'label_values(sli_value, sli_environment)',
             refresh = 'load',
             label = 'Environment',
           )

@@ -12,6 +12,7 @@ local config = {
   alertingSlackChannel: '',
   grafanaUrl: 'http://localhost:3000',
   alertmanagerUrl: 'http://localhost:9093',
+  generic: true,
 };
 
 local sliSpecList = {

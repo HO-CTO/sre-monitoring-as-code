@@ -8,6 +8,7 @@ local grafana = import 'grafonnet/grafana.libsonnet';
 local prometheus = grafana.prometheus;
 local graphPanel = grafana.graphPanel;
 local statPanel = grafana.statPanel;
+local template = grafana.template;
 
 // Creates the description for an SLI
 // @param sliSpec The spec for the SLI having its standard elements created
@@ -57,10 +58,10 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"}
         %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]))
         /
-        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"}
         < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
@@ -102,10 +103,10 @@ local createErrorBudgetPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        (%(target)s - (1 - (sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
+        (%(target)s - (1 - (sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"}
         %(comparison)s bool %(metricTarget)s)[%(period)s:%(evalInterval)s]))
         /
-        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"}
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"}
         < bool Inf)[%(period)s:%(evalInterval)s])))))
         /
         %(target)s
@@ -147,9 +148,9 @@ local createSloStatusPanel(sliDescription, sliSpec) =
     // Proportion of intervals SLO has pased
     prometheus.target(
       |||
-        sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
+        sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
         / 
-        sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s])
+        sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s])
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
         sliType: sliSpec.sliType,
@@ -164,9 +165,9 @@ local createSloStatusPanel(sliDescription, sliSpec) =
     prometheus.target(
       |||
         1 - (
-          sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
+          sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
           / 
-          sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s])
+          sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s])
         )
       ||| % {
         sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
@@ -217,8 +218,33 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
     graph: macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].library.createGraphPanel(sliSpec),
   };
 
+// Creates the templates for dashboards of a service
+// @param config The config for the service defined in the mixin file
+// @returns List of Grafana template objects
+local createServiceTemplates(config) =
+  [
+    template.new(
+      name = 'environment',
+      datasource = 'prometheus',
+      query = 'label_values(sli_value{service="%s"}, sli_environment)' % config.product,
+      refresh = 'time',
+      label = 'Environment',
+    ),
+  ]
+  +
+  if std.objectHas(config, 'generic') && config.generic then [
+    template.new(
+      name = 'product',
+      datasource = 'prometheus',
+      query = 'label_values(sli_value{service="%s", sli_environment="$environment"}, sli_product)' % config.product,
+      refresh = 'time',
+      label = 'Product',
+    ),
+  ] else [];
+
 // File exports
 {
   createDashboardStandardElements(sliKey, journeyKey, sliSpec, config):
     createDashboardStandardElements(sliKey, journeyKey, sliSpec, config),
+  createServiceTemplates(config): createServiceTemplates(config),
 }
