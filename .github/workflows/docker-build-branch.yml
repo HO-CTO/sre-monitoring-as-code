@@ -25,6 +25,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Use Node.js for installing Snyk
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.4
+
+      # Install & prepare Snyk
+      - run: npm install --location=global snyk
+
+        #  This OPTIONAL step will configure the Snyk CLI to connect to the EU instance of Snyk
+        #- run: snyk config set use-base64-encoding=true
+        #- run: snyk config set endpoint='https://app.eu.snyk.io/api'
+
+      - run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
         #Logs into Github registry
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2.0.0
@@ -62,26 +76,36 @@ jobs:
       - name: Run promtool checks
         run: for FILE in ${{ github.workspace }}/monitoring-as-code/output/prometheus-rules/*-rules.yaml; do docker run -v ${{ github.workspace }}/monitoring-as-code:${{ github.workspace }}/data ${{env.REGISTRY}}/${{env.USER}}/${{env.PROMTOOL_IMAGE_NAME}}:${{env.PROMTOOL_VERSION}} check rules ${{ github.workspace }}/data/output/prometheus-rules/$(basename $FILE); if [ $? -ne 0 ]; then echo "Validation of rules files failed for $(basename $FILE) - exiting"; exit 1; fi done
 
-      # Snyk security scan of Docker file and Built Docker Image with unmanaged dependencies
-      - name: Run Snyk to check Docker file for vulnerabilities
+      - name: Snyk Container Scanning
         id: snyk-dockerfile
+        run: snyk container test --file=Dockerfile --app-vulns --sarif-file-output=snyk-container.sarif ${{ steps.meta.outputs.tags }}
         continue-on-error: true
-        uses: snyk/actions/docker@0.3.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ steps.meta.outputs.tags }}
-#          sarif: snyk.sarif
-          args: |
-            --file=./monitoring-as-code/Dockerfile
-            --severity-threshold=medium
-            --app-vulns
-#            --sarif-file-output=snyk.sarif
-
-      - name: Upload result to GitHub Code Scanning
+      - name: Upload results to GitHub Container Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk.sarif
+          sarif_file: snyk-container.sarif
+
+
+      # Snyk security scan of Docker file and Built Docker Image with unmanaged dependencies
+#      - name: Run Snyk to check Docker file for vulnerabilities
+#        id: snyk-dockerfile
+#        continue-on-error: true
+#        uses: snyk/actions/docker@0.3.0
+#        env:
+#          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#        with:
+#          image: ${{ steps.meta.outputs.tags }}
+##          sarif: snyk.sarif
+#          args: |
+#            --file=./monitoring-as-code/Dockerfile
+#            --severity-threshold=medium
+#            --app-vulns
+##            --sarif-file-output=snyk.sarif
+#
+#      - name: Upload result to GitHub Code Scanning
+#        uses: github/codeql-action/upload-sarif@v2
+#        with:
+#          sarif_file: snyk.sarif
 
       - name: Check on failures
         if: steps.snyk-dockerfile.outcome != 'success'
