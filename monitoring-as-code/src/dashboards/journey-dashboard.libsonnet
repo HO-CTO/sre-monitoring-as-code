@@ -35,14 +35,8 @@ local createJourneyDashboards(config, sliList, links) =
           current = '7d',
           label = 'Error Budget Display',
         )
-      ).addTemplate(
-        template.new(
-          name = 'environment',
-          datasource = 'prometheus',
-          query = 'label_values({__name__=~"sli_value"}, environment)',
-          refresh = 'load',
-          label = 'Environment',
-        )
+      ).addTemplates(
+        config.templates
       ).addPanels(
         std.flattenArrays([
           // Title for row of panels detailing a single SLO

@@ -31,7 +31,7 @@ local createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKe
   '%(severity)s ALERT! %(environment)s - %(service)s %(slo)s - Percentage of time %(description)s' % {
     service: config.product,
     severity: std.asciiUpper(errorBudgetBurnWindow.severity),
-    environment: config.environment,
+    environment: if std.objectHas(config, 'generic') && config.generic then 'generic' else config.environment,
     description: sliSpec.title,
     factor: errorBudgetBurnWindow.factor,
     journey: journeyKey,
@@ -115,9 +115,9 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
 
         alert: alertName,
         expr: |||
-          %(recordingRuleShort)s{%(sliLabelSelectors)s, type="%(sliType)s"} > %(factor).5f
+          %(recordingRuleShort)s{%(sliLabelSelectors)s, sli_type="%(sliType)s"} > %(factor).5f
           and
-          %(recordingRuleLong)s{%(sliLabelSelectors)s, type="%(sliType)s"} > %(factor).5f
+          %(recordingRuleLong)s{%(sliLabelSelectors)s, sli_type="%(sliType)s"} > %(factor).5f
         ||| % {
           recordingRuleShort: macConfig.burnRateRuleNameTemplate % errorBudgetBurnWindow.short,
           recordingRuleLong: macConfig.burnRateRuleNameTemplate % errorBudgetBurnWindow.long,
@@ -132,10 +132,10 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
           factor: std.toString(errorBudgetBurnWindow.factor),
         } + alertPayload,
         annotations: {
-          dashboard: '%(grafanaUrl)s/d/%(journeyUid)s?var-environment=%(environment)s' % {
+          dashboard: '%(grafanaUrl)s/d/%(journeyUid)s%(environment)s' % {
             grafanaUrl: config.grafanaUrl,
             journeyUid: std.join('-', [config.product, journeyKey, 'journey-view']),
-            environment: config.environment,
+            environment: if std.objectHas(config, 'generic') && config.generic then '' else '?var-environment=%s' % config.environment,
           },
           silenceurl: '%(alertmanagerUrl)s/#/silences/new?filter={alertname%%3D%%22%(alertName)s%%22}' % {
             alertmanagerUrl: config.alertmanagerUrl,

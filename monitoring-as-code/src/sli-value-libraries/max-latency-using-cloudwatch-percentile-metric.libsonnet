@@ -26,6 +26,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliValueLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
+  local selectorLabels = sliValueLibraryFunctions.getSelectorLabels(metricConfig);
 
   local cloudwatchPercentile = if sliSpec.latencyPercentile == 0.9 then 'p90'
     else if sliSpec.latencyPercentile == 0.95 then 'p95'
@@ -36,10 +37,17 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
     {
       record: 'sli_value',
       expr: |||
-        max(%(cloudwatchPercentileMetric)s{%(selectors)s})
+        sum without (%(selectorLabels)s) (label_replace(label_replace(
+          (
+            max by(%(selectorLabels)s) (%(cloudwatchPercentileMetric)s{%(selectors)s})
+          ),
+        "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
         cloudwatchPercentileMetric: targetMetrics[cloudwatchPercentile],
-        selectors: std.join(',', ruleSelectors),
+        selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
+        environmentSelectorLabel: selectorLabels.environment,
+        productSelectorLabel: selectorLabels.product,
+        selectors: std.join(', ', ruleSelectors),
         evalInterval: sliSpec.evalInterval,
       },
       labels: sliSpec.sliLabels + sliMetadata,

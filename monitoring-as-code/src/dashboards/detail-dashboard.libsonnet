@@ -142,9 +142,11 @@ local checkDirectionValid(direction, configField, configItem, metrics, selectorL
 // Gets the unique list of products being used by SLIs
 // @param configItemMetricTypes The list of metric types for the config item
 // @param journeyKey The key of the journey having its detail dashboard generated
+// @param config The config for the service defined in the mixin file
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns List of products used by SLIs
-local getProductList(configItemMetricTypes, journeyKey, sliSpecList) =
+local getProductList(configItemMetricTypes, journeyKey, config, sliSpecList) =
+  if std.objectHas(config, 'generic') && config.generic then '$product' else
   std.join('|', std.set([
     sliSpec.selectors.product
     for sliSpec in std.objectValues(sliSpecList[journeyKey])
@@ -160,9 +162,10 @@ local getProductList(configItemMetricTypes, journeyKey, sliSpecList) =
 // @param customSelectorValues Object containing custom selector values
 // @param detailDashboardConfig Object containing the config for detail dashboard
 // @param journeyKey The key of the journey having its detail dashboard generated
+// @param config The config for the service defined in the mixin file
 // @param sliSpecList The list of SLI specs defined in the mixin file
 // @returns Object containing Grafana selectors
-local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList) =
+local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, config, sliSpecList) =
   {
     [direction]: {
       [configField]: {
@@ -173,7 +176,7 @@ local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelec
           )),
           product: std.join(', ', std.map( 
             function(selectorLabel) '%s=~"%s|"' % [selectorLabel, 
-              getProductList(detailDashboardConfig[configField][configItem], journeyKey, sliSpecList)],
+              getProductList(detailDashboardConfig[configField][configItem], journeyKey, config, sliSpecList)],
             selectorLabels[direction][configField][configItem]['product']
           )),
         }
@@ -278,7 +281,7 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
     getTargets('customSelectors', 'outbound', detailDashboardConfig);
 
   local selectors = createSelectors(
-    metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, sliSpecList);
+    metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, config, sliSpecList);
 
   dashboard.new(
     title = '%(product)s-%(journey)s-detail-view' % { 
@@ -293,14 +296,8 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
     refresh = '5m',
   ).addLinks(
     dashboardLinks = links
-  ).addTemplate(
-    template.new(
-      name = 'environment',
-      datasource = 'prometheus',
-      query = 'label_values({__name__=~"sli_value"}, environment)',
-      refresh = 'time',
-      label = 'Environment',
-    )
+  ).addTemplates(
+    config.templates
   ).addTemplates(
     std.prune(createTemplates(
       metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))

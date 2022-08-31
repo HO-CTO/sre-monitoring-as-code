@@ -25,13 +25,13 @@ local createBurnRateRules(sliSpec) =
           (
             1 -
             (
-              sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} %(comparison)s bool %(target)s)[%(burnRateWindow)s:%(evalInterval)s]))
+              sum by(sli_environment, sli_product) (sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(burnRateWindow)s:%(evalInterval)s]))
               /
-              (sum(sum_over_time((sli_value{%(sliLabelSelectors)s, type="%(sliType)s"} < bool Inf)[%(burnRateWindow)s:%(evalInterval)s])) > 0)
+              (sum by(sli_environment, sli_product) (sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(burnRateWindow)s:%(evalInterval)s])) > 0)
             )
           )
           /
-          %(sloTarget).5f or vector(0)
+          %(sloTarget).5f
         ||| % {
           sliLabelSelectors: sliSpec.ruleSliLabelSelectors,
           sliType: sliSpec.sliType,
@@ -41,7 +41,7 @@ local createBurnRateRules(sliSpec) =
           target: sliSpec.metricTarget,
           comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
         },
-        labels: sliSpec.sliLabels + { type: sliSpec.sliType },
+        labels: sliSpec.sliLabels + { sli_type: sliSpec.sliType },
         record: macConfig.burnRateRuleNameTemplate % burnRateWindow,
       }
       for burnRateWindow in getBurnRateWindowArray()

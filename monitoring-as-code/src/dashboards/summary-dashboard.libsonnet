@@ -17,7 +17,7 @@ local envMap = {
 };
 
 // PromQL selector for environment label
-local environmentLabelSelector = 'environment="$environment"';
+local environmentLabelSelector = 'sli_environment="$environment"';
 
 // The panels for the summary dashboard
 local panels = [
@@ -327,7 +327,7 @@ local createSummaryDashboard(config) =
           template.new(
             name = 'environment',
             datasource = 'prometheus',
-            query = 'label_values({__name__=~"sli_value"}, environment)',
+            query = 'label_values(sli_value, sli_environment)',
             refresh = 'load',
             label = 'Environment',
           )
