@@ -7,6 +7,8 @@ elements, however general advice can be applied to other types of contribution a
 All of the files and directories listed in this guide can be found in the monitoring-as-code/src
 directory.
 
+## Submitting changes
+
 When making a contribution you should start by creating a GitHub issue. Once the issue is created
 you should then select the option to create a branch for the issue. Once this new branch has been
 created and checked out you can start working on the changes.
@@ -29,6 +31,11 @@ description of the pull request should include a link to the issue, which can be
 
 The pull request must be reviewed by two members of our team and pass the checks in our pipelines
 before it can be squashed and merged.
+
+## Coding conventions
+
+Please follow the style guide at https://github.com/databricks/jsonnet-style-guide when making
+contributions to the Jsonnet code.
 
 # File and object layouts
 
@@ -391,7 +398,7 @@ should be written all lower case with spaces separating the word and should help
 line is showing.
 
 More targets can be added to the graph panel as well as other options which can be found in the
-Grafonnet API docs here https://grafana.github.io/grafonnet-lib/api-docs/#graphpanelnew.
+Grafonnet API docs here https://grafana.github.io/grafonnet-lib/api-docs.
 
 ### Writing file information
 
@@ -450,3 +457,7 @@ Once the detail dashboard elements file has been created the final step is to ad
 detailDashboardElements object in mac-config.libsonnet. The key should be the name of the file
 (excluding the extension) written in camel case and the value should be an import for the file.
 Once this is done the detail dashboard elements can be used by metric types.
+
+# Testing
+
+TBC
