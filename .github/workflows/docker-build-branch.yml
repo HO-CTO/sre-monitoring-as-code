@@ -78,7 +78,7 @@ jobs:
 
       - name: Snyk Container Scanning
         id: snyk-dockerfile
-        run: snyk container test --file=Dockerfile --app-vulns --sarif-file-output=snyk-container.sarif ${{ steps.meta.outputs.tags }}
+        run: snyk container test --file=./monitoring-as-code/Dockerfile --app-vulns --sarif-file-output=snyk-container.sarif ${{ steps.meta.outputs.tags }}
         continue-on-error: true
       - name: Upload results to GitHub Container Scanning
         uses: github/codeql-action/upload-sarif@v2
