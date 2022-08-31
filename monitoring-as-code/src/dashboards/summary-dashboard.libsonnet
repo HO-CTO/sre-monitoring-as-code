@@ -9,7 +9,7 @@ local template = grafana.template;
 local tablePanel = grafana.tablePanel;
 
 // PromQL selector for environment label
-local environmentLabelSelector = 'sli_environment="$environment"';
+local environmentLabelSelector = 'sli_environment=~"$environment"';
 
 // The panels for the summary dashboard
 local panels = [
@@ -353,6 +353,8 @@ local createSummaryDashboard(config) =
             datasource = 'prometheus',
             query = 'label_values(sli_value, sli_environment)',
             refresh = 'load',
+            includeAll = true,
+            multi = true,
             label = 'Environment',
           )
         ).addPanels(std.prune(panels))
