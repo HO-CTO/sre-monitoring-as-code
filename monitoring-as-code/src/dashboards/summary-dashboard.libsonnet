@@ -155,8 +155,10 @@ local panels = [
               latency: 4,
               correctness: 5,
               freshness: 6,
+              throughput: 7,
+              iops: 8,
               Time: 0,
-              Value: 7,
+              Value: 9,
               service: 2,
             },
             renameByName: {
@@ -165,6 +167,8 @@ local panels = [
               latency: 'Latency',
               correctness: 'Pipeline Correctness',
               freshness: 'Pipeline Freshness',
+              throughput: 'Throughput',
+              iops: 'IOPS',
             },
           },
       },
@@ -242,6 +246,44 @@ local panels = [
         },
         {
           matcher: { id: 'byName', options: 'freshness' },
+          properties: [
+            { id: 'unit', value: 'percent' },
+            { id: 'custom.displayMode', value: 'basic' },
+            {
+              id: 'thresholds',
+              value: {
+                mode: 'absolute',
+                steps: [
+                  { color: 'rgba(86, 166, 75, 0.01)', value: null },
+                  { color: 'red', value: 1 },
+                  { color: '#EAB839', value: 90 },
+                  { color: 'green', value: 95 },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          matcher: { id: 'byName', options: 'throughput' },
+          properties: [
+            { id: 'unit', value: 'percent' },
+            { id: 'custom.displayMode', value: 'basic' },
+            {
+              id: 'thresholds',
+              value: {
+                mode: 'absolute',
+                steps: [
+                  { color: 'rgba(86, 166, 75, 0.01)', value: null },
+                  { color: 'red', value: 1 },
+                  { color: '#EAB839', value: 90 },
+                  { color: 'green', value: 95 },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          matcher: { id: 'byName', options: 'iops' },
           properties: [
             { id: 'unit', value: 'percent' },
             { id: 'custom.displayMode', value: 'basic' },
