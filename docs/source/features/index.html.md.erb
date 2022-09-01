@@ -1,0 +1,63 @@
+---
+title: Features
+weight: 2
+---
+
+# Benefits and features
+
+## Metrics and alerting
+
+|feature | description |
+|--------|-----------|
+|The ability to set up SLO alerts for when the SLO status goes below the target value | SLO alerts |
+|The ability to set burn rate alerts when the error budget of SLO decreases at a specific rate||
+|The ability to measure service availability ||
+|The ability to set SLO targets for all types of SLIs| SLO targets are set at the SLI level |
+|The ability to define different types of SLIs | MaC is framed around the Google SLO categories. It currently provides Availability, Latency, Freshness and Correctness categories and is fully extensible. |
+|The ability to create custom metrics for SLIs| MaC is currently coupled to the Prometheus/Grafana eco-system. Any metric polled, stored and queryed |
+|The ability to define user centric SLIs/SLOs. E.g. Is the website available? Is it responding quickly? Is the data correct?||
+|The ability to define our own expressions to calculate SLIs||
+|The ability to define evaluation time periods for SLOs||
+|The ability to collect and expose cloudwatch metrics for SLIs ||
+|The ability to collect and expose kubernetes metrics for SLIs ||
+|The ability to define and measure an SLO based on user journeys ||
+|The ability to use real user monitoring to measure SLOs||
+|The ability to define maintenance periods for when an SLO error budget should not be affected||
+|The ability to route alerts to different alerting channels. E.g Slack, OpsGenie.||
+
+## Error Budget and Burn Rate
+
+|feature | description |
+|--------|-----------|
+|The ability to define an Error Budget ||
+|The ability to calculate the SLO Burn Rate||
+
+## Reliability
+
+|feature | description |
+|--------|-----------|
+|The ability to refine SLOs on an as required basis.||
+
+## Visualisation
+
+|feature | description |
+|--------|-----------|
+|The ability to visualise adherence to SLOs in a dashboard ||
+|The ability to visualise Error budget in a dashboard ||
+|The ability to visualise Burn Rate in a dashboard ||
+|The ability to filter SLOs. E.g. Management Zone, Service ||
+|The ability to visualise historical data of SLOs ||
+
+## Team Support
+
+|feature | description |
+|--------|-----------|
+|The ability for teams to configure and maintain their own SLIs and SLOs ||
+|The ability to attach SLO dashboards / measurements to an incident report ||
+|ability to integrate with other tools like ServiceNow for incident reporting ||
+
+## Automation
+
+|feature | description |
+|--------|-----------|
+|ability to automate the configuration of SLOs ||
