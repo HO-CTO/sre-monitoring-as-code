@@ -8,16 +8,8 @@ local dashboard = grafana.dashboard;
 local template = grafana.template;
 local tablePanel = grafana.tablePanel;
 
-local envMap = {
-  dev: 'dev',
-  test: 'test|qa',
-  stage: 'staging|stage',
-  prod: 'prod|live',
-  mgmt: 'mgmt',
-};
-
 // PromQL selector for environment label
-local environmentLabelSelector = 'sli_environment="$environment"';
+local environmentLabelSelector = 'sli_environment=~"$environment"';
 
 // The panels for the summary dashboard
 local panels = [
@@ -51,14 +43,6 @@ local panels = [
       instant = true,
       legendFormat = 'SLO Coverage',
     ),
-  ).addTarget(
-    prometheus.target(
-      '(sum(sum_over_time(aggregated_alb_request_count_sum{%(environmentLabelSelector)s}[30d])) by (service))' %
-        environmentLabelSelector,
-      format = 'table',
-      instant = true,
-      legendFormat = 'Traffic',
-    ),
   ).addTransformations(
     [
       { id: 'labelsToFields' },
@@ -72,7 +56,6 @@ local panels = [
             'Value #A': 'SLO Status',
             'Value #B': '% Change',
             'Value #C': 'SLO Coverage',
-            'Value #D': 'Traffic',
             service: 'Service',
             environment: 'Environment',
           },
@@ -117,11 +100,7 @@ local panels = [
           properties: [{ id: 'unit', value: 'percent' }],
         },
         {
-          matcher: { id: 'byName', options: 'Coverage' },
-          properties: [{ id: 'unit', value: 'none' }],
-        },
-        {
-          matcher: { id: 'byName', options: 'Traffic' },
+          matcher: { id: 'byName', options: 'SLO Coverage' },
           properties: [{ id: 'unit', value: 'none' }],
         },
         {
@@ -144,13 +123,12 @@ local panels = [
           },
       },
   } } + { gridPos: { w: 24, h: 10 } },
-
   tablePanel.new(
     title = 'SLO Status Aggregated by Service and SLI Category',
     datasource = 'prometheus',
   ).addTarget(
     prometheus.target(
-      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, category) * 100' %
+      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_type) * 100' %
         environmentLabelSelector,
       format = 'time_series',
       instant = true,
@@ -161,7 +139,7 @@ local panels = [
       {
         id: 'labelsToFields',
         options: {
-          valueLabel: 'category',
+          valueLabel: 'sli_type',
         },
       },
       {
@@ -173,16 +151,24 @@ local panels = [
               Value: true,
             },
             indexByName: {
-              Availability: 3,
-              Latency: 4,
-              'Pipeline Correctness': 5,
-              'Pipeline Freshness': 6,
+              availability: 3,
+              latency: 4,
+              correctness: 5,
+              freshness: 6,
+              throughput: 7,
+              iops: 8,
               Time: 0,
-              Value: 7,
+              Value: 9,
               service: 2,
             },
             renameByName: {
               service: 'Service',
+              availability: 'Availability',
+              latency: 'Latency',
+              correctness: 'Pipeline Correctness',
+              freshness: 'Pipeline Freshness',
+              throughput: 'Throughput',
+              iops: 'IOPS',
             },
           },
       },
@@ -202,7 +188,7 @@ local panels = [
     overrides+:
       [
         {
-          matcher: { id: 'byName', options: 'Availability' },
+          matcher: { id: 'byName', options: 'availability' },
           properties: [
             { id: 'unit', value: 'percent' },
             { id: 'custom.displayMode', value: 'basic' },
@@ -221,7 +207,7 @@ local panels = [
           ],
         },
         {
-          matcher: { id: 'byName', options: 'Latency' },
+          matcher: { id: 'byName', options: 'latency' },
           properties: [
             { id: 'unit', value: 'percent' },
             { id: 'custom.displayMode', value: 'basic' },
@@ -240,7 +226,7 @@ local panels = [
           ],
         },
         {
-          matcher: { id: 'byName', options: 'Pipeline Correctness' },
+          matcher: { id: 'byName', options: 'correctness' },
           properties: [
             { id: 'unit', value: 'percent' },
             { id: 'custom.displayMode', value: 'basic' },
@@ -259,7 +245,45 @@ local panels = [
           ],
         },
         {
-          matcher: { id: 'byName', options: 'Pipeline Freshness' },
+          matcher: { id: 'byName', options: 'freshness' },
+          properties: [
+            { id: 'unit', value: 'percent' },
+            { id: 'custom.displayMode', value: 'basic' },
+            {
+              id: 'thresholds',
+              value: {
+                mode: 'absolute',
+                steps: [
+                  { color: 'rgba(86, 166, 75, 0.01)', value: null },
+                  { color: 'red', value: 1 },
+                  { color: '#EAB839', value: 90 },
+                  { color: 'green', value: 95 },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          matcher: { id: 'byName', options: 'throughput' },
+          properties: [
+            { id: 'unit', value: 'percent' },
+            { id: 'custom.displayMode', value: 'basic' },
+            {
+              id: 'thresholds',
+              value: {
+                mode: 'absolute',
+                steps: [
+                  { color: 'rgba(86, 166, 75, 0.01)', value: null },
+                  { color: 'red', value: 1 },
+                  { color: '#EAB839', value: 90 },
+                  { color: 'green', value: 95 },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          matcher: { id: 'byName', options: 'iops' },
           properties: [
             { id: 'unit', value: 'percent' },
             { id: 'custom.displayMode', value: 'basic' },
@@ -329,6 +353,8 @@ local createSummaryDashboard(config) =
             datasource = 'prometheus',
             query = 'label_values(sli_value, sli_environment)',
             refresh = 'load',
+            includeAll = true,
+            multi = true,
             label = 'Environment',
           )
         ).addPanels(std.prune(panels))
