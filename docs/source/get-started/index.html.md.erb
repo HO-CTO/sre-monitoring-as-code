@@ -37,7 +37,6 @@ Current performance based on SLIs is usually a good place to start, especially i
 
 Once you have everything in place, you can (implement your SLIs and SLOs)[#implement-slis-task-heading]
 
-
 ### Implement SLI Definitions (sre-monitoring-as-code) {#create-implementation-tasks-heading}
 
 ![Low level diagram showing workflow](../../images/monaco-pg-lld.drawio.png)
@@ -49,11 +48,14 @@ Within the definition file you need to pass in the following global variables fo
 | Global variables            | Description        | Formatting Best Practice | Example |
 | ----------------------------| -------------------|--------------------------|---------|
 | product                     | Short Product Name | Lower case or hypenated  | grapi   |
-| technow_technical_service   | ServiceNow Primary Impacted Service Name | Must match the Service Now Primary Impacted Service | Great Respect API |
-| technow_resolver_group      | ServiceNow Assignment Group | This is the ServiceNow Assignment Group who are the accountable owner of the Technical Service in question. | Great Respect API |
-| configuration_item          | ServiceNow Technical Service Subcomponent name | Must match the ServiceNow Technical service subcomponent name | Great Respect API (App Svc) |
-| environment                 | Environment being provisioned |  Must be set to a single word | prp1 |
+| applicationServiceName      | ServiceNow Primary Impacted Service Name | Must match the Service Now Primary Impacted Service | Great Respect API |
+| servicenowAssignmentGroup   | ServiceNow Assignment Group | This is the ServiceNow Assignment Group who are the accountable owner of the Technical Service in question. | Great Respect API |
+| configurationItem           | ServiceNow Technical Service Subcomponent name | Must match the ServiceNow Technical service subcomponent name | Great Respect API (App Svc) |
 | max_alert_severity          | Severity of the event. | ServiceNow values for severity range from 1 – Critical to 5 – OK, with the severity of 0 – Clear.| 3 |
+| alertingSlackChannel        | Slack Channel to which will be the recipient of alerts | Prefixed with a hash and should match an existing Slack Channel | #prd-alerts |
+| runbookUrl                  | Link to runbook detailing actionable operation instructions | https link to docs as code or confluence runbook | https://ho-cto.github.io/sre-monitoring-as-code/runbook |
+| grafanaUrl                  | Link to Grafana dashboards providing further insight on SLIs | https link to platform hosted grafana without any paths | https://grafana.ho-platform-x.gov.uk |
+| alertmanagerUrl             | Link to Alertmanager console providing further insight on alerts and silencing options | https link to platform hosted grafana without any paths | https://alertmanager.ho-platform-x.gov.uk |
 
 Once setting global variables you will then need to break down each user journey into a different yaml stanza. See "writeback" example below.
 

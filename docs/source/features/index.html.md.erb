@@ -1,0 +1,63 @@
+---
+title: Features
+weight: 2
+---
+
+# Benefits and features
+
+## Metrics and alerting
+
+|feature | description |
+|--------|-----------|
+|The ability to set up SLO alerts for when the SLO status goes below the target value | ✅ MaC uses standard [SRE multiple burn rate alerts](https://sre.google/workbook/alerting-on-slos/#recommended_time_windows_and_burn_rates_f) to determine how fast, relative to the SLO, the service consumes the error budget.  |
+|The ability to set burn rate alerts when the error budget of SLO decreases at a specific rate| ✅ MaC used a multi-window approach as set out in our [error budget burn documentation](../interpret-mac/#error-budget-burn-rate-rules)
+|The ability to measure service availability | ✅ Availabilty is one of many SLI Types provided by MaC |
+|The ability to set SLO targets for all types of SLIs| ✅ SLO targets can be set as part of your [MaC Definition file](../get-started/#create-implementation-tasks-heading) for each SLI |
+|The ability to define different types of SLIs | ✅ MaC is framed around the Google SLO categories. It currently provides Availability, Latency, Freshness and Correctness categories and is fully extensible to provide further SLI libraries for Quality, Coverage and Durability |
+|The ability to create custom metrics for SLIs| ✅ MaC is currently coupled to the Prometheus/Grafana eco-system. Any metric polled, stored and queryed in Prometheus can be translated into an appropriate SLI framed around a user journey |
+|The ability to define user centric SLIs/SLOs. E.g. Is the website available? Is it responding quickly? Is the data correct?| ✅ MaCs primary focus is user centric SLIs covering all SLI Types listed above |
+|The ability to define our own expressions to calculate SLIs| ✅ The framework is aimed to be community driven and extensible with a contribution guide to support willing participants |
+|The ability to define evaluation time periods for SLOs| ✅ `evalInterval` is a key attribute of the SLI definition and allows users to set any time period from 7d to 30d |
+|The ability to collect and expose cloudwatch metrics for SLIs | ❌ MaC does not collect, store or collect metrics. This is the responsibility of the foundation Prometheus and Grafana tooling |
+|The ability to collect and expose kubernetes metrics for SLIs | ❌ MaC does not collect, store or collect metrics. |
+|The ability to define and measure an SLO based on user journeys | ✅ MaC is framed completely around symptoms (rather than causes) of a user journey |
+|The ability to use real user monitoring to measure SLOs| ❌ MaC like Prometheus is a metrics based monitoring tool focused on the reliability of user journeys. User behaviour and interactions are outside the scope |
+|The ability to define maintenance periods for when an SLO error budget should not be affected| ❌ MaC doesnt currently support this feature |
+|The ability to route alerts to different alerting channels. E.g Slack, OpsGenie.| ✅ Standard error budget burn rate alerts are generated using Prometheus alerting rules and distributed to Alert Manager which can have any number of recipients |
+
+## Error Budget and Burn Rate
+
+|feature | description |
+|--------|-----------|
+|The ability to define an Error Budget | ✅ An Error budget is indirectly defined when a user sets the `sloTarget` |
+|The ability to calculate the SLO Burn Rate| ✅ SLO Burn Rates are calulcated and presented as part of the journey view |
+
+## Reliability
+
+|feature | description |
+|--------|-----------|
+|The ability to refine SLOs on an as required basis.| ✅ SLOs can be refined at any point by updating the SLI definition and invoking the MaC container |
+
+## Visualisation
+
+|feature | description |
+|--------|-----------|
+|The ability to visualise adherence to SLOs in a dashboard | ✅ SLIs are provided with hierarchical drill-down and aggregation to all levels |
+|The ability to visualise Error budget in a dashboard | ✅ Error budgets are visualised as part of the journey view |
+|The ability to visualise Burn Rate in a dashboard |  ✅ Burn rates are visualised as part of the journey view |
+|The ability to filter SLOs. E.g. Management Zone, Service |  ✅ Filtering is provided at namespace and product level |
+|The ability to visualise historical data of SLOs | ✅ Month on month % change is provided in the summary view |
+
+## Team Support
+
+|feature | description |
+|--------|-----------|
+|The ability for teams to configure and maintain their own SLIs and SLOs | ✅ Self-service SLI config and distribution |
+|The ability to attach SLO dashboards / measurements to an incident report | ✅ Runbook, Grafana and Alertmanager links disseminated as part of alert annotations |
+|ability to integrate with other tools like ServiceNow for incident reporting | ✅ Consistent payload for all consumers aligned with ServiceNow CMDB specification |
+
+## Automation
+
+|feature | description |
+|--------|-----------|
+|ability to automate the configuration of SLOs | ✅ Automated generation of SLIs, dashboards and alerts aligned with SRE industry practice |
