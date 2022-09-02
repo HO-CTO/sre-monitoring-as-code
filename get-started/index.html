@@ -94,6 +94,29 @@
       </li>
     </ul>
   </li>
+  <li>
+    <a href="../features/index.html"><span>Benefits and features</span></a>
+    <ul>
+      <li>
+        <a href="../features/index.html#metrics-and-alerting"><span>Metrics and alerting</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#error-budget-and-burn-rate"><span>Error Budget and Burn Rate</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#reliability"><span>Reliability</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#visualisation"><span>Visualisation</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#team-support"><span>Team Support</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#automation"><span>Automation</span></a>
+      </li>
+    </ul>
+  </li>
 <li><a href="../get-started/index.html"><span>Get started</span></a>
 <ul>
   <li>
@@ -307,34 +330,52 @@
       <td>grapi</td>
     </tr>
     <tr>
-      <td>technow_technical_service</td>
+      <td>applicationServiceName</td>
       <td>ServiceNow Primary Impacted Service Name</td>
       <td>Must match the Service Now Primary Impacted Service</td>
       <td>Great Respect API</td>
     </tr>
     <tr>
-      <td>technow_resolver_group</td>
+      <td>servicenowAssignmentGroup</td>
       <td>ServiceNow Assignment Group</td>
       <td>This is the ServiceNow Assignment Group who are the accountable owner of the Technical Service in question.</td>
       <td>Great Respect API</td>
     </tr>
     <tr>
-      <td>configuration_item</td>
+      <td>configurationItem</td>
       <td>ServiceNow Technical Service Subcomponent name</td>
       <td>Must match the ServiceNow Technical service subcomponent name</td>
       <td>Great Respect API (App Svc)</td>
-    </tr>
-    <tr>
-      <td>environment</td>
-      <td>Environment being provisioned</td>
-      <td>Must be set to a single word</td>
-      <td>prp1</td>
     </tr>
     <tr>
       <td>max_alert_severity</td>
       <td>Severity of the event.</td>
       <td>ServiceNow values for severity range from 1 – Critical to 5 – OK, with the severity of 0 – Clear.</td>
       <td>3</td>
+    </tr>
+    <tr>
+      <td>alertingSlackChannel</td>
+      <td>Slack Channel to which will be the recipient of alerts</td>
+      <td>Prefixed with a hash and should match an existing Slack Channel</td>
+      <td>#prd-alerts</td>
+    </tr>
+    <tr>
+      <td>runbookUrl</td>
+      <td>Link to runbook detailing actionable operation instructions</td>
+      <td>https link to docs as code or confluence runbook</td>
+      <td>https://ho-cto.github.io/sre-monitoring-as-code/runbook</td>
+    </tr>
+    <tr>
+      <td>grafanaUrl</td>
+      <td>Link to Grafana dashboards providing further insight on SLIs</td>
+      <td>https link to platform hosted grafana without any paths</td>
+      <td>https://grafana.ho-platform-x.gov.uk</td>
+    </tr>
+    <tr>
+      <td>alertmanagerUrl</td>
+      <td>Link to Alertmanager console providing further insight on alerts and silencing options</td>
+      <td>https link to platform hosted grafana without any paths</td>
+      <td>https://alertmanager.ho-platform-x.gov.uk</td>
     </tr>
   </tbody>
 </table>
