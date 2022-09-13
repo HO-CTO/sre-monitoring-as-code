@@ -10,7 +10,7 @@ Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and
 - Mixins use data templating language called Jsonnet, which is the only templating language which has fully supported libraries for Grafana and Prometheus.
 - jsonnet-bundler is used for package management. Once you have a Monitoring Mixin package, you need to install it, keep track of versions and update them
 - SRE MaC will be open-sourced and live on UKHomeOffice GitHub and can be integrated with any Platform which supports pulling containers from GitHub.
-- SLI/SLO/Error Budget configurations match Google SRE<sup>2</sup> industry patterns.
+- SLI/SLO/Error Budget configurations match Google SRE<sup>2</sup> industry patterns. 
 
 ## Repository structure
 
