@@ -7,13 +7,10 @@ local dashboard = grafana.dashboard;
 local row = grafana.row;
 local template = grafana.template;
 
-local debug(obj) = (
-  std.trace(std.toString(obj), obj)
-);
-
-local createPanelInfo (sliKey, slis) =
-    //local sli = slis[elem],
-    //local tr = std.trance(std.toString(slis), slis),
+// Create the Grafana panels grouping all SLI types under a single SLI panel
+// @param slis A map of SLIs keyed by the SLI type
+// @returns array of panel elements
+local createPanelInfo (slis) =
 
     local row = 0;
     local findSli(elem, slis) = slis[std.objectFields(slis)[elem]];
@@ -36,15 +33,19 @@ local createPanelInfo (sliKey, slis) =
       for elem in std.range(0, std.length(std.objectFields(slis)) - 1 )
 
     ];
-   // dashboard: [ [grafana.row.new(title = sliKey)] + std.flattenArrays(self.panels)];
 
+
+// Adds the granfa title panel for a created dashbaord
+// @param sliKey of a journey
+// @param slis The list of SLIs for a journey
+// @returns array defining the dashboard of one sli
 local createDashboardInfo(sliKey, slis) =
     local sliRowTile = '%(sliKey)s: %(title)s' % {
         sliKey: sliKey,
         title: slis[std.objectFields(slis)[0]].title
     };
     [
-      [grafana.row.new(title = sliRowTile)] + std.flattenArrays(createPanelInfo(sliKey, slis))
+      [grafana.row.new(title = sliRowTile)] + std.flattenArrays(createPanelInfo(slis))
     ];
 
 // Creates the journey view dashboards for each journey in the service
