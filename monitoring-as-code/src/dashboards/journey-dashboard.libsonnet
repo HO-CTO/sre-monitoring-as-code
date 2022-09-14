@@ -38,7 +38,7 @@ local dashboardInfo (sliKey, slis) =
       for elem in std.range(0, std.length(std.objectFields(slis)) - 1 )
 
     ],
-    dashboard: [ [grafana.row.new(title = sliKey)] + self.panels[0]]
+    dashboard: [ [grafana.row.new(title = sliKey)] + std.flattenArrays(self.panels)]
  };
 
 // Creates the journey view dashboards for each journey in the service
@@ -74,7 +74,6 @@ local createJourneyDashboards(config, sliList, links) =
       ).addPanels(
         std.flattenArrays([
           std.flattenArrays(dashboardInfo(sliKey, sliList[journeyKey][sliKey]).dashboard)
-          //debug(dashboardInfo(sliKey, sliList[journeyKey][sliKey]))
           for sliKey in std.objectFields(sliList[journeyKey])
         ])
       )
