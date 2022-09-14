@@ -10,9 +10,11 @@ LOCAL_PATH="$PWD"/../local/
 rm -rf "$PWD"/output/*/
 
 # Executes docker image to create rules and dashboards for monitoring and summary mixin files
-docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m monitoring -rd -i input -o output
+#docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m monitoring -rd -i input -o output
+#
+#docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m summary -d -i input -o output
 
-docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m summary -d -i input -o output
+docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m generic -rd -i input -o output
 
 # Copy Prometheus rules to monitoring local
 cp -a "$RULES_DIRECTORY"/. "$LOCAL_PATH"/prometheus/rule_configs

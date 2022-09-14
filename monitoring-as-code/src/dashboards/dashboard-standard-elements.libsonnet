@@ -10,6 +10,7 @@ local graphPanel = grafana.graphPanel;
 local statPanel = grafana.statPanel;
 local template = grafana.template;
 
+local util = import '../util/debug.libsonnet';
 // Creates the description for an SLI
 // @param sliSpec The spec for the SLI having its standard elements created
 // @returns The description for the SLI
@@ -81,6 +82,45 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
       { color: 'red', value: null },
       { color: 'orange', value: sliSpec.sloTarget / 100 },
       { color: 'green', value: sliSpec.sloTarget / 200 },
+    ],
+  ) + { options+: { textMode: 'Value and name' } };
+
+
+local getExpFromSli(sli) = 
+|||
+  ( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
+  / 
+  sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s]) )
+||| % {
+  sliLabelSelectors: sli.dashboardSliLabelSelectors,
+  sliType: sli.sliType,
+  evalInterval: sli.evalInterval,
+  target: sli.metricTarget,
+  comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
+};
+
+local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
+  statPanel.new(
+    title = 'SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
+    datasource = 'prometheus',
+    colorMode = 'background',
+    reducerFunction = 'lastNotNull',
+    unit = 'percentunit',
+    justifyMode = 'center',
+    noValue = 'No SLO Data Available',
+    graphMode = 'none',
+  ).addTarget(
+    prometheus.target(expr = fullExpr,
+      // to avoid displaying floating point numbers with a long tail of decimals, .1f will round it
+      // to a single decimal
+      legendFormat = 'SLO Target %(%s).1f %%' % sloTargetLegend,
+      instant = true,
+    )
+  ).addThresholds(
+    [
+      { color: 'red', value: null },
+      { color: 'orange', value: sloTargetLegend / 100 },
+      { color: 'green', value: sloTargetLegend / 200 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
@@ -209,6 +249,10 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
     // Grafana panel showing SLO availability over reporting period
     slo_availability_panel: createAvailabilityPanel(sliSpec.sloTarget, sliSpec),
 
+    slo_target: sliSpec.sloTarget,
+    slo_period: sliSpec.period,
+    slo_expr: getExpFromSli(sliSpec),
+
     // Grafana panel showing remaining error budget over rolling period
     error_budget_panel: createErrorBudgetPanel(sliSpec),
 
@@ -251,4 +295,5 @@ local createServiceTemplates(config) =
   createDashboardStandardElements(sliKey, journeyKey, sliSpec, config):
     createDashboardStandardElements(sliKey, journeyKey, sliSpec, config),
   createServiceTemplates(config): createServiceTemplates(config),
+  createAveragedSliTypesPanel(sloTargetLegend, sliSpec, expr): createAveragedSliTypesPanel(sloTargetLegend, sliSpec, expr),
 }

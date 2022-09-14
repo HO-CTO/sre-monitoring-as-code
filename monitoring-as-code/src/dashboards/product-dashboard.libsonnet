@@ -9,6 +9,11 @@ local row = grafana.row;
 local tablePanel = grafana.tablePanel;
 local template = grafana.template;
 
+local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
+// local averagedSliTypesPanel = dashboardFunctions.createAveragedSliTypesPanel;
+
+local util = import '../util/debug.libsonnet';
+
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
 local viewPanelsPerRow = 8;
 
@@ -54,14 +59,51 @@ local createRow(journeyIndex, noOfPanelRows, sliList) =
 // @returns The view panel object
 local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
-  local sli = std.objectValues(sliList[journeyKey])[sliIndex];
+  local slis = std.objectValues(sliList[journeyKey])[sliIndex];
+  // [
+  //   util.debug(sli.slo_averaged_slo_types_panel)
+  //   {
+  //     gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
+  //       (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
+  //     title: sli.row_title_short,
+  //     description: sli.row_title,
+  //     fieldConfig+: {
+  //       defaults+: {
+  //         links: [
+  //           {
+  //             title: 'Full %s Journey SLI dashboard' % journeyKey,
+  //             url: 'd/%s' % std.join('-', [config.product, journeyKey, 'journey-view?${environment:queryparam}']),
+  //           },
+  //         ],
+  //       },
+  //     },
+  //   },
+  // ];
+
+  local exprArray(sliList) =
   [
-    sli.slo_availability_panel
+    sliList[sliKey].slo_expr
+    for sliKey in std.objectFields(sliList)
+  ];
+
+  local topExpr = std.join(" + ", exprArray(slis));
+
+  local avgExpr =
+  ||| 
+    %(sumOfSlis)s  / %(noOfSlis)s
+  ||| % {
+    sumOfSlis: topExpr,
+    noOfSlis: std.length(slis)
+  };
+
+  [
+    dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgExpr)
+    +
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
         (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-      title: sli.row_title_short,
-      description: sli.row_title,
+      title: " %(sliTitle)s" % sliTitle: slis[std.objectFields(slis)[0]].row_title_short},
+      description: "Desc 1",
       fieldConfig+: {
         defaults+: {
           links: [
@@ -122,7 +164,7 @@ local createPanels(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
 // @param links The links to other dashboards
 // @returns The JSON defining the product dashboard
 local createProductDashboard(config, sliList, links) =
-  local combinedSliList = createCombinedSliList(sliList);
+  local combinedSliList = sliList;
   local panels = createPanels(0, 0, 0, config, combinedSliList);
 
   {
