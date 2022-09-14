@@ -73,7 +73,7 @@ local createJourneyDashboards(config, sliList, links) =
         config.templates
       ).addPanels(
         std.flattenArrays([
-          std.flattenArrays(dashboardInfo(sliKey, sliList[journeyKey][sliKey]).dashboard)
+          std.flattenArrays(dashboardInfo('%(sliKey)s: %(title)s' % {sliKey: sliKey, title: sliList[journeyKey][sliKey][std.objectFields(sliList[journeyKey][sliKey])[0]].title}, sliList[journeyKey][sliKey]).dashboard)
           for sliKey in std.objectFields(sliList[journeyKey])
         ])
       )
