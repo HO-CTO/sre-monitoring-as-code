@@ -11,15 +11,13 @@ local debug(obj) = (
   std.trace(std.toString(obj), obj)
 );
 
-local dashboardInfo (sliKey, slis) =
-  {	
+local createPanelInfo (sliKey, slis) =
     //local sli = slis[elem],
     //local tr = std.trance(std.toString(slis), slis),
 
-    local row = 0,
-    local findSli(elem, slis) = slis[std.objectFields(slis)[elem]],
-    panels:
-      [
+    local row = 0;
+    local findSli(elem, slis) = slis[std.objectFields(slis)[elem]];
+    [
       // Status panel indicating SLO performance over last reporting period (30d by default)
       [findSli(elem, slis).slo_availability_panel { gridPos: { x: 0, y: elem * row, w: 4, h: 6 } }]
       +
@@ -37,9 +35,17 @@ local dashboardInfo (sliKey, slis) =
       [findSli(elem, slis).graph { gridPos: { x: 14, y: elem * row, w: 10, h: 5 } }]
       for elem in std.range(0, std.length(std.objectFields(slis)) - 1 )
 
-    ],
-    dashboard: [ [grafana.row.new(title = sliKey)] + std.flattenArrays(self.panels)]
- };
+    ];
+   // dashboard: [ [grafana.row.new(title = sliKey)] + std.flattenArrays(self.panels)];
+
+local createDashboardInfo(sliKey, slis) =
+    local sliRowTile = '%(sliKey)s: %(title)s' % {
+        sliKey: sliKey,
+        title: slis[std.objectFields(slis)[0]].title
+    };
+    [
+      [grafana.row.new(title = sliRowTile)] + std.flattenArrays(createPanelInfo(sliKey, slis))
+    ];
 
 // Creates the journey view dashboards for each journey in the service
 // @param config The config for the service defined in the mixin file
@@ -73,7 +79,7 @@ local createJourneyDashboards(config, sliList, links) =
         config.templates
       ).addPanels(
         std.flattenArrays([
-          std.flattenArrays(dashboardInfo('%(sliKey)s: %(title)s' % {sliKey: sliKey, title: sliList[journeyKey][sliKey][std.objectFields(sliList[journeyKey][sliKey])[0]].title}, sliList[journeyKey][sliKey]).dashboard)
+          std.flattenArrays(createDashboardInfo(sliKey, sliList[journeyKey][sliKey]))
           for sliKey in std.objectFields(sliList[journeyKey])
         ])
       )
