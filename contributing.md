@@ -469,6 +469,37 @@ To edit the payload just change the template, if you think there is anything mis
 config or SLI specs that you need for the payload then raise the issue with us, since that would
 be a breaking change.
 
+# Debugging
+
+While developing the jsonnet code it can be helpful to write out a trace to inspect the value of
+objects along the way.
+
+We have provided a convenience utility function `debug` that will write the TRACE output using the
+`std.trace` function from the standard library but also returns the traced object so that the
+debug can be added in place.
+
+It is important to bare in mind that the `debug` function will only be run if the expression is evaluated
+due to the lazy-loading nature of jsonnet.
+
+Example usage:
+
+This **will** work:
+
+```
+{
+  local test = [1,2,3];
+  value: debug(test),
+}
+```
+
+This **will not** work since test is never used/evaluated.
+
+```
+{
+  local test = debug({});
+}
+```
+
 # Testing
 
 TBC
