@@ -58,14 +58,17 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
   local slis = std.objectValues(sliList[journeyKey])[sliIndex];
 
+  // Array of all the expressions for the slis
   local exprArray(sliList) =
   [
     sliList[sliKey].slo_expr
     for sliKey in std.objectFields(sliList)
   ];
 
+  // Joining the arrays with a +
   local topExpr = std.join(" + ", exprArray(slis));
 
+  // Final average expression
   local avgExpr =
   ||| 
     %(sumOfSlis)s  / %(noOfSlis)s
@@ -142,8 +145,7 @@ local createPanels(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
 // @param links The links to other dashboards
 // @returns The JSON defining the product dashboard
 local createProductDashboard(config, sliList, links) =
-  local combinedSliList = sliList;
-  local panels = createPanels(0, 0, 0, config, combinedSliList);
+  local panels = createPanels(0, 0, 0, config, sliList);
 
   {
     [std.join('-', [config.product, 'product-view.json'])]:

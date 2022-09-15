@@ -14,8 +14,6 @@ docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bi
 
 docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m summary -d -i input -o output
 
-docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m generic -rd -i input -o output
-
 # Copy Prometheus rules to monitoring local
 cp -a "$RULES_DIRECTORY"/. "$LOCAL_PATH"/prometheus/rule_configs
 
