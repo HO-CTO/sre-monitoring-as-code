@@ -10,9 +10,6 @@ local tablePanel = grafana.tablePanel;
 local template = grafana.template;
 
 local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
-// local averagedSliTypesPanel = dashboardFunctions.createAveragedSliTypesPanel;
-
-local util = import '../util/debug.libsonnet';
 
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
 local viewPanelsPerRow = 8;
@@ -60,25 +57,6 @@ local createRow(journeyIndex, noOfPanelRows, sliList) =
 local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
   local slis = std.objectValues(sliList[journeyKey])[sliIndex];
-  // [
-  //   util.debug(sli.slo_averaged_slo_types_panel)
-  //   {
-  //     gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
-  //       (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-  //     title: sli.row_title_short,
-  //     description: sli.row_title,
-  //     fieldConfig+: {
-  //       defaults+: {
-  //         links: [
-  //           {
-  //             title: 'Full %s Journey SLI dashboard' % journeyKey,
-  //             url: 'd/%s' % std.join('-', [config.product, journeyKey, 'journey-view?${environment:queryparam}']),
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   },
-  // ];
 
   local exprArray(sliList) =
   [
@@ -102,8 +80,8 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
         (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-      title: " %(sliTitle)s" % sliTitle: slis[std.objectFields(slis)[0]].row_title_short},
-      description: "Desc 1",
+      title: "%(sliTitle)s" % {sliTitle: slis[std.objectFields(slis)[0]].key}, 
+      description: "%(sliDesc)s" % {sliDesc: slis[std.objectFields(slis)[0]].slo_desc},
       fieldConfig+: {
         defaults+: {
           links: [

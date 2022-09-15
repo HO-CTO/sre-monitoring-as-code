@@ -10,7 +10,6 @@ local graphPanel = grafana.graphPanel;
 local statPanel = grafana.statPanel;
 local template = grafana.template;
 
-local util = import '../util/debug.libsonnet';
 // Creates the description for an SLI
 // @param sliSpec The spec for the SLI having its standard elements created
 // @returns The description for the SLI
@@ -252,6 +251,7 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
     slo_target: sliSpec.sloTarget,
     slo_period: sliSpec.period,
     slo_expr: getExpFromSli(sliSpec),
+    slo_desc: sliSpec.sliDescription,
 
     // Grafana panel showing remaining error budget over rolling period
     error_budget_panel: createErrorBudgetPanel(sliSpec),
