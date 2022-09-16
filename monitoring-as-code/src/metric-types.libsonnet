@@ -513,7 +513,7 @@
     },
     sliTypesConfig: {
       sliType: {
-        library: (import ''),
+        library: '',
         description: '',
         targetMetrics: {
 
