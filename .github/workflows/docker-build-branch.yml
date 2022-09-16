@@ -39,9 +39,11 @@ jobs:
           go install github.com/google/go-jsonnet/cmd/jsonnetfmt@v0.17.0
 
           eval "$(go env)"
-          $GOPATH/bin/jb init
-          $GOPATH/bin/jb install https://github.com/grafana/grafonnet-lib/grafonnet
-          $GOPATH/bin/jb install https://github.com/grafana/jsonnet-libs/grafana-builder
+          PATH=$PATH:$GOPATH/bin
+          
+          jb init
+          jb install https://github.com/grafana/grafonnet-lib/grafonnet
+          jb install https://github.com/grafana/jsonnet-libs/grafana-builder
 
           jsonnetfmt -v
 
