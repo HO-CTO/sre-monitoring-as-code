@@ -4,15 +4,8 @@
 // Additional config:
 // List any additional required config either from metric type config or SLI spec
 
-// MaC imports
-local stringFormattingFunctions = import '../../util/string-formatting-functions.libsonnet';
-
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
-local prometheus = grafana.prometheus;
-local graphPanel = grafana.graphPanel;
-local row = grafana.row;
-local template = grafana.template;
 
 // Creates custom templates
 // @param direction The type of dashboard elements being created, inbound or outbound

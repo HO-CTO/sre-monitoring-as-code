@@ -4,10 +4,7 @@
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
-local prometheus = grafana.prometheus;
 local row = grafana.row;
-local tablePanel = grafana.tablePanel;
-local template = grafana.template;
 
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
 local viewPanelsPerRow = 8;
