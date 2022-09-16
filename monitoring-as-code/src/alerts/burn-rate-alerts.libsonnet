@@ -12,11 +12,11 @@ local macConfig = import '../mac-config.libsonnet';
 local getSeverity(errorBudgetBurnWindow, config, sliSpec) =
   // If maxAlertSeverity is set to test at either service or SLO level, set severity to test
   if std.objectHas(config, 'maxAlertSeverity') && config.maxAlertSeverity == 'test' ||
-    std.objectHas(sliSpec, 'maxAlertSeverity') && sliSpec.maxAlertSeverity == 'test' then 'test'
+     std.objectHas(sliSpec, 'maxAlertSeverity') && sliSpec.maxAlertSeverity == 'test' then 'test'
   // If maxAlertSeverity is set to warning at either service or SLO level and window severity is critical, set severity to warning
   else if std.objectHas(config, 'maxAlertSeverity') && config.maxAlertSeverity == 'warning' ||
-    std.objectHas(sliSpec, 'maxAlertSeverity') && sliSpec.maxAlertSeverity == 'warning' &&
-    errorBudgetBurnWindow.severity == 'critical' then 'warning'
+          std.objectHas(sliSpec, 'maxAlertSeverity') && sliSpec.maxAlertSeverity == 'warning' &&
+          errorBudgetBurnWindow.severity == 'critical' then 'warning'
   // otherwise use the window severity
   else errorBudgetBurnWindow.severity;
 
@@ -71,7 +71,7 @@ local getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWind
     exhaustionDays: std.parseInt(std.rstripChars(sliSpec.period, 'd')) / errorBudgetBurnWindow.factor,
     runbookUrl: if std.objectHas(config, 'runbookUrl') then config.runbookUrl else 'no runbook',
     configurationItem: if std.objectHas(sliSpec, 'configurationItem') then sliSpec.configurationItem else config.configurationItem,
-  } 
+  }
   +
   getObjectItems('config', config)
   +
@@ -142,7 +142,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
             alertName: alertName,
           },
           description: createAlertPayloadString(alertPayload),
-          [if std.objectHas(config, 'runbookUrl') then 'runbookUrl']: 
+          [if std.objectHas(config, 'runbookUrl') then 'runbookUrl']:
             if std.objectHas(config, 'runbookUrl') then config.runbookUrl,
         },
         'for': '%(for)s' % errorBudgetBurnWindow,
