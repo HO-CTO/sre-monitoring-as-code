@@ -4,7 +4,6 @@
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
-local row = grafana.row;
 local template = grafana.template;
 
 // Creates the journey view dashboards for each journey in the service
