@@ -16,31 +16,31 @@ local createJourneyDashboards(config, sliList, links) =
   {
     [std.join('-', [config.product, journeyKey, 'journey-view.json'])]:
       dashboard.new(
-        title = '%(product)s-%(journey)s-journey-view' % {
+        title='%(product)s-%(journey)s-journey-view' % {
           product: config.product,
           journey: journeyKey,
         },
-        uid = std.join('-', [config.product, journeyKey, 'journey-view']),
-        tags = [config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'journey-view'],
-        schemaVersion = 18,
-        editable = true,
-        time_from = 'now-3h',
-        refresh = '5m',
+        uid=std.join('-', [config.product, journeyKey, 'journey-view']),
+        tags=[config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'journey-view'],
+        schemaVersion=18,
+        editable=true,
+        time_from='now-3h',
+        refresh='5m',
       ).addLinks(
-        dashboardLinks = links
+        dashboardLinks=links
       ).addTemplate(
         template.custom(
-          name = 'error_budget_span',
-          query = '10m,1h,1d,7d,21d,30d,90d',
-          current = '7d',
-          label = 'Error Budget Display',
+          name='error_budget_span',
+          query='10m,1h,1d,7d,21d,30d,90d',
+          current='7d',
+          label='Error Budget Display',
         )
       ).addTemplates(
         config.templates
       ).addPanels(
         std.flattenArrays([
           // Title for row of panels detailing a single SLO
-          [grafana.row.new(title = sli.row_title)]
+          [grafana.row.new(title=sli.row_title)]
           +
           // Status panel indicating SLO performance over last reporting period (30d by default)
           [sli.slo_availability_panel { gridPos: { x: 0, y: 0, w: 4, h: 6 } }]
@@ -50,7 +50,7 @@ local createJourneyDashboards(config, sliList, links) =
           [sli.error_budget_panel { gridPos: { x: 4, y: 0, w: 10, h: 6 } }]
           +
           // Transparent text panel added to make spacing for slo status panel correct
-          [grafana.text.new(title = null, transparent = true) + { gridPos: { x: 14, y: 0, w: 0.5, h: 1 } }]
+          [grafana.text.new(title=null, transparent=true) + { gridPos: { x: 14, y: 0, w: 0.5, h: 1 } }]
           +
           // Status of SLO (pass/fail) for same time period as detail graph below
           [sli.slo_status_panel { gridPos: { x: 14.5, y: 0, w: 9, h: 1 } }]

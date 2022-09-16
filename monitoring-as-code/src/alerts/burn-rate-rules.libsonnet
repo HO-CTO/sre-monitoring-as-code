@@ -18,7 +18,7 @@ local getBurnRateWindowArray() =
 // @param sliSpec The spec for the SLI having its alerting rules created
 // @returns The list of burn rate rules for an SLI
 local createBurnRateRules(sliSpec) =
-  {  
+  {
     recording_rules+: [
       {
         expr: |||
@@ -41,7 +41,7 @@ local createBurnRateRules(sliSpec) =
           target: sliSpec.metricTarget,
           comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
         },
-        labels: sliSpec.sliLabels + { sli_type: sliSpec.sliType },
+        labels: sliSpec.sliLabels { sli_type: sliSpec.sliType },
         record: macConfig.burnRateRuleNameTemplate % burnRateWindow,
       }
       for burnRateWindow in getBurnRateWindowArray()

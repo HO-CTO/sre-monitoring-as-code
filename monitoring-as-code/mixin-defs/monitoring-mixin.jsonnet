@@ -89,7 +89,7 @@ local sliSpecList = {
       metricType: 'scrape_duration_seconds',
       evalInterval: '1m',
       selectors: {
-        product: 'yace'
+        product: 'yace',
       },
       sloTarget: 90,
       sliTypes: {
@@ -169,7 +169,7 @@ local sliSpecList = {
       metricType: 'thanos_compact_group_compactions',
       evalInterval: '1m',
       selectors: {
-        product: 'monitoring-thanos-compact.*'
+        product: 'monitoring-thanos-compact.*',
       },
       sloTarget: 99,
       sliTypes: {

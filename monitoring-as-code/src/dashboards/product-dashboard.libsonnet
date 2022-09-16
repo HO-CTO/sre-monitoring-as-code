@@ -41,7 +41,7 @@ local createRow(journeyIndex, noOfPanelRows, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
   [
     row.new(
-      title = '%(journey)s' % { journey: journeyKey }
+      title='%(journey)s' % { journey: journeyKey }
     ) + { gridPos: { x: 0, y: (journeyIndex) + (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: 24, h: 1 } },
   ];
 
@@ -59,7 +59,7 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
     sli.slo_availability_panel
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
-        (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
+                                                                        (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
       title: sli.row_title_short,
       description: sli.row_title,
       fieldConfig+: {
@@ -106,13 +106,13 @@ local createPanels(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
       std.flattenArrays([
         createRow(journeyIndex, newNoOfPanelRows, sliList)
         + createView(journeyIndex, sliIndex, newNoOfPanelRows, config, sliList)
-        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList)
+        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList),
       ])
     // else creates view panel then recursively calls itself for next sli in journey
     else
       std.flattenArrays([
         createView(journeyIndex, sliIndex, newNoOfPanelRows, config, sliList)
-        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList)
+        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList),
       ]);
 
 // Creates the product dashboard containing a row panel for each journey and then a view panel for
@@ -128,15 +128,15 @@ local createProductDashboard(config, sliList, links) =
   {
     [std.join('-', [config.product, 'product-view.json'])]:
       dashboard.new(
-        title = '%(product)s-product-view' % { product: config.product },
-        uid = std.join('-', [config.product, 'product-view']),
-        tags = [config.product, 'mac-version: %s' % config.macVersion, 'product-view'],
-        schemaVersion = 18,
-        editable = true,
-        time_from = 'now-3h',
-        refresh = '5m'
+        title='%(product)s-product-view' % { product: config.product },
+        uid=std.join('-', [config.product, 'product-view']),
+        tags=[config.product, 'mac-version: %s' % config.macVersion, 'product-view'],
+        schemaVersion=18,
+        editable=true,
+        time_from='now-3h',
+        refresh='5m'
       ).addLinks(
-        dashboardLinks = links
+        dashboardLinks=links
       ).addTemplates(
         config.templates
       ).addPanels(std.prune(panels)),

@@ -47,14 +47,14 @@ local createRowTitles(sliKey, sliSpec) =
 // @returns The availability panel object
 local createAvailabilityPanel(sloTargetLegend, sliSpec) =
   statPanel.new(
-    title = 'SLO Performance (%(period)s)' % { period: sliSpec.period },
-    datasource = 'prometheus',
-    colorMode = 'background',
-    reducerFunction = 'lastNotNull',
-    unit = 'percentunit',
-    justifyMode = 'center',
-    noValue = 'No SLO Data Available',
-    graphMode = 'none',
+    title='SLO Performance (%(period)s)' % { period: sliSpec.period },
+    datasource='prometheus',
+    colorMode='background',
+    reducerFunction='lastNotNull',
+    unit='percentunit',
+    justifyMode='center',
+    noValue='No SLO Data Available',
+    graphMode='none',
   ).addTarget(
     prometheus.target(
       |||
@@ -73,8 +73,8 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
       },
       // to avoid displaying floating point numbers with a long tail of decimals, .1f will round it
       // to a single decimal
-      legendFormat = 'SLO Target %(%s).1f %%' % sloTargetLegend,
-      instant = true,
+      legendFormat='SLO Target %(%s).1f %%' % sloTargetLegend,
+      instant=true,
     )
   ).addThresholds(
     [
@@ -90,13 +90,13 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
 local createErrorBudgetPanel(sliSpec) =
   graphPanel.new(
     'Error budget remaining over previous %(period)s' % { period: sliSpec.period },
-    datasource = 'prometheus',
-    format = 'percentunit',
-    max = 1,
-    decimals = 2,
-    linewidth = 3,
-    time_from = '$error_budget_span',
-    thresholds = [
+    datasource='prometheus',
+    format='percentunit',
+    max=1,
+    decimals=2,
+    linewidth=3,
+    time_from='$error_budget_span',
+    thresholds=[
       { value: 0, op: 'lt', colorMode: 'critical', fill: false, line: true },
       { value: 0.5, op: 'lt', colorMode: 'warning', fill: false, line: true },
     ],
@@ -119,7 +119,7 @@ local createErrorBudgetPanel(sliSpec) =
         metricTarget: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
       },
-      legendFormat = 'Remaining Error Budget',
+      legendFormat='Remaining Error Budget',
     )
   );
 
@@ -129,21 +129,21 @@ local createErrorBudgetPanel(sliSpec) =
 // @returns The SLO status panel object
 local createSloStatusPanel(sliDescription, sliSpec) =
   graphPanel.new(
-    title = null,
-    description = sliDescription,
-    datasource = 'prometheus',
-    lines = true,
-    staircase = true,
-    fill = 10,
-    linewidth = 0,
-    stack = true,
-    legend_show = false,
-    show_xaxis = false,
+    title=null,
+    description=sliDescription,
+    datasource='prometheus',
+    lines=true,
+    staircase=true,
+    fill=10,
+    linewidth=0,
+    stack=true,
+    legend_show=false,
+    show_xaxis=false,
   ).resetYaxes(
   ).addYaxis(
-    show = false, min = 0, max = 1
+    show=false, min=0, max=1
   ).addYaxis(
-    show = false, min = 0, max = 1
+    show=false, min=0, max=1
   ).addTarget(
     // Proportion of intervals SLO has pased
     prometheus.target(
@@ -158,7 +158,7 @@ local createSloStatusPanel(sliDescription, sliSpec) =
         target: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
       },
-      legendFormat = 'SLO OK',
+      legendFormat='SLO OK',
     )
   ).addTarget(
     // Proportion of intervals SLO has failed
@@ -176,7 +176,7 @@ local createSloStatusPanel(sliDescription, sliSpec) =
         target: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
       },
-      legendFormat = 'SLO Fail',
+      legendFormat='SLO Fail',
     )
   ).addSeriesOverride(
     {
@@ -224,25 +224,25 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
 local createServiceTemplates(config) =
   [
     template.new(
-      name = 'environment',
-      datasource = 'prometheus',
-      query = 'label_values(sli_value{service="%s"}, sli_environment)' % config.product,
-      refresh = 'time',
-      includeAll = true,
-      multi = true,
-      label = 'Environment',
+      name='environment',
+      datasource='prometheus',
+      query='label_values(sli_value{service="%s"}, sli_environment)' % config.product,
+      refresh='time',
+      includeAll=true,
+      multi=true,
+      label='Environment',
     ),
   ]
   +
   if std.objectHas(config, 'generic') && config.generic then [
     template.new(
-      name = 'product',
-      datasource = 'prometheus',
-      query = 'label_values(sli_value{service="%s", sli_environment=~"$environment"}, sli_product)' % config.product,
-      refresh = 'time',
-      includeAll = true,
-      multi = true,
-      label = 'Product',
+      name='product',
+      datasource='prometheus',
+      query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, sli_product)' % config.product,
+      refresh='time',
+      includeAll=true,
+      multi=true,
+      label='Product',
     ),
   ] else [];
 
