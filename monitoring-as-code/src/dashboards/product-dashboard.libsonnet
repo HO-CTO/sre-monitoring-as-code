@@ -9,6 +9,8 @@ local row = grafana.row;
 local tablePanel = grafana.tablePanel;
 local template = grafana.template;
 
+local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
+
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
 local viewPanelsPerRow = 8;
 
@@ -54,14 +56,35 @@ local createRow(journeyIndex, noOfPanelRows, sliList) =
 // @returns The view panel object
 local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
-  local sli = std.objectValues(sliList[journeyKey])[sliIndex];
+  local slis = std.objectValues(sliList[journeyKey])[sliIndex];
+
+  // Array of all the expressions for the slis
+  local exprArray(sliList) =
   [
-    sli.slo_availability_panel
+    sliList[sliKey].slo_expr
+    for sliKey in std.objectFields(sliList)
+  ];
+
+  // Joining the arrays with a +
+  local topExpr = std.join(" + ", exprArray(slis));
+
+  // Final average expression
+  local avgExpr =
+  ||| 
+    %(sumOfSlis)s  / %(noOfSlis)s
+  ||| % {
+    sumOfSlis: topExpr,
+    noOfSlis: std.length(slis)
+  };
+
+  [
+    dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgExpr)
+    +
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
         (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-      title: sli.row_title_short,
-      description: sli.row_title,
+      title: "%(sliTitle)s" % {sliTitle: slis[std.objectFields(slis)[0]].key}, 
+      description: "%(sliDesc)s" % {sliDesc: slis[std.objectFields(slis)[0]].slo_desc},
       fieldConfig+: {
         defaults+: {
           links: [
@@ -122,8 +145,7 @@ local createPanels(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
 // @param links The links to other dashboards
 // @returns The JSON defining the product dashboard
 local createProductDashboard(config, sliList, links) =
-  local combinedSliList = createCombinedSliList(sliList);
-  local panels = createPanels(0, 0, 0, config, combinedSliList);
+  local panels = createPanels(0, 0, 0, config, sliList);
 
   {
     [std.join('-', [config.product, 'product-view.json'])]:
