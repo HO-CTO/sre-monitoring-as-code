@@ -50,7 +50,6 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
 local createGraphPanel(sliSpec) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliValueLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
-  local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = '%s' % sliSpec.sliDescription,
