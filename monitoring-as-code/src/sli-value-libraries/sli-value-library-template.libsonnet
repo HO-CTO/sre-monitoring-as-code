@@ -65,9 +65,7 @@ local createGraphPanel(sliSpec) =
     },
   ).addTarget(
     prometheus.target(
-      |||
-
-      ||| % {
+      '' % {
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
