@@ -36,7 +36,7 @@ jobs:
         run: |
           go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0
           go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
-          go install github.com/google/go-jsonnet/cmd/jsonnet-lint@v0.17.0
+          go install github.com/google/go-jsonnet/cmd/jsonnet-lint@v0.18.0
 
           eval "$(go env)"
           PATH=$PATH:$GOPATH/bin
