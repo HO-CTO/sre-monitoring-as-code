@@ -88,14 +88,15 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
 // Creates the target expresion for an sli 
 // @param sli The SLI that we are creating the expresion for
 // @returns The string expresion for the target
-local getExprFromSli(sli) = 
+local getExprFromSli(sli, periodSli) = 
 |||
-  ( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[$__interval:%(evalInterval)s])
+  sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]) )
   / 
-  sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[$__interval:%(evalInterval)s]) )
+  sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
 ||| % {
   sliLabelSelectors: sli.dashboardSliLabelSelectors,
   sliType: sli.sliType,
+  period: periodSli,
   evalInterval: sli.evalInterval,
   target: sli.metricTarget,
   comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
@@ -258,9 +259,9 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
     slo_availability_panel: createAvailabilityPanel(sliSpec.sloTarget, sliSpec),
 
     // Creates certain values needed for the average products view panel
-    slo_expr: getExprFromSli(sliSpec),
-    slo_target: sliSpec.sloTarget,
     slo_period: sliSpec.period,
+    slo_expr: getExprFromSli(sliSpec, self.slo_period),
+    slo_target: sliSpec.sloTarget,
     slo_desc: sliSpec.sliDescription,
 
     // Grafana panel showing remaining error budget over rolling period
