@@ -71,7 +71,7 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   // Final average expression
   local avgExpr =
   ||| 
-    %(sumOfSlis)s  / %(noOfSlis)s
+    ( %(sumOfSlis)s  ) / %(noOfSlis)s
   ||| % {
     sumOfSlis: topExpr,
     noOfSlis: std.length(slis)
