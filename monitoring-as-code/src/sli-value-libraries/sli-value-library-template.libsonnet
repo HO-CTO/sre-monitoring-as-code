@@ -22,7 +22,6 @@ local graphPanel = grafana.graphPanel;
 local createSliValueRule(sliSpec, sliMetadata, config) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliValueLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
-  local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
   local selectorLabels = sliValueLibraryFunctions.getSelectorLabels(metricConfig);
 
   [
