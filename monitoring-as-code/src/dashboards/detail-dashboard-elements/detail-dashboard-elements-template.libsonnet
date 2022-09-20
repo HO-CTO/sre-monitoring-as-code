@@ -4,9 +4,6 @@
 // Additional config:
 // List any additional required config either from metric type config or SLI spec
 
-// Grafana imports
-local grafana = import 'grafonnet/grafana.libsonnet';
-
 // Creates custom templates
 // @param direction The type of dashboard elements being created, inbound or outbound
 // @param metrics Object containing metrics
