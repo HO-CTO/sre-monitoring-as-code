@@ -77,7 +77,6 @@ jobs:
         with:
           image: ${{ steps.meta.outputs.tags }}
           args: |
-            --file=./monitoring-as-code/Dockerfile
             --severity-threshold=medium
             --sarif-file-output=snyk.sarif
 
