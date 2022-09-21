@@ -80,7 +80,7 @@ jobs:
       - name: Snyk Container Scan
         id: snyk-dockerfile
         run: |
-          snyk container test --file=./monitoring-as-code/Dockerfile --sarif-file-output=snyk.sarif ${{ steps.meta.outputs.tags }}
+          snyk container test --file=./monitoring-as-code/Dockerfile --sarif-file-output=snyk.sarif --app-vulns ${{ steps.meta.outputs.tags }}
         continue-on-error: true
         
       - name: Upload result to GitHub Code Scanning
