@@ -80,8 +80,7 @@ jobs:
       
       - name: Snyk Container
         run: |
-          snyk container test ${{ steps.meta.outputs.tags }}
-          --sarif-file-output=snyk.sarif
+          snyk container test --sarif-file-output=snyk.sarif ${{ steps.meta.outputs.tags }}
         continue-on-error: true
         
       - name: Upload result to GitHub Code Scanning
