@@ -79,7 +79,6 @@ jobs:
           args: |
             --file=./monitoring-as-code/Dockerfile
             --severity-threshold=medium
-            --app-vulns
             --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
