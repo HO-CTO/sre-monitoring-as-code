@@ -67,19 +67,21 @@ jobs:
       - name: Run promtool checks
         run: for FILE in ${{ github.workspace }}/monitoring-as-code/output/prometheus-rules/*-rules.yaml; do docker run -v ${{ github.workspace }}/monitoring-as-code:${{ github.workspace }}/data ${{env.REGISTRY}}/${{env.USER}}/${{env.PROMTOOL_IMAGE_NAME}}:${{env.PROMTOOL_VERSION}} check rules ${{ github.workspace }}/data/output/prometheus-rules/$(basename $FILE); if [ $? -ne 0 ]; then echo "Validation of rules files failed for $(basename $FILE) - exiting"; exit 1; fi done
 
-      # Snyk security scan of Dockerfile and Built Docker Image with unmanaged dependencies
-      - name: Run Snyk to check Docker file for vulnerabilities
-        id: snyk-dockerfile
-        continue-on-error: true
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          image: ${{ steps.meta.outputs.tags }}
-          args: |
-            --severity-threshold=medium
-            --sarif-file-output=snyk.sarif
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
+      - name: Setup Snyk + snyk-to-html # For information about the required commands for generating an HTML report see https://github.com/snyk/snyk-to-html
+        run: |
+          npm install snyk -g
+          npm install snyk-to-html -g
+          snyk auth ${{secrets.SNYK_TOKEN}}
+      - name: Snyk Container # Rename your image, for testing and failing please add snyk container test before snyk container monitor
+        run: |
+          snyk container test ${{ steps.meta.outputs.tags }}
+          
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
