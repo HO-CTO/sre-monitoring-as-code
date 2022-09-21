@@ -77,10 +77,13 @@ jobs:
           npm install snyk -g
           npm install snyk-to-html -g
           snyk auth ${{secrets.SNYK_TOKEN}}
-      - name: Snyk Container # Rename your image, for testing and failing please add snyk container test before snyk container monitor
+      
+      - name: Snyk Container
         run: |
           snyk container test ${{ steps.meta.outputs.tags }}
-          
+          --sarif-file-output=snyk.sarif
+        continue-on-error: true
+        
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
