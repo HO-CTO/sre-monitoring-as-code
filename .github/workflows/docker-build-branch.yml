@@ -80,13 +80,13 @@ jobs:
       
       - name: Snyk Container
         run: |
-          snyk container test --file-output=${{ github.workspace }}/snyk.sarif ${{ steps.meta.outputs.tags }}
+          snyk container test --file=./monitoring-as-code/Dockerfile --sarif-file-output=snyk.sarif ${{ steps.meta.outputs.tags }}
         continue-on-error: true
         
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: ${{ github.workspace }}/snyk.sarif
+          sarif_file: snyk.sarif
 
       - name: Check on failures
         if: steps.snyk-dockerfile.outcome != 'success'
