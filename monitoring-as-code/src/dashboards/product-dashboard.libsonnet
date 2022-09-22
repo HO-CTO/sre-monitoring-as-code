@@ -17,20 +17,6 @@ local viewPanelSize = {
   y: 4,
 };
 
-// Combines all of the SLI types of SLIs in a journey
-// @param sliList The list of SLIs for a service
-// @returns Object containing journeys and SLI types
-local createCombinedSliList(sliList) =
-  {
-    [journeyKey]: {
-      // This attribute should be a unique identifier for SLI types
-      [sli.row_title_short]: sli
-      for sliKey in std.objectFields(sliList[journeyKey])
-      for sli in std.objectValues(sliList[journeyKey][sliKey])
-    }
-    for journeyKey in std.objectFields(sliList)
-  };
-
 // Creates a row panel which is used to contain all of the SLIs in each journey
 // @param journeyIndex The index of the current journey having its panels created
 // @param noOfPanelRows The number of rows of view panels that have been created
