@@ -2,6 +2,7 @@
 
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
+local cFLUtil = import '../util/string-formatting-functions.libsonnet';
 
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
@@ -47,7 +48,7 @@ local createRowTitles(sliKey, sliSpec) =
 // @returns The availability panel object
 local createAvailabilityPanel(sloTargetLegend, sliSpec) =
   statPanel.new(
-    title = 'SLO Performance (%(period)s)' % { period: sliSpec.period },
+    title = ' %(sliType)s (%(period)s)' % { sliType: cFLUtil.capitaliseFirstLetters(sliSpec.sliType), period: sliSpec.period },
     datasource = 'prometheus',
     colorMode = 'background',
     reducerFunction = 'lastNotNull',
