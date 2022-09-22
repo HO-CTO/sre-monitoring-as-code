@@ -22,7 +22,6 @@ local graphPanel = grafana.graphPanel;
 local createSliValueRule(sliSpec, sliMetadata, config) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local ruleSelectors = sliValueLibraryFunctions.createRuleSelectors(metricConfig, sliSpec, config);
-  local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
   local selectorLabels = sliValueLibraryFunctions.getSelectorLabels(metricConfig);
 
   [
@@ -51,7 +50,6 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
 local createGraphPanel(sliSpec) =
   local metricConfig = sliValueLibraryFunctions.getMetricConfig(sliSpec);
   local dashboardSelectors = sliValueLibraryFunctions.createDashboardSelectors(metricConfig, sliSpec);
-  local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
     title = '%s' % sliSpec.sliDescription,
@@ -65,9 +63,7 @@ local createGraphPanel(sliSpec) =
     },
   ).addTarget(
     prometheus.target(
-      |||
-
-      ||| % {
+      '' % {
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },

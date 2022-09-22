@@ -4,10 +4,7 @@
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
-local prometheus = grafana.prometheus;
 local row = grafana.row;
-local tablePanel = grafana.tablePanel;
-local template = grafana.template;
 
 local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 

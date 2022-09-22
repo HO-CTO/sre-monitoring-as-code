@@ -4,7 +4,6 @@
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
-local row = grafana.row;
 local template = grafana.template;
 
 // Create the Grafana panels grouping all SLI types under a single SLI panel
