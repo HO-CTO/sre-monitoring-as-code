@@ -31,36 +31,29 @@ jobs:
           dockerfile: ./monitoring-as-code/Dockerfile
 
       - uses: actions/setup-go@v3
-      
+
+      - name: Set up jsonnet
+        run: |
+        go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0
+        go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
+        go install github.com/google/go-jsonnet/cmd/jsonnetfmt@v0.17.0
+        go install github.com/google/go-jsonnet/cmd/jsonnet-lint@v0.18.0
+        
+        eval "$(go env)"
+        PATH=$PATH:$GOPATH/bin
+        
+        jb init
+        jb install https://github.com/grafana/grafonnet-lib/grafonnet
+        jb install https://github.com/grafana/jsonnet-libs/grafana-builder
+  
       - name: Jsonnet format check
         run: |
-          go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0
-          go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
-          go install github.com/google/go-jsonnet/cmd/jsonnetfmt@v0.17.0
-          
-          eval "$(go env)"
-          PATH=$PATH:$GOPATH/bin
-          
-          jb init
-          jb install https://github.com/grafana/grafonnet-lib/grafonnet
-          jb install https://github.com/grafana/jsonnet-libs/grafana-builder
-          
           jsonnetfmt -v
 
           find . -name 'vendor' -prune -o -name '*.libsonnet' -print -o -name '*.jsonnet' -print | xargs -n 1 jsonnetfmt -n 2 --max-blank-lines 2 --string-style s --comment-style s --no-sort-imports -i && git diff --exit-code --color
-      - name: Jsonnet lint
+
+      - name: Jsonnet lint check
         run: |
-          go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0
-          go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
-          go install github.com/google/go-jsonnet/cmd/jsonnet-lint@v0.18.0
-
-          eval "$(go env)"
-          PATH=$PATH:$GOPATH/bin
-          
-          jb init
-          jb install https://github.com/grafana/grafonnet-lib/grafonnet
-          jb install https://github.com/grafana/jsonnet-libs/grafana-builder
-
           jsonnet-lint -v
 
           find . -name 'vendor' -prune -o -name '*.libsonnet' -print -o -name '*.jsonnet' -print | xargs -n 1 jsonnet-lint -J vendor
