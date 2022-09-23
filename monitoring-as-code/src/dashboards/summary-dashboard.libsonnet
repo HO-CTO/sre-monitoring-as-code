@@ -14,7 +14,7 @@ local environmentLabelSelector = 'sli_environment=~"$environment"';
 // The panels for the summary dashboard
 local panels = [
   tablePanel.new(
-    title='SLO Status Aggregated by Service',
+    title='SLO Status Aggregated by Service (30d)',
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
@@ -45,6 +45,14 @@ local panels = [
       instant=true,
       legendFormat='SLO Coverage',
     ),
+  ).addTarget(
+    prometheus.target(
+      'count by (service)(rate(ALERTS{%(environmentLabelSelector)s,alertstate="firing"}[30d]))' %
+      environmentLabelSelector,
+      format='table',
+      instant=true,
+      legendFormat='Fired Alerts',
+    ),
   ).addTransformations(
     [
       { id: 'labelsToFields' },
@@ -58,6 +66,7 @@ local panels = [
             'Value #A': 'SLO Status',
             'Value #B': '% Change',
             'Value #C': 'SLO Coverage',
+            'Value #D': 'Fired Alerts',
             service: 'Service',
             environment: 'Environment',
           },
@@ -108,6 +117,10 @@ local panels = [
         {
           matcher: { id: 'byName', options: 'environment' },
           properties: [{ id: 'custom.width', value: '2' }],
+        },
+        {
+          matcher: { id: 'byName', options: 'Fired Alerts' },
+          properties: [{ id: 'unit', value: 'none' }],
         },
       ],
     defaults+:
