@@ -14,7 +14,7 @@ local environmentLabelSelector = 'sli_environment=~"$environment"';
 // The panels for the summary dashboard
 local panels = [
   tablePanel.new(
-    title='SLO Status Aggregated by Service Over 30 Days',
+    title='SLO Status Aggregated by Service (30d)',
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
