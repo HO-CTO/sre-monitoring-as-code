@@ -14,42 +14,40 @@ local environmentLabelSelector = 'sli_environment=~"$environment"';
 // The panels for the summary dashboard
 local panels = [
   tablePanel.new(
-    title = 'SLO Status Aggregated by Service Over 30 Days',
-    datasource = 'prometheus',
+    title='SLO Status Aggregated by Service Over 30 Days',
+    datasource='prometheus',
   ).addTarget(
     prometheus.target(
-      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) * 100' % 
-        environmentLabelSelector,
-      format = 'table',
-      instant = true,
-      legendFormat = 'SLO Status',
+      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) * 100' %
+      environmentLabelSelector,
+      format='table',
+      instant=true,
+      legendFormat='SLO Status',
     ),
   ).addTarget(
     prometheus.target(
-      '(avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) - 
-        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service))    
-        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service)) * 100' % {
-          environmentLabelSelector: environmentLabelSelector,
-        },
-      format = 'table',
-      instant = true,
-      legendFormat = '% Change',
+      '(avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) - \n        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service))    \n        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service)) * 100' % {
+        environmentLabelSelector: environmentLabelSelector,
+      },
+      format='table',
+      instant=true,
+      legendFormat='% Change',
     ),
   ).addTarget(
     prometheus.target(
       'count by (service)(count_over_time((sli_value{%(environmentLabelSelector)s} < bool Inf)[30d:10m]))' %
-        environmentLabelSelector,
-      format = 'table',
-      instant = true,
-      legendFormat = 'SLO Coverage',
+      environmentLabelSelector,
+      format='table',
+      instant=true,
+      legendFormat='SLO Coverage',
     ),
-	).addTarget(	
-    prometheus.target(	
+  ).addTarget(
+    prometheus.target(
       'count by (service)(rate(ALERTS{%(environmentLabelSelector)s,alertstate="firing"}[30d]))' %
-        environmentLabelSelector,
-      format = 'table',	
-      instant = true,	
-      legendFormat = 'Fired Alerts',	
+      environmentLabelSelector,
+      format='table',
+      instant=true,
+      legendFormat='Fired Alerts',
     ),
   ).addTransformations(
     [
@@ -64,7 +62,7 @@ local panels = [
             'Value #A': 'SLO Status',
             'Value #B': '% Change',
             'Value #C': 'SLO Coverage',
-            'Value #D': 'Fired Alerts',     
+            'Value #D': 'Fired Alerts',
             service: 'Service',
             environment: 'Environment',
           },
@@ -116,9 +114,9 @@ local panels = [
           matcher: { id: 'byName', options: 'environment' },
           properties: [{ id: 'custom.width', value: '2' }],
         },
-        {	
-          matcher: { id: 'byName', options: 'Fired Alerts' },	
-          properties: [{ id: 'unit', value: 'none' }],	
+        {
+          matcher: { id: 'byName', options: 'Fired Alerts' },
+          properties: [{ id: 'unit', value: 'none' }],
         },
       ],
     defaults+:
@@ -137,15 +135,15 @@ local panels = [
       },
   } } + { gridPos: { w: 24, h: 10 } },
   tablePanel.new(
-    title = 'SLO Status Aggregated by Service and SLI Category',
-    datasource = 'prometheus',
+    title='SLO Status Aggregated by Service and SLI Category',
+    datasource='prometheus',
   ).addTarget(
     prometheus.target(
       'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_type) * 100' %
-        environmentLabelSelector,
-      format = 'time_series',
-      instant = true,
-      legendFormat = 'SLO Status',
+      environmentLabelSelector,
+      format='time_series',
+      instant=true,
+      legendFormat='SLO Status',
     ),
   ).addTransformations(
     [
@@ -342,13 +340,13 @@ local createSummaryDashboard(config) =
     grafanaDashboards+: {
       'summary-view.json':
         dashboard.new(
-          title = 'summary-view',
-          uid = 'summary-view',
-          tags = ['mac-version: %s' % config.macVersion, 'summary-view'],
-          schemaVersion = 18,
-          editable = true,
-          time_from = 'now-3h',
-          refresh = '5m',
+          title='summary-view',
+          uid='summary-view',
+          tags=['mac-version: %s' % config.macVersion, 'summary-view'],
+          schemaVersion=18,
+          editable=true,
+          time_from='now-3h',
+          refresh='5m',
         ).addLinks(
           [
             {
@@ -362,15 +360,15 @@ local createSummaryDashboard(config) =
           ]
         ).addTemplate(
           template.new(
-            name = 'environment',
-            datasource = 'prometheus',
-            query = 'label_values(sli_value, sli_environment)',
-            refresh = 'load',
-            includeAll = true,
-            multi = true,
-            label = 'Environment',
+            name='environment',
+            datasource='prometheus',
+            query='label_values(sli_value, sli_environment)',
+            refresh='load',
+            includeAll=true,
+            multi=true,
+            label='Environment',
           )
-        ).addPanels(std.prune(panels))
+        ).addPanels(std.prune(panels)),
     },
   };
 
