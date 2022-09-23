@@ -9,7 +9,6 @@ local grafana = import 'grafonnet/grafana.libsonnet';
 local prometheus = grafana.prometheus;
 local graphPanel = grafana.graphPanel;
 local row = grafana.row;
-local template = grafana.template;
 
 // Creates custom templates
 // @param direction The type of dashboard elements being created, inbound or outbound
