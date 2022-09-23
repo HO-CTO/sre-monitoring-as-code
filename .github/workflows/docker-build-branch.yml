@@ -48,12 +48,18 @@ jobs:
   
       - name: Jsonnet format check
         run: |
+          eval "$(go env)"
+          PATH=$PATH:$GOPATH/bin
+          
           jsonnetfmt -v
 
           find . -name 'vendor' -prune -o -name '*.libsonnet' -print -o -name '*.jsonnet' -print | xargs -n 1 jsonnetfmt -n 2 --max-blank-lines 2 --string-style s --comment-style s --no-sort-imports -i && git diff --exit-code --color
 
       - name: Jsonnet lint check
         run: |
+          eval "$(go env)"
+          PATH=$PATH:$GOPATH/bin
+          
           jsonnet-lint -v
 
           find . -name 'vendor' -prune -o -name '*.libsonnet' -print -o -name '*.jsonnet' -print | xargs -n 1 jsonnet-lint -J vendor
