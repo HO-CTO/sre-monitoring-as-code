@@ -6,5 +6,5 @@ local debug(obj) = (
 );
 
 {
-  debug(obj): debug(obj)
+  debug(obj): debug(obj),
 }
