@@ -60,31 +60,31 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
 
   // Array of all the expressions for the slis
   local exprArray(sliList) =
-  [
-    sliList[sliKey].slo_expr
-    for sliKey in std.objectFields(sliList)
-  ];
+    [
+      sliList[sliKey].slo_expr
+      for sliKey in std.objectFields(sliList)
+    ];
 
   // Joining the arrays with a +
-  local topExpr = std.join(" + ", exprArray(slis));
+  local topExpr = std.join(' + ', exprArray(slis));
 
   // Final average expression
   local avgExpr =
-  ||| 
-    ( %(sumOfSlis)s  ) / %(noOfSlis)s
-  ||| % {
-    sumOfSlis: topExpr,
-    noOfSlis: std.length(slis)
-  };
+    |||
+      ( %(sumOfSlis)s  ) / %(noOfSlis)s
+    ||| % {
+      sumOfSlis: topExpr,
+      noOfSlis: std.length(slis),
+    };
 
   [
     dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgExpr)
     +
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
-        (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-      title: "%(sliTitle)s (%(period)s)" % {sliTitle: slis[std.objectFields(slis)[0]].key, period: slis[std.objectFields(slis)[0]].slo_period}, 
-      description: "%(sliDesc)s" % {sliDesc: slis[std.objectFields(slis)[0]].slo_desc},
+                                                                        (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
+      title: '%(sliTitle)s (%(period)s)' % { sliTitle: slis[std.objectFields(slis)[0]].key, period: slis[std.objectFields(slis)[0]].slo_period },
+      description: '%(sliDesc)s' % { sliDesc: slis[std.objectFields(slis)[0]].slo_desc },
       fieldConfig+: {
         defaults+: {
           links: [

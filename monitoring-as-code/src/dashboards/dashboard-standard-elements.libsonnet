@@ -48,14 +48,14 @@ local createRowTitles(sliKey, sliSpec) =
 // @returns The availability panel object
 local createAvailabilityPanel(sloTargetLegend, sliSpec) =
   statPanel.new(
-    title = ' %(sliType)s (%(period)s)' % { sliType: cFLUtil.capitaliseFirstLetters(sliSpec.sliType), period: sliSpec.period },
-    datasource = 'prometheus',
-    colorMode = 'background',
-    reducerFunction = 'lastNotNull',
-    unit = 'percentunit',
-    justifyMode = 'center',
-    noValue = 'No SLO Data Available',
-    graphMode = 'none',
+    title=' %(sliType)s (%(period)s)' % { sliType: cFLUtil.capitaliseFirstLetters(sliSpec.sliType), period: sliSpec.period },
+    datasource='prometheus',
+    colorMode='background',
+    reducerFunction='lastNotNull',
+    unit='percentunit',
+    justifyMode='center',
+    noValue='No SLO Data Available',
+    graphMode='none',
   ).addTarget(
     prometheus.target(
       |||
@@ -85,22 +85,22 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
-// Creates the target expresion for an sli 
+// Creates the target expresion for an sli
 // @param sli The SLI that we are creating the expresion for
 // @returns The string expresion for the target
-local getExprFromSli(sli, periodSli) = 
-|||
-  sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]) )
-  / 
-  sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
-||| % {
-  sliLabelSelectors: sli.dashboardSliLabelSelectors,
-  sliType: sli.sliType,
-  period: periodSli,
-  evalInterval: sli.evalInterval,
-  target: sli.metricTarget,
-  comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
-};
+local getExprFromSli(sli, periodSli) =
+  |||
+    sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]) )
+    / 
+    sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
+  ||| % {
+    sliLabelSelectors: sli.dashboardSliLabelSelectors,
+    sliType: sli.sliType,
+    period: periodSli,
+    evalInterval: sli.evalInterval,
+    target: sli.metricTarget,
+    comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
+  };
 
 // Creates the averaged panel for SLI performance
 // @param sloTargetLegend The SLO target to be used as the panel legend
@@ -110,20 +110,21 @@ local getExprFromSli(sli, periodSli) =
 
 local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
   statPanel.new(
-    title = 'SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
-    datasource = 'prometheus',
-    colorMode = 'background',
-    reducerFunction = 'lastNotNull',
-    unit = 'percentunit',
-    justifyMode = 'center',
-    noValue = 'No SLO Data Available',
-    graphMode = 'none',
+    title='SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
+    datasource='prometheus',
+    colorMode='background',
+    reducerFunction='lastNotNull',
+    unit='percentunit',
+    justifyMode='center',
+    noValue='No SLO Data Available',
+    graphMode='none',
   ).addTarget(
-    prometheus.target(expr = fullExpr,
+    prometheus.target(
+      expr=fullExpr,
       // to avoid displaying floating point numbers with a long tail of decimals, .1f will round it
       // to a single decimal
-      legendFormat = 'SLO Target %(%s).1f %%' % sloTargetLegend,
-      instant = true,
+      legendFormat='SLO Target %(%s).1f %%' % sloTargetLegend,
+      instant=true,
     )
   ).addThresholds(
     [
