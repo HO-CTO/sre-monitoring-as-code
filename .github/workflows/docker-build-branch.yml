@@ -86,20 +86,21 @@ jobs:
       - name: Run promtool checks
         run: for FILE in ${{ github.workspace }}/monitoring-as-code/output/prometheus-rules/*-rules.yaml; do docker run -v ${{ github.workspace }}/monitoring-as-code:${{ github.workspace }}/data ${{env.REGISTRY}}/${{env.USER}}/${{env.PROMTOOL_IMAGE_NAME}}:${{env.PROMTOOL_VERSION}} check rules ${{ github.workspace }}/data/output/prometheus-rules/$(basename $FILE); if [ $? -ne 0 ]; then echo "Validation of rules files failed for $(basename $FILE) - exiting"; exit 1; fi done
 
-      # Snyk security scan of Dockerfile and Built Docker Image with unmanaged dependencies
-      - name: Run Snyk to check Docker file for vulnerabilities
-        id: snyk-dockerfile
-        continue-on-error: true
-        uses: snyk/actions/docker@0.3.0
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          image: ${{ steps.meta.outputs.tags }}
-          args: |
-            --file=./monitoring-as-code/Dockerfile
-            --severity-threshold=medium
-            --app-vulns
-            --sarif-file-output=snyk.sarif
+          node-version: 16.17.0
+
+      - name: Setup Snyk
+        run: |
+          npm install snyk -g
+          snyk auth ${{secrets.SNYK_TOKEN}}
+      
+      - name: Snyk Container Scan
+        id: snyk-dockerfile
+        run: |
+          snyk container test --file=./monitoring-as-code/Dockerfile --sarif-file-output=snyk.sarif --app-vulns --severity-threshold=medium ${{ steps.meta.outputs.tags }}
+        continue-on-error: true
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
