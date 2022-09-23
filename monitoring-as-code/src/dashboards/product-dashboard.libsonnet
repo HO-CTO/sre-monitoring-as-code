@@ -26,7 +26,7 @@ local createRow(journeyIndex, noOfPanelRows, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
   [
     row.new(
-      title = '%(journey)s' % { journey: journeyKey }
+      title='%(journey)s' % { journey: journeyKey }
     ) + { gridPos: { x: 0, y: (journeyIndex) + (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: 24, h: 1 } },
   ];
 
@@ -43,31 +43,31 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
 
   // Array of all the expressions for the slis
   local exprArray(sliList) =
-  [
-    sliList[sliKey].slo_expr
-    for sliKey in std.objectFields(sliList)
-  ];
+    [
+      sliList[sliKey].slo_expr
+      for sliKey in std.objectFields(sliList)
+    ];
 
   // Joining the arrays with a +
-  local topExpr = std.join(" + ", exprArray(slis));
+  local topExpr = std.join(' + ', exprArray(slis));
 
   // Final average expression
   local avgExpr =
-  ||| 
-    ( %(sumOfSlis)s  ) / %(noOfSlis)s
-  ||| % {
-    sumOfSlis: topExpr,
-    noOfSlis: std.length(slis)
-  };
+    |||
+      ( %(sumOfSlis)s  ) / %(noOfSlis)s
+    ||| % {
+      sumOfSlis: topExpr,
+      noOfSlis: std.length(slis),
+    };
 
   [
     dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgExpr)
     +
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
-        (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-      title: "%(sliTitle)s (%(period)s)" % {sliTitle: slis[std.objectFields(slis)[0]].key, period: slis[std.objectFields(slis)[0]].slo_period}, 
-      description: "%(sliDesc)s" % {sliDesc: slis[std.objectFields(slis)[0]].slo_desc},
+                                                                        (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
+      title: '%(sliTitle)s (%(period)s)' % { sliTitle: slis[std.objectFields(slis)[0]].key, period: slis[std.objectFields(slis)[0]].slo_period },
+      description: '%(sliDesc)s' % { sliDesc: slis[std.objectFields(slis)[0]].slo_desc },
       fieldConfig+: {
         defaults+: {
           links: [
@@ -112,13 +112,13 @@ local createPanels(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
       std.flattenArrays([
         createRow(journeyIndex, newNoOfPanelRows, sliList)
         + createView(journeyIndex, sliIndex, newNoOfPanelRows, config, sliList)
-        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList)
+        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList),
       ])
     // else creates view panel then recursively calls itself for next sli in journey
     else
       std.flattenArrays([
         createView(journeyIndex, sliIndex, newNoOfPanelRows, config, sliList)
-        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList)
+        + createPanels(journeyIndex, sliIndex + 1, newNoOfPanelRows, config, sliList),
       ]);
 
 // Creates the product dashboard containing a row panel for each journey and then a view panel for
@@ -133,15 +133,15 @@ local createProductDashboard(config, sliList, links) =
   {
     [std.join('-', [config.product, 'product-view.json'])]:
       dashboard.new(
-        title = '%(product)s-product-view' % { product: config.product },
-        uid = std.join('-', [config.product, 'product-view']),
-        tags = [config.product, 'mac-version: %s' % config.macVersion, 'product-view'],
-        schemaVersion = 18,
-        editable = true,
-        time_from = 'now-3h',
-        refresh = '5m'
+        title='%(product)s-product-view' % { product: config.product },
+        uid=std.join('-', [config.product, 'product-view']),
+        tags=[config.product, 'mac-version: %s' % config.macVersion, 'product-view'],
+        schemaVersion=18,
+        editable=true,
+        time_from='now-3h',
+        refresh='5m'
       ).addLinks(
-        dashboardLinks = links
+        dashboardLinks=links
       ).addTemplates(
         config.templates
       ).addPanels(std.prune(panels)),

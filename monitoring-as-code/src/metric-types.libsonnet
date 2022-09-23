@@ -3,7 +3,7 @@
 // File exports
 // The different types of metrics and their config
 {
-  'http_server_requests_seconds': {
+  http_server_requests_seconds: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -54,7 +54,7 @@
       },
     },
   },
-  'grafana_http_request_duration_seconds': {
+  grafana_http_request_duration_seconds: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -83,7 +83,7 @@
       },
     },
   },
-  'http_requests_total': {
+  http_requests_total: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -112,7 +112,7 @@
       },
     },
   },
-  'http_request_duration_seconds': {
+  http_request_duration_seconds: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -144,7 +144,7 @@
       },
     },
   },
-  'nginx_ingress_controller_requests': {
+  nginx_ingress_controller_requests: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'exported_namespace',
@@ -172,7 +172,7 @@
       },
     },
   },
-  'nginx_ingress_controller_request_duration_seconds': {
+  nginx_ingress_controller_request_duration_seconds: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'exported_namespace',
@@ -212,7 +212,7 @@
       },
     },
   },
-  'aws_alb': {
+  aws_alb: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'Environment',
@@ -255,7 +255,7 @@
       targetMetrics: {},
     },
   },
-  'aws_sqs': {
+  aws_sqs: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'Environment',
@@ -305,7 +305,7 @@
       },
     },
   },
-  'thanos_compact_group_compactions': {
+  thanos_compact_group_compactions: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -332,7 +332,7 @@
       targetMetrics: {},
     },
   },
-  'up': {
+  up: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -357,7 +357,7 @@
       targetMetrics: {},
     },
   },
-  'scrape_duration_seconds': {
+  scrape_duration_seconds: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'namespace',
@@ -382,7 +382,7 @@
       targetMetrics: {},
     },
   },
-  'aws_rds_read': {
+  aws_rds_read: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'Environment',
@@ -423,7 +423,7 @@
       targetMetrics: {},
     },
   },
-  'aws_rds_write': {
+  aws_rds_write: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'Environment',
@@ -464,7 +464,7 @@
       targetMetrics: {},
     },
   },
-  'aws_es': {
+  aws_es: {
     metricTypeConfig: {
       selectorLabels: {
         environment: 'Environment',
@@ -524,7 +524,7 @@
       standardTemplates: [],
       elements: [],
       targetMetrics: {
-        
+
       },
     },
   },

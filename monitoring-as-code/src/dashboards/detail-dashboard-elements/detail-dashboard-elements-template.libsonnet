@@ -13,7 +13,7 @@
 // @returns List of custom templates
 local createCustomTemplates(direction, metrics, customSelectorLabels, customSelectorValues, selectors) =
   [
-    
+
   ];
 
 // Creates custom selectors
