@@ -34,17 +34,17 @@ jobs:
 
       - name: Set up jsonnet
         run: |
-        go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0
-        go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
-        go install github.com/google/go-jsonnet/cmd/jsonnetfmt@v0.17.0
-        go install github.com/google/go-jsonnet/cmd/jsonnet-lint@v0.18.0
-        
-        eval "$(go env)"
-        PATH=$PATH:$GOPATH/bin
-        
-        jb init
-        jb install https://github.com/grafana/grafonnet-lib/grafonnet
-        jb install https://github.com/grafana/jsonnet-libs/grafana-builder
+          go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0
+          go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
+          go install github.com/google/go-jsonnet/cmd/jsonnetfmt@v0.17.0
+          go install github.com/google/go-jsonnet/cmd/jsonnet-lint@v0.18.0
+          
+          eval "$(go env)"
+          PATH=$PATH:$GOPATH/bin
+          
+          jb init
+          jb install https://github.com/grafana/grafonnet-lib/grafonnet
+          jb install https://github.com/grafana/jsonnet-libs/grafana-builder
   
       - name: Jsonnet format check
         run: |
