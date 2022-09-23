@@ -54,9 +54,9 @@ local createGraphPanel(sliSpec) =
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.sliDescription,
-    datasource = 'prometheus',
-    description = |||
+    title='%s' % sliSpec.sliDescription,
+    datasource='prometheus',
+    description=|||
       * Sample interval is %(evalInterval)s
       * Selectors are %(selectors)s
     ||| % {
@@ -65,13 +65,11 @@ local createGraphPanel(sliSpec) =
     },
   ).addTarget(
     prometheus.target(
-      |||
-
-      ||| % {
+      '' % {
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = '',
+      legendFormat='',
     ),
   );
 

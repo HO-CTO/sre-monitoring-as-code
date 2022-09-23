@@ -11,5 +11,5 @@ local capitaliseFirstLetters(string) =
 
 // File exports
 {
-  capitaliseFirstLetters(string): capitaliseFirstLetters(string)
+  capitaliseFirstLetters(string): capitaliseFirstLetters(string),
 }

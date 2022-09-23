@@ -26,7 +26,11 @@ local panels = [
     ),
   ).addTarget(
     prometheus.target(
-      '(avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) - \n        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service))    \n        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service)) * 100' % {
+      |||
+        (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) - 
+        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service))    
+        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service)) * 100
+      ||| % {
         environmentLabelSelector: environmentLabelSelector,
       },
       format='table',
