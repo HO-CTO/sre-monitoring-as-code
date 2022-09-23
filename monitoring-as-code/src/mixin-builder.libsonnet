@@ -25,7 +25,7 @@ local updateConfig(passedConfig) =
   local account = std.extVar('ACCOUNT');
   local macVersion = std.extVar('MAC_VERSION');
 
-  passedConfig + {
+  passedConfig {
     environment: environment,
     account: account,
     macVersion: macVersion,
@@ -48,15 +48,21 @@ local updateSliSpecList(config, passedSliSpecList) =
           journey: journeyKey,
           mac_version: config.macVersion,
         },
-        dashboardSliLabelSelectors: 'service="%(service)s", sli="%(sli)s", journey="%(journey)s",
-          sli_environment=~"$environment"%(productSelector)s' % {
+        dashboardSliLabelSelectors:
+          |||
+            service="%(service)s", sli="%(sli)s", journey="%(journey)s",
+            sli_environment=~"$environment"%(productSelector)s
+          ||| % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
             productSelector: if std.objectHas(config, 'generic') && config.generic then ', sli_product=~"$product"' else '',
           },
-        ruleSliLabelSelectors: 'service="%(service)s", sli="%(sli)s", journey="%(journey)s",
-          sli_environment=~"%(environment)s"' % {
+        ruleSliLabelSelectors:
+          |||
+            service="%(service)s", sli="%(sli)s", journey="%(journey)s",
+            sli_environment=~"%(environment)s"
+          ||| % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
@@ -74,7 +80,6 @@ local updateSliSpecList(config, passedSliSpecList) =
 // @returns The SLI spec object but with updated SLI type
 local updateSliSpec(sliType, sliSpec) =
   sliSpec
-  +
   {
     metricTarget: sliSpec.sliTypes[sliType],
     sliType: sliType,
@@ -215,8 +220,8 @@ local buildMixin(passedConfig, passedSliSpecList) =
   {
     grafanaDashboardFolder: config.product,
     grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
-      dashboardFunctions.createProductDashboard(config, sliList, links) +
-      dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
+                        dashboardFunctions.createProductDashboard(config, sliList, links) +
+                        dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
 
     prometheusRules+: createPrometheusRules(config, sliList),
     prometheusAlerts+: createPrometheusAlerts(config, sliList),

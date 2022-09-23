@@ -61,17 +61,17 @@ local createGraphPanel(sliSpec) =
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.sliDescription,
-    datasource = 'prometheus',
-    description = |||
+    title='%s' % sliSpec.sliDescription,
+    datasource='prometheus',
+    description=|||
       * Sample interval is %(evalInterval)s
       * Selectors are %(selectors)s
     ||| % {
       selectors: std.strReplace(std.join(', ', sliValueLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
       evalInterval: sliSpec.evalInterval,
     },
-    min = 0,
-    fill = 0,
+    min=0,
+    fill=0,
   ).addTarget(
     prometheus.target(
       |||
@@ -82,7 +82,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'avg number of msgs visible in dlq',
+      legendFormat='avg number of msgs visible in dlq',
     )
   ).addTarget(
     prometheus.target(
@@ -96,7 +96,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'avg period where msgs in dlq >= 1',
+      legendFormat='avg period where msgs in dlq >= 1',
     )
   ).addTarget(
     prometheus.target(
@@ -108,7 +108,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'avg age of oldest msg in dlq (secs)',
+      legendFormat='avg age of oldest msg in dlq (secs)',
     )
   ).addSeriesOverride(
     {

@@ -1,4 +1,4 @@
-// Divides the sum of sum over time of target metric samples by the sum of count over time of 
+// Divides the sum of sum over time of target metric samples by the sum of count over time of
 // target metric samples
 
 // Target metrics:
@@ -55,18 +55,18 @@ local createGraphPanel(sliSpec) =
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.sliDescription,
-    datasource = 'prometheus',
-    description = |||
+    title='%s' % sliSpec.sliDescription,
+    datasource='prometheus',
+    description=|||
       * Sample interval is %(evalInterval)s
       * Selectors are %(selectors)s
     ||| % {
       selectors: std.strReplace(std.join(', ', sliValueLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
       evalInterval: sliSpec.evalInterval,
     },
-    min = 0,
-    fill = 0,
-    thresholds = [
+    min=0,
+    fill=0,
+    thresholds=[
       {
         value: sliSpec.metricTarget,
         colorMode: 'critical',
@@ -86,7 +86,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'Average %s' % sliSpec.sliDescription,
+      legendFormat='Average %s' % sliSpec.sliDescription,
     ),
   );
 

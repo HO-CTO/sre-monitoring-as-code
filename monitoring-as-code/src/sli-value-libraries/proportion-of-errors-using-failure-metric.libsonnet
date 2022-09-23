@@ -57,18 +57,18 @@ local createGraphPanel(sliSpec) =
   local targetMetrics = sliValueLibraryFunctions.getTargetMetrics(metricConfig, sliSpec);
 
   graphPanel.new(
-    title = '%s' % sliSpec.sliDescription,
-    datasource = 'prometheus',
-    description = |||
+    title='%s' % sliSpec.sliDescription,
+    datasource='prometheus',
+    description=|||
       * Sample interval is %(evalInterval)s
       * Selectors are %(selectors)s
     ||| % {
       selectors: std.strReplace(std.join(', ', sliValueLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
       evalInterval: sliSpec.evalInterval,
     },
-    min = 0,
-    fill = 0,
-    formatY2 = 'percentunit',
+    min=0,
+    fill=0,
+    formatY2='percentunit',
   ).addTarget(
     prometheus.target(
       |||
@@ -78,7 +78,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'total per second',
+      legendFormat='total per second',
     ),
   ).addTarget(
     prometheus.target(
@@ -89,7 +89,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'errors per second',
+      legendFormat='errors per second',
     ),
   ).addTarget(
     prometheus.target(
@@ -103,7 +103,7 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat = 'errors rate',
+      legendFormat='errors rate',
     ),
   ).addSeriesOverride(
     {

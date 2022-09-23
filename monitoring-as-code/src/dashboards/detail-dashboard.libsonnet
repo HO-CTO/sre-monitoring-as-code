@@ -44,10 +44,11 @@ local getDetailDashboardConfig(journeyKey, sliSpecList) =
         metricType
         for metricType in sliSpecMetricTypes
         if 0 < std.length(std.find(
-          configItem, macConfig.metricTypes[metricType].detailDashboardConfig[configField]))
+          configItem, macConfig.metricTypes[metricType].detailDashboardConfig[configField]
+        ))
       ], function(metricTypeConfig) std.toString(metricTypeConfig))
       for configItem in getConfigItems(configField, sliSpecMetricTypes)
-    },
+    }
     for configField in ['standardTemplates', 'elements']
   };
 
@@ -79,9 +80,9 @@ local getMetrics(detailDashboardConfig) =
               macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics[targetMetricField]]
             for metricType in detailDashboardConfig[configField][configItem]
             if std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig, metricAttributes[direction]) &&
-              std.objectHas(macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics, targetMetricField) &&
-              std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig[metricAttributes[direction]], 
-                macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics[targetMetricField])
+               std.objectHas(macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics, targetMetricField) &&
+               std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig[metricAttributes[direction]],
+                             macConfig.metricTypes[metricType].detailDashboardConfig.targetMetrics[targetMetricField])
           ])
           for targetMetricField in getTargetMetricFields(detailDashboardConfig[configField][configItem])
         }
@@ -118,7 +119,7 @@ local getTargets(target, direction, detailDashboardConfig) =
             macConfig.metricTypes[metricType].metricTypeConfig[target][targetField]
             for metricType in detailDashboardConfig[configField][configItem]
             if std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig, target) &&
-              std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig[target], targetField)
+               std.objectHas(macConfig.metricTypes[metricType].metricTypeConfig[target], targetField)
           ])
           for targetField in getTargetFields(target, detailDashboardConfig[configField][configItem])
         }
@@ -147,13 +148,13 @@ local checkDirectionValid(direction, configField, configItem, metrics, selectorL
 // @returns List of products used by SLIs
 local getProductList(configItemMetricTypes, journeyKey, config, sliSpecList) =
   if std.objectHas(config, 'generic') && config.generic then '$product' else
-  std.join('|', std.set([
-    sliSpec.selectors.product
-    for sliSpec in std.objectValues(sliSpecList[journeyKey])
-    if std.objectHas(sliSpec.selectors, 'product')
-    for metricType in configItemMetricTypes
-    if metricType == sliSpec.metricType
-  ]));
+    std.join('|', std.set([
+      sliSpec.selectors.product
+      for sliSpec in std.objectValues(sliSpecList[journeyKey])
+      if std.objectHas(sliSpec.selectors, 'product')
+      for metricType in configItemMetricTypes
+      if metricType == sliSpec.metricType
+    ]));
 
 // Creates Grafana selectors for templates and dashboards
 // @param metrics Object containing metrics
@@ -170,14 +171,16 @@ local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelec
     [direction]: {
       [configField]: {
         [configItem]: {
-          environment: std.join(', ', std.map( 
+          environment: std.join(', ', std.map(
             function(selectorLabel) '%s=~"$environment|"' % selectorLabel,
-            selectorLabels[direction][configField][configItem]['environment']
+            selectorLabels[direction][configField][configItem].environment
           )),
-          product: std.join(', ', std.map( 
-            function(selectorLabel) '%s=~"%s|"' % [selectorLabel, 
-              getProductList(detailDashboardConfig[configField][configItem], journeyKey, config, sliSpecList)],
-            selectorLabels[direction][configField][configItem]['product']
+          product: std.join(', ', std.map(
+            function(selectorLabel) '%s=~"%s|"' % [
+              selectorLabel,
+              getProductList(detailDashboardConfig[configField][configItem], journeyKey, config, sliSpecList),
+            ],
+            selectorLabels[direction][configField][configItem].product
           )),
         }
         for configItem in std.objectFields(detailDashboardConfig[configField])
@@ -193,7 +196,8 @@ local createSelectors(metrics, selectorLabels, customSelectorLabels, customSelec
           ))
           for selectorLabelField in std.objectFields(detailDashboardConfig.standardTemplates)
         } + macConfig.detailDashboardElements[element].createCustomSelectors(
-          direction, customSelectorLabels[direction].elements[element], customSelectorValues[direction].elements[element])
+          direction, customSelectorLabels[direction].elements[element], customSelectorValues[direction].elements[element]
+        )
         for element in std.objectFields(detailDashboardConfig.elements)
         if checkDirectionValid(direction, 'elements', element, metrics, selectorLabels)
       },
@@ -213,9 +217,9 @@ local createTemplates(metrics, selectorLabels, customSelectorLabels, customSelec
   std.set(std.flattenArrays([
     [
       template.new(
-        name = '%s_%s' % [direction, selectorLabel],
-        datasource = 'prometheus',
-        query = 'label_values({__name__=~"%(metrics)s", %(environmentSelectors)s, %(productSelectors)s}, %(selectorLabel)s)' % {
+        name='%s_%s' % [direction, selectorLabel],
+        datasource='prometheus',
+        query='label_values({__name__=~"%(metrics)s", %(environmentSelectors)s, %(productSelectors)s}, %(selectorLabel)s)' % {
           metrics: std.join('|', std.set(std.flattenArrays(std.map(
             function(metricField) metrics[direction].standardTemplates[selectorLabelField][metricField],
             std.objectFields(metrics[direction].standardTemplates[selectorLabelField])
@@ -224,18 +228,22 @@ local createTemplates(metrics, selectorLabels, customSelectorLabels, customSelec
           productSelectors: selectors[direction].standardTemplates[selectorLabelField].product,
           selectorLabel: selectorLabel,
         },
-        includeAll = true,
-        multi = true,
-        refresh = 'time',
-        label = stringFormattingFunctions.capitaliseFirstLetters('%s %s' % [direction, std.strReplace(selectorLabel, '_', ' ')]),
+        includeAll=true,
+        multi=true,
+        refresh='time',
+        label=stringFormattingFunctions.capitaliseFirstLetters('%s %s' % [direction, std.strReplace(selectorLabel, '_', ' ')]),
       )
       for selectorLabelField in std.objectFields(detailDashboardConfig.standardTemplates)
       if checkDirectionValid(direction, 'standardTemplates', selectorLabelField, metrics, selectorLabels)
       for selectorLabel in selectorLabels[direction].standardTemplates[selectorLabelField][selectorLabelField]
     ] + std.flattenArrays([
       macConfig.detailDashboardElements[element].createCustomTemplates(
-        direction, metrics[direction].elements[element], customSelectorLabels[direction].elements[element],
-        customSelectorValues[direction].elements[element], selectors[direction].elements[element])
+        direction,
+        metrics[direction].elements[element],
+        customSelectorLabels[direction].elements[element],
+        customSelectorValues[direction].elements[element],
+        selectors[direction].elements[element]
+      )
       for element in std.objectFields(detailDashboardConfig.elements)
       if checkDirectionValid(direction, 'elements', element, metrics, selectorLabels)
     ])
@@ -253,8 +261,13 @@ local createTemplates(metrics, selectorLabels, customSelectorLabels, customSelec
 local createPanels(metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig) =
   std.flattenArrays([
     macConfig.detailDashboardElements[element].createPanels(
-      direction, metrics[direction].elements[element], selectorLabels[direction].elements[element],
-      customSelectorLabels[direction].elements[element], customSelectorValues[direction].elements[element], selectors[direction].elements[element])
+      direction,
+      metrics[direction].elements[element],
+      selectorLabels[direction].elements[element],
+      customSelectorLabels[direction].elements[element],
+      customSelectorValues[direction].elements[element],
+      selectors[direction].elements[element]
+    )
     for direction in ['inbound', 'outbound']
     for element in std.objectFields(detailDashboardConfig.elements)
     if checkDirectionValid(direction, 'elements', element, metrics, selectorLabels)
@@ -272,38 +285,41 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
   local metrics = getMetrics(detailDashboardConfig);
 
   local selectorLabels = getTargets('selectorLabels', 'inbound', detailDashboardConfig) +
-    getTargets('outboundSelectorLabels', 'outbound', detailDashboardConfig);
+                         getTargets('outboundSelectorLabels', 'outbound', detailDashboardConfig);
 
   local customSelectorLabels = getTargets('customSelectorLabels', 'inbound', detailDashboardConfig) +
-    getTargets('customSelectorLabels', 'outbound', detailDashboardConfig);
+                               getTargets('customSelectorLabels', 'outbound', detailDashboardConfig);
 
   local customSelectorValues = getTargets('customSelectors', 'inbound', detailDashboardConfig) +
-    getTargets('customSelectors', 'outbound', detailDashboardConfig);
+                               getTargets('customSelectors', 'outbound', detailDashboardConfig);
 
   local selectors = createSelectors(
-    metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, config, sliSpecList);
+    metrics, selectorLabels, customSelectorLabels, customSelectorValues, detailDashboardConfig, journeyKey, config, sliSpecList
+  );
 
   dashboard.new(
-    title = '%(product)s-%(journey)s-detail-view' % { 
+    title='%(product)s-%(journey)s-detail-view' % {
       product: config.product,
       journey: journeyKey,
     },
-    uid = std.join('-', [config.product, journeyKey, 'detail-view']),
-    tags = [config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'detail-view'],
-    schemaVersion = 18,
-    editable = true,
-    time_from = 'now-3h',
-    refresh = '5m',
+    uid=std.join('-', [config.product, journeyKey, 'detail-view']),
+    tags=[config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'detail-view'],
+    schemaVersion=18,
+    editable=true,
+    time_from='now-3h',
+    refresh='5m',
   ).addLinks(
-    dashboardLinks = links
+    dashboardLinks=links
   ).addTemplates(
     config.templates
   ).addTemplates(
     std.prune(createTemplates(
-      metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))
+      metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig
+    ))
   ).addPanels(
     std.prune(createPanels(
-      metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig))
+      metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig
+    ))
   );
 
 // Creates the list of detail dashboards for a mixin file

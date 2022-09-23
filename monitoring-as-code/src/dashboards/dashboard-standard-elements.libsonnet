@@ -48,14 +48,14 @@ local createRowTitles(sliKey, sliSpec) =
 // @returns The availability panel object
 local createAvailabilityPanel(sloTargetLegend, sliSpec) =
   statPanel.new(
-    title = ' %(sliType)s (%(period)s)' % { sliType: cFLUtil.capitaliseFirstLetters(sliSpec.sliType), period: sliSpec.period },
-    datasource = 'prometheus',
-    colorMode = 'background',
-    reducerFunction = 'lastNotNull',
-    unit = 'percentunit',
-    justifyMode = 'center',
-    noValue = 'No SLO Data Available',
-    graphMode = 'none',
+    title=' %(sliType)s (%(period)s)' % { sliType: cFLUtil.capitaliseFirstLetters(sliSpec.sliType), period: sliSpec.period },
+    datasource='prometheus',
+    colorMode='background',
+    reducerFunction='lastNotNull',
+    unit='percentunit',
+    justifyMode='center',
+    noValue='No SLO Data Available',
+    graphMode='none',
   ).addTarget(
     prometheus.target(
       |||
@@ -74,8 +74,8 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
       },
       // to avoid displaying floating point numbers with a long tail of decimals, .1f will round it
       // to a single decimal
-      legendFormat = 'SLO Target %(%s).1f %%' % sloTargetLegend,
-      instant = true,
+      legendFormat='SLO Target %(%s).1f %%' % sloTargetLegend,
+      instant=true,
     )
   ).addThresholds(
     [
@@ -85,22 +85,22 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
-// Creates the target expresion for an sli 
+// Creates the target expresion for an sli
 // @param sli The SLI that we are creating the expresion for
 // @returns The string expresion for the target
-local getExprFromSli(sli, periodSli) = 
-|||
-  sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]) )
-  / 
-  sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
-||| % {
-  sliLabelSelectors: sli.dashboardSliLabelSelectors,
-  sliType: sli.sliType,
-  period: periodSli,
-  evalInterval: sli.evalInterval,
-  target: sli.metricTarget,
-  comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
-};
+local getExprFromSli(sli, periodSli) =
+  |||
+    sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]) )
+    / 
+    sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
+  ||| % {
+    sliLabelSelectors: sli.dashboardSliLabelSelectors,
+    sliType: sli.sliType,
+    period: periodSli,
+    evalInterval: sli.evalInterval,
+    target: sli.metricTarget,
+    comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
+  };
 
 // Creates the averaged panel for SLI performance
 // @param sloTargetLegend The SLO target to be used as the panel legend
@@ -110,20 +110,21 @@ local getExprFromSli(sli, periodSli) =
 
 local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
   statPanel.new(
-    title = 'SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
-    datasource = 'prometheus',
-    colorMode = 'background',
-    reducerFunction = 'lastNotNull',
-    unit = 'percentunit',
-    justifyMode = 'center',
-    noValue = 'No SLO Data Available',
-    graphMode = 'none',
+    title='SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
+    datasource='prometheus',
+    colorMode='background',
+    reducerFunction='lastNotNull',
+    unit='percentunit',
+    justifyMode='center',
+    noValue='No SLO Data Available',
+    graphMode='none',
   ).addTarget(
-    prometheus.target(expr = fullExpr,
+    prometheus.target(
+      expr=fullExpr,
       // to avoid displaying floating point numbers with a long tail of decimals, .1f will round it
       // to a single decimal
-      legendFormat = 'SLO Target %(%s).1f %%' % sloTargetLegend,
-      instant = true,
+      legendFormat='SLO Target %(%s).1f %%' % sloTargetLegend,
+      instant=true,
     )
   ).addThresholds(
     [
@@ -139,13 +140,13 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
 local createErrorBudgetPanel(sliSpec) =
   graphPanel.new(
     'Error budget remaining over previous %(period)s' % { period: sliSpec.period },
-    datasource = 'prometheus',
-    format = 'percentunit',
-    max = 1,
-    decimals = 2,
-    linewidth = 3,
-    time_from = '$error_budget_span',
-    thresholds = [
+    datasource='prometheus',
+    format='percentunit',
+    max=1,
+    decimals=2,
+    linewidth=3,
+    time_from='$error_budget_span',
+    thresholds=[
       { value: 0, op: 'lt', colorMode: 'critical', fill: false, line: true },
       { value: 0.5, op: 'lt', colorMode: 'warning', fill: false, line: true },
     ],
@@ -168,7 +169,7 @@ local createErrorBudgetPanel(sliSpec) =
         metricTarget: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
       },
-      legendFormat = 'Remaining Error Budget',
+      legendFormat='Remaining Error Budget',
     )
   );
 
@@ -178,21 +179,21 @@ local createErrorBudgetPanel(sliSpec) =
 // @returns The SLO status panel object
 local createSloStatusPanel(sliDescription, sliSpec) =
   graphPanel.new(
-    title = null,
-    description = sliDescription,
-    datasource = 'prometheus',
-    lines = true,
-    staircase = true,
-    fill = 10,
-    linewidth = 0,
-    stack = true,
-    legend_show = false,
-    show_xaxis = false,
+    title=null,
+    description=sliDescription,
+    datasource='prometheus',
+    lines=true,
+    staircase=true,
+    fill=10,
+    linewidth=0,
+    stack=true,
+    legend_show=false,
+    show_xaxis=false,
   ).resetYaxes(
   ).addYaxis(
-    show = false, min = 0, max = 1
+    show=false, min=0, max=1
   ).addYaxis(
-    show = false, min = 0, max = 1
+    show=false, min=0, max=1
   ).addTarget(
     // Proportion of intervals SLO has pased
     prometheus.target(
@@ -207,7 +208,7 @@ local createSloStatusPanel(sliDescription, sliSpec) =
         target: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
       },
-      legendFormat = 'SLO OK',
+      legendFormat='SLO OK',
     )
   ).addTarget(
     // Proportion of intervals SLO has failed
@@ -225,7 +226,7 @@ local createSloStatusPanel(sliDescription, sliSpec) =
         target: sliSpec.metricTarget,
         comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
       },
-      legendFormat = 'SLO Fail',
+      legendFormat='SLO Fail',
     )
   ).addSeriesOverride(
     {
@@ -279,25 +280,25 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
 local createServiceTemplates(config) =
   [
     template.new(
-      name = 'environment',
-      datasource = 'prometheus',
-      query = 'label_values(sli_value{service="%s"}, sli_environment)' % config.product,
-      refresh = 'time',
-      includeAll = true,
-      multi = true,
-      label = 'Environment',
+      name='environment',
+      datasource='prometheus',
+      query='label_values(sli_value{service="%s"}, sli_environment)' % config.product,
+      refresh='time',
+      includeAll=true,
+      multi=true,
+      label='Environment',
     ),
   ]
   +
   if std.objectHas(config, 'generic') && config.generic then [
     template.new(
-      name = 'product',
-      datasource = 'prometheus',
-      query = 'label_values(sli_value{service="%s", sli_environment=~"$environment"}, sli_product)' % config.product,
-      refresh = 'time',
-      includeAll = true,
-      multi = true,
-      label = 'Product',
+      name='product',
+      datasource='prometheus',
+      query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, sli_product)' % config.product,
+      refresh='time',
+      includeAll=true,
+      multi=true,
+      label='Product',
     ),
   ] else [];
 
