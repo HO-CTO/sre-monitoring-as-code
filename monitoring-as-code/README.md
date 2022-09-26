@@ -31,7 +31,7 @@ See GitHub Releases page for most recent tagged version and pull the Docker imag
 
 ```
 # Clone the repository to your local machine
-git clone ssh://git@bitbucket.bics-collaboration.homeoffice.gov.uk/sast/monitoring-as-code.git
+git clone git@github.com:HO-CTO/sre-monitoring-as-code.git
 
 # Navigate to repository root directory
 cd monitoring-as-code
