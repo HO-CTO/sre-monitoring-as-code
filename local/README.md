@@ -13,10 +13,10 @@ L2 Transformer local implementation of Prometheus, Thanos, Grafana, Alertmanager
 
 ```
 # Clone the repository to your local machine
-git clone ssh://git@gitlab.digital.homeoffice.gov.uk:2222/shared-tooling/monitoring/monitoring-local.git
+git clone git@github.com:HO-CTO/sre-monitoring-as-code.git
 
 # jump to cloned root directory
-cd monitoring-local
+cd local
 ```
 
 ## Useage
