@@ -405,15 +405,13 @@
       },
       iops: {
         library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
-#        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageIops',
         },
       },
       throughput: {
-#        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
-        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageThroughput',
