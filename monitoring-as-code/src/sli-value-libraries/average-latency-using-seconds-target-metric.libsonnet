@@ -32,8 +32,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-#            sum by(%(selectorLabels)s) (sum_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
-             sum by(%(selectorLabels)s) (avg_over_time(%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
             sum by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
@@ -83,8 +82,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-#        sum(sum_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
-         sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
         sum(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
