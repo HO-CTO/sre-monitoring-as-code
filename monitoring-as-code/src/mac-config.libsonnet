@@ -1,3 +1,7 @@
+local defaultMetricTypes = import 'metric-types.libsonnet';
+
+local customMetricTypes = import '../mixin-defs/custom-metric-types.libsonnet';
+
 // This file is for storing the config of the MaC framework
 
 // Config items
@@ -6,6 +10,7 @@ local detailDashboardElements = {
   httpRequestsAvailability: (import 'dashboards/detail-dashboard-elements/http-requests-availability.libsonnet'),
   httpRequestsLatency: (import 'dashboards/detail-dashboard-elements/http-requests-latency.libsonnet'),
   cloudwatchSqs: (import 'dashboards/detail-dashboard-elements/cloudwatch-sqs.libsonnet'),
+  customMetric: (import 'dashboards/detail-dashboard-elements/custom-metric.libsonnet'),
 };
 
 // The list of error budget burn rate windows used for alerts
@@ -43,7 +48,7 @@ local alertPayloadTemplate = {
 
 // File exports
 {
-  metricTypes: (import 'metric-types.libsonnet'),
+  metricTypes: defaultMetricTypes + customMetricTypes,
   detailDashboardElements: detailDashboardElements,
   burnRateWindowList: burnRateWindowList,
   burnRateRuleNameTemplate: burnRateRuleNameTemplate,
