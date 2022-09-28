@@ -396,7 +396,8 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+#        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',
@@ -410,7 +411,8 @@
         },
       },
       throughput: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+#        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageThroughput',
