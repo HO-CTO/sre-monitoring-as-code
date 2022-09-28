@@ -405,6 +405,7 @@
       },
       iops: {
         library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+#        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageIops',
@@ -439,7 +440,7 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',
