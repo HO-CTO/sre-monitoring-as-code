@@ -361,6 +361,14 @@ local createSummaryDashboard(config) =
               title: 'summary-view',
               type: 'dashboards',
             },
+            {
+              asDropdown: false,
+              icon: 'dashboard',
+              includeVars: true,
+              tags: ['product-view'],
+              title: 'product-view',
+              type: 'dashboards',
+            },
           ]
         ).addTemplate(
           template.new(
