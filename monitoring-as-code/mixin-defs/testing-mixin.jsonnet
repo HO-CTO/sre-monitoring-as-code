@@ -187,6 +187,7 @@ local sliSpecList = {
       period: '7d',
       metricType: 'aws_rds_read',
       evalInterval: '5m',
+      latencyTarget: 0.001,
       selectors: {
         product: 'test',
       },
@@ -203,6 +204,7 @@ local sliSpecList = {
       period: '7d',
       metricType: 'aws_rds_write',
       evalInterval: '5m',
+      latencyTarget: 0.001,
       selectors: {
         product: 'test',
       },
