@@ -362,9 +362,9 @@ local createSummaryDashboard(config) =
               type: 'dashboards',
             },
             {
-              asDropdown: false,
+              asDropdown: true,
               icon: 'dashboard',
-              includeVars: true,
+              includeVars: false,
               tags: ['product-view'],
               title: 'product-view',
               type: 'dashboards',
