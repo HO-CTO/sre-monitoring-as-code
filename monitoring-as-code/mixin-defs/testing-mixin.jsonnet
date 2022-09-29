@@ -12,7 +12,7 @@ local config = {
 };
 
 local sliSpecList = {
-  testing: {
+  journey1: {
     SLI01: {
       title: 'test',
       sliDescription: 'test',
