@@ -82,6 +82,18 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
+        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+      ||| % {
+        targetMetric: targetMetrics.target,
+        latencyTarget: sliSpec.latencyTarget,
+        selectors: std.join(',', dashboardSelectors),
+        evalInterval: sliSpec.evalInterval,
+      },
+      legendFormat='avg period of latancy',
+    ),
+  ).addTarget(
+    prometheus.target(
+      |||
         sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
         sum(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
@@ -92,7 +104,17 @@ local createGraphPanel(sliSpec) =
         evalInterval: sliSpec.evalInterval,
       },
       legendFormat='avg period where latancy > %s seconds' % sliSpec.latencyTarget,
-    ),
+    )
+  ).addSeriesOverride(
+    {
+      alias: '/avg period where latancy > %s seconds/' % sliSpec.latencyTarget,
+      color: 'red',
+    },
+  ).addSeriesOverride(
+    {
+      alias: '/avg period of latancy/',
+      color: 'green',
+    },
   );
 
 // File exports
