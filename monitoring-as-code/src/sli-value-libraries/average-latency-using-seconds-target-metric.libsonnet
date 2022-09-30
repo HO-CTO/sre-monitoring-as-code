@@ -1,5 +1,5 @@
-// Divides the sum of if target metric samples above latency target by the sum of count over time of
-// target metric samples taken from avaerage-using-single-metric
+// Divides the count of target metric samples above latency target by the overall count of samples
+// target metric samples taken from average-using-single-metric
 
 // Target metrics:
 // target - Metric to get the average value of over evaluation interval
