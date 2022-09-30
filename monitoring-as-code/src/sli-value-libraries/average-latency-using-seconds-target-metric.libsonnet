@@ -73,7 +73,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
       ||| % {
         targetMetric: targetMetrics.target,
         latencyTarget: sliSpec.latencyTarget,
