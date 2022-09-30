@@ -95,7 +95,7 @@ local updateSliSpec(sliType, sliSpec) =
 // @returns The SLI with standard elements
 local createSli(sliType, config, passedSliSpec, sliKey, journeyKey) =
   if journeyKey == config.product then
-    error 'Invalid journey name [%s]. Journey name cannot match Product name [%s].' % [journeyKey, config.product]
+    error 'Invalid Journey name [%s]. Journey name cannot match Product name [%s].' % [journeyKey, config.product]
   else
     local sliSpec = updateSliSpec(sliType, passedSliSpec);
 
