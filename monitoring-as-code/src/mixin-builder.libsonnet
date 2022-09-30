@@ -94,17 +94,20 @@ local updateSliSpec(sliType, sliSpec) =
 // @param journeyKey The key of the journey containing the SLI having rules generated
 // @returns The SLI with standard elements
 local createSli(sliType, config, passedSliSpec, sliKey, journeyKey) =
-  local sliSpec = updateSliSpec(sliType, passedSliSpec);
+  if journeyKey == 'testing' || journeyKey == 'test' then
+    error 'Invalid journey key: %s' % journeyKey
+  else
+    local sliSpec = updateSliSpec(sliType, passedSliSpec);
 
-  if std.objectHas(macConfig.metricTypes, sliSpec.metricType) then
-    if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliType) then
-      sliElementFunctions.createRecordingRules(sliSpec, config) +
-      sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
-      dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +
-      alertFunctions.createBurnRateRules(sliSpec) +
-      alertFunctions.createBurnRateAlerts(config, sliSpec, sliKey, journeyKey)
-    else error 'Metric type %s does not have SLI type %s' % [sliSpec.metricType, sliType]
-  else error 'Undefined metric type %s' % sliSpec.metricType;
+    if std.objectHas(macConfig.metricTypes, sliSpec.metricType) then
+      if std.objectHas(macConfig.metricTypes[sliSpec.metricType].sliTypesConfig, sliType) then
+        sliElementFunctions.createRecordingRules(sliSpec, config) +
+        sliElementFunctions.createSliStandardElements(sliKey, sliSpec) +
+        dashboardFunctions.createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) +
+        alertFunctions.createBurnRateRules(sliSpec) +
+        alertFunctions.createBurnRateAlerts(config, sliSpec, sliKey, journeyKey)
+      else error 'Metric type %s does not have SLI type %s' % [sliSpec.metricType, sliType]
+    else error 'Undefined metric type %s' % sliSpec.metricType;
 
 // Creates a list of all the SLIs in a service with their standard dashboard elements, unique
 // dashboard elements, recording rules, alerting rules and alerts
