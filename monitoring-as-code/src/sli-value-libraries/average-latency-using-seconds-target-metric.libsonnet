@@ -34,7 +34,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
           (
             sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
-            sum by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
+            count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
@@ -80,14 +80,14 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period of latency',
+      legendFormat='avg latency',
     ),
   ).addTarget(
     prometheus.target(
       |||
         sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
-        sum(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
+        count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
         targetMetric: targetMetrics.target,
         latencyTarget: sliSpec.latencyTarget,
@@ -103,7 +103,7 @@ local createGraphPanel(sliSpec) =
     },
   ).addSeriesOverride(
     {
-      alias: '/avg period of latancy/',
+      alias: '/avg latancy/',
       color: 'green',
     },
   );
