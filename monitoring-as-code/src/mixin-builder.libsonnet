@@ -94,8 +94,8 @@ local updateSliSpec(sliType, sliSpec) =
 // @param journeyKey The key of the journey containing the SLI having rules generated
 // @returns The SLI with standard elements
 local createSli(sliType, config, passedSliSpec, sliKey, journeyKey) =
-  if journeyKey == 'testing' || journeyKey == 'test' then
-    error 'Invalid journey key: %s' % journeyKey
+  if journeyKey == config.product then
+    error 'Invalid journey name [%s]. Journey name cannot match Product name [%s].' % [journeyKey, config.product]
   else
     local sliSpec = updateSliSpec(sliType, passedSliSpec);
 
