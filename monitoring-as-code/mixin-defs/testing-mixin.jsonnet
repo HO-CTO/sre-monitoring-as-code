@@ -182,11 +182,12 @@ local sliSpecList = {
       },
     },
     SLI12: {
-      title: 'test',
+      title: 'test - aws_rds_read',
       sliDescription: 'test',
       period: '7d',
       metricType: 'aws_rds_read',
       evalInterval: '5m',
+      latencyTarget: 0.001,
       selectors: {
         product: 'test',
       },
@@ -198,11 +199,12 @@ local sliSpecList = {
       },
     },
     SLI13: {
-      title: 'test',
+      title: 'test - aws_rds_write',
       sliDescription: 'test',
       period: '7d',
       metricType: 'aws_rds_write',
       evalInterval: '5m',
+      latencyTarget: 0.001,
       selectors: {
         product: 'test',
       },
