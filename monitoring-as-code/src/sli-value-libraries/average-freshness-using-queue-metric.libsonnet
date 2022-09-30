@@ -37,7 +37,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
           (
             sum by(%(selectorLabels)s) (avg_over_time((%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
-            sum by(%(selectorLabels)s) (count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]))
+            count by(%(selectorLabels)s) (count_over_time(%(oldestMessageMetric)s{%(selectors)s, %(queueSelector)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
