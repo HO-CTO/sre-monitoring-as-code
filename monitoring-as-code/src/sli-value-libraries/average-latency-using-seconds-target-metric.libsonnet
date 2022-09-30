@@ -70,15 +70,6 @@ local createGraphPanel(sliSpec) =
     },
     min=0,
     fill=0,
-    thresholds=[
-      {
-        value: sliSpec.metricTarget,
-        colorMode: 'critical',
-        op: 'gt',
-        line: 'true',
-        fill: 'true',
-      },
-    ],
   ).addTarget(
     prometheus.target(
       |||
