@@ -59,7 +59,8 @@ local createPanels(direction, metrics, selectorLabels, customSelectorLabels, cus
                             selectors: std.join(', ', std.objectValues(selectors)),
                           },
                           legendFormat='{{%s}}' % std.join(', ', []))
-      ) + { gridPos: { w: if std.objectHas(selectorLabels, 'resource') then 12 else 24, h: 10 } }],
+      ) + { gridPos: { w: if std.objectHas(selectorLabels, 'resource') then 12 else 24, h: 10 } },
+    ],
   ]);
 
 // File exports
