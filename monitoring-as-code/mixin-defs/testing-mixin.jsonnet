@@ -221,6 +221,7 @@ local sliSpecList = {
       period: '7d',
       metricType: 'aws_es',
       evalInterval: '5m',
+      latencyTarget: 0.001,
       selectors: {
         product: 'test',
       },
