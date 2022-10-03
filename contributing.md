@@ -311,7 +311,27 @@ type. If this is the case add the detail dashboard elements keyword to the eleme
 target metrics item must be kept up to date with all of the target metric keywords present and
 mapped to a corresponding metric keyword from the metrics item in metricTypeConfig.
 
-## Adding a new metric type
+## Adding custom metrics types
+
+The MaC framework may be extended with custom metric types without having to resort to modifying the
+`metric-types.libsonnet` file.
+
+In the `mixin-defs` directory, there is a `custom-metric-types.libsonnet` file that can be modified to
+include any additional custom metric type defintions that may be applicable to your service.
+
+A template entry has been included for convenience, however this template will need to be modified
+to include the `metricTypeConfig` fields and any selectors that may be necessary.
+
+Furthermore, the `sliTypesConfig` needs to be defined for the custom metric type before it may be used
+in the mixin file.
+
+When adding custom metric types it's important to consider how the metric will feed into an SLI and SLO target and which of the built-in SLI value libraries will be most appropriate for you needs. If none of the existing
+SLI value libraries meet your needs it may be necessary to create your own.
+
+Please refer to the [relevant sections of this documentation](https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/contributing.md#metric-typeslibsonnet) for more information about specifying these
+configuration blocks.
+
+In order for custom metrics to be displayed appropriately on the detail dashboard, it may be necessry to select appropriate dashboard elements to display. There is a `customMetric` set of elements defined in `mac-config.libsonnet` which provides a basic view of custom metric types.
 
 This section will only cover the bare minimum when creating a new metric type, to add more detailed
 config refer to the previous section **Updating a metric type that already exists**.
