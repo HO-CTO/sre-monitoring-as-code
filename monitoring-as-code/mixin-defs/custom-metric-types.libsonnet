@@ -1,32 +1,29 @@
+// See contributing.md for further details.
 {
-  simple_counter_total: {
+  template: {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'namespace',
-        product: 'job',
-        errorStatus: 'status',
+        environment: '',
+        product: '',
       },
       metrics: {
-        counter: 'simple_counter_total',
+
       },
     },
     sliTypesConfig: {
-      success_transactions: {
-        library: (import '../src/sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
-        description: 'The average of a single metric %(sliDescription)s should be %(metric_target_percent)0.1f%%',
+      sliType: {
+        library: '',
+        description: '',
         targetMetrics: {
-          target: 'counter',
+
         },
       },
     },
-    outboundMetrics: {
-        counter: 'simple_counter_total',
-    },
     detailDashboardConfig: {
-      standardTemplates: ['environment', 'product'],
-      elements: ["customMetric"],
+      standardTemplates: [],
+      elements: [],
       targetMetrics: {
-        target: 'counter'
+
       },
     },
   }

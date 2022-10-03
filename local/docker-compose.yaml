@@ -7,13 +7,6 @@ volumes:
     minio_data: {}
 
 services:
-    custom-java-app:
-        image: javademo/sre-demo-java-app:latest
-        user: root
-        ports:
-            - 8081:8080
-        restart: on-failure:5
-
     prometheus-1:
         image: prom/prometheus:v2.21.0
         volumes:
