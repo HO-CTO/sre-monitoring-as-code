@@ -1,12 +1,14 @@
 // MaC imports
 local mixinFunctions = import '../src/lib/mixin-functions.libsonnet';
 
+local unused = 1;
+
 // Define product name and technow details
 local config = {
   product: 'generic',
   applicationServiceName: '',
   servicenowAssignmentGroup: '',
-  // Alerts set to test only - remove/adjust once ready for alerts for production
+  // Alerts set to test only - remove/adjust onsce ready for alerts for production
   maxAlertSeverity: 'P1',
   configurationItem: '',
   alertingSlackChannel: '',
