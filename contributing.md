@@ -500,6 +500,47 @@ This **will not** work since test is never used/evaluated.
 }
 ```
 
+### Developer Tooling
+
+#### Git pre-commit hooks
+
+Formatting and linting of Jsonnet files may be performed automatically when commiting changes to the Git repository with the supplied `pre-commit` hooks.
+
+The `pre-commit` hook lives in the [.githooks](./githooks) directory. The hooks may be activated by running the following command.
+
+```
+git config core.hooksPath .githooks
+```
+
+The formatter and linter will only run if git detects that Jsonnet files have been changed in the commit.
+
+Any linting errors will prevent the commit from succeeding.
+
+For work in progress commits, it is possible to bypass the pre-commit hook by passing the `--no-verify` flag to the git command.
+
+#### Editor support
+
+For Visual Studio Code we have found a useful extension which will automatically format and lint the code on file save.
+
+The [Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave) extension may be installed and the following configuration block added into the Visual Studio Code settings in order to automatically run the formatter and linter tools on file save.
+
+```json
+"emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.*onnet$",
+                "cmd": "echo 'jsonnetfmt -n 2 --max-blank-lines 2 --string-style s --comment-style s --no-sort-imports -i /app/MaC/${relativeFile}' | docker run -i -v '${workspaceFolder}:/app/MaC' ghcr.io/ho-cto/sre-fmt-lint:latest /bin/sh"
+            },
+            {
+                "match": "\\.*onnet$",
+                "cmd": "echo 'jsonnet-lint -J vendor /app/MaC/${relativeFile}' | docker run -i -v '${workspaceFolder}:/app/MaC' ghcr.io/ho-cto/sre-fmt-lint:latest /bin/sh"
+            }
+        ]
+    }
+```
+
+The output of these commands can be seen in the Output view and selecting the Run On Save terminal window.
+
 # Testing
 
 TBC
