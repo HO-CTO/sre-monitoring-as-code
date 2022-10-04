@@ -474,7 +474,7 @@
         averageLatency: 'aws_es_search_latency_average',
         sum4xx: 'aws_es_4xx_sum',
         sum5xx: 'aws_es_5xx_sum',
-        requestsSum: 'aws_es_open_search_requests_sum',
+        requestsSum: 'aws_es_elasticsearch_requests_sum',
       },
     },
     sliTypesConfig: {
@@ -488,7 +488,7 @@
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',

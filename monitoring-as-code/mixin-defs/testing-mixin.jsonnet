@@ -16,7 +16,7 @@ local sliSpecList = {
     SLI01: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'aws_sqs',
       evalInterval: '5m',
       latencyTarget: 100,
@@ -32,7 +32,7 @@ local sliSpecList = {
     SLI02: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'http_server_requests_seconds',
       evalInterval: '5m',
       latencyPercentile: 0.1,
@@ -49,7 +49,7 @@ local sliSpecList = {
     SLI03: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'grafana_http_request_duration_seconds',
       evalInterval: '5m',
       selectors: {
@@ -64,7 +64,7 @@ local sliSpecList = {
     SLI04: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'http_requests_total',
       evalInterval: '5m',
       selectors: {
@@ -79,7 +79,7 @@ local sliSpecList = {
     SLI05: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'http_request_duration_seconds',
       evalInterval: '5m',
       latencyPercentile: 0.1,
@@ -94,7 +94,7 @@ local sliSpecList = {
     SLI06: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'nginx_ingress_controller_requests',
       evalInterval: '5m',
       selectors: {
@@ -109,7 +109,7 @@ local sliSpecList = {
     SLI07: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
       evalInterval: '5m',
       latencyPercentile: 0.1,
@@ -126,7 +126,7 @@ local sliSpecList = {
     SLI08: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'aws_alb',
       latencyPercentile: 0.9,
       evalInterval: '5m',
@@ -142,7 +142,7 @@ local sliSpecList = {
     SLI09: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'thanos_compact_group_compactions',
       evalInterval: '5m',
       selectors: {
@@ -156,7 +156,7 @@ local sliSpecList = {
     SLI10: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'up',
       evalInterval: '5m',
       selectors: {
@@ -170,7 +170,7 @@ local sliSpecList = {
     SLI11: {
       title: 'test',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'scrape_duration_seconds',
       evalInterval: '5m',
       selectors: {
@@ -184,10 +184,10 @@ local sliSpecList = {
     SLI12: {
       title: 'test - aws_rds_read',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'aws_rds_read',
       evalInterval: '5m',
-      latencyTarget: 0.001,
+      latencyTarget: 0.25,
       selectors: {
         product: 'test',
       },
@@ -201,10 +201,10 @@ local sliSpecList = {
     SLI13: {
       title: 'test - aws_rds_write',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'aws_rds_write',
       evalInterval: '5m',
-      latencyTarget: 0.001,
+      latencyTarget: 0.25,
       selectors: {
         product: 'test',
       },
@@ -216,11 +216,12 @@ local sliSpecList = {
       },
     },
     SLI14: {
-      title: 'test',
+      title: 'test - OpenSearch',
       sliDescription: 'test',
-      period: '7d',
+      period: '30d',
       metricType: 'aws_es',
       evalInterval: '5m',
+      latencyTarget: 0.25,
       selectors: {
         product: 'test',
       },
