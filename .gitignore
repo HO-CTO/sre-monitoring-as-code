@@ -11,6 +11,9 @@
 *.ipr
 /.idea/
 
+# Vscode
+.vscode
+
 # Monitoring-as-code artefacts
 monitoring-as-code/output/grafana-dashboards
 monitoring-as-code/output/prometheus-rules
