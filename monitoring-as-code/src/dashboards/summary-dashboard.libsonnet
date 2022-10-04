@@ -18,7 +18,7 @@ local panels = [
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
-      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) * 100' %
+      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment) * 100' %
       environmentLabelSelector,
       format='table',
       instant=true,
@@ -27,9 +27,9 @@ local panels = [
   ).addTarget(
     prometheus.target(
       |||
-        (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service) - 
-        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service))    
-        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service)) * 100
+        (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment) -
+        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service, sli_environment))
+        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment)) * 100
       ||| % {
         environmentLabelSelector: environmentLabelSelector,
       },
@@ -39,7 +39,7 @@ local panels = [
     ),
   ).addTarget(
     prometheus.target(
-      'count by (service)(count_over_time((sli_value{%(environmentLabelSelector)s} < bool Inf)[30d:10m]))' %
+      'count by (service, sli_environment)(count_over_time((sli_value{%(environmentLabelSelector)s} < bool Inf)[30d:10m]))' %
       environmentLabelSelector,
       format='table',
       instant=true,
@@ -47,7 +47,7 @@ local panels = [
     ),
   ).addTarget(
     prometheus.target(
-      'count by (service)(rate(ALERTS{%(environmentLabelSelector)s,alertstate="firing"}[30d]))' %
+      'count by (service, sli_environment)(rate(ALERTS{%(environmentLabelSelector)s,alertstate="firing"}[30d]))' %
       environmentLabelSelector,
       format='table',
       instant=true,
@@ -68,7 +68,7 @@ local panels = [
             'Value #C': 'SLO Coverage',
             'Value #D': 'Fired Alerts',
             service: 'Service',
-            environment: 'Environment',
+            sli_environment: 'Environment',
           },
         },
       },
@@ -143,7 +143,7 @@ local panels = [
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
-      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_type) * 100' %
+      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment, sli_type) * 100' %
       environmentLabelSelector,
       format='time_series',
       instant=true,
@@ -174,10 +174,12 @@ local panels = [
               iops: 8,
               Time: 0,
               Value: 9,
-              service: 2,
+              service: 1,
+              sli_environment: 2,
             },
             renameByName: {
               service: 'Service',
+              sli_environment: 'Environment',
               availability: 'Availability',
               latency: 'Latency',
               correctness: 'Pipeline Correctness',
