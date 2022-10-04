@@ -504,6 +504,20 @@ This **will not** work since test is never used/evaluated.
 
 #### Git pre-commit hooks
 
+Formatting and linting of Jsonnet files may be performed automatically when commiting changes to the Git repository with the supplied `pre-commit` hooks.
+
+The `pre-commit` hook lives in the [.githooks](./githooks) directory. The hooks may be activated by running the following command.
+
+```
+git config core.hooksPath .githooks
+```
+
+The formatter and linter will only run if git detects that Jsonnet files have been changed in the commit.
+
+Any linting errors will prevent the commit from succeeding.
+
+For work in progress commits, it is possible to bypass the pre-commit hook by passing the `--no-verify` flag to the git command.
+
 #### Editor support
 
 For Visual Studio Code we have found a useful extension which will automatically format and lint the code on file save.

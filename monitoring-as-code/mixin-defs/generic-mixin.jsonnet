@@ -1,8 +1,6 @@
 // MaC imports
 local mixinFunctions = import '../src/lib/mixin-functions.libsonnet';
 
-local unused = 1;
-
 // Define product name and technow details
 local config = {
   product: 'generic',

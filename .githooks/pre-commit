@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 JSONNET_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "sonnet" | wc -l)
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
