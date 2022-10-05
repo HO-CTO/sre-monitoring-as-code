@@ -331,7 +331,7 @@ SLI value libraries meet your needs it may be necessary to create your own.
 Please refer to the [relevant sections of this documentation](https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/contributing.md#metric-typeslibsonnet) for more information about specifying these
 configuration blocks.
 
-In order for custom metrics to be displayed appropriately on the detail dashboard, it may be necessry to select appropriate dashboard elements to display. There is a `customMetric` set of elements defined in `mac-config.libsonnet` which provides a basic view of custom metric types.
+In order for custom metrics to be displayed appropriately on the detail dashboard, it may be necessary to select appropriate dashboard elements to display. There is a `customMetric` set of elements defined in `mac-config.libsonnet` which provides a basic view of custom metric types.
 
 This section will only cover the bare minimum when creating a new metric type, to add more detailed
 config refer to the previous section **Updating a metric type that already exists**.
