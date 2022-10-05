@@ -1,6 +1,6 @@
 local defaultMetricTypes = import 'metric-types.libsonnet';
 
-local customMetricTypes = import '../mixin-defs/custom-metric-types.libsonnet';
+local customMetricTypes = if std.extVar("CUSTOM_METRIC_TYPES") == "true" then import '../mixin-defs/custom-metric-types.libsonnet' else {};
 
 // This file is for storing the config of the MaC framework
 

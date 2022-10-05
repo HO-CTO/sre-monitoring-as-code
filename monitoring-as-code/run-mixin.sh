@@ -25,6 +25,7 @@ account="localhost"
 generate_rules="false"
 generate_dashboards="false"
 input_path="$PWD"/mixin-defs
+custom_metric_types_filename="custom-metric-types.libsonnet"
 
 # Ingests flags
 while getopts ":m:o:i:a:rd" OPT; do
@@ -39,6 +40,12 @@ while getopts ":m:o:i:a:rd" OPT; do
        exit 1;;
   esac
 done
+
+CUSTOM_METRIC_TYPES="false"
+if [ -f "/$input_path/$custom_metric_types_filename" ]; then
+  cp "/$input_path/$custom_metric_types_filename" /mixin-defs/$custom_metric_types_filename
+  CUSTOM_METRIC_TYPES="true"
+fi
 
 # Errors if any required flags not included
 if [ -z "$mixin" ] || [ -z "$output_path" ]; then
@@ -86,11 +93,11 @@ if [ "$generate_rules" = "true" ]; then
   for environment in $environments
   do
     # Generate Prometheus recording rules YAML
-    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusRules)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml
+    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusRules)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run recording rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Generate Prometheus alert rules YAML
-    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusAlerts)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml
+    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusAlerts)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml
     if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
   done
@@ -102,7 +109,7 @@ if [ "$generate_dashboards" = "true" ]; then
   mkdir -p "$PWD"/_output/grafana-dashboards
 
   # Generate Grafana dashboards JSON
-  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="$MAC_VERSION" -m "$PWD"/_output/grafana-dashboards -e "(import \"${PWD}/_input/mixin.jsonnet\").grafanaDashboards"
+  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -m "$PWD"/_output/grafana-dashboards -e "(import \"${PWD}/_input/mixin.jsonnet\").grafanaDashboards"
   if [ $? -ne 0 ]; then echo "Failed to run dashboard generation rules for ${mixin} - exiting"; exit; fi
 fi
 
