@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Using Monitoring-as-Code - sre-monitoring-as-code</title>
+
+    <link href="../stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="https://ho-cto.github.io/sre-monitoring-as-code/interpret-mac/">
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="ho-cto.github.io" />
+      <meta name="twitter:image" content="https://ho-cto.github.io/sre-monitoring-as-code/images/govuk-large.png" />
+      <meta name="twitter:title" content="Using Monitoring-as-Code - sre-monitoring-as-code" />
+      <meta name="twitter:url" content="https://ho-cto.github.io/sre-monitoring-as-code/interpret-mac/" />
+
+      <meta property="og:image" content="https://ho-cto.github.io/sre-monitoring-as-code/images/govuk-large.png" />
+      <meta property="og:site_name" content="sre-monitoring-as-code" />
+      <meta property="og:title" content="Using Monitoring-as-Code" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://ho-cto.github.io/sre-monitoring-as-code/interpret-mac/" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="/sre-monitoring-as-code" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__product-name">
+          sre-monitoring-as-code
+        </span>
+      </a>
+        <strong class="govuk-tag">INTERNAL</strong>
+    </div>
+    <div class="govuk-header__content">
+      <nav class="govuk-header__navigation govuk-header__navigation--end" aria-label="Menu">
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu">Menu</button>
+        <ul id="navigation" class="govuk-header__navigation-list">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/">Documentation</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </button>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
+              <div class="search" data-module="search" data-path-to-site-root="../">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
+    <input type="hidden" name="as_sitesearch" value="https://ho-cto.github.io/sre-monitoring-as-code"/>
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
+      Search (via Google)
+    </label>
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
+  </form>
+</div>
+
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="../index.html"><span>Home Office Monitoring-as-Code Overview</span></a>
+    <ul>
+      <li>
+        <a href="../index.html#how-mac-works"><span>How MaC works</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../features/index.html"><span>Benefits and features</span></a>
+    <ul>
+      <li>
+        <a href="../features/index.html#metrics-and-alerting"><span>Metrics and alerting</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#error-budget-and-burn-rate"><span>Error Budget and Burn Rate</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#reliability"><span>Reliability</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#visualisation"><span>Visualisation</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#team-support"><span>Team Support</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#automation"><span>Automation</span></a>
+      </li>
+    </ul>
+  </li>
+<li><a href="../get-started/index.html"><span>Get started</span></a>
+<ul>
+  <li>
+    <a href="../get-started/install/index.html"><span>Get MaC up and running on your local environment</span></a>
+    <ul>
+      <li>
+        <a href="../get-started/install/index.html#clone-the-repository-onto-your-local-machine"><span>Clone the repository onto your local machine</span></a>
+      </li>
+      <li>
+        <a href="../get-started/install/index.html#install-pre-requisites"><span>Install pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="../get-started/install/index.html#test-your-installation"><span>Test your installation</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../get-started/distribute/index.html"><span>Distribute MaC on your environment</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../interpret-mac/index.html"><span>Interpret Monitoring-as-Code outputs</span></a>
+    <ul>
+      <li>
+        <a href="../interpret-mac/index.html#error-budget-burn-rate-rules"><span>Error budget burn-rate rules</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#burn-rate-windows"><span>Burn-rate windows</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#burn-rate-rules"><span>Burn-rate rules</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#alerting"><span>Alerting</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#standardised-alerts"><span>Standardised alerts</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#sli-recording-rules"><span>SLI recording rules</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#sli-value"><span>SLI Value</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#http-availability"><span>HTTP availability</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#http-latency"><span>HTTP latency</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#sli-percentage"><span>SLI percentage</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#time-window-based-slos"><span>Time window based SLOs</span></a>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#sli-menu"><span>Service-level indicator menu</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#overview"><span>Overview</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+<li><a href="../monitor-your-service/index.html"><span>Monitor your service</span></a>
+<ul>
+  <li>
+    <a href="../monitor-your-service/responding-to-alerts/index.html"><span>Responding to alerts</span></a>
+    <ul>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#problem-report"><span>Problem report</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#triage"><span>Triage</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#examine"><span>Examine</span></a>
+        <ul>
+          <li>
+            <a href="../monitor-your-service/responding-to-alerts/index.html#product-view"><span>product-view</span></a>
+          </li>
+          <li>
+            <a href="../monitor-your-service/responding-to-alerts/index.html#journey-view"><span>journey-view</span></a>
+          </li>
+          <li>
+            <a href="../monitor-your-service/responding-to-alerts/index.html#detail-view"><span>detail-view</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#diagnose"><span>Diagnose</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#test--treat"><span>Test / Treat</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#cure"><span>Cure</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../adopt-sre-with-slo/index.html"><span>Adopting SRE with Service Level Objectives</span></a>
+    <ul>
+      <li>
+        <a href="../adopt-sre-with-slo/index.html#adopting-sre-with-service-level-objectives-1"><span>Adopting SRE with Service Level Objectives</span></a>
+        <ul>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#concepts-in-monitoring-using-slos"><span>Concepts in monitoring using SLOs</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#terminology"><span>Terminology</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#how-we-measure-reliability"><span>How we measure reliability</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#setting-service-level-indicators-for-your-service"><span>Setting Service Level Indicators for your service</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#continuous-improvement-of-slos"><span>Continuous improvement of SLOs</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#further-reading"><span>Further Reading</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            
+<h1 id="interpret-monitoring-as-code-outputs">Interpret Monitoring-as-Code outputs</h1>
+
+<p>This section contains detailed information about how the monitoring dashboard results are calculated.</p>
+
+<p>This is useful for:</p>
+
+<ul>
+  <li>SRE teams who are implementing MaC on their environment - to test their implementation and to understand dashboard results</li>
+  <li>operational support teams - to understand dashboard results</li>
+  <li>service managers - to report organisational level of service availability</li>
+</ul>
+
+<h2 id="error-budget-burn-rate-rules">Error budget burn-rate rules</h2>
+
+<h3 id="burn-rate-windows">Burn-rate windows</h3>
+
+<p>The Monitoring-as-code framework uses a standard set of burn-rate windows for its alerts:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Severity</th>
+      <th>Long window</th>
+      <th>Short window</th>
+      <th>Factor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1 hour</td>
+      <td>5 minutes</td>
+      <td>14.4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>6 hours</td>
+      <td>30 minutes</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>3 days</td>
+      <td>6 hours</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The purpose of having a short window and a long window is to check that the error budget is being consumed recently (short window) and continuously (long window).</p>
+
+<p>The factor is the proportion of error budget consumed over a 30 day rolling period. For example, if your SLI had an evaluation window of 5 minutes then there would be 8640 total evaluation windows in the 30 days. If you had an SLO target of 90% then you would have a 10% error budget, which equates to 864 bad windows allowed without breaching the SLO. If you consumed all 864 windows of your error budget over the 30 day period, you would have a factor of 1. If you consumed double your error budget, 1728 windows, you would have a factor of 2. If you consumed half your error budget, 432 windows, you would have a factor of 0.5.</p>
+
+<p>Each burn-rate window has a factor that must be exceeded by the burn-rate of both the short and long windows in order for an alert to be fired.</p>
+
+<h3 id="burn-rate-rules">Burn-rate rules</h3>
+
+<p>The following calculation is used when determining the burn rate over a long or short window:
+(1 - number of good evaluation windows / total number of evaluation windows) / error budget as a decimal = burn-rate</p>
+
+<p>For example, if you had an evaluation window of 5 minutes (12 total windows in an hour) and an SLO target of 90% (10% error budget), if there were 3 bad evaluation windows over the 1 hour burn-rate window, the calculation would be:</p>
+
+<p>(1 - 9 / 12) / 0.1 = 2.5</p>
+
+<p>This would not trigger the severity 1 alert because the burn rate of the 1 hour burn-rate window is not greater than the factor of 14.4.</p>
+
+<h2 id="alerting">Alerting</h2>
+
+<p>Note: This section isn't complete and will need to be reviewed.</p>
+
+<p>We base alerts on the error budget burn-rate, which is measured against the SLO target set by the product team. If monitoring indicates that an SLO is in danger of being breached it will trigger an alert. How quickly the error budget is forecast to breach determines what level of alert is triggered.</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>Burn rate is how fast, relative to the SLO, the service consumes the error budget.
+</code></pre></div>
+<p>Our alerting methodology uses <a href="https://sre.google/workbook/alerting-on-slos/">multiple burn rates and time windows</a>. "We generate alerts when burn rates surpass a specified threshold. This option retains the benefits of alerting on burn rates and ensures that you don’t overlook lower (but still significant) error rates."</p>
+
+<p>As a baseline we've implemented a 2% budget consumption in one hour, 5% budget consumption in six hours, 7.5% consumption in one day and 10% budget consumption in 3 days for ticket alerts. More detail are provided in the table below: -</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>SLO budget consumption</th>
+      <th>Time window</th>
+      <th>Burn rate</th>
+      <th>Notification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2%</td>
+      <td>1 hour</td>
+      <td>14.4</td>
+      <td>tbc</td>
+    </tr>
+    <tr>
+      <td>5%</td>
+      <td>6 hours</td>
+      <td>6</td>
+      <td>tbc</td>
+    </tr>
+    <tr>
+      <td>7.5%</td>
+      <td>1 day</td>
+      <td>3</td>
+      <td>tbc</td>
+    </tr>
+    <tr>
+      <td>10%</td>
+      <td>3 days</td>
+      <td>1</td>
+      <td>tbc</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="standardised-alerts">Standardised alerts</h3>
+<p>One of the features provided by the monitoring framework is standardised alerts. These alerts are triggered in response to a significant rise in the error burn-rate of an SLO (for example, if a service starts responding slowly the error burn rate of the SLO for latency would increase and trigger an alert). When an alert is triggered, a message is sent to a specified Slack channel containing details of the alert as a list of labels. Most of the labels are outlined in Designing Service Alerting. (NOTE need a link here) and Planning for Alerts (NOTE need a link here), however there are some additional labels:
+alertname
+assignment_group
+ci_type
+configuration_item
+description
+environment
+event_class
+factor
+instance
+journey
+metric_name
+node
+replica
+resource
+service
+severity
+short_description
+slo
+title
+type
+wait_for
+time_of_event</p>
+
+<h2 id="sli-recording-rules">SLI recording rules</h2>
+
+<h3 id="sli-value">SLI Value</h3>
+
+<p>The SLI value recording rule is used for calculating whether a time window was good or not by comparing the output of the rule to the metric target. The expression used by SLI value varies depending on the type of SLI, the default comparison used is SLI value is less than metric target for a window to be good, but different comparison operators can be defined for each SLI in the mixin file.</p>
+
+<p>Examples of types of SLI value rules are:</p>
+
+<ul>
+  <li>HTTP availability</li>
+  <li>HTTP latency</li>
+</ul>
+
+<h3 id="http-availability">HTTP availability</h3>
+
+<p>Lets say you had an HTTP availability SLI with 5 minute time windows, a metric target of 0.1 and bad requests defined as any returning 400 or 500 status codes. If over a 5 minute window you had 9 good requests, 1 bad request meaning a total of 10 requests, the calculation for SLI value would be 1 (number of bad requests) / 10 (total number of requests) which equals 0.1. Since the default comparison is less than, and the SLI value of 0.1 is not less than, the metric target of 0.1, it would be a bad window.</p>
+
+<p>If over the next 5 minutes you had 19 good requests, 1 bad request meaning a total of 20 requests, the calculation for SLI value would be 1 (number of bad requests) / 20 (total number of request) which equals 0.05. Since 0.05 is less than the metric target of 0.1 it would be a good window.</p>
+
+<h3 id="http-latency">HTTP latency</h3>
+
+<p>Let's say you had an HTTP latency SLI with 5 minute time windows, a metric target of 0.5 and a latency percentile of 0.9. Below are the ordered results for latency of 10 requests over a 5 minute period:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Latency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <td>0.13</td>
+    </tr>
+    <tr>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <td>0.22</td>
+    </tr>
+    <tr>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <td>0.27</td>
+    </tr>
+    <tr>
+      <td>0.31</td>
+    </tr>
+    <tr>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td>0.52</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Because the latency percentile is 0.9, or 90%, and there are 10 values in total, we take the 9th value from the ordered list. This value is 0.4 which is less than the metric target of 0.5, so it is a good window. Lets look at another 5 minute time period with 20 requests:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Latency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <td>0.13</td>
+    </tr>
+    <tr>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <td>0.22</td>
+    </tr>
+    <tr>
+      <td>0.22</td>
+    </tr>
+    <tr>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <td>0.26</td>
+    </tr>
+    <tr>
+      <td>0.28</td>
+    </tr>
+    <tr>
+      <td>0.28</td>
+    </tr>
+    <tr>
+      <td>0.29</td>
+    </tr>
+    <tr>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>0.35</td>
+    </tr>
+    <tr>
+      <td>0.41</td>
+    </tr>
+    <tr>
+      <td>0.47</td>
+    </tr>
+    <tr>
+      <td>0.52</td>
+    </tr>
+    <tr>
+      <td>0.61</td>
+    </tr>
+    <tr>
+      <td>0.64</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Because the latency percentile is 0.9 or 90% and there are 20 values in total, we take the 18th value from the ordered list. This value is 0.52 which is greater than the metric target of 0.5 so it is a bad window.</p>
+
+<h3 id="sli-percentage">SLI percentage</h3>
+
+<p>The SLI percentage recording rule is used for comparing the overall percentage of good time windows for different services in the summary view dashboard. It takes the number of good windows in the last 30 days and divides by the total number of windows where data was received in the last 30 days.</p>
+
+<h2 id="time-window-based-slos">Time window based SLOs</h2>
+
+<p>A time window based SLO works by taking the number of good windows over a time period and dividing them by the total number of time windows in that period where the metric being used for the SLI was updated. This is easiest to explain with an example:</p>
+
+<p>Lets say you have an SLI for HTTP requests, the time windows for this SLI are 5 minutes long and your SLO performance is being calculated over the past 1 hour. That means 12 time windows will be used for calculating your SLO performance (there are 12 5 minute time windows in 1 hour). The target for your SLO is 80% and the criterion for a time window being good is that at least 90% of the requests performed within that 5 minute window responded with good status codes. The monitoring starts at 14:00, below is the first hour:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Window number</th>
+      <th>Number of good requests</th>
+      <th>Total number of requests</th>
+      <th>% of good requests</th>
+      <th>Window status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14:05</td>
+      <td>1</td>
+      <td>4</td>
+      <td>5</td>
+      <td>80%</td>
+      <td>Bad</td>
+    </tr>
+    <tr>
+      <td>14:10</td>
+      <td>2</td>
+      <td>9</td>
+      <td>10</td>
+      <td>90%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:15</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:20</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>N/A</td>
+      <td>No data</td>
+    </tr>
+    <tr>
+      <td>14:25</td>
+      <td>5</td>
+      <td>6</td>
+      <td>8</td>
+      <td>75%</td>
+      <td>Bad</td>
+    </tr>
+    <tr>
+      <td>14:30</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>N/A</td>
+      <td>No data</td>
+    </tr>
+    <tr>
+      <td>14:35</td>
+      <td>7</td>
+      <td>12</td>
+      <td>12</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:40</td>
+      <td>8</td>
+      <td>5</td>
+      <td>5</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:45</td>
+      <td>9</td>
+      <td>19</td>
+      <td>20</td>
+      <td>95%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:50</td>
+      <td>10</td>
+      <td>2</td>
+      <td>3</td>
+      <td>66%</td>
+      <td>Bad</td>
+    </tr>
+    <tr>
+      <td>14:55</td>
+      <td>11</td>
+      <td>7</td>
+      <td>7</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>15:00</td>
+      <td>12</td>
+      <td>10</td>
+      <td>11</td>
+      <td>91%</td>
+      <td>Good</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As you can see, within the first hour there were 7 good windows, 3 bad windows and 2 windows where no requests were made. That means there were 10 total windows where the metric for the SLI was updated (since new requests were made). To calculate the SLO performance for the hour, we do 7 (number of good windows) / 10 (total number of windows) which equals 0.7 or 70%. This is lower than the SLO target of 80%, so over the last hour the SLO was not met. Lets look after the next window has been calculated:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Window number</th>
+      <th>Number of good requests</th>
+      <th>Total number of requests</th>
+      <th>% of good requests</th>
+      <th>Window status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>14:05</td>
+      <td>1</td>
+      <td>4</td>
+      <td>5</td>
+      <td>80%</td>
+      <td>Bad</td>
+    </tr>
+    <tr>
+      <td>14:10</td>
+      <td>2</td>
+      <td>9</td>
+      <td>10</td>
+      <td>90%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:15</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:20</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>N/A</td>
+      <td>No data</td>
+    </tr>
+    <tr>
+      <td>14:25</td>
+      <td>5</td>
+      <td>6</td>
+      <td>8</td>
+      <td>75%</td>
+      <td>Bad</td>
+    </tr>
+    <tr>
+      <td>14:30</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>N/A</td>
+      <td>No data</td>
+    </tr>
+    <tr>
+      <td>14:35</td>
+      <td>7</td>
+      <td>12</td>
+      <td>12</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:40</td>
+      <td>8</td>
+      <td>5</td>
+      <td>5</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:45</td>
+      <td>9</td>
+      <td>19</td>
+      <td>20</td>
+      <td>95%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>14:50</td>
+      <td>10</td>
+      <td>2</td>
+      <td>3</td>
+      <td>66%</td>
+      <td>Bad</td>
+    </tr>
+    <tr>
+      <td>14:55</td>
+      <td>11</td>
+      <td>7</td>
+      <td>7</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>15:00</td>
+      <td>12</td>
+      <td>10</td>
+      <td>11</td>
+      <td>91%</td>
+      <td>Good</td>
+    </tr>
+    <tr>
+      <td>15:05</td>
+      <td>13</td>
+      <td>15</td>
+      <td>15</td>
+      <td>100%</td>
+      <td>Good</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Since the SLO performance is being calculated over an hour, window 1 is not included in the calculation. That means we now have 8 good windows, 2 bad windows and 2 windows where no requests were made. The calculation for SLO performance is 8 (number of good windows) / 10 (total number of windows) which equals 0.8 or 80%. This is the same as our SLO target of 80%, so over the past hour the SLO was met.</p>
+
+<h2 id="sli-menu">Service-level indicator menu</h2>
+
+<p>NOTE: This section will be fully reviewed and written.</p>
+
+<h3 id="overview">Overview</h3>
+
+<p>We have built on Google's concept of an SLI Menu by developing a standard suite of extensible and reusable SLIs that can be selected as part of a products monitoring configuration.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>SLI Menu GUID</th>
+      <th>Self-service SLIs</th>
+      <th>Data source</th>
+      <th>Google SLI Type</th>
+      <th>Google SLI Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>HTTP errors</td>
+      <td>Java Spring Boot Actuator</td>
+      <td>Availability</td>
+      <td>Request-driven</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>AWS Application Load Balancer http errors</td>
+      <td>AWS Cloudwatch ApplicationELB Namespace</td>
+      <td>Availability</td>
+      <td>Request-driven</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>HTTP latency</td>
+      <td>Java Spring Boot Actuator</td>
+      <td>Latency</td>
+      <td>Request-driven</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>AWS Application Load Balancer http latency</td>
+      <td>AWS Cloudwatch ApplicationELB Namespace</td>
+      <td>Latency</td>
+      <td>Request-driven</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>-</td>
+      <td>-</td>
+      <td>Quality</td>
+      <td>Request-driven</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>AWS Simple Queue Service high latency in standard queue</td>
+      <td>AWS Cloudwatch SQS Namespace</td>
+      <td>Freshness</td>
+      <td>Pipeline</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>AWS Simple Queue Service message received in dead letter queue</td>
+      <td>AWS Cloudwatch SQS Namespace</td>
+      <td>Pipeline</td>
+      <td>Pipeline</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>Coverage</td>
+      <td>Pipeline</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>Durability</td>
+      <td>Storage</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="sli-worksheet---sprint-boot-actuator-http-errors">SLI worksheet - Sprint Boot Actuator http errors</h4>
+
+<p><strong>Google SLI Category:</strong> Request-driven</p>
+
+<p><strong>Google SLI Type:</strong> Availability</p>
+
+<p><strong>SLI Specification:</strong>
+    The proportion of journey requests that return successful HTTP status code</p>
+
+<p><strong>SLI Implementation:</strong>
+    <to be="" added=""></to></p>
+
+<p><strong>Rationale:</strong>
+    <to be="" added=""></to></p>
+
+<p><strong>Error Budget:</strong>
+    <to be="" added=""></to></p>
+
+<p><strong>Clarifications and Caveats:</strong>
+    <to be="" added=""></to></p>
+
+            
+          </main>
+
+          <aside>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="../javascripts/application.js"></script>
+  </body>
+</html>

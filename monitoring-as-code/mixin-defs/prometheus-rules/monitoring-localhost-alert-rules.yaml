@@ -1,0 +1,1026 @@
+"groups":
+- "name": "monitoring_localhost_alertrules"
+  "rules":
+  - "alert": "monitoring_grafana_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (grafana journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* requests to the Grafana landing page are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "requests to the Grafana landing page are successful"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (grafana journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* requests to the Grafana landing page are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "requests to the Grafana landing page are successful"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (grafana journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* requests to the Grafana landing page are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "requests to the Grafana landing page are successful"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI01 - Percentage of time requests to the Grafana landing page are successful"
+      "wait_for": "3h"
+  - "alert": "monitoring_grafana_SLI02_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (grafana journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* requests to the Grafana login are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "requests to the Grafana login are successful"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI02_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (grafana journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* requests to the Grafana login are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "requests to the Grafana login are successful"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI02_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (grafana journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* requests to the Grafana login are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI02_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "requests to the Grafana login are successful"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI02 - Percentage of time requests to the Grafana login are successful"
+      "wait_for": "3h"
+  - "alert": "monitoring_grafana_SLI03_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI03 (grafana journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* requests to the Grafana datasources are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "requests to the Grafana datasources are successful"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI03_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI03 (grafana journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* requests to the Grafana datasources are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "requests to the Grafana datasources are successful"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI03_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI03 (grafana journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* requests to the Grafana datasources are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI03_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI03 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "requests to the Grafana datasources are successful"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI03 - Percentage of time requests to the Grafana datasources are successful"
+      "wait_for": "3h"
+  - "alert": "monitoring_grafana_SLI04_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI04 (grafana journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* requests to the Grafana datasources are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI04_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI04 (grafana journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "requests to the Grafana datasources are successful"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI04 - Percentage of time requests to the Grafana datasources are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI04_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI04 (grafana journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* requests to the Grafana datasources are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI04_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI04 (grafana journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "requests to the Grafana datasources are successful"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI04 - Percentage of time requests to the Grafana datasources are successful"
+      "wait_for": "2m"
+  - "alert": "monitoring_grafana_SLI04_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-grafana-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI04 (grafana journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* requests to the Grafana datasources are successful\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"grafana\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_grafana_SLI04_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI04 (grafana journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "requests to the Grafana datasources are successful"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"grafana\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI04 - Percentage of time requests to the Grafana datasources are successful"
+      "wait_for": "3h"
+  - "alert": "monitoring_prometheus_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-prometheus-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (prometheus journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* all prometheus scrape targets are available\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"prometheus\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "all prometheus scrape targets are available"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"prometheus\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-prometheus-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (prometheus journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* all prometheus scrape targets are available\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"prometheus\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "all prometheus scrape targets are available"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"prometheus\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-prometheus-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (prometheus journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* all prometheus scrape targets are available\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"prometheus\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (prometheus journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "all prometheus scrape targets are available"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"prometheus\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI01 - Percentage of time all prometheus scrape targets are available"
+      "wait_for": "3h"
+  - "alert": "monitoring_prometheus_SLI02_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-prometheus-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (prometheus journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* prometheus scraping of Yace is fast enough\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"prometheus\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "prometheus scraping of Yace is fast enough"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"prometheus\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI02_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-prometheus-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (prometheus journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* prometheus scraping of Yace is fast enough\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"prometheus\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "prometheus scraping of Yace is fast enough"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"prometheus\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "wait_for": "2m"
+  - "alert": "monitoring_prometheus_SLI02_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-prometheus-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (prometheus journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* prometheus scraping of Yace is fast enough\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"prometheus\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_prometheus_SLI02_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (prometheus journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "prometheus scraping of Yace is fast enough"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"prometheus\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI02 - Percentage of time prometheus scraping of Yace is fast enough"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (thanos journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* instant query requests to Thanos\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "instant query requests to Thanos"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (thanos journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* instant query requests to Thanos\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "instant query requests to Thanos"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI01_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI01 (thanos journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* instant query requests to Thanos\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI01_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI01 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "instant query requests to Thanos"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI01\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI01 - Percentage of time instant query requests to Thanos"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI02_latency_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (thanos journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* instant query requests to Thanos are fast enough\n• *event_type:* latency\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components\n• *metric_name:* latency\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_latency_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "instant query requests to Thanos are fast enough"
+      "event_type": "latency"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components"
+      "metric_name": "latency"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI02_latency_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (thanos journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* instant query requests to Thanos are fast enough\n• *event_type:* latency\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components\n• *metric_name:* latency\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_latency_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "instant query requests to Thanos are fast enough"
+      "event_type": "latency"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components"
+      "metric_name": "latency"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI02_latency_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI02 (thanos journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* instant query requests to Thanos are fast enough\n• *event_type:* latency\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components\n• *metric_name:* latency\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI02_latency_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI02 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "instant query requests to Thanos are fast enough"
+      "event_type": "latency"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components"
+      "metric_name": "latency"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI02\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI02 - Percentage of time instant query requests to Thanos are fast enough"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI03_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI03 (thanos journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* range query requests to Thanos\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "range query requests to Thanos"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI03_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI03 (thanos journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* range query requests to Thanos\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "range query requests to Thanos"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI03_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI03 (thanos journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* range query requests to Thanos\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI03_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI03 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "range query requests to Thanos"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI03\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI03 - Percentage of time range query requests to Thanos"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI04_latency_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI04 (thanos journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* range query requests to Thanos are fast enough\n• *event_type:* latency\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components\n• *metric_name:* latency\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_latency_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "range query requests to Thanos are fast enough"
+      "event_type": "latency"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components"
+      "metric_name": "latency"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI04_latency_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI04 (thanos journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* range query requests to Thanos are fast enough\n• *event_type:* latency\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components\n• *metric_name:* latency\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_latency_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "range query requests to Thanos are fast enough"
+      "event_type": "latency"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components"
+      "metric_name": "latency"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI04_latency_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI04 (thanos journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* range query requests to Thanos are fast enough\n• *event_type:* latency\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components\n• *metric_name:* latency\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI04_latency_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI04 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "range query requests to Thanos are fast enough"
+      "event_type": "latency"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_latency_EBSA Monitoring and Logging Components"
+      "metric_name": "latency"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI04\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI04 - Percentage of time range query requests to Thanos are fast enough"
+      "wait_for": "3h"
+  - "alert": "monitoring_thanos_SLI05_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI05 (thanos journey) is likely to exhaust error budget in less than 0.49 days\n• *event_severity:* 1\n• *event_short_desc:* compactions by thanos-compact\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI05\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:5m{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+      and
+      slo_burnrate:1h{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 14.40000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 0.49 days"
+      "event_severity": "1"
+      "event_short_desc": "compactions by thanos-compact"
+      "event_type": "availability"
+      "factor": "14.4"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI05\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "1 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI05_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI05 (thanos journey) is likely to exhaust error budget in less than 1.17 days\n• *event_severity:* 2\n• *event_short_desc:* compactions by thanos-compact\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI05\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:30m{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+      and
+      slo_burnrate:6h{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 6.00000
+    "for": "2m"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 1.17 days"
+      "event_severity": "2"
+      "event_short_desc": "compactions by thanos-compact"
+      "event_type": "availability"
+      "factor": "6"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI05\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "2 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "wait_for": "2m"
+  - "alert": "monitoring_thanos_SLI05_availability_ErrorBudgetBurn"
+    "annotations":
+      "dashboard": "http://localhost:3000/d/monitoring-thanos-journey-view?var-environment=localhost"
+      "description": "*assignment_group:* HO_EBSA_PLATFORM\n• *event_description:* SLI05 (thanos journey) is likely to exhaust error budget in less than 7.00 days\n• *event_severity:* 4\n• *event_short_desc:* compactions by thanos-compact\n• *event_type:* availability\n• *message_key:* EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components\n• *metric_name:* availability\n• *node_id:* EBSA Monitoring and Logging Components\n• *raw_event_payload:* \"journey\":\"thanos\",\"sli\":\"SLI05\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\"\n• *resource_id:* EBSA Monitoring and Logging Components\n• *runbook_id:* no runbook\n• *source_instance:* EBSA Prometheus"
+      "silenceurl": "http://localhost:9093/#/silences/new?filter={alertname%3D%22monitoring_thanos_SLI05_availability_ErrorBudgetBurn%22}"
+    "expr": |
+      slo_burnrate:6h{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+      and
+      slo_burnrate:3d{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} > 1.00000
+    "for": "3h"
+    "labels":
+      "assignment_group": "HO_EBSA_PLATFORM"
+      "ci_type": "CMDB_CI_Service_Auto"
+      "event_description": "SLI05 (thanos journey) is likely to exhaust error budget in less than 7.00 days"
+      "event_severity": "4"
+      "event_short_desc": "compactions by thanos-compact"
+      "event_type": "availability"
+      "factor": "1"
+      "message_key": "EBSA Prometheus_EBSA Monitoring and Logging Components_availability_EBSA Monitoring and Logging Components"
+      "metric_name": "availability"
+      "node_id": "EBSA Monitoring and Logging Components"
+      "raw_event_payload": "\"journey\":\"thanos\",\"sli\":\"SLI05\",\"mac_version\":\"local\",\"monitoring_slackchannel\":\"sas-monitoring-test\",\"configuration_item\":\"EBSA Prometheus, Grafana and Thanos\""
+      "resource_id": "EBSA Monitoring and Logging Components"
+      "runbook_id": "no runbook"
+      "source_instance": "EBSA Prometheus"
+      "title": "4 ALERT! localhost - monitoring SLI05 - Percentage of time compactions by thanos-compact"
+      "wait_for": "3h"

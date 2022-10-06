@@ -1,0 +1,1585 @@
+"groups":
+- "name": "monitoring_localhost_recordingrules"
+  "rules":
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (
+            rate(grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/api/dashboards/home", namespace=~"localhost", status_code=~"4..|5.."}[1m])
+            or
+            0 * grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/api/dashboards/home", namespace=~"localhost"}
+          )
+          /
+          sum by(namespace, job) (rate(grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/api/dashboards/home", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (
+            rate(grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/login", namespace=~"localhost", status_code=~"4..|5.."}[1m])
+            or
+            0 * grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/login", namespace=~"localhost"}
+          )
+          /
+          sum by(namespace, job) (rate(grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/login", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.5)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (
+            rate(grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/api/datasources/proxy/:id/.*", namespace=~"localhost", status_code=~"4..|5.."}[1m])
+            or
+            0 * grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/api/datasources/proxy/:id/.*", namespace=~"localhost"}
+          )
+          /
+          sum by(namespace, job) (rate(grafana_http_request_duration_seconds_count{job=~"grafana", handler=~"/api/datasources/proxy/:id/.*", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.5)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.5)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.5)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.5)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.5)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (
+            rate(grafana_api_response_status_total{job=~"grafana", namespace=~"localhost", code=~"4..|5.."}[1m])
+            or
+            0 * grafana_api_response_status_total{job=~"grafana", namespace=~"localhost"}
+          )
+          /
+          sum by(namespace, job) (rate(grafana_api_response_status_total{job=~"grafana", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="grafana",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "grafana"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} == bool 1)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (sum_over_time(up{namespace=~"localhost"}[1m]))
+          /
+          sum by(namespace, job) (count_over_time(up{namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} == bool 1)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} == bool 1)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} == bool 1)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} == bool 1)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} == bool 1)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 15)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (sum_over_time(scrape_duration_seconds{job=~"yace", namespace=~"localhost"}[1m]))
+          /
+          sum by(namespace, job) (count_over_time(scrape_duration_seconds{job=~"yace", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 15)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 15)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 15)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 15)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 15)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="prometheus",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "prometheus"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (
+            rate(http_requests_total{job=~"thanos-query", handler=~"query", namespace=~"localhost", code=~"4..|5.."}[1m])
+            or
+            0 * http_requests_total{job=~"thanos-query", handler=~"query", namespace=~"localhost"}
+          )
+          /
+          sum by(namespace, job) (rate(http_requests_total{job=~"thanos-query", handler=~"query", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI01", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI01"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 15)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          histogram_quantile(0.80, (sum by (le, namespace, job) (rate(http_request_duration_seconds_bucket{job=~"thanos-query", handler=~"query", namespace=~"localhost"}[1m]))))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 15)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 15)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 15)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 15)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 15)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI02", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI02"
+      "sli_type": "latency"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (
+            rate(http_requests_total{job=~"thanos-query", handler=~"query_range", namespace=~"localhost", code=~"4..|5.."}[1m])
+            or
+            0 * http_requests_total{job=~"thanos-query", handler=~"query_range", namespace=~"localhost"}
+          )
+          /
+          sum by(namespace, job) (rate(http_requests_total{job=~"thanos-query", handler=~"query_range", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.10000000000000001)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI03", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI03"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 10)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          histogram_quantile(0.80, (sum by (le, namespace, job) (rate(http_request_duration_seconds_bucket{job=~"thanos-query", handler=~"query_range", namespace=~"localhost"}[1m]))))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 10)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 10)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 10)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 10)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool 10)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI04", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="latency"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.10000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI04"
+      "sli_type": "latency"
+    "record": "slo_burnrate:6h"
+  - "expr": |
+      (
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.01)[30d:1m]))
+        /
+        sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30d:1m]))
+      ) >= 0
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "sli_percentage"
+  - "expr": |
+      sum without (namespace, job) (label_replace(label_replace(
+        (
+          sum by(namespace, job) (rate(thanos_compact_group_compactions_failures_total{job=~"monitoring-thanos-compact.*", namespace=~"localhost"}[1m]))
+          /
+          sum by(namespace, job) (rate(thanos_compact_group_compactions_total{job=~"monitoring-thanos-compact.*", namespace=~"localhost"}[1m]))
+        ),
+      "sli_environment", "$1", "namespace", "(.*)"), "sli_product", "$1", "job", "(.*)"))
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "sli_value"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.01)[1h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[1h:1m])) > 0)
+        )
+      )
+      /
+      0.01000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "slo_burnrate:1h"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.01)[30m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[30m:1m])) > 0)
+        )
+      )
+      /
+      0.01000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "slo_burnrate:30m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.01)[3d:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[3d:1m])) > 0)
+        )
+      )
+      /
+      0.01000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "slo_burnrate:3d"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.01)[5m:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[5m:1m])) > 0)
+        )
+      )
+      /
+      0.01000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "slo_burnrate:5m"
+  - "expr": |
+      (
+        1 -
+        (
+          sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool 0.01)[6h:1m]))
+          /
+          (sum by(sli_environment, sli_product) (sum_over_time((sli_value{service="monitoring", sli="SLI05", journey="thanos",
+      sli_environment=~"localhost"
+      , sli_type="availability"} < bool Inf)[6h:1m])) > 0)
+        )
+      )
+      /
+      0.01000
+    "labels":
+      "journey": "thanos"
+      "mac_version": "local"
+      "service": "monitoring"
+      "sli": "SLI05"
+      "sli_type": "availability"
+    "record": "slo_burnrate:6h"

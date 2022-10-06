@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>sre-monitoring-as-code</title>
+
+    <link href="../stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="https://ho-cto.github.io/sre-monitoring-as-code/adopt-sre-with-slo/">
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="ho-cto.github.io" />
+      <meta name="twitter:image" content="https://ho-cto.github.io/sre-monitoring-as-code/images/govuk-large.png" />
+      <meta name="twitter:title" content="sre-monitoring-as-code" />
+      <meta name="twitter:url" content="https://ho-cto.github.io/sre-monitoring-as-code/adopt-sre-with-slo/" />
+
+      <meta property="og:image" content="https://ho-cto.github.io/sre-monitoring-as-code/images/govuk-large.png" />
+      <meta property="og:site_name" content="sre-monitoring-as-code" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://ho-cto.github.io/sre-monitoring-as-code/adopt-sre-with-slo/" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="/sre-monitoring-as-code" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__product-name">
+          sre-monitoring-as-code
+        </span>
+      </a>
+        <strong class="govuk-tag">INTERNAL</strong>
+    </div>
+    <div class="govuk-header__content">
+      <nav class="govuk-header__navigation govuk-header__navigation--end" aria-label="Menu">
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu">Menu</button>
+        <ul id="navigation" class="govuk-header__navigation-list">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/">Documentation</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </button>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
+              <div class="search" data-module="search" data-path-to-site-root="../">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
+    <input type="hidden" name="as_sitesearch" value="https://ho-cto.github.io/sre-monitoring-as-code"/>
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
+      Search (via Google)
+    </label>
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
+  </form>
+</div>
+
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="../index.html"><span>Home Office Monitoring-as-Code Overview</span></a>
+    <ul>
+      <li>
+        <a href="../index.html#how-mac-works"><span>How MaC works</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../features/index.html"><span>Benefits and features</span></a>
+    <ul>
+      <li>
+        <a href="../features/index.html#metrics-and-alerting"><span>Metrics and alerting</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#error-budget-and-burn-rate"><span>Error Budget and Burn Rate</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#reliability"><span>Reliability</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#visualisation"><span>Visualisation</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#team-support"><span>Team Support</span></a>
+      </li>
+      <li>
+        <a href="../features/index.html#automation"><span>Automation</span></a>
+      </li>
+    </ul>
+  </li>
+<li><a href="../get-started/index.html"><span>Get started</span></a>
+<ul>
+  <li>
+    <a href="../get-started/install/index.html"><span>Get MaC up and running on your local environment</span></a>
+    <ul>
+      <li>
+        <a href="../get-started/install/index.html#clone-the-repository-onto-your-local-machine"><span>Clone the repository onto your local machine</span></a>
+      </li>
+      <li>
+        <a href="../get-started/install/index.html#install-pre-requisites"><span>Install pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="../get-started/install/index.html#test-your-installation"><span>Test your installation</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../get-started/distribute/index.html"><span>Distribute MaC on your environment</span></a>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../interpret-mac/index.html"><span>Interpret Monitoring-as-Code outputs</span></a>
+    <ul>
+      <li>
+        <a href="../interpret-mac/index.html#error-budget-burn-rate-rules"><span>Error budget burn-rate rules</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#burn-rate-windows"><span>Burn-rate windows</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#burn-rate-rules"><span>Burn-rate rules</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#alerting"><span>Alerting</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#standardised-alerts"><span>Standardised alerts</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#sli-recording-rules"><span>SLI recording rules</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#sli-value"><span>SLI Value</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#http-availability"><span>HTTP availability</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#http-latency"><span>HTTP latency</span></a>
+          </li>
+          <li>
+            <a href="../interpret-mac/index.html#sli-percentage"><span>SLI percentage</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#time-window-based-slos"><span>Time window based SLOs</span></a>
+      </li>
+      <li>
+        <a href="../interpret-mac/index.html#sli-menu"><span>Service-level indicator menu</span></a>
+        <ul>
+          <li>
+            <a href="../interpret-mac/index.html#overview"><span>Overview</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+<li><a href="../monitor-your-service/index.html"><span>Monitor your service</span></a>
+<ul>
+  <li>
+    <a href="../monitor-your-service/responding-to-alerts/index.html"><span>Responding to alerts</span></a>
+    <ul>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#problem-report"><span>Problem report</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#triage"><span>Triage</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#examine"><span>Examine</span></a>
+        <ul>
+          <li>
+            <a href="../monitor-your-service/responding-to-alerts/index.html#product-view"><span>product-view</span></a>
+          </li>
+          <li>
+            <a href="../monitor-your-service/responding-to-alerts/index.html#journey-view"><span>journey-view</span></a>
+          </li>
+          <li>
+            <a href="../monitor-your-service/responding-to-alerts/index.html#detail-view"><span>detail-view</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#diagnose"><span>Diagnose</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#test--treat"><span>Test / Treat</span></a>
+      </li>
+      <li>
+        <a href="../monitor-your-service/responding-to-alerts/index.html#cure"><span>Cure</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+</li>
+  <li>
+    <a href="../adopt-sre-with-slo/index.html"><span>Adopting SRE with Service Level Objectives</span></a>
+    <ul>
+      <li>
+        <a href="../adopt-sre-with-slo/index.html#adopting-sre-with-service-level-objectives-1"><span>Adopting SRE with Service Level Objectives</span></a>
+        <ul>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#concepts-in-monitoring-using-slos"><span>Concepts in monitoring using SLOs</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#terminology"><span>Terminology</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#how-we-measure-reliability"><span>How we measure reliability</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#setting-service-level-indicators-for-your-service"><span>Setting Service Level Indicators for your service</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#continuous-improvement-of-slos"><span>Continuous improvement of SLOs</span></a>
+          </li>
+          <li>
+            <a href="../adopt-sre-with-slo/index.html#further-reading"><span>Further Reading</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="adopting-sre-with-service-level-objectives">Adopting SRE with Service Level Objectives</h1>
+
+<p>NOTE: this section is conceptual information about SRE with SLOs. We need to remove it as its own section and instead weave it in through the Get started section.</p>
+
+<p>To start using the SRE Monitoring-as-Code framework, you should read the following Adopting SRE with Service Level Objectives documentation to understand the fundamental concepts.</p>
+
+<h2 id="adopting-sre-with-service-level-objectives-1">Adopting SRE with Service Level Objectives</h2>
+
+<p>In Home Office DDaT, we follow the GDS Service Manual guidance on how to <a href="https://www.gov.uk/service-manual/technology/monitoring-the-status-of-your-service">monitor the status of services</a> and set performance metrics.</p>
+
+<p>We frame the monitoring of our services around the Site Reliability Engineering (SRE) pillar of Service-level objectives (SLOs). SLOs provide a "framework for defining clear targets around application performance, which ultimately help teams provide a consistent customer experience, balance feature development with platform stability, and improve communication with internal and external users" <sup>1</sup>.</p>
+
+<h3 id="concepts-in-monitoring-using-slos">Concepts in monitoring using SLOs</h3>
+
+<p>The core notions of DDaT's service monitoring include the following:</p>
+
+<ul>
+  <li>Selecting metrics that act as service-level indicators (SLIs).</li>
+  <li>Using the SLIs to set service-level objectives (SLOs) for the SLI values.</li>
+  <li>Using the error budget implied by the SLO to mitigate risk in your service.</li>
+</ul>
+
+<h3 id="terminology">Terminology</h3>
+
+<p>Service monitoring has a set of core concepts, which are introduced here:</p>
+
+<ul>
+  <li>Service-level indicator (SLI): a measurement of performance.</li>
+  <li>Service-level objective (SLO): a statement of desired performance.</li>
+  <li>Error budget: a measurement of the difference between actual and desired performance.</li>
+</ul>
+
+<h4 id="service-level-indicators">Service-level indicators</h4>
+
+<p>Home office DDaT platforms expose and capture metrics that measure the performance of the applications and underpinning service infrastructure. Examples of performance metrics include the following:</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>Request count: for example, the number of HTTP requests per minute that result in 2xx or 5xx responses.
+Response latencies: for example, the latency for HTTP 2xx responses.
+</code></pre></div>
+<p>The performance metrics are automatically identified based on a set of known sources such as Java Springboot Actuator (whitebox), Kubernetes Ingress Controllers and AWS Cloudwatch (blackbox).</p>
+
+<p>The performance metrics are the basis of the SLIs for your service. An SLI describes the performance of some aspect of your service. For services using Frontier, AWS Simple Queue Service or Appication Load Balancers useful SLIs are already known. For example, if your service has request-count or response-latencies metrics, standard service-level indicators (SLIs) can be derived from those metrics by creating ratios as follows:</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>An availability SLI is the ratio of the number of successful responses to the number of all responses.
+A latency SLI is the ratio of the number of calls below a latency threshold to the number of all calls.
+</code></pre></div>
+<h4 id="service-level-objectives">Service-level objectives</h4>
+
+<p>An SLO is a target value for an SLI, measured over a period of time. The service determines the available SLIs, and you specify SLOs based on the SLIs. The SLO defines what qualifies as good service.</p>
+
+<p>An SLO is built on the following information:</p>
+
+<ul>
+  <li>An SLI, which measures the performance of the service.</li>
+  <li>A performance goal, which specifies the desired level of performance.</li>
+  <li>A time period, called the compliance period, for measuring how the SLI compares to the performance goal.</li>
+</ul>
+
+<p>For example, you might have requirements like these:</p>
+
+<ul>
+  <li>Latency can exceed 300 ms in only 5 percent of the requests over a rolling 30-day period.</li>
+  <li>The system must have 99% availability measured over a rolling 30-day period.</li>
+</ul>
+
+<h4 id="error-budgets">Error budgets</h4>
+
+<p>An SLO specifies the degree to which a service must perform during a compliance period.The error budget quantifies the degree to which a service can fail to perform during the compliance period and still meet the SLO.</p>
+
+<p>Error budgets let you track how many bad individual events (like requests) are allowed to occur during the remainder of your compliance period before you violate the SLO. You can use the error budget to help you manage maintenance tasks like deployment of new versions. If the error budget is close to depleted, then taking risky actions like pushing new updates might result in your violating an SLO.</p>
+
+<p>Your error budget for a compliance period is (1 − SLO goal) × (eligible events in compliance period). For example, if your SLO is for 85% of requests to be good in a 7-day rolling period, then your error budget allows 15% of these requests to be bad. If you received, say, 60,480 requests in the past week, your error budget is 15% of that total, or 9,072 requests that are permitted to be bad. If you served more errors than this, your service was out of SLO for the 7-day compliance period.</p>
+
+<h4 id="windows-vs-request-based-slis">Windows vs Request Based SLIs</h4>
+
+<p>You can also set up service-specific SLIs for some other measure of what “good performance” means. These SLIs generally fall into two categories:</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>Request-based SLIs, where good service is measured by counting atomic units of service, like the number of successful HTTP requests.
+Windows-based SLIs, where good service is measured by counting the number of time periods, or windows, during which performance meets a goodness criterion, like response latency below a given threshold.
+</code></pre></div>
+<p>These SLIs are described in more detail in Compliance in request- and windows-based SLOs.</p>
+
+<h3 id="how-we-measure-reliability">How we measure reliability</h3>
+
+<p>Placeholder for symptoms vs causes.</p>
+
+<h3 id="setting-service-level-indicators-for-your-service">Setting Service Level Indicators for your service</h3>
+
+<h3 id="continuous-improvement-of-slos">Continuous improvement of SLOs</h3>
+
+<h3 id="further-reading">Further Reading</h3>
+
+<p><sup>1</sup> https://docs.datadoghq.com/monitors/service_level_objectives/</p>
+
+            
+          </main>
+
+          <aside>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="../javascripts/application.js"></script>
+  </body>
+</html>

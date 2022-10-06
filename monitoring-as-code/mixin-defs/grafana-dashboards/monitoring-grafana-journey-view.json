@@ -1,0 +1,1819 @@
+{
+   "__inputs": [ ],
+   "__requires": [ ],
+   "annotations": {
+      "list": [ ]
+   },
+   "editable": true,
+   "gnetId": null,
+   "graphTooltip": 0,
+   "hideControls": false,
+   "id": null,
+   "links": [
+      {
+         "asDropdown": false,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "summary-view"
+         ],
+         "title": "summary-view",
+         "type": "dashboards"
+      },
+      {
+         "asDropdown": false,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "monitoring",
+            "product-view"
+         ],
+         "title": "product-view",
+         "type": "dashboards"
+      },
+      {
+         "asDropdown": true,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "monitoring",
+            "journey-view"
+         ],
+         "title": "journey-view",
+         "type": "dashboards"
+      },
+      {
+         "asDropdown": true,
+         "icon": "dashboard",
+         "includeVars": true,
+         "tags": [
+            "monitoring",
+            "detail-view"
+         ],
+         "title": "detail-view",
+         "type": "dashboards"
+      }
+   ],
+   "panels": [
+      {
+         "collapse": false,
+         "collapsed": false,
+         "id": 2,
+         "panels": [ ],
+         "repeat": null,
+         "repeatIteration": null,
+         "repeatRowId": null,
+         "showTitle": true,
+         "title": "SLI01: requests to the Grafana landing page are successful",
+         "titleSize": "h6",
+         "type": "row"
+      },
+      {
+         "datasource": "prometheus",
+         "fieldConfig": {
+            "defaults": {
+               "links": [ ],
+               "mappings": [ ],
+               "noValue": "No SLO Data Available",
+               "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                     {
+                        "color": "red",
+                        "value": null
+                     },
+                     {
+                        "color": "orange",
+                        "value": 0.90000000000000002
+                     },
+                     {
+                        "color": "green",
+                        "value": 0.45000000000000001
+                     }
+                  ]
+               },
+               "unit": "percentunit"
+            }
+         },
+         "gridPos": {
+            "h": 6,
+            "w": 4,
+            "x": 0,
+            "y": 0
+         },
+         "id": 3,
+         "links": [ ],
+         "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+               "calcs": [
+                  "lastNotNull"
+               ],
+               "fields": "",
+               "values": false
+            },
+            "textMode": "Value and name"
+         },
+         "pluginVersion": "7",
+         "targets": [
+            {
+               "expr": "sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.10000000000000001)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m]) > 0)\n",
+               "format": "time_series",
+               "instant": true,
+               "intervalFactor": 2,
+               "legendFormat": "SLO Target 90.0 %",
+               "refId": "A"
+            }
+         ],
+         "title": " Availability (7d)",
+         "transparent": false,
+         "type": "stat"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "decimals": 2,
+         "fill": 1,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 4,
+            "y": 0
+         },
+         "id": 4,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 3,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "(0.10000000000000001 - (1 - (sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.10000000000000001)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m])))))\n/\n0.10000000000000001\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Remaining Error Budget",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0
+            },
+            {
+               "colorMode": "warning",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0.5
+            }
+         ],
+         "timeFrom": "$error_budget_span",
+         "timeShift": null,
+         "title": "Error budget remaining over previous 7d",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            },
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            }
+         ]
+      },
+      {
+         "content": "",
+         "datasource": null,
+         "gridPos": {
+            "h": 1,
+            "w": 0.5,
+            "x": 14,
+            "y": 0
+         },
+         "id": 5,
+         "mode": "markdown",
+         "title": null,
+         "transparent": true,
+         "type": "text"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "Error rate for Grafana landing page requests should be below 10.0%",
+         "fill": 10,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 1,
+            "w": 9,
+            "x": 14.5,
+            "y": 0
+         },
+         "id": 6,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 0,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/SLO OK/",
+               "color": "#73BF69"
+            },
+            {
+               "alias": "/SLO Fail/",
+               "color": "red"
+            }
+         ],
+         "spaceLength": 10,
+         "stack": true,
+         "steppedLine": true,
+         "targets": [
+            {
+               "expr": "sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.10000000000000001)[$__interval:1m])\n/ \nsum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO OK",
+               "refId": "A"
+            },
+            {
+               "expr": "1 - (\n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.10000000000000001)[$__interval:1m])\n  / \n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI01\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n)\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO Fail",
+               "refId": "B"
+            }
+         ],
+         "thresholds": [ ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": null,
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": false,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            }
+         ]
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "* Sample interval is 1m\n* Selectors are job=\\~\"grafana\", handler=\\~\"/api/dashboards/home\"\n* Error selectors are status_code=~\"4..|5..\"\n",
+         "fill": 0,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 5,
+            "w": 10,
+            "x": 14,
+            "y": 0
+         },
+         "id": 7,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 1,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/error rate/",
+               "color": "red",
+               "yaxis": 2
+            }
+         ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/dashboards/home\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "requests per second",
+               "refId": "A"
+            },
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/dashboards/home\",namespace=~\"$environment\", status_code=~\"4..|5..\"}[1m]) or vector(0))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "errors per second",
+               "refId": "B"
+            },
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/dashboards/home\",namespace=~\"$environment\", status_code=~\"4..|5..\"}[1m]) or vector(0))\n/\nsum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/dashboards/home\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "error rate",
+               "refId": "C"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "gt",
+               "value": 0.10000000000000001,
+               "yaxis": "right"
+            }
+         ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": "Grafana landing page requests",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            },
+            {
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            }
+         ]
+      },
+      {
+         "collapse": false,
+         "collapsed": false,
+         "id": 8,
+         "panels": [ ],
+         "repeat": null,
+         "repeatIteration": null,
+         "repeatRowId": null,
+         "showTitle": true,
+         "title": "SLI02: requests to the Grafana login are successful",
+         "titleSize": "h6",
+         "type": "row"
+      },
+      {
+         "datasource": "prometheus",
+         "fieldConfig": {
+            "defaults": {
+               "links": [ ],
+               "mappings": [ ],
+               "noValue": "No SLO Data Available",
+               "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                     {
+                        "color": "red",
+                        "value": null
+                     },
+                     {
+                        "color": "orange",
+                        "value": 0.90000000000000002
+                     },
+                     {
+                        "color": "green",
+                        "value": 0.45000000000000001
+                     }
+                  ]
+               },
+               "unit": "percentunit"
+            }
+         },
+         "gridPos": {
+            "h": 6,
+            "w": 4,
+            "x": 0,
+            "y": 0
+         },
+         "id": 9,
+         "links": [ ],
+         "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+               "calcs": [
+                  "lastNotNull"
+               ],
+               "fields": "",
+               "values": false
+            },
+            "textMode": "Value and name"
+         },
+         "pluginVersion": "7",
+         "targets": [
+            {
+               "expr": "sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.10000000000000001)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m]) > 0)\n",
+               "format": "time_series",
+               "instant": true,
+               "intervalFactor": 2,
+               "legendFormat": "SLO Target 90.0 %",
+               "refId": "A"
+            }
+         ],
+         "title": " Availability (7d)",
+         "transparent": false,
+         "type": "stat"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "decimals": 2,
+         "fill": 1,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 4,
+            "y": 0
+         },
+         "id": 10,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 3,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "(0.10000000000000001 - (1 - (sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.10000000000000001)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m])))))\n/\n0.10000000000000001\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Remaining Error Budget",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0
+            },
+            {
+               "colorMode": "warning",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0.5
+            }
+         ],
+         "timeFrom": "$error_budget_span",
+         "timeShift": null,
+         "title": "Error budget remaining over previous 7d",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            },
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            }
+         ]
+      },
+      {
+         "content": "",
+         "datasource": null,
+         "gridPos": {
+            "h": 1,
+            "w": 0.5,
+            "x": 14,
+            "y": 0
+         },
+         "id": 11,
+         "mode": "markdown",
+         "title": null,
+         "transparent": true,
+         "type": "text"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "Error rate for Grafana login page requests should be below 10.0%",
+         "fill": 10,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 1,
+            "w": 9,
+            "x": 14.5,
+            "y": 0
+         },
+         "id": 12,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 0,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/SLO OK/",
+               "color": "#73BF69"
+            },
+            {
+               "alias": "/SLO Fail/",
+               "color": "red"
+            }
+         ],
+         "spaceLength": 10,
+         "stack": true,
+         "steppedLine": true,
+         "targets": [
+            {
+               "expr": "sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.10000000000000001)[$__interval:1m])\n/ \nsum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO OK",
+               "refId": "A"
+            },
+            {
+               "expr": "1 - (\n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.10000000000000001)[$__interval:1m])\n  / \n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI02\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n)\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO Fail",
+               "refId": "B"
+            }
+         ],
+         "thresholds": [ ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": null,
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": false,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            }
+         ]
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "* Sample interval is 1m\n* Selectors are job=\\~\"grafana\", handler=\\~\"/login\"\n* Error selectors are status_code=~\"4..|5..\"\n",
+         "fill": 0,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 5,
+            "w": 10,
+            "x": 14,
+            "y": 0
+         },
+         "id": 13,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 1,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/error rate/",
+               "color": "red",
+               "yaxis": 2
+            }
+         ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/login\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "requests per second",
+               "refId": "A"
+            },
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/login\",namespace=~\"$environment\", status_code=~\"4..|5..\"}[1m]) or vector(0))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "errors per second",
+               "refId": "B"
+            },
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/login\",namespace=~\"$environment\", status_code=~\"4..|5..\"}[1m]) or vector(0))\n/\nsum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/login\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "error rate",
+               "refId": "C"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "gt",
+               "value": 0.10000000000000001,
+               "yaxis": "right"
+            }
+         ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": "Grafana login page requests",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            },
+            {
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            }
+         ]
+      },
+      {
+         "collapse": false,
+         "collapsed": false,
+         "id": 14,
+         "panels": [ ],
+         "repeat": null,
+         "repeatIteration": null,
+         "repeatRowId": null,
+         "showTitle": true,
+         "title": "SLI03: requests to the Grafana datasources are successful",
+         "titleSize": "h6",
+         "type": "row"
+      },
+      {
+         "datasource": "prometheus",
+         "fieldConfig": {
+            "defaults": {
+               "links": [ ],
+               "mappings": [ ],
+               "noValue": "No SLO Data Available",
+               "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                     {
+                        "color": "red",
+                        "value": null
+                     },
+                     {
+                        "color": "orange",
+                        "value": 0.90000000000000002
+                     },
+                     {
+                        "color": "green",
+                        "value": 0.45000000000000001
+                     }
+                  ]
+               },
+               "unit": "percentunit"
+            }
+         },
+         "gridPos": {
+            "h": 6,
+            "w": 4,
+            "x": 0,
+            "y": 0
+         },
+         "id": 15,
+         "links": [ ],
+         "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+               "calcs": [
+                  "lastNotNull"
+               ],
+               "fields": "",
+               "values": false
+            },
+            "textMode": "Value and name"
+         },
+         "pluginVersion": "7",
+         "targets": [
+            {
+               "expr": "sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.5)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m]) > 0)\n",
+               "format": "time_series",
+               "instant": true,
+               "intervalFactor": 2,
+               "legendFormat": "SLO Target 90.0 %",
+               "refId": "A"
+            }
+         ],
+         "title": " Availability (7d)",
+         "transparent": false,
+         "type": "stat"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "decimals": 2,
+         "fill": 1,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 4,
+            "y": 0
+         },
+         "id": 16,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 3,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "(0.10000000000000001 - (1 - (sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.5)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m])))))\n/\n0.10000000000000001\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Remaining Error Budget",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0
+            },
+            {
+               "colorMode": "warning",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0.5
+            }
+         ],
+         "timeFrom": "$error_budget_span",
+         "timeShift": null,
+         "title": "Error budget remaining over previous 7d",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            },
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            }
+         ]
+      },
+      {
+         "content": "",
+         "datasource": null,
+         "gridPos": {
+            "h": 1,
+            "w": 0.5,
+            "x": 14,
+            "y": 0
+         },
+         "id": 17,
+         "mode": "markdown",
+         "title": null,
+         "transparent": true,
+         "type": "text"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "Error rate for Grafana  datasource API requests should be below 50.0%",
+         "fill": 10,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 1,
+            "w": 9,
+            "x": 14.5,
+            "y": 0
+         },
+         "id": 18,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 0,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/SLO OK/",
+               "color": "#73BF69"
+            },
+            {
+               "alias": "/SLO Fail/",
+               "color": "red"
+            }
+         ],
+         "spaceLength": 10,
+         "stack": true,
+         "steppedLine": true,
+         "targets": [
+            {
+               "expr": "sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.5)[$__interval:1m])\n/ \nsum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO OK",
+               "refId": "A"
+            },
+            {
+               "expr": "1 - (\n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.5)[$__interval:1m])\n  / \n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI03\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n)\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO Fail",
+               "refId": "B"
+            }
+         ],
+         "thresholds": [ ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": null,
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": false,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            }
+         ]
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "* Sample interval is 1m\n* Selectors are job=\\~\"grafana\", handler=\\~\"/api/datasources/proxy/:id/.*\"\n* Error selectors are status_code=~\"4..|5..\"\n",
+         "fill": 0,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 5,
+            "w": 10,
+            "x": 14,
+            "y": 0
+         },
+         "id": 19,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 1,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/error rate/",
+               "color": "red",
+               "yaxis": 2
+            }
+         ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/datasources/proxy/:id/.*\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "requests per second",
+               "refId": "A"
+            },
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/datasources/proxy/:id/.*\",namespace=~\"$environment\", status_code=~\"4..|5..\"}[1m]) or vector(0))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "errors per second",
+               "refId": "B"
+            },
+            {
+               "expr": "sum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/datasources/proxy/:id/.*\",namespace=~\"$environment\", status_code=~\"4..|5..\"}[1m]) or vector(0))\n/\nsum(rate(grafana_http_request_duration_seconds_count{job=~\"grafana\",handler=~\"/api/datasources/proxy/:id/.*\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "error rate",
+               "refId": "C"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "gt",
+               "value": 0.5,
+               "yaxis": "right"
+            }
+         ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": "Grafana  datasource API requests",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            },
+            {
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            }
+         ]
+      },
+      {
+         "collapse": false,
+         "collapsed": false,
+         "id": 20,
+         "panels": [ ],
+         "repeat": null,
+         "repeatIteration": null,
+         "repeatRowId": null,
+         "showTitle": true,
+         "title": "SLI04: requests to the Grafana datasources are successful",
+         "titleSize": "h6",
+         "type": "row"
+      },
+      {
+         "datasource": "prometheus",
+         "fieldConfig": {
+            "defaults": {
+               "links": [ ],
+               "mappings": [ ],
+               "noValue": "No SLO Data Available",
+               "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                     {
+                        "color": "red",
+                        "value": null
+                     },
+                     {
+                        "color": "orange",
+                        "value": 0.90000000000000002
+                     },
+                     {
+                        "color": "green",
+                        "value": 0.45000000000000001
+                     }
+                  ]
+               },
+               "unit": "percentunit"
+            }
+         },
+         "gridPos": {
+            "h": 6,
+            "w": 4,
+            "x": 0,
+            "y": 0
+         },
+         "id": 21,
+         "links": [ ],
+         "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+               "calcs": [
+                  "lastNotNull"
+               ],
+               "fields": "",
+               "values": false
+            },
+            "textMode": "Value and name"
+         },
+         "pluginVersion": "7",
+         "targets": [
+            {
+               "expr": "sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.10000000000000001)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m]) > 0)\n",
+               "format": "time_series",
+               "instant": true,
+               "intervalFactor": 2,
+               "legendFormat": "SLO Target 90.0 %",
+               "refId": "A"
+            }
+         ],
+         "title": " Availability (7d)",
+         "transparent": false,
+         "type": "stat"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "decimals": 2,
+         "fill": 1,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 4,
+            "y": 0
+         },
+         "id": 22,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 3,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [ ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "(0.10000000000000001 - (1 - (sum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool 0.10000000000000001)[7d:1m]))\n/\nsum(sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"}\n< bool Inf)[7d:1m])))))\n/\n0.10000000000000001\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "Remaining Error Budget",
+               "refId": "A"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0
+            },
+            {
+               "colorMode": "warning",
+               "fill": false,
+               "line": true,
+               "op": "lt",
+               "value": 0.5
+            }
+         ],
+         "timeFrom": "$error_budget_span",
+         "timeShift": null,
+         "title": "Error budget remaining over previous 7d",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            },
+            {
+               "decimals": 2,
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": null,
+               "show": true
+            }
+         ]
+      },
+      {
+         "content": "",
+         "datasource": null,
+         "gridPos": {
+            "h": 1,
+            "w": 0.5,
+            "x": 14,
+            "y": 0
+         },
+         "id": 23,
+         "mode": "markdown",
+         "title": null,
+         "transparent": true,
+         "type": "text"
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "Error rate for Grafana  datasource API requests should be below 10.0%",
+         "fill": 10,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 1,
+            "w": 9,
+            "x": 14.5,
+            "y": 0
+         },
+         "id": 24,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 0,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/SLO OK/",
+               "color": "#73BF69"
+            },
+            {
+               "alias": "/SLO Fail/",
+               "color": "red"
+            }
+         ],
+         "spaceLength": 10,
+         "stack": true,
+         "steppedLine": true,
+         "targets": [
+            {
+               "expr": "sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.10000000000000001)[$__interval:1m])\n/ \nsum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO OK",
+               "refId": "A"
+            },
+            {
+               "expr": "1 - (\n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool 0.10000000000000001)[$__interval:1m])\n  / \n  sum_over_time((sli_value{service=\"monitoring\", sli=\"SLI04\", journey=\"grafana\",\nsli_environment=~\"$environment\"\n, sli_type=\"availability\"} < bool Inf)[$__interval:1m])\n)\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "SLO Fail",
+               "refId": "B"
+            }
+         ],
+         "thresholds": [ ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": null,
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": false,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            },
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": 1,
+               "min": 0,
+               "show": false
+            }
+         ]
+      },
+      {
+         "aliasColors": { },
+         "bars": false,
+         "dashLength": 10,
+         "dashes": false,
+         "datasource": "prometheus",
+         "description": "* Sample interval is 1m\n* Selectors are job=\\~\"grafana\"\n* Error selectors are code=~\"4..|5..\"\n",
+         "fill": 0,
+         "fillGradient": 0,
+         "gridPos": {
+            "h": 5,
+            "w": 10,
+            "x": 14,
+            "y": 0
+         },
+         "id": 25,
+         "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": false
+         },
+         "lines": true,
+         "linewidth": 1,
+         "links": [ ],
+         "nullPointMode": "null",
+         "percentage": false,
+         "pointradius": 5,
+         "points": false,
+         "renderer": "flot",
+         "repeat": null,
+         "seriesOverrides": [
+            {
+               "alias": "/error rate/",
+               "color": "red",
+               "yaxis": 2
+            }
+         ],
+         "spaceLength": 10,
+         "stack": false,
+         "steppedLine": false,
+         "targets": [
+            {
+               "expr": "sum(rate(grafana_api_response_status_total{job=~\"grafana\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "requests per second",
+               "refId": "A"
+            },
+            {
+               "expr": "sum(rate(grafana_api_response_status_total{job=~\"grafana\",namespace=~\"$environment\", code=~\"4..|5..\"}[1m]) or vector(0))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "errors per second",
+               "refId": "B"
+            },
+            {
+               "expr": "sum(rate(grafana_api_response_status_total{job=~\"grafana\",namespace=~\"$environment\", code=~\"4..|5..\"}[1m]) or vector(0))\n/\nsum(rate(grafana_api_response_status_total{job=~\"grafana\",namespace=~\"$environment\"}[1m]))\n",
+               "format": "time_series",
+               "intervalFactor": 2,
+               "legendFormat": "error rate",
+               "refId": "C"
+            }
+         ],
+         "thresholds": [
+            {
+               "colorMode": "critical",
+               "fill": false,
+               "line": true,
+               "op": "gt",
+               "value": 0.10000000000000001,
+               "yaxis": "right"
+            }
+         ],
+         "timeFrom": null,
+         "timeShift": null,
+         "title": "Grafana  datasource API requests",
+         "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+         },
+         "type": "graph",
+         "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [ ]
+         },
+         "yaxes": [
+            {
+               "format": "short",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            },
+            {
+               "format": "percentunit",
+               "label": null,
+               "logBase": 1,
+               "max": null,
+               "min": 0,
+               "show": true
+            }
+         ]
+      }
+   ],
+   "refresh": "5m",
+   "rows": [ ],
+   "schemaVersion": 18,
+   "style": "dark",
+   "tags": [
+      "monitoring",
+      "mac-version: local",
+      "grafana",
+      "journey-view"
+   ],
+   "templating": {
+      "list": [
+         {
+            "allValue": null,
+            "current": {
+               "text": "7d",
+               "value": "7d"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Error Budget Display",
+            "multi": false,
+            "name": "error_budget_span",
+            "options": [
+               {
+                  "text": "10m",
+                  "value": "10m"
+               },
+               {
+                  "text": "1h",
+                  "value": "1h"
+               },
+               {
+                  "text": "1d",
+                  "value": "1d"
+               },
+               {
+                  "text": "7d",
+                  "value": "7d"
+               },
+               {
+                  "text": "21d",
+                  "value": "21d"
+               },
+               {
+                  "text": "30d",
+                  "value": "30d"
+               },
+               {
+                  "text": "90d",
+                  "value": "90d"
+               }
+            ],
+            "query": "10m,1h,1d,7d,21d,30d,90d",
+            "refresh": 0,
+            "type": "custom"
+         },
+         {
+            "allValue": null,
+            "current": { },
+            "datasource": "prometheus",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Environment",
+            "multi": true,
+            "name": "environment",
+            "options": [ ],
+            "query": "label_values(sli_value{service=\"monitoring\"}, sli_environment)",
+            "refresh": 2,
+            "regex": "",
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [ ],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+         }
+      ]
+   },
+   "time": {
+      "from": "now-3h",
+      "to": "now"
+   },
+   "timepicker": {
+      "refresh_intervals": [
+         "5s",
+         "10s",
+         "30s",
+         "1m",
+         "5m",
+         "15m",
+         "30m",
+         "1h",
+         "2h",
+         "1d"
+      ],
+      "time_options": [
+         "5m",
+         "15m",
+         "1h",
+         "6h",
+         "12h",
+         "24h",
+         "2d",
+         "7d",
+         "30d"
+      ]
+   },
+   "timezone": "browser",
+   "title": "monitoring-grafana-journey-view",
+   "uid": "monitoring-grafana-journey-view",
+   "version": 0
+}
