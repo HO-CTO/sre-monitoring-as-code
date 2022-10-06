@@ -59,33 +59,32 @@ Within the definition file you need to pass in the following global variables fo
 
 Once setting global variables you will then need to break down each user journey into a different yaml stanza. See "writeback" example below.
 
-    local slo_spec = {
+    local sliSpecList = {
       # user journey name
-      writeback: {
+      journey01: {
         # sli per critical user journey step
         SLI01: {
-          title: 'requests to GRAPI writeback case api are successful',
-          metric_description: 'All requests to GRAPI writeback',
-          period: '7d',
-          metric: 'http_server_requests_seconds_count',
-          metric_target: 0.1,
-          eval_interval: '1m',
-          selectors: [config.host, 'job=~"grapi"'],
-          errorSelectors: ['status=~"4..|5.."'],
-          slo_target: 0.1,
-          type: 'http-errors',
-        },
-        SLI02: {
-          title: 'requests to GRAPI writeback are fast enough',
-          metric_description: 'All requests to GRAPI writeback',
-          period: '7d',
-          metric: 'http_server_requests_seconds',
-          metric_target: 0.75,
-          latency_percentile: 0.95,
-          eval_interval: '1m',
-          selectors: [config.host, 'job=~"grapi"'],
-          slo_target: 0.1,
-          type: 'http-latency',
+          title: 'grapi search results requests',
+          sliDescription: 'grapi search results requests',
+          configurationItem: 'GRAPI API Search (App Svc)',
+          period: '30d',
+          metricType: 'http_server_requests_seconds',
+          evalInterval: '5m',
+          selectors: {
+            product: '.+/grapi-search-api-helm',
+            resource: '/search',
+            errorStatus: '4..|5..',
+          },
+          sloTarget: 90.0,
+          sliTypes: {
+            availability: {
+              intervalTarget: 90,
+            },
+            latency: {
+              histogramSecondsTarget: 15,
+              percentile: 90,
+            },
+          },
         },
       },
     };
@@ -95,15 +94,17 @@ Local variables should be supplied for each SLI as follows: -
 | Local variables            | Description        | Formatting Best Practice | Example |
 | ----------------------------| -------------------|--------------------------|---------|
 | title                     | Meaningful SLI summary | This is propagated into Dashboards and Alerts and should describe the element of the user journey | Landing page requests |
-| metric_description   | Meaningful metric description | This is propagated into Dashboards and Alerts and should describe the metric used for calculations | HTTP actuator requests |
+| sliDescription   | Meaningful metric description | This is propagated into Dashboards and Alerts and should describe the metric used for calculations | HTTP actuator requests |
 | period      | The rolling period of which the SLI will cover | Default should be 30 days | 30d |
-| metric          | The metric to be used to calculate the SLI | This should match the metric exposed and captured by Prometheus | http_server_requests_seconds_count |
-| metric_target   | For latency based SLIs this should be the target you are aiming to achieve | 0.75 represents 750 milliseconds | 0.75 |
-| latency_percentile | For "latency-type" SLIs we measure percentiles inorder to meaningfully describe the distribution of latencies. | The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases) | 99 |
-| eval_interval | How frequently Prometheus will evaluate rules | Evaluation interval should be greater or equal to Prometheus scrape interval | 1m |
+| metricType          | The metric to be used to calculate the SLI | This should match the metric exposed and captured by Prometheus | http_server_requests_seconds_count |
+| evalInterval | How frequently Prometheus will evaluate rules | Evaluation interval should be greater or equal to Prometheus scrape interval | 1m |
 | selectors | This refers to the Label selectors which are used in the Promql expressions to filter data samples | Minimum needs to include the job to filter | 'job=~"grapi", uri=~"/grapi/v1/case"' |
-| slo_target | Your statement of desired performance. | Currently set to the inverse so 0.01 represents 99%  | 0.01 |
-| type | This is the SLI category based on the SLI menu | Must match SLI type provided in SLI Menu | http-errors |
+| sloTarget | Your statement of desired performance over the compliance period defined in the "period" property. | Provided as a percentage target | 90 = 90 |
+| sliType | This is the SLI type based on standard Google SLI categories | Must match SLI type aligned to metric type in metric_types.libsonnet | availability |
+| percentile | For "latency" sli types with a histogram metric we measure percentiles inorder to meaningfully describe the distribution of latencies. | The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases) | 99 = 99th percentile |
+| intervalTarget | Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals | Provided as a percentage target | 99 = 99% |
+| histogramSecondsTarget | For "latency" sli types with a histogram metric, a seconds target is provided to determine the goal the latency percentile provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
+| counterSecondsTarget | For "latency" sli types with a counter metric, a seconds target is provided to determine the goal the average latency provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
 
 ### Observe and iterate (sre-monitoring-as-code) {#observe-and-iterate-heading}
 
