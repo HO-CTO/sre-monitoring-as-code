@@ -53,6 +53,14 @@ local panels = [
       instant=true,
       legendFormat='Fired Alerts',
     ),
+  ).addTarget(
+    prometheus.target(
+      'sum without (exported_namespace) (label_replace( sum by(exported_namespace) (increase(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=~"$environment"}[30d])), "sli_environment", "$1", "exported_namespace", "(.*)"))' %
+      environmentLabelSelector,
+      format='table',
+      instant=true,
+      legendFormat='Traffic',
+    ),
   ).addTransformations(
     [
       { id: 'labelsToFields' },
@@ -67,6 +75,7 @@ local panels = [
             'Value #B': '% Change',
             'Value #C': 'SLO Coverage',
             'Value #D': 'Fired Alerts',
+            'Value #E': 'Traffic',
             service: 'Service',
             sli_environment: 'Environment',
           },
@@ -120,6 +129,10 @@ local panels = [
         },
         {
           matcher: { id: 'byName', options: 'Fired Alerts' },
+          properties: [{ id: 'unit', value: 'none' }],
+        },
+        {
+          matcher: { id: 'byName', options: 'Traffic' },
           properties: [{ id: 'unit', value: 'none' }],
         },
       ],
