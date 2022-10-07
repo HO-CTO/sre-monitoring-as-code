@@ -54,3 +54,23 @@ Navigate to http://localhost:8081 and the application should serve a simple HTML
 1. Modify the `deploy.sh` file within the MaC framework, or run the MaC docker image to generate the recording and alerting rules for the custom metric type.
 
 1. The metrics should then be visible from within the Prometheus web client and available to see within Grafana dashboards.
+
+## Exported metrics
+
+The exported metrics from this application include:
+
+```
+# HELP http_server_requests_seconds Duration of HTTP server request handling
+# TYPE http_server_requests_seconds summary
+http_server_requests_seconds_count{exception="None",method="GET",outcome="SUCCESS",status="200",uri="/"}
+http_server_requests_seconds_sum{exception="None",method="GET",outcome="SUCCESS",status="200",uri="/"}
+
+# HELP http_server_requests_seconds_max Duration of HTTP server request handling
+# TYPE http_server_requests_seconds_max gauge
+http_server_requests_seconds_max{exception="None",method="GET",outcome="SUCCESS",status="200",uri="/"}
+
+# HELP simple_counter_total A demo counter metric
+# TYPE simple_counter_total counter
+simple_counter_total{app="demo",status="SUCCESS",team="sre"}
+simple_counter_total{app="demo",status="EXCEPTION",team="sre"}
+```
