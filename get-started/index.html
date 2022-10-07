@@ -380,35 +380,34 @@
   </tbody>
 </table>
 
-<p>Once setting global variables you will then need to break down each user journey into a different yaml stanza. See "writeback" example below.</p>
+<p>Once setting global variables you will then need to break down each user journey into a different yaml stanza. See "journey01" example below.</p>
 
-<div class="highlight"><pre class="highlight plaintext"><code>local slo_spec = {
+<div class="highlight"><pre class="highlight plaintext"><code>local sliSpecList = {
   # user journey name
-  writeback: {
+  journey01: {
     # sli per critical user journey step
     SLI01: {
-      title: 'requests to GRAPI writeback case api are successful',
-      metric_description: 'All requests to GRAPI writeback',
-      period: '7d',
-      metric: 'http_server_requests_seconds_count',
-      metric_target: 0.1,
-      eval_interval: '1m',
-      selectors: [config.host, 'job=~"grapi"'],
-      errorSelectors: ['status=~"4..|5.."'],
-      slo_target: 0.1,
-      type: 'http-errors',
-    },
-    SLI02: {
-      title: 'requests to GRAPI writeback are fast enough',
-      metric_description: 'All requests to GRAPI writeback',
-      period: '7d',
-      metric: 'http_server_requests_seconds',
-      metric_target: 0.75,
-      latency_percentile: 0.95,
-      eval_interval: '1m',
-      selectors: [config.host, 'job=~"grapi"'],
-      slo_target: 0.1,
-      type: 'http-latency',
+      title: 'grapi search results requests',
+      sliDescription: 'grapi search results requests',
+      configurationItem: 'GRAPI API Search (App Svc)',
+      period: '30d',
+      metricType: 'http_server_requests_seconds',
+      evalInterval: '5m',
+      selectors: {
+        product: '.+/grapi-search-api-helm',
+        resource: '/search',
+        errorStatus: '4..|5..',
+      },
+      sloTarget: 90.0,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+      },
     },
   },
 };
@@ -432,7 +431,7 @@
       <td>Landing page requests</td>
     </tr>
     <tr>
-      <td>metric_description</td>
+      <td>sliDescription</td>
       <td>Meaningful metric description</td>
       <td>This is propagated into Dashboards and Alerts and should describe the metric used for calculations</td>
       <td>HTTP actuator requests</td>
@@ -444,25 +443,13 @@
       <td>30d</td>
     </tr>
     <tr>
-      <td>metric</td>
+      <td>metricType</td>
       <td>The metric to be used to calculate the SLI</td>
       <td>This should match the metric exposed and captured by Prometheus</td>
       <td>http_server_requests_seconds_count</td>
     </tr>
     <tr>
-      <td>metric_target</td>
-      <td>For latency based SLIs this should be the target you are aiming to achieve</td>
-      <td>0.75 represents 750 milliseconds</td>
-      <td>0.75</td>
-    </tr>
-    <tr>
-      <td>latency_percentile</td>
-      <td>For "latency-type" SLIs we measure percentiles inorder to meaningfully describe the distribution of latencies.</td>
-      <td>The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases)</td>
-      <td>99</td>
-    </tr>
-    <tr>
-      <td>eval_interval</td>
+      <td>evalInterval</td>
       <td>How frequently Prometheus will evaluate rules</td>
       <td>Evaluation interval should be greater or equal to Prometheus scrape interval</td>
       <td>1m</td>
@@ -474,16 +461,40 @@
       <td>'job=~"grapi", uri=~"/grapi/v1/case"'</td>
     </tr>
     <tr>
-      <td>slo_target</td>
-      <td>Your statement of desired performance.</td>
-      <td>Currently set to the inverse so 0.01 represents 99%</td>
-      <td>0.01</td>
+      <td>sloTarget</td>
+      <td>Your statement of desired performance over the compliance period defined in the "period" property.</td>
+      <td>Provided as a percentage target</td>
+      <td>90 = 90</td>
     </tr>
     <tr>
-      <td>type</td>
-      <td>This is the SLI category based on the SLI menu</td>
-      <td>Must match SLI type provided in SLI Menu</td>
-      <td>http-errors</td>
+      <td>sliType</td>
+      <td>This is the SLI type based on standard Google SLI categories</td>
+      <td>Must match SLI type aligned to metric type in metric_types.libsonnet</td>
+      <td>availability</td>
+    </tr>
+    <tr>
+      <td>percentile</td>
+      <td>For "latency" sli types with a histogram metric we measure percentiles inorder to meaningfully describe the distribution of latencies.</td>
+      <td>The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases)</td>
+      <td>99 = 99th percentile</td>
+    </tr>
+    <tr>
+      <td>intervalTarget</td>
+      <td>Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals</td>
+      <td>Provided as a percentage target</td>
+      <td>99 = 99%</td>
+    </tr>
+    <tr>
+      <td>histogramSecondsTarget</td>
+      <td>For "latency" sli types with a histogram metric, a seconds target is provided to determine the goal the latency percentile provided must meet to be determined as a good interval.</td>
+      <td>Provided in seconds</td>
+      <td>0.25 = 250 milliseconds</td>
+    </tr>
+    <tr>
+      <td>counterSecondsTarget</td>
+      <td>For "latency" sli types with a counter metric, a seconds target is provided to determine the goal the average latency provided must meet to be determined as a good interval.</td>
+      <td>Provided in seconds</td>
+      <td>0.25 = 250 milliseconds</td>
     </tr>
   </tbody>
 </table>
