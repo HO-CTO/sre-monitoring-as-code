@@ -128,11 +128,11 @@ local panels = [
         },
         {
           matcher: { id: 'byName', options: 'Fired Alerts' },
-          properties: [{ id: 'unit', value: 'none' }],
+          properties: [{ id: 'unit', value: 'none' },{ id: 'unit', value: 'locale' }],
         },
         {
           matcher: { id: 'byName', options: 'Traffic' },
-          properties: [{ id: 'decimals', value: '0' }],
+          properties: [{ id: 'decimals', value: '0' },{ id: 'unit', value: 'locale' }],
         },
       ],
     defaults+:
