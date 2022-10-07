@@ -19,14 +19,18 @@ local sliSpecList = {
       period: '30d',
       metricType: 'aws_sqs',
       evalInterval: '5m',
-      latencyTarget: 100,
       selectors: {
         product: 'test',
       },
       sloTarget: 90,
       sliTypes: {
-        correctness: 0.1,
-        freshness: 0.1,
+        freshness: {
+          counterSecondsTarget: 100,
+          intervalTarget: 90,
+        },
+        correctness: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI02: {
@@ -35,15 +39,19 @@ local sliSpecList = {
       period: '30d',
       metricType: 'http_server_requests_seconds',
       evalInterval: '5m',
-      latencyPercentile: 0.1,
       selectors: {
         product: 'test',
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
-        latency: 0.1,
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI03: {
@@ -58,7 +66,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI04: {
@@ -73,7 +83,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI05: {
@@ -82,13 +94,15 @@ local sliSpecList = {
       period: '30d',
       metricType: 'http_request_duration_seconds',
       evalInterval: '5m',
-      latencyPercentile: 0.1,
       selectors: {
         product: 'test',
       },
       sloTarget: 90,
       sliTypes: {
-        latency: 0.1,
+        latency: {
+          histogramSecondsTarget: 0.1,
+          percentile: 90,
+        },
       },
     },
     SLI06: {
@@ -103,7 +117,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI07: {
@@ -112,15 +128,19 @@ local sliSpecList = {
       period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
       evalInterval: '5m',
-      latencyPercentile: 0.1,
       selectors: {
         product: 'test',
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
-        latency: 0.1,
+        latency: {
+          histogramSecondsTarget: 0.1,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI08: {
@@ -128,15 +148,19 @@ local sliSpecList = {
       sliDescription: 'test',
       period: '30d',
       metricType: 'aws_alb',
-      latencyPercentile: 0.9,
       evalInterval: '5m',
       selectors: {
         product: 'test',
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
-        latency: 0.1,
+        latency: {
+          histogramSecondsTarget: 0.1,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI09: {
@@ -150,7 +174,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI10: {
@@ -164,7 +190,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI11: {
@@ -178,7 +206,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI12: {
@@ -187,15 +217,21 @@ local sliSpecList = {
       period: '30d',
       metricType: 'aws_rds_read',
       evalInterval: '5m',
-      latencyTarget: 0.25,
       selectors: {
         product: 'test',
       },
       sloTarget: 90,
       sliTypes: {
-        latency: 0.1,
-        iops: 0.1,
-        throughput: 0.1,
+        latency: {
+          counterSecondsTarget: 0.25,
+          intervalTarget: 90,
+        },
+        iops: {
+          intervalTarget: 90,
+        },
+        throughput: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI13: {
@@ -204,15 +240,21 @@ local sliSpecList = {
       period: '30d',
       metricType: 'aws_rds_write',
       evalInterval: '5m',
-      latencyTarget: 0.25,
       selectors: {
         product: 'test',
       },
       sloTarget: 90,
       sliTypes: {
-        latency: 0.1,
-        iops: 0.1,
-        throughput: 0.1,
+        latency: {
+          counterSecondsTarget: 0.25,
+          intervalTarget: 90,
+        },
+        iops: {
+          intervalTarget: 90,
+        },
+        throughput: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI14: {
@@ -221,14 +263,18 @@ local sliSpecList = {
       period: '30d',
       metricType: 'aws_es',
       evalInterval: '5m',
-      latencyTarget: 0.25,
       selectors: {
         product: 'test',
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
-        latency: 0.1,
+        latency: {
+          counterSecondsTarget: 0.25,
+          intervalTarget: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
   },

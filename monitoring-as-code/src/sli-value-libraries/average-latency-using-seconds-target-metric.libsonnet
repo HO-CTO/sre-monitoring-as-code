@@ -5,7 +5,7 @@
 // target - Metric to get the average value of over evaluation interval
 
 // Additional config:
-// latencyTarget in SLI spec
+// counterSecondsTarget in SLI spec
 
 // MaC imports
 local sliValueLibraryFunctions = import '../util/sli-value-library-functions.libsonnet';
@@ -32,14 +32,14 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
             count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
         targetMetric: targetMetrics.target,
-        latencyTarget: sliSpec.latencyTarget,
+        counterSecondsTarget: sliSpec.counterSecondsTarget,
         selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
         environmentSelectorLabel: selectorLabels.environment,
         productSelectorLabel: selectorLabels.product,
@@ -76,7 +76,7 @@ local createGraphPanel(sliSpec) =
         sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
       ||| % {
         targetMetric: targetMetrics.target,
-        latencyTarget: sliSpec.latencyTarget,
+        counterSecondsTarget: sliSpec.counterSecondsTarget,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -85,20 +85,20 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(latencyTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
         count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
         targetMetric: targetMetrics.target,
-        latencyTarget: sliSpec.latencyTarget,
+        counterSecondsTarget: sliSpec.counterSecondsTarget,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where latency > %s seconds' % sliSpec.latencyTarget,
+      legendFormat='avg period where latency > %s seconds' % sliSpec.counterSecondsTarget,
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where latency > %s seconds/' % sliSpec.latencyTarget,
+      alias: '/avg period where latency > %s seconds/' % sliSpec.counterSecondsTarget,
       color: 'red',
     },
   ).addSeriesOverride(

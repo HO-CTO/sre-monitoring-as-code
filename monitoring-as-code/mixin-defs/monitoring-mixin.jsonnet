@@ -32,7 +32,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI02: {
@@ -48,7 +50,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI03: {
@@ -64,7 +68,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.5,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
   },
@@ -79,7 +85,9 @@ local sliSpecList = {
       selectors: {},
       sloTarget: 90,
       sliTypes: {
-        availability: 1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI02: {
@@ -93,7 +101,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 15,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
   },
@@ -111,7 +121,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI02: {
@@ -119,14 +131,16 @@ local sliSpecList = {
       sliDescription: 'Instant query requests to thanos-query',
       period: '7d',
       metricType: 'http_request_duration_seconds',
-      latencyPercentile: 0.8,
       evalInterval: '1m',
       selectors: {
         product: 'thanos-query',
         resource: 'query',
       },
       sliTypes: {
-        latency: 15,
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 80,
+        },
       },
       sloTarget: 90,
     },
@@ -143,7 +157,9 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI04: {
@@ -151,16 +167,18 @@ local sliSpecList = {
       sliDescription: 'Range query requests to thanos-query',
       period: '7d',
       metricType: 'http_request_duration_seconds',
-      latencyPercentile: 0.8,
       evalInterval: '1m',
       selectors: {
         product: 'thanos-query',
         resource: 'query_range',
       },
-      sliTypes: {
-        latency: 10,
-      },
       sloTarget: 90,
+      sliTypes: {
+        latency: {
+          histogramSecondsTarget: 10,
+          percentile: 80,
+        },
+      },
     },
     SLI05: {
       title: 'compactions by thanos-compact',
@@ -173,7 +191,9 @@ local sliSpecList = {
       },
       sloTarget: 99,
       sliTypes: {
-        availability: 0.01,
+        availability: {
+          intervalTarget: 99,
+        },
       },
     },
   },

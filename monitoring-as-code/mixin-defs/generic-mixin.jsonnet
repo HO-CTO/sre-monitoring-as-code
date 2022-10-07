@@ -23,15 +23,19 @@ local sliSpecList = {
       period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
       evalInterval: '5m',
-      latencyPercentile: 0.9,
       selectors: {
         product: '.*',
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
-        latency: 15,
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI02: {
@@ -40,20 +44,24 @@ local sliSpecList = {
       period: '30d',
       metricType: 'http_server_requests_seconds',
       evalInterval: '5m',
-      latencyPercentile: 0.9,
       selectors: {
         product: '.*',
         errorStatus: '4..|5..',
       },
       sloTarget: 90,
       sliTypes: {
-        availability: 0.1,
-        latency: 15,
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
       },
     },
     SLI03: {
-      title: 'SQS messages have failed to be processed',
-      sliDescription: 'All dead letter queues for the service',
+      title: 'SQS messages',
+      sliDescription: 'All queues for the service',
       period: '30d',
       metricType: 'aws_sqs',
       evalInterval: '5m',
@@ -62,22 +70,13 @@ local sliSpecList = {
       },
       sloTarget: 90,
       sliTypes: {
-        correctness: 0.1,
-      },
-    },
-    SLI04: {
-      title: 'SQS messages have been queued for too long',
-      sliDescription: 'All standard queues for the service',
-      period: '30d',
-      metricType: 'aws_sqs',
-      evalInterval: '5m',
-      latencyTarget: 300,
-      selectors: {
-        product: '.*',
-      },
-      sloTarget: 90,
-      sliTypes: {
-        freshness: 0.1,
+        freshness: {
+          counterSecondsTarget: 300,
+          intervalTarget: 90,
+        },
+        correctness: {
+          intervalTarget: 90,
+        },
       },
     },
   },
