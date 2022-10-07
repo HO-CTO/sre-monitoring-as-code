@@ -14,5 +14,10 @@ if [ "$JSONNET_FILES_CHANGED" -gt "0" ]; then
 fi
 
 if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
-    find $REPO_ROOT_DIR -name Dockerfile -exec sh -c "echo {} && docker run --rm -i ghcr.io/hadolint/hadolint < {}" \;
+    dockerfiles_changed=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile")
+    for dockerfile in $dockerfiles_changed
+    do
+        echo $dockerfile
+        docker run --rm -i ghcr.io/hadolint/hadolint < $dockerfile
+    done
 fi
