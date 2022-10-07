@@ -55,8 +55,7 @@ local panels = [
     ),
   ).addTarget(
     prometheus.target(
-      'sum without (exported_namespace) (label_replace( sum by(exported_namespace) (increase(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=~"$environment"}[30d])), "sli_environment", "$1", "exported_namespace", "(.*)"))' %
-      environmentLabelSelector,
+      'sum without (exported_namespace) (label_replace( sum by(exported_namespace) (increase(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=~"$environment"}[30d])), "sli_environment", "$1", "exported_namespace", "(.*)"))',
       format='table',
       instant=true,
       legendFormat='Traffic',
@@ -133,7 +132,7 @@ local panels = [
         },
         {
           matcher: { id: 'byName', options: 'Traffic' },
-          properties: [{ id: 'unit', value: 'none' }],
+          properties: [{ id: 'decimals', value: '0' }],
         },
       ],
     defaults+:
