@@ -35,17 +35,3 @@ local/prometheus/file_sd_configs/client_application_targets.json
 
 # Global Environment Variable file
 local/global.env
-
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### VS Code ###
-.vscode/
