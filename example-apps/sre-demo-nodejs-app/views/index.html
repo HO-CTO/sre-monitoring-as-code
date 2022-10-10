@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+  </head>
+  <body>
+		<table>
+			<thead>
+					<tr>
+							<th>Successful</th>
+							<th>Exceptions</th>
+							<th>Total</th>
+					</tr>
+			</thead>
+			<tbody>
+					<tr>
+							<td> {{ successful }} </td>
+							<td> {{ exceptions }} </td>
+							<td> {{ total }} </td>
+					</tr>
+			</tbody>
+	</table>
+
+	<div>
+			<form action="/success" method="post">
+					<input name="amount" type="number" value="1" />
+					<button type="submit">Generate successful</button>
+			</form>
+			<form action="/exception" method="post">
+					<input name="amount" type="number" value="1" />
+					<button type="submit">Generate exceptions</button>
+			</form>        
+	</div>
+  </body>
+</html>
