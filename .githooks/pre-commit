@@ -19,6 +19,8 @@ if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
     for dockerfile in $dockerfiles_changed
     do
         echo $dockerfile && docker run --rm -i ghcr.io/hadolint/hadolint < $dockerfile
+    done
+fi
 
 if [ "$SHELL_FILE_CHANGED" -gt "0" ]; then
     shell_files=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep ".sh")
