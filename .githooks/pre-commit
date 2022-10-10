@@ -4,6 +4,7 @@ set -e
 
 JSONNET_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "sonnet" | wc -l)
 DOCKERFILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile" | wc -l)
+SHELL_FILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep ".sh" | wc -l)
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 
@@ -17,7 +18,12 @@ if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
     dockerfiles_changed=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile")
     for dockerfile in $dockerfiles_changed
     do
-        echo $dockerfile
-        docker run --rm -i ghcr.io/hadolint/hadolint < $dockerfile
+        echo $dockerfile && docker run --rm -i ghcr.io/hadolint/hadolint < $dockerfile
+
+if [ "$SHELL_FILE_CHANGED" -gt "0" ]; then
+    shell_files=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep ".sh")
+    for shell_file in $shell_files
+    do
+        echo $shell_file | xargs docker run --rm -v "$REPO_ROOT_DIR:/mnt" koalaman/shellcheck:stable
     done
 fi
