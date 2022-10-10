@@ -3,6 +3,7 @@
 set -e
 
 JSONNET_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "sonnet" | wc -l)
+DOCKERFILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile" | wc -l)
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 
@@ -10,4 +11,13 @@ if [ "$JSONNET_FILES_CHANGED" -gt "0" ]; then
     $REPO_ROOT_DIR/monitoring-as-code/fmt.sh
     $REPO_ROOT_DIR/monitoring-as-code/lint.sh
     git add $REPO_ROOT_DIR
+fi
+
+if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
+    dockerfiles_changed=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile")
+    for dockerfile in $dockerfiles_changed
+    do
+        echo $dockerfile
+        docker run --rm -i ghcr.io/hadolint/hadolint < $dockerfile
+    done
 fi
