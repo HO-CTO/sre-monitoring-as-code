@@ -93,12 +93,12 @@ if [ "$generate_rules" = "true" ]; then
   for environment in $environments
   do
     # Generate Prometheus recording rules YAML
-    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusRules)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml
-    if [ $? -ne 0 ]; then echo "Failed to run recording rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
+    if ! jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusRules)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-recording-rules.yaml;
+    then echo "Failed to run recording rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
     # Generate Prometheus alert rules YAML
-    jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusAlerts)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml
-    if [ $? -ne 0 ]; then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
+    if ! jsonnet -J vendor --ext-str ENV="$environment" --ext-str ACCOUNT="$account" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -S -e "std.manifestYamlDoc((import \"${PWD}/_input/mixin.jsonnet\").prometheusAlerts)" > "$PWD"/_output/prometheus-rules/"$mixin"-"$environment"-alert-rules.yaml;
+    then echo "Failed to run alert rules for ${mixin} (environment ${environment}) - exiting"; exit; fi
 
   done
 fi
@@ -109,8 +109,8 @@ if [ "$generate_dashboards" = "true" ]; then
   mkdir -p "$PWD"/_output/grafana-dashboards
 
   # Generate Grafana dashboards JSON
-  jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -m "$PWD"/_output/grafana-dashboards -e "(import \"${PWD}/_input/mixin.jsonnet\").grafanaDashboards"
-  if [ $? -ne 0 ]; then echo "Failed to run dashboard generation rules for ${mixin} - exiting"; exit; fi
+  if ! jsonnet -J vendor --ext-str ENV="" --ext-str ACCOUNT="" --ext-str MAC_VERSION="$MAC_VERSION" --ext-str CUSTOM_METRIC_TYPES="$CUSTOM_METRIC_TYPES" -m "$PWD"/_output/grafana-dashboards -e "(import \"${PWD}/_input/mixin.jsonnet\").grafanaDashboards";
+  then echo "Failed to run dashboard generation rules for ${mixin} - exiting"; exit; fi
 fi
 
 # Transfer Prometheus rules and Grafana dashboards to output path
