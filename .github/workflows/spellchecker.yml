@@ -1,7 +1,10 @@
 name: 'docker-spellchecker
 
 on:
-  workflow_dispatch
+  branches:
+    - main
+    paths:
+    - monitoring-as-code/tools/spell-checker
 
 env:
   REGISTRY: ghcr.io

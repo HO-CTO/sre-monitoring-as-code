@@ -534,9 +534,12 @@ git config core.hooksPath .githooks
 
 The formatter and linter will only run if git detects that Jsonnet files have been changed in the commit.
 
+There is also further linting on shell and Docker files.
+
 Any linting errors will prevent the commit from succeeding.
 
-Furthermore there is a spell checker
+Furthermore there is a spell checker, with a pre built dictionary. If there are words which you think should be added, add them to the dictionary.txt.
+You will have to push only that file for the new spell checker image to be created.
 
 For work in progress commits, it is possible to bypass the pre-commit hook by passing the `--no-verify` flag to the git command.
 
