@@ -317,7 +317,7 @@ The MaC framework may be extended with custom metric types without having to res
 `metric-types.libsonnet` file.
 
 In the `mixin-defs` directory, there is a `custom-metric-types.libsonnet` file that can be modified to
-include any additional custom metric type defintions that may be applicable to your service.
+include any additional custom metric type definitions that may be applicable to your service.
 
 A template entry has been included for convenience, however this template will need to be modified
 to include the `metricTypeConfig` fields and any selectors that may be necessary.
@@ -524,7 +524,7 @@ This **will not** work since test is never used/evaluated.
 
 #### Git pre-commit hooks
 
-Formatting and linting of Jsonnet files may be performed automatically when commiting changes to the Git repository with the supplied `pre-commit` hooks.
+Formatting and linting of Jsonnet files may be performed automatically when committing changes to the Git repository with the supplied `pre-commit` hooks.
 
 The `pre-commit` hook lives in the [.githooks](./githooks) directory. The hooks may be activated by running the following command.
 
@@ -534,7 +534,12 @@ git config core.hooksPath .githooks
 
 The formatter and linter will only run if git detects that Jsonnet files have been changed in the commit.
 
+There is also further linting on shell and Docker files.
+
 Any linting errors will prevent the commit from succeeding.
+
+Furthermore there is a spell checker, with a pre built dictionary. If there are words which you think should be added, add them to the dictionary.txt.
+You will have to push only that file for the new spell checker image to be created.
 
 For work in progress commits, it is possible to bypass the pre-commit hook by passing the `--no-verify` flag to the git command.
 
