@@ -7,4 +7,4 @@ RUN yarn global add spellchecker-cli
 COPY .spellcheckerrc.yaml .
 COPY dictionary.txt .
 
-CMD [ "spellchecker"]
+CMD [ "spellchecker" ]
