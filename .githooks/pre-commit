@@ -11,7 +11,7 @@ REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 if [ "$JSONNET_FILES_CHANGED" -gt "0" ]; then
     $REPO_ROOT_DIR/monitoring-as-code/fmt.sh
     $REPO_ROOT_DIR/monitoring-as-code/lint.sh
-    git add $REPO_ROOT_DIR
+    git add $(git diff --name-only --cached)
 fi
 
 if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
