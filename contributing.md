@@ -536,6 +536,8 @@ The formatter and linter will only run if git detects that Jsonnet files have be
 
 Any linting errors will prevent the commit from succeeding.
 
+Furthemore therr is a spell checkerr
+
 For work in progress commits, it is possible to bypass the pre-commit hook by passing the `--no-verify` flag to the git command.
 
 #### Editor support
