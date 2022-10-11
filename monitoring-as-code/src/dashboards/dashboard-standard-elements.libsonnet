@@ -35,10 +35,10 @@ local createRowTitles(sliKey, sliSpec) =
       sliType: sliSpec.sliType,
       title: sliSpec.title,
     },
-    rowTitleShort: '%(slo)s %(sliType)s (%(period)s)' % {
+    rowTitleShort: '%(slo)s: %(title)s' % {
       slo: sliKey,
-      sliType: sliSpec.sliType,
-      period: sliSpec.period,
+      title: sliSpec.title,
+      //  period: sliSpec.period,
     },
   };
 
