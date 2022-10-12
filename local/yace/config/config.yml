@@ -172,48 +172,28 @@ static:
     metrics:
       - name: ApproximateNumberOfMessagesVisible
         statistics:
-        - Maximum
+          - Sum
         period: 60
-        length: 300
-    customTags:
-      - key: Environment
-        value: localstack
-  - namespace: AWS/SQS
-    name: my-id
-    regions:
-      - eu-west-2
-    metrics:
+        length: 120
+        nilToZero: true
       - name: ApproximateAgeOfOldestMessage
         statistics:
-        - Maximum
+          - Sum
         period: 60
-        length: 300
-    customTags:
-      - key: Environment
-        value: localstack
-  - namespace: AWS/SQS
-    name: my-id
-    regions:
-      - eu-west-2
-    metrics:
+        length: 120
+        nilToZero: true
       - name: NumberOfMessagesSent
         statistics:
-        - Maximum
+          - Sum
         period: 60
-        length: 300
-    customTags:
-      - key: Environment
-        value: localstack
-  - namespace: AWS/SQS
-    name: my-id
-    regions:
-      - eu-west-2
-    metrics:
+        length: 120
+        nilToZero: true
       - name: NumberOfMessagesDeleted
         statistics:
-        - Maximum
+          - Sum
         period: 60
-        length: 300
+        length: 120
+        nilToZero: true
     customTags:
       - key: Environment
         value: localstack
@@ -224,9 +204,81 @@ static:
     metrics:
       - name: ReadLatency
         statistics:
-        - Average
+          - Average
         period: 60
-        length: 300
+        length: 120
+        nilToZero: true
+      - name: ReadThroughput
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: ReadIOPS
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: WriteLatency
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: WriteThroughput
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: WriteIOPS
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
     customTags:
       - key: Environment
         value: localstack
+  - namespace: AWS/ES
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: SearchLatency
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: SearchRate
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 2xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 3xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 4xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 5xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
