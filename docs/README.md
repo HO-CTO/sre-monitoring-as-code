@@ -42,7 +42,7 @@ You can add content by editing the `.html.md.erb` files. These files support con
 
 ## Preview and build your changes locally in Docker (preferred)
 
-Intead of building and running locally and having to install the required dependencies, you can instead run this in Docker.
+Instead of building and running locally and having to install the required dependencies, you can instead run this in Docker.
 
 Run the following command to start the container detached mode: 
 

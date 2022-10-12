@@ -5,6 +5,7 @@ set -e
 JSONNET_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "sonnet" | wc -l)
 DOCKERFILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile" | wc -l)
 SHELL_FILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep -E ".sh$" | wc -l)
+MD_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep -E ".md|.md.erb" | wc -l)
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 
@@ -27,5 +28,13 @@ if [ "$SHELL_FILE_CHANGED" -gt "0" ]; then
     for shell_file in $shell_files
     do
         echo $shell_file | xargs docker run --rm -v "$REPO_ROOT_DIR:/mnt" koalaman/shellcheck:stable
+    done
+fi
+
+if [ "$MD_FILES_CHANGED" -gt "0" ]; then
+    md_files_changed=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep -E ".md|.md.erb")
+    for md_file in $md_files_changed 
+    do
+        echo $md_file | docker run --rm -v "$REPO_ROOT_DIR:/app/MaC" ghcr.io/ho-cto/sre-spellchecker spellchecker --files "MaC/$md_file"
     done
 fi
