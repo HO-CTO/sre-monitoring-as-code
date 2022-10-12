@@ -20,7 +20,7 @@ local config = {
 local sliSpecList = {
   grafana: {
     SLI01: {
-      title: 'Home page requests',
+      title: 'Home page rqst',
       sliDescription: 'Attempted requests to the Grafana home page',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
@@ -38,7 +38,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'Login page requests',
+      title: 'Login page rqst',
       sliDescription: 'login requests to the Grafana',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
@@ -56,7 +56,7 @@ local sliSpecList = {
       },
     },
     SLI03: {
-      title: 'Datasource requests',
+      title: 'Datasource rqst',
       sliDescription: 'requests to the Grafana datasources API',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
@@ -76,7 +76,7 @@ local sliSpecList = {
   },
   prometheus: {
     SLI01: {
-      title: 'scrape target status',
+      title: 'scrape target st',
       sliDescription: 'all prometheus scrape targets are available',
       period: '7d',
       metricType: 'up',
@@ -91,7 +91,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'Avg scrape period',
+      title: 'Avg scrape perid',
       sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '7d',
       metricType: 'scrape_duration_seconds',
@@ -127,7 +127,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'avg request period',
+      title: 'avg request perid',
       sliDescription: 'thanos-query instant query requests to Thanos are fast enough',
       period: '7d',
       metricType: 'http_request_duration_seconds',
@@ -145,7 +145,7 @@ local sliSpecList = {
       sloTarget: 90,
     },
     SLI03: {
-      title: 'total range query',
+      title: 'total range qry',
       sliDescription: 'Range query requests to thanos-query',
       period: '7d',
       metricType: 'http_requests_total',
@@ -163,7 +163,7 @@ local sliSpecList = {
       },
     },
     SLI04: {
-      title: 'Range query seconds',
+      title: 'Range query sec',
       sliDescription: 'range query requests to Thanos are fast enough',
       period: '7d',
       metricType: 'http_request_duration_seconds',

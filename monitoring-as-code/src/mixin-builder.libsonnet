@@ -6,6 +6,8 @@ local dashboardFunctions = import './lib/dashboard-functions.libsonnet';
 local sliElementFunctions = import './lib/sli-element-functions.libsonnet';
 local macConfig = import './mac-config.libsonnet';
 
+local sliTitleCharLimit = 17;
+
 // Gets a url depending on the type of account
 // @param urlType The type of url (Grafana or Alertmanager)
 // @param url The non prod url defined in config
@@ -107,7 +109,7 @@ local updateSliSpec(sliType, sliSpec) =
 local createSli(sliType, config, passedSliSpec, sliKey, journeyKey) =
   if journeyKey == config.product then
     error 'Invalid Journey name [%s]. Journey name cannot match Product name [%s].' % [journeyKey, config.product]
-  else if std.length(passedSliSpec.title) > 16 then
+  else if std.length(passedSliSpec.title) > sliTitleCharLimit then
     error 'SLI Title [%s] with [%s] characters is greater than recommended length of 16.' % [passedSliSpec.title, std.length(passedSliSpec.title)]
   else
     local sliSpec = updateSliSpec(sliType, passedSliSpec);

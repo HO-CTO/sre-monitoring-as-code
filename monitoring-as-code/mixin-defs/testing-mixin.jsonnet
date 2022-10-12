@@ -106,7 +106,7 @@ local sliSpecList = {
       },
     },
     SLI06: {
-      title: 'nginx ingress req',
+      title: 'nginxIngressReq',
       sliDescription: 'nginx_ingress_controller_requests',
       period: '30d',
       metricType: 'nginx_ingress_controller_requests',
@@ -123,7 +123,7 @@ local sliSpecList = {
       },
     },
     SLI07: {
-      title: 'nginx ingress sec',
+      title: 'nginxIngressSec',
       sliDescription: 'nginx_ingress_controller_request_duration_seconds',
       period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
@@ -196,7 +196,7 @@ local sliSpecList = {
       },
     },
     SLI11: {
-      title: 'Avg scrape period',
+      title: 'Avg scrape secs',
       sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '30d',
       metricType: 'scrape_duration_seconds',
