@@ -40,7 +40,7 @@ cd monitoring-as-code
 docker build -t sre-monitoring-as-code:latest .
 ```
 
-## Usage
+## Useage
 
 ### Default mixin config 
 
@@ -84,7 +84,7 @@ TBC
 
 ## Resources
 
-1. [Homeoffice - Monitoring as Code User Documentation](https://ho-cto.github.io/sre-monitoring-as-code/)
+1. [Homeoffice - Montoring as Code User Documentation](https://ho-cto.github.io/sre-monitoring-as-code/)
 2. [Databrick - Jsonnet Style Guide](https://github.com/databricks/jsonnet-style-guide)
 3. [Prometheus - Monitoring Mixins](https://monitoring.mixins.dev/)
 4. [Google SRE - Implementing SLOs](https://sre.google/workbook/implementing-slos/)

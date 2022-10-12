@@ -1,6 +1,6 @@
 # sre-demo-java-app
 
-This project is for use testing custom metrics from a Java application against the [Monitoring-as-code framework](https://github.com/ho-cto/sre-monitoring-as-code).
+This project is for use testing custom metrics from a Java application againt the [Monitoring-as-code framework](https://github.com/ho-cto/sre-monitoring-as-code).
 
 ## How to build
 
