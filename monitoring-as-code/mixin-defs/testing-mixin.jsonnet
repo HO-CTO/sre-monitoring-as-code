@@ -2,13 +2,13 @@ local mixinFunctions = import '../src/lib/mixin-functions.libsonnet';
 
 local config = {
   product: 'testing',
-  applicationServiceName: 'test',
-  servicenowAssignmentGroup: 'test',
-  maxAlertSeverity: 'test',
-  configurationItem: 'test',
-  alertingSlackChannel: 'test',
-  grafanaUrl: 'test',
-  alertmanagerUrl: 'test',
+  applicationServiceName: 'Test Service Name',
+  servicenowAssignmentGroup: 'test_servicenow_group',
+  maxAlertSeverity: 'P3',
+  configurationItem: 'test configuaration item',
+  alertingSlackChannel: 'test slack channel',
+  grafanaUrl: 'testGrafanaUrl',
+  alertmanagerUrl: 'testAlertManagerUrl',
 };
 
 local sliSpecList = {
@@ -34,7 +34,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'http srv request',
+      title: 'Http Srv Request',
       sliDescription: 'http server request seconds description',
       period: '30d',
       metricType: 'http_server_requests_seconds',
@@ -55,7 +55,7 @@ local sliSpecList = {
       },
     },
     SLI03: {
-      title: 'grafana requests',
+      title: 'Grafana Requests',
       sliDescription: 'grafana_http_request_duration_seconds',
       period: '30d',
       metricType: 'grafana_http_request_duration_seconds',
@@ -72,7 +72,7 @@ local sliSpecList = {
       },
     },
     SLI04: {
-      title: 'http requests',
+      title: 'Http Requests',
       sliDescription: 'http_requests_total description',
       period: '30d',
       metricType: 'http_requests_total',
@@ -89,7 +89,7 @@ local sliSpecList = {
       },
     },
     SLI05: {
-      title: 'request duration',
+      title: 'Request Duration',
       sliDescription: 'http_request_duration_seconds histogram/percentile',
       period: '30d',
       metricType: 'http_request_duration_seconds',
@@ -164,7 +164,7 @@ local sliSpecList = {
       },
     },
     SLI09: {
-      title: 'Thanos-compact',
+      title: 'Thanos Compact',
       sliDescription: 'Thanos-compact operations and failures',
       period: '30d',
       metricType: 'thanos_compact_group_compactions',
@@ -196,7 +196,7 @@ local sliSpecList = {
       },
     },
     SLI11: {
-      title: 'Avg scrape secs',
+      title: 'Avg Scrape Secs',
       sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '30d',
       metricType: 'scrape_duration_seconds',
@@ -212,7 +212,7 @@ local sliSpecList = {
       },
     },
     SLI12: {
-      title: 'aws_rds_read',
+      title: 'AWS RDS Read',
       sliDescription: 'test',
       period: '30d',
       metricType: 'aws_rds_read',
@@ -235,7 +235,7 @@ local sliSpecList = {
       },
     },
     SLI13: {
-      title: 'aws_rds_write',
+      title: 'AWS RDS Write',
       sliDescription: 'test',
       period: '30d',
       metricType: 'aws_rds_write',
