@@ -1,9 +1,9 @@
-name: 'docker-spellchecker
+name: 'docker-spellchecker'
 
 on:
   branches:
     - main
-    paths:
+  paths:
     - monitoring-as-code/tools/spell-checker
 
 env:
