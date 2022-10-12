@@ -1,10 +1,11 @@
 name: 'docker-spellchecker'
 
 on:
-  branches:
-    - main
-  paths:
-    - monitoring-as-code/tools/spell-checker
+  push:
+    branches:
+      - main
+    paths:
+      - monitoring-as-code/tools/spell-checker
 
 env:
   REGISTRY: ghcr.io
