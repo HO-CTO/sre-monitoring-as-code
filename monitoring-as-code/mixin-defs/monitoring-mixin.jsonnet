@@ -20,8 +20,8 @@ local config = {
 local sliSpecList = {
   grafana: {
     SLI01: {
-      title: 'Landing page requests ',
-      sliDescription: 'Number of requests to the Grafana landing page are successful',
+      title: 'Home page requests',
+      sliDescription: 'Attempted requests to the Grafana home page',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
       evalInterval: '1m',
@@ -38,8 +38,8 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'Grafana login page requests',
-      sliDescription: 'requests to the Grafana login are successful',
+      title: 'Login page requests',
+      sliDescription: 'login requests to the Grafana',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
       evalInterval: '1m',
@@ -56,8 +56,8 @@ local sliSpecList = {
       },
     },
     SLI03: {
-      title: 'Grafana datasource API requests',
-      sliDescription: 'requests to the Grafana datasources are successful',
+      title: 'Datasource requests',
+      sliDescription: 'requests to the Grafana datasources API',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
       evalInterval: '1m',
@@ -76,7 +76,7 @@ local sliSpecList = {
   },
   prometheus: {
     SLI01: {
-      title: 'prometheus scrape target status',
+      title: 'scrape target status',
       sliDescription: 'all prometheus scrape targets are available',
       period: '7d',
       metricType: 'up',
@@ -91,8 +91,8 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'Average duration of Prometheus scrape of Yace',
-      sliDescription: 'prometheus scraping of Yace is fast enough',
+      title: 'Avg scrape period',
+      sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '7d',
       metricType: 'scrape_duration_seconds',
       evalInterval: '1m',
@@ -109,7 +109,7 @@ local sliSpecList = {
   },
   thanos: {
     SLI01: {
-      title: 'instant query requests to Thanos',
+      title: 'Total Requests',
       sliDescription: 'Instant query requests to thanos-query',
       period: '7d',
       metricType: 'http_requests_total',
@@ -127,8 +127,8 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'Instant query requests to thanos-query',
-      sliDescription: 'instant query requests to Thanos are fast enough',
+      title: 'avg request period',
+      sliDescription: 'thanos-query instant query requests to Thanos are fast enough',
       period: '7d',
       metricType: 'http_request_duration_seconds',
       evalInterval: '1m',
@@ -145,7 +145,7 @@ local sliSpecList = {
       sloTarget: 90,
     },
     SLI03: {
-      title: 'range query requests to Thanos',
+      title: 'total range query',
       sliDescription: 'Range query requests to thanos-query',
       period: '7d',
       metricType: 'http_requests_total',
@@ -163,7 +163,7 @@ local sliSpecList = {
       },
     },
     SLI04: {
-      title: 'Range query requests to thanos-query',
+      title: 'Range query seconds',
       sliDescription: 'range query requests to Thanos are fast enough',
       period: '7d',
       metricType: 'http_request_duration_seconds',
@@ -181,8 +181,8 @@ local sliSpecList = {
       },
     },
     SLI05: {
-      title: 'Thanos-compact operations and failures',
-      sliDescription: 'compactions by thanos-compact',
+      title: 'Thanos-compact',
+      sliDescription: 'Thanos-compact operations and failures',
       period: '7d',
       metricType: 'thanos_compact_group_compactions',
       evalInterval: '1m',

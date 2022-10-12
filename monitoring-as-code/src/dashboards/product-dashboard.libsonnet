@@ -10,12 +10,12 @@ local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 
 
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
-local viewPanelsPerRow = 4;
+local viewPanelsPerRow = 6;
 
 // The width and height of the view panels
 local viewPanelSize = {
-  x: 5,
-  y: 5,
+  x: 4,
+  y: 4,
 };
 
 // Creates a row panel which is used to contain all of the SLIs in each journey
@@ -68,8 +68,8 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
                                                                         (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: viewPanelSize.x, h: viewPanelSize.y },
-      title: '%(sliTitle)s (%(period)s)' % { sliTitle: slis[std.objectFields(slis)[0]].row_title_short, period: slis[std.objectFields(slis)[0]].slo_period },
-      description: '%(sliDesc)s' % { sliDesc: slis[std.objectFields(slis)[0]].slo_desc },
+      title: '%(sliTitle)s (%(period)s)' % { sliTitle: slis[std.objectFields(slis)[0]].title, period: slis[std.objectFields(slis)[0]].slo_period },
+      description: '%(sliKey)s: %(sliDesc)s' % { sliKey: slis[std.objectFields(slis)[0]].key, sliDesc: slis[std.objectFields(slis)[0]].slo_desc },
       fieldConfig+: {
         defaults+: {
           links: [

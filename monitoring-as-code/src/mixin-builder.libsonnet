@@ -107,6 +107,8 @@ local updateSliSpec(sliType, sliSpec) =
 local createSli(sliType, config, passedSliSpec, sliKey, journeyKey) =
   if journeyKey == config.product then
     error 'Invalid Journey name [%s]. Journey name cannot match Product name [%s].' % [journeyKey, config.product]
+  else if std.length(passedSliSpec.title) > 16 then
+    error 'SLI Title [%s] with [%s] characters is greater than recommended length of 16.' % [passedSliSpec.title, std.length(passedSliSpec.title)]
   else
     local sliSpec = updateSliSpec(sliType, passedSliSpec);
 
