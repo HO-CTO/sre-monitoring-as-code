@@ -8,7 +8,6 @@ This can be useful for offline development and testing of the MaC framework, esp
 
 ![Architecture Overview](./overview.png)
 
-
 ## Prerequisites
 
 You will need to have installed the following:
