@@ -14,8 +14,8 @@ local config = {
 local sliSpecList = {
   journey1: {
     SLI01: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'AWS SQS',
+      sliDescription: 'aws sqs description',
       period: '30d',
       metricType: 'aws_sqs',
       evalInterval: '5m',
@@ -34,8 +34,8 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'http srv request',
+      sliDescription: 'http server request seconds description',
       period: '30d',
       metricType: 'http_server_requests_seconds',
       evalInterval: '5m',
@@ -55,8 +55,8 @@ local sliSpecList = {
       },
     },
     SLI03: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'grafana requests',
+      sliDescription: 'grafana_http_request_duration_seconds',
       period: '30d',
       metricType: 'grafana_http_request_duration_seconds',
       evalInterval: '5m',
@@ -72,8 +72,8 @@ local sliSpecList = {
       },
     },
     SLI04: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'http requests',
+      sliDescription: 'http_requests_total description',
       period: '30d',
       metricType: 'http_requests_total',
       evalInterval: '5m',
@@ -89,8 +89,8 @@ local sliSpecList = {
       },
     },
     SLI05: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'request duration',
+      sliDescription: 'http_request_duration_seconds histogram/percentile',
       period: '30d',
       metricType: 'http_request_duration_seconds',
       evalInterval: '5m',
@@ -106,8 +106,8 @@ local sliSpecList = {
       },
     },
     SLI06: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'nginx ingress req',
+      sliDescription: 'nginx_ingress_controller_requests',
       period: '30d',
       metricType: 'nginx_ingress_controller_requests',
       evalInterval: '5m',
@@ -123,8 +123,8 @@ local sliSpecList = {
       },
     },
     SLI07: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'nginx ingress sec',
+      sliDescription: 'nginx_ingress_controller_request_duration_seconds',
       period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
       evalInterval: '5m',
@@ -144,8 +144,8 @@ local sliSpecList = {
       },
     },
     SLI08: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'AWS ALB',
+      sliDescription: 'aws alb histrogram',
       period: '30d',
       metricType: 'aws_alb',
       evalInterval: '5m',
@@ -164,8 +164,8 @@ local sliSpecList = {
       },
     },
     SLI09: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'Thanos-compact',
+      sliDescription: 'Thanos-compact operations and failures',
       period: '30d',
       metricType: 'thanos_compact_group_compactions',
       evalInterval: '5m',
@@ -180,8 +180,8 @@ local sliSpecList = {
       },
     },
     SLI10: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'Avaiability',
+      sliDescription: 'Avaiability',
       period: '30d',
       metricType: 'up',
       evalInterval: '5m',
@@ -196,8 +196,8 @@ local sliSpecList = {
       },
     },
     SLI11: {
-      title: 'test',
-      sliDescription: 'test',
+      title: 'Avg scrape period',
+      sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '30d',
       metricType: 'scrape_duration_seconds',
       evalInterval: '5m',
@@ -212,7 +212,7 @@ local sliSpecList = {
       },
     },
     SLI12: {
-      title: 'test - aws_rds_read',
+      title: 'aws_rds_read',
       sliDescription: 'test',
       period: '30d',
       metricType: 'aws_rds_read',
@@ -235,7 +235,7 @@ local sliSpecList = {
       },
     },
     SLI13: {
-      title: 'test - aws_rds_write',
+      title: 'aws_rds_write',
       sliDescription: 'test',
       period: '30d',
       metricType: 'aws_rds_write',
@@ -258,7 +258,7 @@ local sliSpecList = {
       },
     },
     SLI14: {
-      title: 'test - OpenSearch',
+      title: 'OpenSearch',
       sliDescription: 'test',
       period: '30d',
       metricType: 'aws_es',
