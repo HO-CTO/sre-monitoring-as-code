@@ -4,7 +4,7 @@ set -e
 
 JSONNET_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "sonnet" | wc -l)
 DOCKERFILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep "Dockerfile" | wc -l)
-SHELL_FILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep -E ".sh$" | wc -l)
+SHELL_FILE_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep ".sh" | wc -l)
 MD_FILES_CHANGED=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep -E ".md|.md.erb" | wc -l)
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
@@ -12,7 +12,7 @@ REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 if [ "$JSONNET_FILES_CHANGED" -gt "0" ]; then
     $REPO_ROOT_DIR/monitoring-as-code/fmt.sh
     $REPO_ROOT_DIR/monitoring-as-code/lint.sh
-    git add $(git diff --name-only --cached)
+    git add $REPO_ROOT_DIR
 fi
 
 if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
@@ -24,7 +24,7 @@ if [ "$DOCKERFILE_CHANGED" -gt "0" ]; then
 fi
 
 if [ "$SHELL_FILE_CHANGED" -gt "0" ]; then
-    shell_files=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep -E ".sh$")
+    shell_files=$(git --no-pager diff --cached --name-only --diff-filter=ACM | grep ".sh")
     for shell_file in $shell_files
     do
         echo $shell_file | xargs docker run --rm -v "$REPO_ROOT_DIR:/mnt" koalaman/shellcheck:stable
