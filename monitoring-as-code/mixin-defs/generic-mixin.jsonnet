@@ -39,7 +39,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'PromClient requests',
+      title: 'PromClient Rqst',
       sliDescription: 'Requests through PromClient',
       period: '30d',
       metricType: 'http_server_requests_seconds',
