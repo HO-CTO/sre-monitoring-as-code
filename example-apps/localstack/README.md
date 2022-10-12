@@ -21,7 +21,7 @@ You will need to have installed the following:
 
 1. Run LocalStack using the provided `docker-compose.yml` file.
 
-    ```
+    ```sh
     docker-compose up
     ```
 
@@ -39,7 +39,7 @@ You will need to have installed the following:
 
 1. In order to point YACE at the LocalStack AWS emulator, you must add the following environment variables in the `yace` service section of the MaC local development envionrment `docker-compose.yml` file:
 
-    ```
+    ```yml
             environment:
                 - AWS_ENDPOINT_URL=http://localstack:4566
                 - AWS_REGION=eu-west-2
@@ -47,7 +47,7 @@ You will need to have installed the following:
 
     Since YACE mounts the `~\.aws\credentials` file at runtime, you can authenticate against the LocalStack environment simply by running `aws configure` and specifying "test" for the ACCESS_KEY and SECRET_ACCESS_KEY values. Your resulting configuration file will look something like this:
 
-    ```
+    ```ini
     [default]
     aws_access_key_id = test
     aws_secret_access_key = test
@@ -55,7 +55,7 @@ You will need to have installed the following:
 
 1. Run the MaC local development environment ensuring that you have selected the `monitoring-fullstack` profile.
 
-    ```
+    ```sh
     docker-compose --profile monitoring-fullstack up
     ```
 
@@ -65,13 +65,13 @@ You will need to have installed the following:
 
     e.g.
 
-    ```
+    ```sh
     aws --endpoint-url="http://localhost:4566" sqs create-queue --queue-name sample-queue
     ```
 
     For convenience it might be desirable to alias the command
 
-    ```
+    ```sh
     alias awslocal="aws --endpoint-url=http://localhost:4566"
     ```
 
@@ -81,7 +81,7 @@ You will need to have installed the following:
 
     Here are some example commands that can be used to push simulated SQS metrics into LocalStack.
 
-    ```
+    ```sh
     awslocal cloudwatch put-metric-data --namespace "AWS/SQS" --metric-data '[{"MetricName": "ApproximateNumberOfMessagesVisible", "Value": 0}]'
 
     awslocal cloudwatch put-metric-data --namespace "AWS/SQS" --metric-data '[{"MetricName": "ApproximateAgeOfOldestMessage", "Value": 5}]'
@@ -101,7 +101,7 @@ You will need to have installed the following:
 
     This can be deployed and run using the command:
 
-    ```
+    ```sh
     docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m generic -rd -i input -o output
     ```
 
