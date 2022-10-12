@@ -164,3 +164,69 @@ discovery:
           period: 60
           length: 120
           nilToZero: true
+static:
+  - namespace: AWS/SQS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: ApproximateNumberOfMessagesVisible
+        statistics:
+        - Maximum
+        period: 60
+        length: 300
+    customTags:
+      - key: Environment
+        value: localstack
+  - namespace: AWS/SQS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: ApproximateAgeOfOldestMessage
+        statistics:
+        - Maximum
+        period: 60
+        length: 300
+    customTags:
+      - key: Environment
+        value: localstack
+  - namespace: AWS/SQS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: NumberOfMessagesSent
+        statistics:
+        - Maximum
+        period: 60
+        length: 300
+    customTags:
+      - key: Environment
+        value: localstack
+  - namespace: AWS/SQS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: NumberOfMessagesDeleted
+        statistics:
+        - Maximum
+        period: 60
+        length: 300
+    customTags:
+      - key: Environment
+        value: localstack
+  - namespace: AWS/RDS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: ReadLatency
+        statistics:
+        - Average
+        period: 60
+        length: 300
+    customTags:
+      - key: Environment
+        value: localstack
