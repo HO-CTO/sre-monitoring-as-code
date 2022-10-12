@@ -6,7 +6,7 @@ This can be useful for offline development and testing of the MaC framework, esp
 
 ## Overview
 
-![Architecture Overview](./overview.png)
+![Architecture Overview](./arch-overview.png)
 
 ## Prerequisites
 
