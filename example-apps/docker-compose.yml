@@ -3,14 +3,16 @@ version: '3'
 services:
   nodejs:
     profiles: ["nodejs"]
-    build: sre-demo-nodejs-app
+    image: sre-demo-nodejs-app
+    build: ./sre-demo-nodejs-app
     ports:
         - 8081:8081
     restart: on-failure
   
   java:
     profiles: ["java"]
-    build: sre-demo-java-app
+    image: sre-demo-java-app
+    build: ./sre-demo-java-app
     ports:
         - 8080:8080
     restart: on-failure
