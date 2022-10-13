@@ -1,20 +1,25 @@
-<script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true,
-  },
-});
-</script>
-
 <script>
+
+const baseApiUrl = process.env.VUE_BASE_API_URL || "http://localhost:8081";
+
+const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "application/json",
+};
+
+const initialValues = {
+  successfulInput: 1,
+  exceptionInput: 1,
+  successCounter: null,
+  exceptionCounter: null,
+  totalCounter: null,
+};
+
 export default {
   mounted() {
-    fetch("http://localhost:8081/values", {
+    fetch(`${baseApiUrl}/values`, {
       mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers,
     })
       .then((data) => data.json())
       .then((data) => {
@@ -24,46 +29,34 @@ export default {
       });
   },
   data() {
-    return {
-      successfulInput: 1,
-      exceptionInput: 1,
-      successCounter: null,
-      exceptionCounter: null,
-      totalCounter: null,
-    };
+    return {...initialValues};
   },
   methods: {
     async successClick() {
       console.log(this.successfulInput);
-      const res = await fetch("http://localhost:8081/success", {
+      const res = await fetch(`${baseApiUrl}/success`, {
         method: "POST",
+        mode: "cors",
+        headers,
         body: JSON.stringify({
           amount: this.successfulInput,
         }),
-        mode: "cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
       });
 
-      const newValues = await res.json();
-      this.successCounter = newValues.good;
-      this.exceptionCounter = newValues.bad;
-      this.totalCounter = newValues.total;
+      const { good, bad, total } = await res.json();
+      this.successCounter = good;
+      this.exceptionCounter = bad;
+      this.totalCounter = total;
     },
     async exceptionClick() {
       console.log(this.exceptionInput);
-      const res = await fetch("http://localhost:8081/exception", {
+      const res = await fetch(`${baseApiUrl}/exception`, {
         method: "POST",
+        mode: "cors",
+        headers,
         body: JSON.stringify({
           amount: this.exceptionInput,
         }),
-        mode: "cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
       });
       const newValues = await res.json();
       this.successCounter = newValues.good;

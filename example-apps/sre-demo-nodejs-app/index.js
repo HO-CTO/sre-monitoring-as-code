@@ -1,21 +1,14 @@
 const express = require('express');
 const promBundle = require('express-prom-bundle');
-
-const nunjucks = require('nunjucks');
-const promClient = require('prom-client');
-
 const cors = require('cors')
 
-const PORT = 8081;
+const promClient = require('prom-client');
+
+const PORT = process.env.PORT || 8081;
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-nunjucks.configure('views', {
-    autoescape: true,
-    express: app
-});
 
 // Create a Registry which registers the metrics
 const register = new promClient.Registry();
@@ -46,7 +39,7 @@ const counter = new promClient.Counter({
     help: 'A demo counter metric',
     labelNames: [
     "status"
-    ]
+    ],
 });
 
 register.registerMetric(counter);
@@ -60,7 +53,6 @@ const getCounterValue = async (name, label) => {
     }
 
     const matches = result[0].match(/(\d+)$/);
-    console.log(matches);
     const value = matches.length > 1 ? Number.parseInt(matches[matches.length - 1], 10) : 0;
     return Promise.resolve(value);
 }
@@ -73,16 +65,18 @@ const getLastExceptionValue = async () => {
     return getCounterValue(metricName, "EXCEPTION");
 }
 
-app.get('/metrics', async (req, res) => {
-    res.setHeader('Content-Type', register.contentType);
-    res.send(await register.metrics());
-});
-
-app.get('/', async (req, res) => {
+async function getCounterValues() {
     const good = await getLastSuccessValue();
     const bad = await getLastExceptionValue();
     const total = good + bad;
-    res.render('index.html', {successful: good, exceptions: bad, total});
+    return Promise.resolve({
+        good, bad, total
+    })
+}
+
+app.get('/metrics', async (req, res) => {
+    res.setHeader('Content-Type', register.contentType);
+    res.send(await register.metrics());
 });
 
 app.get('/values', async(req, res) => {
@@ -93,7 +87,6 @@ app.get('/values', async(req, res) => {
 
 app.post('/success', async (req, res) => {
     const inc = Number.parseFloat(req.body.amount);
-    console.log(req.body)
     counter.labels({ status: "SUCCESS" }).inc(inc);
     const values = await getCounterValues();
     res.json(values)
@@ -109,12 +102,3 @@ app.post('/exception', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`sre-demo-nodejs-app listening on port: http://localhost:${PORT}`);
 });
-
-async function getCounterValues() {
-    const good = await getLastSuccessValue();
-    const bad = await getLastExceptionValue();
-    const total = good + bad;
-    return Promise.resolve({
-        good, bad, total
-    })
-}
