@@ -58,10 +58,10 @@ export default {
           amount: this.exceptionInput,
         }),
       });
-      const newValues = await res.json();
-      this.successCounter = newValues.good;
-      this.exceptionCounter = newValues.bad;
-      this.totalCounter = newValues.total;
+      const { good, bad, total } = await res.json();
+      this.successCounter = good;
+      this.exceptionCounter = bad;
+      this.totalCounter = total;
     },
   },
 };
