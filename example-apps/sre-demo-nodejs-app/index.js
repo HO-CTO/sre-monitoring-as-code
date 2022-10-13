@@ -53,6 +53,7 @@ const getCounterValue = async (name, label) => {
     }
 
     const matches = result[0].match(/(\d+)$/);
+    console.log(matches);
     const value = matches.length > 1 ? Number.parseInt(matches[matches.length - 1], 10) : 0;
     return Promise.resolve(value);
 }
@@ -101,6 +102,12 @@ app.post('/success', async (req, res) => {
     res.json(values)
 });
 
+app.get('/values', async(req, res) => {
+    const values = await getCounterValues(res);
+    res.json(values)
+    
+});
+
 app.post('/exception', async (req, res) => {
     const inc = Number.parseFloat(req.body.amount);
     counter.labels({ status: "EXCEPTION" }).inc(inc);
@@ -111,3 +118,12 @@ app.post('/exception', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`sre-demo-nodejs-app listening on port: http://localhost:${PORT}`);
 });
+
+async function getCounterValues() {
+    const good = await getLastSuccessValue();
+    const bad = await getLastExceptionValue();
+    const total = good + bad;
+    return Promise.resolve({
+        good, bad, total
+    })
+}
