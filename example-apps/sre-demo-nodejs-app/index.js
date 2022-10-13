@@ -1,14 +1,16 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const promBundle = require('express-prom-bundle');
 
 const nunjucks = require('nunjucks');
 const promClient = require('prom-client');
 
+const cors = require('cors')
+
 const PORT = 8081;
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json());
+app.use(cors());
 
 nunjucks.configure('views', {
     autoescape: true,
@@ -58,6 +60,7 @@ const getCounterValue = async (name, label) => {
     }
 
     const matches = result[0].match(/(\d+)$/);
+    console.log(matches);
     const value = matches.length > 1 ? Number.parseInt(matches[matches.length - 1], 10) : 0;
     return Promise.resolve(value);
 }
@@ -82,18 +85,36 @@ app.get('/', async (req, res) => {
     res.render('index.html', {successful: good, exceptions: bad, total});
 });
 
-app.post('/success', (req, res) => {
-    const inc = Number.parseFloat(req.body.amount);
-    counter.labels({ status: "SUCCESS" }).inc(inc);
-    res.redirect('/');
+app.get('/values', async(req, res) => {
+    const values = await getCounterValues(res);
+    res.json(values)
+    
 });
 
-app.post('/exception', (req, res) => {
+app.post('/success', async (req, res) => {
+    const inc = Number.parseFloat(req.body.amount);
+    console.log(req.body)
+    counter.labels({ status: "SUCCESS" }).inc(inc);
+    const values = await getCounterValues();
+    res.json(values)
+});
+
+app.post('/exception', async (req, res) => {
     const inc = Number.parseFloat(req.body.amount);
     counter.labels({ status: "EXCEPTION" }).inc(inc);
-    res.redirect('/');
+    const values = await getCounterValues();
+    res.json(values)
 });
 
 app.listen(PORT, () => {
     console.log(`sre-demo-nodejs-app listening on port: http://localhost:${PORT}`);
 });
+
+async function getCounterValues() {
+    const good = await getLastSuccessValue();
+    const bad = await getLastExceptionValue();
+    const total = good + bad;
+    return Promise.resolve({
+        good, bad, total
+    })
+}
