@@ -1,6 +1,13 @@
 version: '3'
 
 services:
+  frontend:
+    image: sre-demo-frontend-app
+    build: ./sre-demo-frontend-app
+    ports: 
+      - 5173:5173
+    restart: on-failure
+    
   nodejs:
     profiles: ["nodejs"]
     image: sre-demo-nodejs-app
