@@ -53,7 +53,6 @@ const getCounterValue = async (name, label) => {
     }
 
     const matches = result[0].match(/(\d+)$/);
-    console.log(matches);
     const value = matches.length > 1 ? Number.parseInt(matches[matches.length - 1], 10) : 0;
     return Promise.resolve(value);
 }

@@ -1,58 +1,6 @@
-<template>
-  <h3>Counter metric</h3>
-  <div class="container">
-    <div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Successful</th>
-          <th>Exceptions</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ successCounter }}</td>
-          <td>{{ exceptionCounter }}</td>
-          <td>{{ totalCounter }}</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-6">
-          <form class="form">
-        <div class="form-group">
-        <label>
-          Number of successful event to generate:
-          <input name="amount" type="number" class="form-control" v-model="successfulInput" />
-        </label>
-      </div>
-        <button class="btn btn-success" type="button" @click="buttonClick('success', this.successfulInput)">Generate successful</button>
-
-      </form>
-        </div>
-        <div class="col-6 d-flex justify-content-end">
-          <form class="form">
-        <div class="form-group">
-        <label>Number of exception events to generate:<input name="amount" type="number" class="form-control" v-model="exceptionInput" /></label>
-      </div>
-        <button class="btn btn-danger" type="button" @click="buttonClick('exception', this.exceptionInput)">
-          Generate exceptions
-        </button>
-
-      </form>
-        </div>
-      </div>
-      
-      
-    </div>
-  </div>
-</template>
-
 <script>
-const baseApiUrl = "http://localhost:4001";
+
+const baseApiUrl = process.env.VUE_BASE_API_URL || "http://localhost:8081";
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -84,13 +32,14 @@ export default {
     return {...initialValues};
   },
   methods: {
-    async buttonClick(endpoint, amount) {
-      const res = await fetch(`${baseApiUrl}/${endpoint}`, {
+    async successClick() {
+      console.log(this.successfulInput);
+      const res = await fetch(`${baseApiUrl}/success`, {
         method: "POST",
         mode: "cors",
         headers,
         body: JSON.stringify({
-          amount,
+          amount: this.successfulInput,
         }),
       });
 
@@ -99,6 +48,78 @@ export default {
       this.exceptionCounter = bad;
       this.totalCounter = total;
     },
+    async exceptionClick() {
+      console.log(this.exceptionInput);
+      const res = await fetch(`${baseApiUrl}/exception`, {
+        method: "POST",
+        mode: "cors",
+        headers,
+        body: JSON.stringify({
+          amount: this.exceptionInput,
+        }),
+      });
+      const newValues = await res.json();
+      this.successCounter = newValues.good;
+      this.exceptionCounter = newValues.bad;
+      this.totalCounter = newValues.total;
+    },
   },
 };
 </script>
+
+<template>
+  <div class="greetings">
+    <table>
+      <thead>
+        <tr>
+          <th>Successful</th>
+          <th>Exceptions</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ successCounter }}</td>
+          <td>{{ exceptionCounter }}</td>
+          <td>{{ totalCounter }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <form>
+        <input name="amount" type="number" v-model="successfulInput" />
+        <button type="button" @click="successClick">Generate successful</button>
+      </form>
+      <form>
+        <input name="amount" type="number" v-model="exceptionInput" />
+        <button type="button" @click="exceptionClick">
+          Generate exceptions
+        </button>
+      </form>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+h1 {
+  font-weight: 500;
+  font-size: 2.6rem;
+  top: -10px;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+.greetings h1,
+.greetings h3 {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .greetings h1,
+  .greetings h3 {
+    text-align: left;
+  }
+}
+</style>
