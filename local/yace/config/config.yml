@@ -164,3 +164,121 @@ discovery:
           period: 60
           length: 120
           nilToZero: true
+static:
+  - namespace: AWS/SQS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: ApproximateNumberOfMessagesVisible
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: ApproximateAgeOfOldestMessage
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: NumberOfMessagesSent
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: NumberOfMessagesDeleted
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+    customTags:
+      - key: Environment
+        value: localstack
+  - namespace: AWS/RDS
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: ReadLatency
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: ReadThroughput
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: ReadIOPS
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: WriteLatency
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: WriteThroughput
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: WriteIOPS
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+    customTags:
+      - key: Environment
+        value: localstack
+  - namespace: AWS/ES
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: SearchLatency
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: SearchRate
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 2xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 3xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 4xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 5xx
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true

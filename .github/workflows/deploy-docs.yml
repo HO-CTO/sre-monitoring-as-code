@@ -5,33 +5,48 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pages: write
+  deployments: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  deploy-docs:
+  build:
     runs-on: ubuntu-latest
-    concurrency: ci-${{ github.ref }}
-    permissions:
-      contents: write
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1
           bundler-cache: true
-
       - name: Build 'public' folder ready for deployment
         working-directory: ./docs
         run: bundle exec middleman build
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.4.0
+      - name: Publish
+        uses: actions/upload-pages-artifact@v1
         with:
-          branch: docs
-          folder: public
+          PATH: ./public
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        uses: actions/deploy-pages@v1
+        id: deployment
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}

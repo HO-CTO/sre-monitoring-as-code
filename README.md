@@ -20,7 +20,7 @@ Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and
 | `local/` | Contains a docker-compose implementation of Prometheus, Thanos, Grafana and Alertmanager. The purpose of this project is to test Monitoring-as-Code locally with your application. |
 | `monitoring-as-code/` | Contains the Jsonnet mixin implementation of SLIs/SLO/Error Budgets for Prometheus and Grafana |
 
-`Installation` and `useage` information is provided in a Readme within each of the directories.
+`Installation` and `usage` information is provided in a Readme within each of the directories.
 
 ## Resources
 

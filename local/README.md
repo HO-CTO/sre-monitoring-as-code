@@ -19,7 +19,7 @@ git clone git@github.com:HO-CTO/sre-monitoring-as-code.git
 cd local
 ```
 
-## Useage
+## Usage
 
 ### Before running the monitoring local environment
 

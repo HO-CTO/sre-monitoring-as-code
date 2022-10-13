@@ -1,0 +1,10 @@
+language: en-GB
+
+files:
+  - '**/*.md'
+  - 'docs/**/*.md.erb'
+
+dictionaries:
+  - dictionary.txt
+
+quiet: true
