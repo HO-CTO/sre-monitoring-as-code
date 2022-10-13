@@ -1,6 +1,6 @@
 <script>
 
-const baseApiUrl = process.env.VUE_BASE_API_URL || "http://localhost:8081";
+const baseApiUrl = "http://localhost:8081";
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
