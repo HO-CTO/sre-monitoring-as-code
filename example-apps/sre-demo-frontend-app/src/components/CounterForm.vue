@@ -19,16 +19,33 @@
     </table>
     </div>
     <div class="container">
-      <form class="form">
-        <input name="amount" type="number" v-model="successfulInput" />
+      <div class="row">
+        <div class="col-6">
+          <form class="form">
+        <div class="form-group">
+        <label>
+          Number of successful event to generate:
+          <input name="amount" type="number" class="form-control" v-model="successfulInput" />
+        </label>
+      </div>
         <button class="btn btn-success" type="button" @click="buttonClick('success', this.successfulInput)">Generate successful</button>
+
       </form>
-      <form class="form">
-        <input name="amount" type="number" v-model="exceptionInput" />
+        </div>
+        <div class="col-6">
+          <form class="form">
+        <div class="form-group">
+        <label>Number of exception events to generate:<input name="amount" type="number" class="form-control" v-model="exceptionInput" /></label>
+      </div>
         <button class="btn btn-danger" type="button" @click="buttonClick('exception', this.exceptionInput)">
           Generate exceptions
         </button>
+
       </form>
+        </div>
+      </div>
+      
+      
     </div>
   </div>
 </template>
