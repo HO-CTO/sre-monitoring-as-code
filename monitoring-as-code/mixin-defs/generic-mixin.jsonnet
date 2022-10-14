@@ -18,7 +18,7 @@ local config = {
 local sliSpecList = {
   requests: {
     SLI01: {
-      title: 'NGINX requests',
+      title: 'nginx ingress',
       sliDescription: 'Requests through NGINX',
       period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
@@ -39,7 +39,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'PromClient requests',
+      title: 'java promclient',
       sliDescription: 'Requests through PromClient',
       period: '30d',
       metricType: 'http_server_requests_seconds',
@@ -60,7 +60,7 @@ local sliSpecList = {
       },
     },
     SLI03: {
-      title: 'SQS messages',
+      title: 'sqs messages',
       sliDescription: 'All queues for the service',
       period: '30d',
       metricType: 'aws_sqs',
