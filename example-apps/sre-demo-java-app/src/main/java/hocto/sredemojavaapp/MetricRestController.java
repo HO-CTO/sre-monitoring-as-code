@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,16 +23,16 @@ public class MetricRestController {
 	}
 
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value = "/success", method = RequestMethod.POST)
-	public SimpleCounterMetricResponse handleSuccess(@RequestParam(defaultValue = "1", name = "amount") String amount) {
-		this.metricService.incrementSuccessCounter(Double.parseDouble(amount));
+	@RequestMapping(value = "/success", method = RequestMethod.POST, produces = "application/json")
+	public SimpleCounterMetricResponse handleSuccess(@RequestBody SimpleCounterMetricRequest request) {
+		this.metricService.incrementSuccessCounter(request.getAmount());
 		return new SimpleCounterMetricResponse(metricService.getSuccessValue(), metricService.getExceptionsValue(), metricService.getTotalValue());
 	}
 
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value = "/exception", method = RequestMethod.POST)
-	public SimpleCounterMetricResponse handleException(@RequestParam(defaultValue = "1", name = "amount") String amount) {
-		this.metricService.incrementExceptionCounter(Double.parseDouble(amount));
+	@RequestMapping(value = "/exception", method = RequestMethod.POST, produces = "application/json")
+	public SimpleCounterMetricResponse handleException(@RequestBody SimpleCounterMetricRequest request) {
+		this.metricService.incrementExceptionCounter(request.getAmount());
 		return new SimpleCounterMetricResponse(metricService.getSuccessValue(), metricService.getExceptionsValue(), metricService.getTotalValue());
 	}
 
