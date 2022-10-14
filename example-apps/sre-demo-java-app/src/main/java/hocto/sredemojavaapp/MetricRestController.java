@@ -36,4 +36,9 @@ public class MetricRestController {
 		return new SimpleCounterMetricResponse(metricService.getSuccessValue(), metricService.getExceptionsValue(), metricService.getTotalValue());
 	}
 
+	@CrossOrigin(origins = "*")
+	@GetMapping(value = "/version")
+	public VersionResponse handleVersion() {
+		return new VersionResponse();
+	}
 }

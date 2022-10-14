@@ -85,6 +85,15 @@ app.get('/values', async(req, res) => {
     
 });
 
+app.get('/version', async(req, res) => {
+    res.json({
+        runtime: process.title,
+        version: process.version,
+    }
+    )
+    
+});
+
 app.post('/success', async (req, res) => {
     const inc = Number.parseFloat(req.body.amount);
     counter.labels({ status: "SUCCESS" }).inc(inc);
