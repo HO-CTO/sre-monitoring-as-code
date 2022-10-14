@@ -5,7 +5,7 @@ services:
     image: sre-demo-frontend-app
     build: ./sre-demo-frontend-app
     ports: 
-      - 9000:9000
+      - 4000:4000
     restart: on-failure
     
   nodejs:
@@ -13,7 +13,7 @@ services:
     image: sre-demo-nodejs-app
     build: ./sre-demo-nodejs-app
     ports:
-        - 8081:8080
+        - 4001:4001
     restart: on-failure
   
   java:
@@ -21,5 +21,5 @@ services:
     image: sre-demo-java-app
     build: ./sre-demo-java-app
     ports:
-        - 8081:8080
+        - 4001:4001
     restart: on-failure

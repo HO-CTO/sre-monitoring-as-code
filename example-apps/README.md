@@ -36,9 +36,9 @@ docker-compose --profile java up
 
 The apps will be hosted on localhost:
 
-VueJS Frontend will be on http://localhost:9000 where you may interact with the custom metrics
+VueJS Frontend will be on http://localhost:4000 where you may interact with the custom metrics
 
-Both backends wll be on http://localhost:8081. However the metrics endpoint are different.
+Both backends wll be on http://localhost:4001. However the metrics endpoint are different.
 Node app will be on `/metrics`
 Java app will be on `/actuator/prometheus`
 

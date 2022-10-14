@@ -17,10 +17,10 @@ docker build -t sre-demo-node-app .
 Once built, the application can be run using the following command:
 
 ```
-docker run -ti -p 8081:8080 sre-demo-node-app
+docker run -ti -p 4001:4001 sre-demo-node-app
 ```
 
-Navigate to http://localhost:8081/metrics and you should be able to see your metrics in a prometheus format.
+Navigate to http://localhost:4001/metrics and you should be able to see your metrics in a prometheus format.
 
 ## How to integrate with MaC
 
@@ -37,7 +37,7 @@ Navigate to http://localhost:8081/metrics and you should be able to see your met
         "namespace": "localhost"
         },
         "targets": [
-            "host.docker.internal:8081"
+            "host.docker.internal:4001"
         ]
     }
     ]

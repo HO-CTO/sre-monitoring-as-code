@@ -4,7 +4,7 @@ const cors = require('cors')
 
 const promClient = require('prom-client');
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4001;
 const app = express();
 
 app.use(express.json());
