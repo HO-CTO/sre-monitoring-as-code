@@ -17,10 +17,10 @@ docker build -t sre-demo-node-app .
 Once built, the application can be run using the following command:
 
 ```
-docker run -ti -p 8081:8081 sre-demo-node-app
+docker run -ti -p 8081:8080 sre-demo-node-app
 ```
 
-Navigate to http://localhost:8081 and the application should serve a simple HTML page for testing purposes.
+Navigate to http://localhost:8081/metrics and you should be able to see your metrics in a prometheus format.
 
 ## How to integrate with MaC
 

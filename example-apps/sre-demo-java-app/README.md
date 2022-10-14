@@ -20,7 +20,7 @@ Once built, the application can be run using the following command:
 docker run -ti -p 8081:8080 sre-demo-java-app
 ```
 
-Navigate to http://localhost:8081 and the application should serve a simple HTML page for testing purposes.
+Navigate to http://localhost:8081/actutor/prometheus and you should be able to see your metrics in a prometheus format.
 
 ## How to integrate with MaC
 
