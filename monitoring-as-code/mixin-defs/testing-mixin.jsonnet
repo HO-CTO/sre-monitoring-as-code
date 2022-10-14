@@ -14,7 +14,7 @@ local config = {
 local sliSpecList = {
   journey1: {
     SLI01: {
-      title: 'AWS SQS',
+      title: 'sqs messages',
       sliDescription: 'aws sqs description',
       period: '30d',
       metricType: 'aws_sqs',
@@ -34,7 +34,7 @@ local sliSpecList = {
       },
     },
     SLI02: {
-      title: 'Http Srv Request',
+      title: 'java promclient',
       sliDescription: 'http server request seconds description',
       period: '30d',
       metricType: 'http_server_requests_seconds',
@@ -55,7 +55,7 @@ local sliSpecList = {
       },
     },
     SLI03: {
-      title: 'Grafana Requests',
+      title: 'grafana http',
       sliDescription: 'grafana_http_request_duration_seconds',
       period: '30d',
       metricType: 'grafana_http_request_duration_seconds',
@@ -72,7 +72,7 @@ local sliSpecList = {
       },
     },
     SLI04: {
-      title: 'Http Requests',
+      title: 'thanos http',
       sliDescription: 'http_requests_total description',
       period: '30d',
       metricType: 'http_requests_total',
@@ -89,7 +89,7 @@ local sliSpecList = {
       },
     },
     SLI05: {
-      title: 'Request Duration',
+      title: 'thanos qry dur',
       sliDescription: 'http_request_duration_seconds histogram/percentile',
       period: '30d',
       metricType: 'http_request_duration_seconds',
@@ -106,7 +106,7 @@ local sliSpecList = {
       },
     },
     SLI06: {
-      title: 'nginxIngressReq',
+      title: 'nginx ingress',
       sliDescription: 'nginx_ingress_controller_requests',
       period: '30d',
       metricType: 'nginx_ingress_controller_requests',
@@ -123,7 +123,7 @@ local sliSpecList = {
       },
     },
     SLI07: {
-      title: 'nginxIngressSec',
+      title: 'nginx ingress dur',
       sliDescription: 'nginx_ingress_controller_request_duration_seconds',
       period: '30d',
       metricType: 'nginx_ingress_controller_request_duration_seconds',
@@ -144,7 +144,7 @@ local sliSpecList = {
       },
     },
     SLI08: {
-      title: 'AWS ALB',
+      title: 'alb',
       sliDescription: 'aws alb histrogram',
       period: '30d',
       metricType: 'aws_alb',
@@ -164,7 +164,7 @@ local sliSpecList = {
       },
     },
     SLI09: {
-      title: 'Thanos Compact',
+      title: 'thanos compaction',
       sliDescription: 'Thanos-compact operations and failures',
       period: '30d',
       metricType: 'thanos_compact_group_compactions',
@@ -180,8 +180,8 @@ local sliSpecList = {
       },
     },
     SLI10: {
-      title: 'Avaiability',
-      sliDescription: 'Avaiability',
+      title: 'prom scrape',
+      sliDescription: 'prometheus scrape',
       period: '30d',
       metricType: 'up',
       evalInterval: '5m',
@@ -196,7 +196,7 @@ local sliSpecList = {
       },
     },
     SLI11: {
-      title: 'Avg Scrape Secs',
+      title: 'prom scrape dur',
       sliDescription: 'Average duration of Prometheus scrape of Yace',
       period: '30d',
       metricType: 'scrape_duration_seconds',
@@ -212,8 +212,8 @@ local sliSpecList = {
       },
     },
     SLI12: {
-      title: 'AWS RDS Read',
-      sliDescription: 'test',
+      title: 'rds read',
+      sliDescription: 'aws rds read',
       period: '30d',
       metricType: 'aws_rds_read',
       evalInterval: '5m',
@@ -235,8 +235,8 @@ local sliSpecList = {
       },
     },
     SLI13: {
-      title: 'AWS RDS Write',
-      sliDescription: 'test',
+      title: 'rds write',
+      sliDescription: 'aws rds write',
       period: '30d',
       metricType: 'aws_rds_write',
       evalInterval: '5m',
@@ -258,8 +258,8 @@ local sliSpecList = {
       },
     },
     SLI14: {
-      title: 'OpenSearch',
-      sliDescription: 'test',
+      title: 'opensearch',
+      sliDescription: 'opensearch',
       period: '30d',
       metricType: 'aws_es',
       evalInterval: '5m',
