@@ -1,6 +1,6 @@
 <script>
 
-const baseApiUrl = "http://localhost:8081";
+const baseApiUrl = "http://localhost:4001";
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -32,32 +32,16 @@ export default {
     return {...initialValues};
   },
   methods: {
-    async successClick() {
-      console.log(this.successfulInput);
-      const res = await fetch(`${baseApiUrl}/success`, {
+    async buttonClick(endpoint, amount) {
+      const res = await fetch(`${baseApiUrl}/${endpoint}`, {
         method: "POST",
         mode: "cors",
         headers,
         body: JSON.stringify({
-          amount: this.successfulInput,
+          amount,
         }),
       });
 
-      const { good, bad, total } = await res.json();
-      this.successCounter = good;
-      this.exceptionCounter = bad;
-      this.totalCounter = total;
-    },
-    async exceptionClick() {
-      console.log(this.exceptionInput);
-      const res = await fetch(`${baseApiUrl}/exception`, {
-        method: "POST",
-        mode: "cors",
-        headers,
-        body: JSON.stringify({
-          amount: this.exceptionInput,
-        }),
-      });
       const { good, bad, total } = await res.json();
       this.successCounter = good;
       this.exceptionCounter = bad;
@@ -88,11 +72,11 @@ export default {
     <div>
       <form>
         <input name="amount" type="number" v-model="successfulInput" />
-        <button type="button" @click="successClick">Generate successful</button>
+        <button type="button" @click="buttonClick('success', this.successfulInput)">Generate successful</button>
       </form>
       <form>
         <input name="amount" type="number" v-model="exceptionInput" />
-        <button type="button" @click="exceptionClick">
+        <button type="button" @click="buttonClick('exception', this.exceptionInput)">
           Generate exceptions
         </button>
       </form>
