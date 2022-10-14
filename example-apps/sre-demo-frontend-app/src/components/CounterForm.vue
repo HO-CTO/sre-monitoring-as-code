@@ -1,4 +1,5 @@
 <template>
+  <h3>Counter metric</h3>
   <div class="container">
     <div class="container">
     <table class="table">
@@ -32,7 +33,7 @@
 
       </form>
         </div>
-        <div class="col-6">
+        <div class="col-6 d-flex justify-content-end">
           <form class="form">
         <div class="form-group">
         <label>Number of exception events to generate:<input name="amount" type="number" class="form-control" v-model="exceptionInput" /></label>
