@@ -25,7 +25,7 @@ services:
             - 9081:9090
         links:
             - alertmanager:alertmanager
-        restart: on-failure:5
+        # restart: on-failure:5
 
     prometheus-2:
         image: prom/prometheus:v2.21.0
@@ -44,7 +44,7 @@ services:
             - 9082:9090
         links:
             - alertmanager:alertmanager
-        restart: on-failure:5
+        # restart: on-failure:5
 #        extra_hosts:
 #            - 'host.docker.internal:host-gateway'
 
@@ -63,7 +63,7 @@ services:
         depends_on:
             - prometheus-1
             - minio
-        restart: on-failure:5
+        # restart: on-failure:5
 
     thanos-sidecar-2:
         image: quay.io/thanos/thanos:v0.23.0
@@ -80,7 +80,7 @@ services:
         depends_on:
             - prometheus-2
             - minio
-        restart: on-failure:5
+        # restart: on-failure:5
 
     thanos-querier:
         image: quay.io/thanos/thanos:v0.23.0
@@ -110,7 +110,7 @@ services:
             - '--objstore.config-file=/etc/thanos/bucket_config.yaml'
         depends_on:
             - minio
-        restart: on-failure:5 
+        # restart: on-failure:5 
 
     thanos-compactor:
         image: quay.io/thanos/thanos:v0.23.0
@@ -125,7 +125,7 @@ services:
             - '--http-address=0.0.0.0:10902'
         depends_on:
             - minio
-        restart: on-failure:5 
+        # restart: on-failure:5 
 
     thanos-ruler:
         image: quay.io/thanos/thanos:v0.23.0
@@ -149,7 +149,7 @@ services:
         depends_on:
             - minio
             - thanos-querier
-        restart: on-failure:5 
+        # restart: on-failure:5 
 
     thanos-bucket-web:
         image: quay.io/thanos/thanos:v0.23.0
@@ -169,7 +169,7 @@ services:
             - 10904:10902
         depends_on:
             - minio
-        restart: on-failure:5 
+        # restart: on-failure:5 
 
     minio:
         image: minio/minio:RELEASE.2022-01-28T02-28-16Z
@@ -198,7 +198,7 @@ services:
         entrypoint: /config/start.sh
         env_file:
             - global.env
-        restart: on-failure:5 
+        # restart: on-failure:5 
 
     grafana:
         image: grafana/grafana:8.1.7
@@ -213,11 +213,11 @@ services:
             - ./grafana/provisioning/:/etc/grafana/provisioning/
         env_file:
             - grafana/grafana.env
-        restart: on-failure:5
+        # restart: on-failure:5
 
     yace:
         image: ghcr.io/nerdswords/yet-another-cloudwatch-exporter:v0.34.0-alpha
-        profiles: ["monitoring-fullstack"]
+#        profiles: ["monitoring-fullstack"]
         user: root
         volumes:
             - ./yace/config:/config
@@ -230,7 +230,7 @@ services:
             - AWS_SHARED_CREDENTIALS_FILE=/exporter/.aws/credentials
         env_file:
             - global.env
-        restart: on-failure:5
+        # restart: on-failure:5
 
 #    cloudwatch-exporter:
 #        image: prom/cloudwatch-exporter:v0.14.3
@@ -241,4 +241,4 @@ services:
 #            - '/config/config.yml'
 #        ports:
 #            - 9106:9106
-#        restart: on-failure:5
+#        # restart: on-failure:5
