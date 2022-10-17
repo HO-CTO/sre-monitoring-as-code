@@ -18,6 +18,13 @@ You will need to have installed the following:
 
 ## Getting Started
 
+1. Run the MaC local development environment. This will implicitly create the local_default network, which the LocalStack docker-compose configuration will use.
+
+    ```sh
+    cd ../local/
+    docker-compose up
+    ```
+    
 1. Run LocalStack using the provided `docker-compose.yml` file.
 
     ```sh
