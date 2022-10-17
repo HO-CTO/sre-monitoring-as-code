@@ -1,13 +1,14 @@
 <template>
+  <div>
   <h3>Counter metric</h3>
   <div class="container">
     <div class="container">
     <table class="table">
       <thead>
         <tr>
-          <th>Successful</th>
-          <th>Exceptions</th>
-          <th>Total</th>
+          <th>counter_name</th>
+          <th>labels</th>
+          <th>value</th>
         </tr>
       </thead>
       <tbody>
@@ -48,6 +49,7 @@
       
       
     </div>
+  </div>
   </div>
 </template>
 
