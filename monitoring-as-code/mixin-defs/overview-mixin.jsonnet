@@ -10,4 +10,4 @@ local config = {
   macVersion: std.extVar('MAC_VERSION'),
 };
 
-mixinFunctions.createSummaryDashboard(config)
+mixinFunctions.createOverviewDashboard(config)

@@ -6,6 +6,10 @@ local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local template = grafana.template;
 
+// MaC imports
+local macConfig = import '../mac-config.libsonnet';
+local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
+
 // Create the Grafana panels grouping all SLI types under a single SLI panel
 // @param slis A map of SLIs keyed by the SLI type
 // @returns array of panel elements
@@ -54,13 +58,10 @@ local createDashboardInfo(sliKey, slis) =
 // @returns JSON defining the journey view dashboards for a service
 local createJourneyDashboards(config, sliList, links) =
   {
-    [std.join('-', [config.product, journeyKey, 'journey-view.json'])]:
+    [std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]) + '.json']:
       dashboard.new(
-        title='%(product)s-%(journey)s-journey-view' % {
-          product: config.product,
-          journey: journeyKey,
-        },
-        uid=std.join('-', [config.product, journeyKey, 'journey-view']),
+        title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, config.product, journeyKey])),
+        uid=std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]),
         tags=[config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'journey-view'],
         schemaVersion=18,
         editable=true,

@@ -4,6 +4,15 @@ local customMetricTypes = if std.extVar('CUSTOM_METRIC_TYPES') == 'true' then im
 
 // This file is for storing the config of the MaC framework
 
+// MaC prefix
+local macPrefix = 'SRE Monitoring-as-Code';
+
+// MaC dashboard title and uid prefix
+local macDashboardPrefix = {
+  title: macPrefix,
+  uid: std.strReplace(std.asciiLower(macPrefix), ' ', '-'),
+};
+
 // Config items
 // Collection of imports for detail dashboard elements
 local detailDashboardElements = {
@@ -48,6 +57,8 @@ local alertPayloadTemplate = {
 
 // File exports
 {
+  macPrefix: macPrefix,
+  macDashboardPrefix: macDashboardPrefix,
   metricTypes: defaultMetricTypes + customMetricTypes,
   detailDashboardElements: detailDashboardElements,
   burnRateWindowList: burnRateWindowList,
