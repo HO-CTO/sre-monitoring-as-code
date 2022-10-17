@@ -27,7 +27,7 @@ router.delete('/:id', async (req, res) => {
     // return it
     const {id} = req.params;
     const result = await counterService.deleteCounter(id);
-    res.status(202).json(result);
+    res.json(result);
 });
 
 router.post('/:id/increment', async (req, res) => {
@@ -40,48 +40,3 @@ router.post('/:id/increment', async (req, res) => {
 })
 
 module.exports = router;
-
-// const metricName = "simple_counter_total";
-
-// const counter = new promClient.Counter({
-//     name: metricName,
-//     help: 'A demo counter metric',
-//     labelNames: [
-//     "status"
-//     ]
-// });
-
-// register.registerMetric(counter);
-
-// app.post('/success', async (req, res) => {
-//     const inc = Number.parseFloat(req.body.amount);
-//     counter.labels({ status: "SUCCESS" }).inc(inc);
-//     const values = await getCounterValues();
-//     res.json(values)
-// });
-
-// app.post('/exception', async (req, res) => {
-//     const inc = Number.parseFloat(req.body.amount);
-//     counter.labels({ status: "EXCEPTION" }).inc(inc);
-//     const values = await getCounterValues();
-//     res.json(values)
-// });
-
-
-
-// const getLastSuccessValue = async () => {
-//     return getCounterValue(metricName, "SUCCESS");
-// }
-
-// const getLastExceptionValue = async () => {
-//     return getCounterValue(metricName, "EXCEPTION");
-// }
-
-// async function getCounterValues() {
-//     const good = await getLastSuccessValue();
-//     const bad = await getLastExceptionValue();
-//     const total = good + bad;
-//     return Promise.resolve({
-//         good, bad, total
-//     })
-// }

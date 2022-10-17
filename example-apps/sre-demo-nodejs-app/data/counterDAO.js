@@ -1,5 +1,7 @@
 // @ts-check
 
+const { matches, compact, filter, isEmpty } = require('lodash');
+
 const counters = [];
 
 const { promClient, register } = require('../prometheus');
@@ -18,25 +20,29 @@ const _createCounter = ({name, description, labelNames = [], value}) => {
     return counter;
 }
 
-const _getCounterValue = async (name, label = "") => {
+const _getCounterValue = async (name, labelFilter = {}) => {
     const metricValue = await register.getSingleMetricAsString(name);
-
     const metricValueLines = metricValue.split('\n');
-    console.log({metricValueLines})
+    
+    const result = metricValueLines.filter(value => !value.startsWith("#"));
 
-    const result = metricValueLines.filter(value => value.includes(label));
+    const returnValue = result.map(item => {
+        const matches = item.match(/^(?<metricName>\w+){(?<labels>.+)}\s+(?<value>\d+)$/);
+        if (matches === null) {
+            return null;
+        }
 
-    if (result.length === 0) {
-        return Promise.resolve(0);
-    }
+        return {
+            labels: matches.groups?.labels.split(",").reduce((prev, curr) => {
+                const [labelKey, labelValue] = curr.split('=');
+                return {...prev, [labelKey]: labelValue.replace(/"/g, "")};
+            }, {}),
+            value: matches.groups?.value,
+        }
+    });
 
-    const matches = result[0].match(/(\d+)$/);
-    if (matches === null) {
-        return Promise.resolve(0);
-    }
-
-    const value = matches.length > 1 ? Number.parseInt(matches[matches.length - 1], 10) : 0;
-    return Promise.resolve(value);
+    
+    return Promise.resolve(compact(filter(returnValue, {labels: labelFilter})))
 }
 
 

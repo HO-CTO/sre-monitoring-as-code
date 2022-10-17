@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-prom-bundle": "^6.5.0",
+    "lodash": "^4.17.21",
     "prom-client": "^14.1.0"
   }
 }
