@@ -1,11 +1,13 @@
 alertmanager
 Alertmanager
 alertPayloadConfig
+blackbox
 cloudwatch
 Cloudwatch
 codebase
 config
 contributing.md
+CPUS
 createCustomSelectors
 createCustomTemplates
 createGraphPanel
@@ -29,6 +31,7 @@ GDS
 grafana
 Grafana
 Grafonnet
+grafonnet
 http_server_requests_seconds
 http_server_requests_seconds_bucket
 http_server_requests_seconds_count
@@ -60,7 +63,9 @@ Mixins
 Mixins1
 Mixins2
 NONINFRINGEMENT
+nonprod
 np
+Observability
 outboundMetrics
 outboundSelectorLabels
 pre-commit
@@ -107,5 +112,6 @@ thanos-store-gateway
 UKHomeOffice
 URI
 url
+whitebox
 yace
 Yet-Another-Cloudwatch-Exporter
