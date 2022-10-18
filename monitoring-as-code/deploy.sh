@@ -20,7 +20,7 @@ for mixin in "$@";
 
   if [ "$mixin" = "overview" ]; then
    #Executes docker image to create dashboards for overview mixin
-   docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m  "$mixin" -d -i input -o output;
+   docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -d -i input -o output;
   else
    #Executes docker image to create dashboards and rules for all mixins other than overview
    docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -rd -i input -o output;
@@ -28,7 +28,7 @@ for mixin in "$@";
 
   # Copy Grafana dashboards to monitoring local
   if [ "$TRANSFER_DASHBOARDS" = "true" ]; then
-    for dashboard_file_path in "$DASHBOARD_DIRECTORY"/*
+    for dashboard_file_path in "$DASHBOARD_DIRECTORY"/*"$mixin"*
     do
       dashboard_file="${dashboard_file_path##*/}"
 
