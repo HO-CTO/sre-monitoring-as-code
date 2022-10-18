@@ -6,6 +6,7 @@ defaultRules:
 
 ### Grafana  
 grafana:
+  adminPassword: admin   
   # Setup Data Source (prometheus)
   securityContext:
     runAsUser: 0
@@ -33,23 +34,50 @@ grafana:
         options:
           path: /var/lib/grafana/dashboards/app1
           foldersFromFilesStructure: true
-  additionalDataSources:
+  additionalDataSources:  
     - name: cloudwatch
       jsonData:
         authType: credentials
         defaultRegion: eu-west-1
       type: cloudwatch
-  adminPassword: admin
+    - name: prometheus
+      type: prometheus
+      access: proxy
+      orgId: 1
+      url: http://thanos-querier:10902
+      password:
+      user:
+      database:
+      basicAuth: false
+      basicAuthUser:
+      basicAuthPassword:
+      withCredentials:
+#      isDefault: true
+      isDefault: false
+      jsonData:
+        graphiteVersion: "1.1"
+        tlsAuth: false
+        tlsAuthWithCACert: false
+      secureJsonData:
+        tlsCACert: "..."
+        tlsClientCert: "..."
+        tlsClientKey: "..."
+      version: 1
+      editable: true
   extraVolumeMounts:
     - name: aws-credentials
       mountPath: /usr/share/grafana/.aws/
       readOnly: true
-    - name: collection
+    - name: additional-dashboards
       mountPath: /var/lib/grafana/dashboards/app1
       readOnly: true
 #      hostPath: /Users/georgeowusu/Documents/GIT/docker-desktop/grafana/provisioning/dashboards/monitoring
 #      hostPath: /Users/georgeowusu/Documents/GIT/docker-desktop/grafana/provisioning/dashboards/
       hostPath: /Users/georgeowusu/Documents/GIT/sre-monitoring-as-code/local/grafana/provisioning/dashboards
+    # - name: additional-datasources
+    #   mountPath: /var/lib/grafana/datasources
+    #   readOnly: true
+    #   hostPath: /Users/georgeowusu/Documents/GIT/sre-monitoring-as-code/local/grafana/provisioning/datasources
   ingress:
     enabled: true
     annotations:
