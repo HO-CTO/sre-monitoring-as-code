@@ -1,0 +1,9 @@
+{
+    "signing": {
+        "default": {
+            "expiry": "43800h",
+            "usages": ["signing", "key encipherment", "cert sign", "crl sign"],
+            "ca_constraint": {"is_ca": true}
+        }
+    }
+}

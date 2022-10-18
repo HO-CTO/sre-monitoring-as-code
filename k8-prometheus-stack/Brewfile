@@ -1,0 +1,6 @@
+brew "cfssl"
+brew "consul-template"
+brew "helm"
+brew "jq"
+brew "kubernetes-cli"
+brew "vault"

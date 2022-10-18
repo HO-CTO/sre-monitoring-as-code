@@ -35,3 +35,13 @@ local/prometheus/file_sd_configs/client_application_targets.json
 
 # Global Environment Variable file
 local/global.env
+
+### K*
+
+aws_temporary_creds/
+.DS_Store
+*.sw*
+Brewfile.lock*
+*.pem
+*.csr
+.idea

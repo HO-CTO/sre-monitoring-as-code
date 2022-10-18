@@ -1,0 +1,160 @@
+---
+nameOverride: "sre"
+
+defaultRules:
+  create: false
+
+### Grafana  
+grafana:
+  sidecar:
+    image:
+      repository: quay.io/kiwigrid/k8s-sidecar
+      tag: 1.19.2
+      sha: ""
+    imagePullPolicy: IfNotPresent
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+    dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: summary
+        orgId: 1
+        type: file
+        folder: summary
+        allowUiUpdates: true
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        editable: true
+        options:
+          path: /tmp/dashboards/summary
+          annotations:
+            k8s-sidecar-target-directory: /tmp/dashboards/summary
+    # provider:
+    #   # name of the provider, should be unique
+    #   name: sidecarProvider
+    #   # orgid as configured in grafana
+    #   orgid: 1
+    #   # folder in which the dashboards should be imported in grafana
+    #   folder: '/var/lib/grafana/dashboards'
+    #   # type of the provider
+    #   type: file
+    #   # disableDelete to activate a import-only behaviour
+    #   disableDelete: false
+    #   # allow updating provisioned dashboards from the UI
+    #   allowUiUpdates: false
+    #   # allow Grafana to replicate dashboard structure from filesystem
+    #   foldersFromFilesStructure: true
+    #   updateIntervalSeconds: 30
+    # # Additional dashboard sidecar volume mounts
+    # extraMounts:
+  additionalDataSources:
+    - name: cloudwatch
+      jsonData:
+        authType: credentials
+        defaultRegion: eu-west-1
+      type: cloudwatch
+  adminPassword: admin
+  extraVolumeMounts:
+    - name: aws-credentials
+      mountPath: /usr/share/grafana/.aws/
+      readOnly: true
+    # - name: sc-dashboard-volume
+    #   mountPath: /var/lib/grafana/dashboards
+    #   hostPath: /Users/georgeowusu/Documents/GIT/docker-desktop/grafana/provisioning/dashboards
+    #   readOnly: false
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - grafana.home.local
+    pathType: ImplementationSpecific
+  serviceMonitor:
+    selfMonitor: false
+
+###yace GOG ADDED
+yace:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - yace.home.local
+    pathType: ImplementationSpecific
+  prometheusSpec:
+    retention: 12h
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+  serviceMonitor:
+    selfMonitor: false
+
+### AlertManager
+alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - alertmanager.home.local
+    pathType: ImplementationSpecific
+  alertmanagerSpec:
+    retention: 12h
+  serviceMonitor:
+    selfMonitor: false
+
+### Prometheus
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - prometheus.home.local
+    pathType: ImplementationSpecific
+  prometheusSpec:
+    retention: 12h
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+  serviceMonitor:
+    selfMonitor: false
+
+
+
+### Prometheus Node Exporter
+prometheus-node-exporter:
+  hostRootFsMount: false
+
+### Prometheus Operator
+prometheusOperator:
+  serviceMonitor:
+    selfMonitor: false
+
+### Disabled service monitors
+kubeProxy:
+  enabled: false
+
+kubeApiServer:
+  enabled: false
+  
+coreDns:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeDns:
+  enabled: false

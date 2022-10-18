@@ -1,0 +1,15 @@
+injector:
+  enabled: false
+
+server:
+  affinity: ""
+  extraArgs: "-dev-kv-v1"
+  dev:
+    enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: vault.home.local
+        paths: []

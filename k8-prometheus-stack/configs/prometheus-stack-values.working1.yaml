@@ -1,0 +1,124 @@
+---
+nameOverride: "sre"
+
+defaultRules:
+  create: false
+
+### Grafana  
+grafana:
+  # Setup Data Source (prometheus)
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+    fsGroup: 0
+  rbac:
+    extraRoleRules:
+      # Allow k8s-sidecar image to read ConfigMap objects in same namespace
+      - apiGroups: [""]
+        resources: ["configmaps"]
+        verbs: ["get", "watch", "list"]
+# Setup dashboards
+  dashboardProviders:
+    dashboardproviders.yaml:
+     apiVersion: 1
+     providers:
+      - name: 'app1'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10 
+        allowUiUpdates: true
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/app1
+  additionalDataSources:
+    - name: cloudwatch
+      jsonData:
+        authType: credentials
+        defaultRegion: eu-west-1
+      type: cloudwatch
+  adminPassword: admin
+  extraVolumeMounts:
+    - name: aws-credentials
+      mountPath: /usr/share/grafana/.aws/
+      readOnly: true
+    - name: collection
+      mountPath: /var/lib/grafana/dashboards/app1
+      readOnly: true
+      hostPath: /Users/georgeowusu/Documents/GIT/docker-desktop/grafana/provisioning/dashboards/monitoring
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - grafana.home.local
+    pathType: ImplementationSpecific
+  serviceMonitor:
+    selfMonitor: false
+
+### AlertManager
+alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - alertmanager.home.local
+    pathType: ImplementationSpecific
+  alertmanagerSpec:
+    retention: 12h
+  serviceMonitor:
+    selfMonitor: false
+
+### Prometheus
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - prometheus.home.local
+    pathType: ImplementationSpecific
+  prometheusSpec:
+    retention: 12h
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+  serviceMonitor:
+    selfMonitor: false
+
+
+
+### Prometheus Node Exporter
+prometheus-node-exporter:
+  hostRootFsMount: false
+
+### Prometheus Operator
+prometheusOperator:
+  serviceMonitor:
+    selfMonitor: false
+
+### Disabled service monitors
+kubeProxy:
+  enabled: false
+
+kubeApiServer:
+  enabled: false
+  
+coreDns:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeDns:
+  enabled: false

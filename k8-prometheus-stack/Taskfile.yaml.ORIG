@@ -1,0 +1,357 @@
+version: '3'
+
+silent: true
+
+vars:
+  # k8s details
+  K8S_VERSION: v1.19.15
+  K8S_CONTEXT: rancher-desktop
+
+  # AWS
+  AWS_REGION: '{{.AWS_REGION | default "eu-west-1"}}'
+  AWS_ACCOUNT: '{{.AWS_ACCOUNT | default "np"}}'
+
+  # jenkins
+  JENKINS_HELM_VERSION: 3.5.6
+
+  # vault
+  VAULT_HELM_VERSION: 0.19.0
+  VAULT_ADDR: http://vault.home.local/
+  VAULT_TOKEN: root
+
+  # prometheus
+  # Runs version 6.18.2 of Grafana helm chart, that comes with Grafana 8.3.1
+  PROM_HELM_VERSION: 23.1.1
+
+tasks:
+  install:
+    desc: Installs prerequisites tools and utilities
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    cmds:
+      # install prerequisite tools with brew bundle
+      - brew bundle
+
+      # install and configure rancher-desktop
+      - |
+        echo ""
+        echo "This will need to make changes to /usr/local/bin; This will allow rancher-desktop to create"
+        echo "appropriate symlinks to /usr/local/bin"
+        echo ""
+        echo "To do so, you'll need to enter your sudo passowrd"
+        sudo chown $USER /usr/local/bin
+
+        if brew list | grep -q rancher; then
+          echo "rancher-desktop already installed; upgrading ..."
+          brew upgrade rancher
+        else
+          echo "rancher-desktop not installed; installing ..."
+          brew install rancher
+        fi
+
+        # startup rancher-desktop with appropriate configuration
+        /Applications/Rancher\ Desktop.app/Contents/Resources/resources/darwin/bin/rdctl start \
+          --container-engine moby \
+          --kubernetes-enabled \
+          --kubernetes-version {{.K8S_VERSION}}
+
+        echo "
+        You'll need to complete a number of steps in the UI:
+
+        In the Kubernetes settings tab on Rancher Desktop:
+
+        - Make sure you have deselected 'Enable Traefik'.
+        - Also ensure that memory is set to 6GB as a minimum."
+
+  helm:repo:add:
+    desc: Installs required helm repositories
+    run: once
+    cmds:
+      - |
+        helm repo add hashicorp https://helm.releases.hashicorp.com
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo add jenkins https://charts.jenkins.io
+
+  helm:repo:update:
+    desc: Refreshes helm repo manifests
+    run: once
+    cmds:
+      - helm repo update
+
+  ingress:uninstall:traefik:
+    run: once
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+        helm delete traefik \
+          --namespace kube-system
+    status:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+        if [ $(helm ls --namespace kube-system | grep -c traefik) -gt 0 ]; then
+          exit 1
+        fi
+        exit 0
+
+  ingress:install:
+    desc: Installs NGINX ingress to ingress-nginx namespace
+    run: once
+    deps:
+      - ingress:uninstall:traefik
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+        kubectl apply -f configs/ingress-nginx.yaml
+        kubectl wait --for=condition=Available deploy/ingress-nginx-controller --timeout=2m -n ingress-nginx
+    status:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+        kubectl get pods --namespace ingress-nginx \
+          | grep controller | grep Running
+
+  ingress:uninstall:
+    desc: Uninstalls NGINX ingress
+    run: once
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+        kubectl delete -f configs/ingress-nginx.yaml
+
+  vault:install:
+    desc: Installs Hashicorp Vault, incl. v1 secrets and PKI
+    run: once
+    cmds:
+      # dependencies
+      - task: helm:repo:add
+      - task: helm:repo:update
+      - task: ingress:install
+
+      # can't use env, as if you have it set in your terminal it'll use it. Using vars instead.
+      - |
+        export VAULT_ADDR={{.VAULT_ADDR}}
+        export VAULT_TOKEN={{.VAULT_TOKEN}}
+
+        # generate root CA
+        cfssl genkey -initca certificates/home-local-ca-root-cert-template.cfssl.json \
+          | cfssljson -bare certificates/home-local-ca-root-cert
+
+        # install vault
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        # deploy Hashicorp Vault to vault ns
+        kubectl create namespace vault --dry-run=client -o yaml | kubectl apply -f -
+
+        helm upgrade --install vault hashicorp/vault \
+          --version {{.VAULT_HELM_VERSION}} \
+          --values configs/vault-values.yaml \
+          --namespace vault
+
+        # wait for vault to be ready before continuing
+        kubectl wait --for=condition=Ready po/vault-0 --timeout=2m -n vault
+
+        # setup and configure PKI
+        vault secrets enable pki
+        vault secrets tune -max-lease-ttl=8760h pki
+        vault write pki/config/urls \
+          issuing_certificates="http://vault.home.local/v1/pki/ca" \
+          crl_distribution_points="http://vault.home.local/v1/pki/crl"
+
+        TMP_DIR=$(mktemp -d -t tmp.XXXXXXXX)
+
+        vault write -format=json pki/intermediate/generate/internal \
+          common_name="Home Local Intermediate CA" \
+          | jq -r '.data.csr' > ${TMP_DIR}/issuing.csr
+
+        cfssl sign -ca certificates/home-local-ca-root-cert.pem \
+          -ca-key certificates/home-local-ca-root-cert-key.pem \
+          -hostname {{.VAULT_ADDR}} \
+          -config certificates/home-local-ca-root-cert-signing-config.cfssl.json \
+          ${TMP_DIR}/issuing.csr \
+          | cfssljson -bare -stdout issuing \
+          | sed '/^$$/d' \
+          > ${TMP_DIR}/issuing.pem
+
+        cat certificates/home-local-ca-root-cert.pem >> ${TMP_DIR}/issuing.pem
+
+        vault write pki/intermediate/set-signed certificate=@${TMP_DIR}/issuing.pem
+        vault write pki/roles/server \
+          server_flag=true \
+          allowed_domains="home.local,svc.cluster.local" \
+          allow_subdomains=true \
+          allow_localhost=true \
+          allow_glob_domains=true \
+          allow_ip_sans=true \
+          max_ttl="720h"
+
+      # cleanup
+      - rm -rf ${TMP_DIR}
+    status:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+        kubectl get pods --namespace vault \
+          | grep vault-0 | grep Running
+
+  vault:import:ca:
+    desc: Imports Vault PKI public certificates to local keychain
+    run: once
+    deps:
+      - vault:install
+    cmds:
+      - echo "We'll need you to enter your password as some tasks require administrative rights; enter your password when prompted."
+
+      # remove public certs if they already exists
+      - |
+        EXISTS=$(sudo security find-certificate -c "Home Local" -a | wc -l)
+        if [ ${EXISTS} -gt 0 ]; then \
+          sudo security delete-certificate -c "Home Local Intermediate CA"; \
+          sudo security delete-certificate -c "Home Local CA"; \
+        fi
+
+      # extract intermediate & root CA certs and add to keychain
+      - |
+        TMP_DIR=$(mktemp -d -t tmp.XXXXXXXX)
+
+        curl -s {{.VAULT_ADDR}}v1/pki/ca_chain | split -p "-----BEGIN CERTIFICATE-----" - ${TMP_DIR}/ca_cert-
+
+        sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${TMP_DIR}/ca_cert-aa
+        sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${TMP_DIR}/ca_cert-ab
+
+      # cleanup
+      - rm -rf ${TMP_DIR}
+
+  vault:uninstall:
+    desc: Uninstalls Hashicorp Vault
+    run: once
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        helm delete vault \
+          --namespace  vault
+        kubectl delete namespace vault
+
+  prometheus:install:
+    desc: Installs the Prometheues Operator, incl. Grafana
+    run: once
+    cmds:
+      # dependencies
+      - task: helm:repo:add
+      - task: helm:repo:update
+      - task: ingress:install
+      - task: aws:creds:temporary
+
+      # install prometheues
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+        # Creates $HOME/.aws directory, if doesn't exist, and mounts to grafana pods
+        helm upgrade --install prometheus-stack prometheus-community/kube-prometheus-stack \
+          --version  {{.PROM_HELM_VERSION}} \
+          --values configs/prometheus-stack-values.yaml \
+          --namespace monitoring \
+          --set grafana.extraVolumeMounts\[0\].hostPath=$HOME/.aws
+    status:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        kubectl get pods --namespace monitoring \
+          | grep prometheus | grep Running
+
+  prometheus:uninstall:
+    desc: Uninstalls the Prometheues Operator
+    run: once
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        helm delete prometheus-stack \
+          --namespace monitoring
+        kubectl delete namespace monitoring
+
+  jenkins:install:
+    desc: Installs Jenkins
+    run: once
+    cmds:
+      # dependencies
+      - task: helm:repo:add
+      - task: helm:repo:update
+      - task: ingress:install
+
+      # setup local storage
+      - mkdir -p ${HOME}/jenkins-volume
+
+      # deploy jenkins app
+      # this is a long process and can take up to 10 minutes
+      - |
+        sed -i'.back' "s~JENKINS-PV-DIR~$(HOME)/jenkins-volume~" configs/jenkins-setup.yaml
+
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        kubectl apply -f configs/jenkins-setup.yaml
+        helm upgrade --install jenkins jenkins/jenkins \
+          --version {{.JENKINS_HELM_VERSION}} \
+          --values=configs/jenkins-values.yaml \
+          --namespace=jenkins
+
+        # wait for pod to become ready
+        kubectl wait --for=condition=Ready po/jenkins-0 --timeout=10m -n jenkins
+
+      # retrieve password
+      - |
+        printf "\nInitial Jenkins Admin Password is: " && \
+          kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/chart-admin-password && echo
+        printf "\nJenkins Home Directory is mounted to ${HOME}/jenkins-volume." && \
+          echo
+
+      # cleanup
+      - rm -f configs/jenkins-setup.yaml.back
+  jenkins:uninstall:
+    desc: Uninstalls Jenkins
+    run: once
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        helm uninstall jenkins \
+        --namespace jenkins
+
+  jenkins:uninstall:all:
+    desc: Uninstalls Jenkins
+    run: once
+    cmds:
+      - |
+        kubectl config use-context {{.K8S_CONTEXT}}
+
+        kubectl delete -f configs/jenkins-setup.yaml
+
+      # cleanup
+      - rm -rf ${HOME}/jenkins-volume
+
+  aws:ecr:dns:
+    desc: Adds DNS resolver config so that you can pull down images hosted on ECR while on the VPN
+    run: once
+    cmds:
+      - echo "We'll need you to enter your password as some tasks require administrative rights; enter your password when prompted."
+
+      # dns resolver to allow aws ecr credentials to be generated without disconnecting the VPN
+      - |
+        sudo mkdir -p /etc/resolver
+        echo "nameserver 1.1.1.1" | sudo tee /etc/resolver/ecr.eu-west-1.amazonaws.com
+
+      # restart dns resolution service
+      - sudo killall -HUP mDNSResponder
+    status:
+      - test -f /etc/resolver/ecr.eu-west-1.amazonaws.com
+
+  aws:creds:temporary:
+    desc: Obtain a temporary set of AWS credentials for eu-west-1
+    run: once
+    cmds:
+      - |
+        echo "Getting temporary credentials for {{.AWS_REGION}}/{{.AWS_ACCOUNT}}"
+        if [[ ! -f ./aws_temporary_creds/getCreds.sh ]]; then
+          git clone ssh://git@bitbucket.bics-collaboration.homeoffice.gov.uk/dtc/aws_temporary_creds.git
+        fi
+        ./aws_temporary_creds/getCreds.sh --region {{.AWS_REGION}} {{.AWS_ACCOUNT}}
+        cp ~/.iptcreds/{{.AWS_REGION}}/aws_{{.AWS_ACCOUNT}} ~/.aws/credentials

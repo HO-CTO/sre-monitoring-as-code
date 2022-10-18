@@ -1,0 +1,94 @@
+---
+nameOverride: "sre"
+
+defaultRules:
+  create: false
+
+### Grafana  
+grafana:
+  additionalDataSources:
+    - name: cloudwatch
+      jsonData:
+        authType: credentials
+        defaultRegion: eu-west-1
+      type: cloudwatch
+  adminPassword: admin
+  extraVolumeMounts:
+    - name: aws-credentials
+      mountPath: /usr/share/grafana/.aws/
+      readOnly: true
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - grafana.home.local
+    pathType: ImplementationSpecific
+  serviceMonitor:
+    selfMonitor: false
+
+### AlertManager
+alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - alertmanager.home.local
+    pathType: ImplementationSpecific
+  alertmanagerSpec:
+    retention: 12h
+  serviceMonitor:
+    selfMonitor: false
+
+### Prometheus
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - prometheus.home.local
+    pathType: ImplementationSpecific
+  prometheusSpec:
+    retention: 12h
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+  serviceMonitor:
+    selfMonitor: false
+
+
+
+### Prometheus Node Exporter
+prometheus-node-exporter:
+  hostRootFsMount: false
+
+### Prometheus Operator
+prometheusOperator:
+  serviceMonitor:
+    selfMonitor: false
+
+### Disabled service monitors
+kubeProxy:
+  enabled: false
+
+kubeApiServer:
+  enabled: false
+  
+coreDns:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeDns:
+  enabled: false
