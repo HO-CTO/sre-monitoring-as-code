@@ -1,6 +1,6 @@
 // @ts-check
 
-const { matches, compact, filter, isEmpty } = require('lodash');
+const { compact, filter } = require('lodash');
 
 const counters = [];
 
