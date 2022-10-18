@@ -1,8 +1,3 @@
-<script setup>
-import CounterForm from "./components/CounterForm.vue";
-import Version from "./components/Version.vue";
-</script>
-
 <template>
   <main>
     <div>
@@ -16,7 +11,6 @@ import Version from "./components/Version.vue";
       <!-- route outlet -->
       <!-- component matched by the route will render here -->
       <router-view></router-view>
-    
     </div>
   </main>
 </template>

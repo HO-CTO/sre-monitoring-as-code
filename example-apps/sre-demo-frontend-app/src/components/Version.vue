@@ -1,5 +1,5 @@
 <template>
-    {{`API Version: ${version.runtime} ${version.version}`}}
+  {{ `API Version: ${version.runtime} ${version.version}` }}
 </template>
 
 <script>
@@ -11,10 +11,10 @@ const headers = {
 };
 
 const initialValues = {
-    version: {
-        runtime: "?",
-        version: "?",
-    }
+  version: {
+    runtime: "?",
+    version: "?",
+  },
 };
 
 export default {
@@ -25,11 +25,11 @@ export default {
     })
       .then((data) => data.json())
       .then((data) => {
-        this.version = data
+        this.version = data;
       });
   },
   data() {
-    return {...initialValues};
-  }
+    return { ...initialValues };
+  },
 };
 </script>

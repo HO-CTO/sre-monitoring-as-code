@@ -2,29 +2,29 @@
   <div>
     <h3>Counter metric</h3>
     <div class="container">
-      <div class="container" v-if="dataVals.length == 0">
-        <p> Its empty </p>
+      <div class="container" v-if="counterMetrics.length == 0">
+        <p>Its empty</p>
       </div>
-      <div v-else> 
-        <div >
+      <div v-else>
+        <div>
           <table class="table">
             <thead>
               <tr>
-                <th> Counter Name</th>
-                <th> Labels </th>
-                <th> Value </th>
+                <th>Counter Name</th>
+                <th>Labels</th>
+                <th>Value</th>
               </tr>
             </thead>
-            <tbody v-for="data in dataVals">
-                <tr v-if="data.value.length == 0">
-                  <td> {{data.name}} </td>
-                  <td> no labels </td>
-                  <td> no value</td>
-                </tr>
-                <tr v-else v-for=" valueElem in data.value">
-                  <td> {{data.name}} </td>
-                  <td> {{valueElem.labels }} </td>
-                  <td> {{valueElem.value }} </td>
+            <tbody v-for="counter in counterMetrics">
+              <tr v-if="counter.value.length == 0">
+                <td>{{ counter.name }}</td>
+                <td>no labels</td>
+                <td>no value</td>
+              </tr>
+              <tr v-else v-for="valueElem in counter.value">
+                <td>{{ counter.name }}</td>
+                <td>{{ valueElem.labels }}</td>
+                <td>{{ valueElem.value }}</td>
               </tr>
             </tbody>
           </table>
@@ -43,12 +43,7 @@ const headers = {
 };
 
 const initialValues = {
-  successfulInput: 1,
-  exceptionInput: 1,
-  successCounter: null,
-  exceptionCounter: null,
-  totalCounter: null,
-  dataVals: [],
+  counterMetrics: [],
 };
 
 export default {
@@ -59,12 +54,11 @@ export default {
     })
       .then((data) => data.json())
       .then((data) => {
-        this.dataVals = data;
+        this.counterMetrics = data;
       });
   },
   data() {
-    return {...initialValues};
+    return { ...initialValues };
   },
-    
 };
 </script>
