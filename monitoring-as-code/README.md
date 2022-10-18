@@ -19,13 +19,13 @@ Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and
 - [docker](https://docs.docker.com)
 - [git](https://git-scm.com)
 
-## Docker installation
+### Docker installation
 
 See GitHub Releases page for most recent tagged version and pull the Docker image: -
 
 `docker pull ghcr.io/ho-cto/sre-monitoring-as-code:{tag}`
 
-## GitHub clone installation
+### GitHub clone installation
 
 **In a directory of your choosing run the following setup commands.**
 
