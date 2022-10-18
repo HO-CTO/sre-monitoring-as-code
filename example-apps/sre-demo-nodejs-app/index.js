@@ -20,8 +20,10 @@ const expressPromMiddleware = promBundle({
 app.use(expressPromMiddleware);
 
 const countersRoute = require('./routes/counter');
+const gaugesRoute = require('./routes/gauge');
 
 app.use('/counters', countersRoute);
+app.use('/gauges', gaugesRoute);
 app.use('/metrics', promClientRoute);
 app.get('/version', async(req, res) => {
     res.json({
