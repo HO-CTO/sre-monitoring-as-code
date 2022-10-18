@@ -1,6 +1,6 @@
 <script setup>
-import Version from "../Version.vue";
-import CounterForm from "../CounterForm.vue";
+import Version from "../components/Version.vue";
+import CounterForm from "../components/CounterForm.vue";
 
 </script>
 

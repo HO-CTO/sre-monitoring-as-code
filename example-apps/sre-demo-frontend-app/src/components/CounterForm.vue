@@ -6,7 +6,7 @@
         <p> Its empty </p>
       </div>
       <div v-else> 
-        <div v-for="data in dataVals">
+        <div >
           <table class="table">
             <thead>
               <tr>
@@ -15,16 +15,16 @@
                 <th> Value </th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-if="data.value.length == 0">
-                <td> {{data.name}} </td>
-                <td> no labels </td>
-                <td> no value</td>
-              </tr>
-              <tr v-else v-for=" valueElem in data.value">
-                <td> {{data.name}} </td>
-                <td> {{valueElem.labels }} </td>
-                <td> {{valueElem.value }} </td>
+            <tbody v-for="data in dataVals">
+                <tr v-if="data.value.length == 0">
+                  <td> {{data.name}} </td>
+                  <td> no labels </td>
+                  <td> no value</td>
+                </tr>
+                <tr v-else v-for=" valueElem in data.value">
+                  <td> {{data.name}} </td>
+                  <td> {{valueElem.labels }} </td>
+                  <td> {{valueElem.value }} </td>
               </tr>
             </tbody>
           </table>

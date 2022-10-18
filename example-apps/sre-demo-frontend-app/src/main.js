@@ -4,8 +4,8 @@ import App from "./App.vue";
 
 import "./assets/main.css";
 
-import Home from "./components/pages/home.vue";
-import Counter from "./components/pages/counter.vue";
+import Home from "./views/home.vue";
+import Counter from "./views/counter.vue";
 
 // 2. Define some routes
 // Each route should map to a component.
