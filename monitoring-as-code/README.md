@@ -54,8 +54,6 @@ touch grapi-mixin.jsonnet
 docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output directory},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output {namespace:- defaults to localhost if not supplied}
 ```
 
-### Configuration Arguments
-
 **Arguments to be passed to container at runtime**
 
 | Argument | Description                                                                                                            |
