@@ -2,13 +2,13 @@
   <div>
     <Version />
     <CounterInput @counterChange="getCounterValue"/>
-    <CounterForm v-if="counter_metrics" :counterMetrics="counter_metrics" />
+    <CounterTable v-if="counter_metrics" :counterMetrics="counter_metrics" />
   </div>
 </template>
 
 <script setup>
 import Version from "../components/Version.vue";
-import CounterForm from "../components/CounterForm.vue";
+import CounterTable from "../components/CounterTable.vue";
 import CounterInput from "../components/CounterInput.vue";
 
 import {client} from '../utils/axios'
