@@ -5,7 +5,7 @@ local customMetricTypes = if std.extVar('CUSTOM_METRIC_TYPES') == 'true' then im
 // This file is for storing the config of the MaC framework
 
 // MaC prefix
-local macPrefix = 'SRE Monitoring-as-Code';
+local macPrefix = 'SRE MaC';
 
 // MaC dashboard title and uid prefix
 local macDashboardPrefix = {
