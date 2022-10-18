@@ -35,28 +35,24 @@
 </template>
 
 <script>
-const baseApiUrl = "http://localhost:4001";
+import axios from 'axios';
 
-const headers = {
+const client = axios.create({
+  baseURL: "http://localhost:4001",
+  headers: {
   "Access-Control-Allow-Origin": "*",
-  "Content-Type": "application/json",
-};
+  "Content-Type": "application/json"}
+});
 
 const initialValues = {
-  counterMetrics: [],
+  counterMetrics: []
 };
 
 export default {
-  mounted() {
-    fetch(`${baseApiUrl}/counters`, {
-      mode: "cors",
-      headers,
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        this.counterMetrics = data;
-      });
-  },
+  async mounted() {
+      const response = await client.get("/counters");
+      this.counterMetrics = response.data;
+     },
   data() {
     return { ...initialValues };
   },
