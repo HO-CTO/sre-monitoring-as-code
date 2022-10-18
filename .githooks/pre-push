@@ -1,0 +1,5 @@
+#!/bin/bash
+
+REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+docker run --rm -v "$REPO_ROOT_DIR:/app" trufflesecurity/trufflehog:3.14.0 git file:///app --only-verified --no-update --fail
