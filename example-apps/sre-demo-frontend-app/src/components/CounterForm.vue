@@ -1,55 +1,36 @@
 <template>
   <div>
-  <h3>Counter metric</h3>
-  <div class="container">
+    <h3>Counter metric</h3>
     <div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>counter_name</th>
-          <th>labels</th>
-          <th>value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ successCounter }}</td>
-          <td>{{ exceptionCounter }}</td>
-          <td>{{ totalCounter }}</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-6">
-          <form class="form">
-        <div class="form-group">
-        <label>
-          Number of successful event to generate:
-          <input name="amount" type="number" class="form-control" v-model="successfulInput" />
-        </label>
+      <div class="container" v-if="dataVals.length == 0">
+        <p> Its empty </p>
       </div>
-        <button class="btn btn-success" type="button" @click="buttonClick('success', this.successfulInput)">Generate successful</button>
-
-      </form>
-        </div>
-        <div class="col-6 d-flex justify-content-end">
-          <form class="form">
-        <div class="form-group">
-        <label>Number of exception events to generate:<input name="amount" type="number" class="form-control" v-model="exceptionInput" /></label>
-      </div>
-        <button class="btn btn-danger" type="button" @click="buttonClick('exception', this.exceptionInput)">
-          Generate exceptions
-        </button>
-
-      </form>
+      <div v-else> 
+        <div v-for="data in dataVals">
+          <table class="table">
+            <thead>
+              <tr>
+                <th> Counter Name</th>
+                <th> Labels </th>
+                <th> Value </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="data.value.length == 0">
+                <td> {{data.name}} </td>
+                <td> no labels </td>
+                <td> no value</td>
+              </tr>
+              <tr v-else v-for=" valueElem in data.value">
+                <td> {{data.name}} </td>
+                <td> {{valueElem.labels }} </td>
+                <td> {{valueElem.value }} </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      
-      
     </div>
-  </div>
   </div>
 </template>
 
@@ -67,40 +48,23 @@ const initialValues = {
   successCounter: null,
   exceptionCounter: null,
   totalCounter: null,
+  dataVals: [],
 };
 
 export default {
   mounted() {
-    fetch(`${baseApiUrl}/values`, {
+    fetch(`${baseApiUrl}/counters`, {
       mode: "cors",
       headers,
     })
       .then((data) => data.json())
       .then((data) => {
-        this.successCounter = data.good;
-        this.exceptionCounter = data.bad;
-        this.totalCounter = data.total;
+        this.dataVals = data;
       });
   },
   data() {
     return {...initialValues};
   },
-  methods: {
-    async buttonClick(endpoint, amount) {
-      const res = await fetch(`${baseApiUrl}/${endpoint}`, {
-        method: "POST",
-        mode: "cors",
-        headers,
-        body: JSON.stringify({
-          amount,
-        }),
-      });
-
-      const { good, bad, total } = await res.json();
-      this.successCounter = good;
-      this.exceptionCounter = bad;
-      this.totalCounter = total;
-    },
-  },
+    
 };
 </script>

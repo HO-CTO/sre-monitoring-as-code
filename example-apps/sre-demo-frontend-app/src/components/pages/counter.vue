@@ -6,7 +6,7 @@ import CounterForm from "../CounterForm.vue";
 
 <template>
     <div>
-    <Version />
-    <CounterForm />
-</div>
+        <Version />
+        <CounterForm />
+    </div>
 </template>
