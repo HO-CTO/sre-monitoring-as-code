@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
+import { VueQueryPlugin } from "vue-query";
 import App from "./App.vue";
 
 import "./assets/main.css";
@@ -29,5 +30,6 @@ const app = createApp(App);
 // Make sure to _use_ the router instance to make the
 // whole app router-aware.
 app.use(router);
+app.use(VueQueryPlugin);
 
 app.mount("#app");

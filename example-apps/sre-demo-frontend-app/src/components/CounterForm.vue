@@ -2,7 +2,7 @@
   <div>
     <h3>Counter metric</h3>
     <div class="container">
-      <div class="container" v-if="counterMetrics.length == 0">
+      <div class="container" v-if="data.length == 0">
         <p>Its empty</p>
       </div>
       <div v-else>
@@ -15,7 +15,7 @@
                 <th>Value</th>
               </tr>
             </thead>
-            <tbody v-for="counter in counterMetrics">
+            <tbody v-for="(counter, index) in data" :key="index">
               <tr v-if="counter.value.length == 0">
                 <td>{{ counter.name }}</td>
                 <td>no labels</td>
@@ -35,26 +35,12 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-const client = axios.create({
-  baseURL: "http://localhost:4001",
-  headers: {
-  "Access-Control-Allow-Origin": "*",
-  "Content-Type": "application/json"}
-});
-
-const initialValues = {
-  counterMetrics: []
-};
-
 export default {
-  async mounted() {
-      const response = await client.get("/counters");
-      this.counterMetrics = response.data;
-     },
-  data() {
-    return { ...initialValues };
-  },
+  props: ['counterMetrics'],
+  data(){
+    return {
+      data: this.counterMetrics,
+    };
+  }
 };
 </script>

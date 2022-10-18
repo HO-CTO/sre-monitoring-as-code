@@ -1,13 +1,35 @@
+<template>
+  <div>
+    <Version />
+    <CounterInput @counterChange="getCounterValue"/>
+    <CounterForm v-if="counter_metrics" :counterMetrics="counter_metrics" />
+  </div>
+</template>
+
 <script setup>
 import Version from "../components/Version.vue";
 import CounterForm from "../components/CounterForm.vue";
 import CounterInput from "../components/CounterInput.vue";
+
+import {client} from '../utils/axios'
 </script>
 
-<template>
-  <div>
-    <Version />
-    <CounterInput />
-    <CounterForm />
-  </div>
-</template>
+<script>
+export default{
+  async mounted(){
+    this.getCounterValue()
+  },
+  data() {
+    return {
+      counter_metrics: null
+    };
+  },
+  methods: {
+    async getCounterValue() {
+      this.counter_metrics = null
+      const response = await client.get("/counters");
+      this.counter_metrics = response.data;
+    }
+  }
+}
+</script>

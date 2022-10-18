@@ -5,7 +5,7 @@
     <label for="counterName">Counter Name</label>
     <input id="counterName" type="text" v-model="createCounterName"/>
     <label for="counterDesc">Counter Desc</label>
-    <input id="counterDesc" type="text" v-model="createCounterDec"/>
+    <input id="counterDesc" type="text" v-model="createCounterDesc"/>
     <label for="counterLabels">Counter labels</label>
     <input id="counterLabels" type="text" v-model="createCounterLabels"/>
     <button type="button" @click="createCounter">Submit new counter</button>
@@ -24,28 +24,30 @@
 </template>
 
 <script>
-const baseApiUrl = "http://localhost:4001";
-
-const headers = {
-  "Access-Control-Allow-Origin": "*",
-  "Content-Type": "application/json",
-};
+import {client} from '../utils/axios'
 
 const initialValues = {
   createCounterName: "",
-  createCounterDec: "",
+  createCounterDesc: "",
   createCounterLabels: "",
   incrementCounterName: "",
   incrementCounterLabels: "",
   incrementCounterValues: "",
 }
 export default {
+  emits: ["counterChange"],
   data() {
     return {...initialValues};
   },
   methods: {
-    createCounter() {
-      
+    async createCounter() {
+      //TODO: Fix lavels
+      const response = await client.post("/counters", {
+        name: this.createCounterName,
+        description: this.createCounterDesc,
+        labelNames: [],
+      })
+      this.$emit("counterChange")
     },
 
     incrementCounter(){
