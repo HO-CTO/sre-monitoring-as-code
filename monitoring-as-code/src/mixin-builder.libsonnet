@@ -49,26 +49,29 @@ local updateSliSpecList(config, passedSliSpecList) =
           sli: sliKey,
           journey: journeyKey,
           mac_version: config.macVersion,
+          metric_type: passedSliSpecList[journeyKey][sliKey].metricType,
         },
         dashboardSliLabelSelectors:
           |||
-            service="%(service)s", sli="%(sli)s", journey="%(journey)s",
+            service="%(service)s", sli="%(sli)s", journey="%(journey)s", metric_type="%(metricType)s",
             sli_environment=~"$environment"%(productSelector)s
           ||| % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
             productSelector: if std.objectHas(config, 'generic') && config.generic then ', sli_product=~"$product"' else '',
+            metricType: passedSliSpecList[journeyKey][sliKey].metricType,
           },
         ruleSliLabelSelectors:
           |||
-            service="%(service)s", sli="%(sli)s", journey="%(journey)s",
+            service="%(service)s", sli="%(sli)s", journey="%(journey)s", metric_type="%(metricType)s",
             sli_environment=~"%(environment)s"
           ||| % {
             service: config.product,
             sli: sliKey,
             journey: journeyKey,
             environment: if std.objectHas(config, 'generic') && config.generic then '.*' else config.environment,
+            metricType: passedSliSpecList[journeyKey][sliKey].metricType,
           },
       }
       for sliKey in std.objectFields(passedSliSpecList[journeyKey])

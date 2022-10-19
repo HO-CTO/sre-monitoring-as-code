@@ -20,7 +20,7 @@ Once built, the application can be run using the following command:
 docker run -ti -p 4001:4001 sre-demo-java-app
 ```
 
-Navigate to http://localhost:4001/actutor/prometheus and you should be able to see your metrics in a prometheus format.
+Navigate to http://localhost:4001/actuator/prometheus and you should be able to see your metrics in a prometheus format.
 
 ## How to integrate with MaC
 
