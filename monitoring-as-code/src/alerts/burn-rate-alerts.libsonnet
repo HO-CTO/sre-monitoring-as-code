@@ -106,7 +106,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
   {
     alerts+: [
       {
-        local alertName = std.join('_', [config.product, journeyKey, sliKey, sliSpec.sliType, 'ErrorBudgetBurn']),
+        local alertName = std.join('_', [std.strReplace(macConfig.macDashboardPrefix.uid, '-', '_'), config.product, journeyKey, sliKey, sliSpec.sliType, 'ErrorBudgetBurn']),
         local severity = getSeverity(errorBudgetBurnWindow, config, sliSpec),
         local alertTitle = createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey),
 
@@ -134,12 +134,14 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
         annotations: {
           dashboard: '%(grafanaUrl)s/d/%(journeyUid)s%(environment)s' % {
             grafanaUrl: config.grafanaUrl,
-            journeyUid: std.join('-', [config.product, journeyKey, 'journey-view']),
+            journeyUid: std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]),
             environment: if std.objectHas(config, 'generic') && config.generic then '' else '?var-environment=%s' % config.environment,
           },
-          silenceurl: '%(alertmanagerUrl)s/#/silences/new?filter={alertname%%3D%%22%(alertName)s%%22}' % {
+          silenceurl: '%(alertmanagerUrl)s/#/silences/new?filter={alertname%%3D%%22%(alertName)s%%22, journey%%3D%%22%(journey)s%%22, service%%3D%%22%(service)s%%22}' % {
             alertmanagerUrl: config.alertmanagerUrl,
             alertName: alertName,
+            journey: journeyKey,
+            service: config.product,
           },
           description: createAlertPayloadString(alertPayload),
           [if std.objectHas(config, 'runbookUrl') then 'runbookUrl']:

@@ -144,8 +144,8 @@ local panels = [
         links:
           [
             {
-              title: '${__data.fields.service}',
-              url: '/d/${__data.fields.service}?${environment:queryparam}',
+              title: '%s-${__data.fields.service}' % macConfig.macDashboardPrefix.uid,
+              url: '/d/%s-${__data.fields.service}?${environment:queryparam}' % macConfig.macDashboardPrefix.uid,
             },
           ],
         custom+:
@@ -340,8 +340,8 @@ local panels = [
         links:
           [
             {
-              title: '${__data.fields.service} product view',
-              url: '/d/${__data.fields.service}?${environment:queryparam}',
+              title: '%s-${__data.fields.service} product view' % macConfig.macDashboardPrefix.uid,
+              url: '/d/%s-${__data.fields.service}?${environment:queryparam}' % macConfig.macDashboardPrefix.uid,
             },
           ],
         custom+:
