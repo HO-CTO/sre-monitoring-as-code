@@ -24,7 +24,7 @@ Once you have built the apps you may run them using the commands below.
 
 The NodeJS and Java backend API services both share the same port number by default and so it is intended that only one of the backend services be run at a time.
 
-The existence of both a Java and NodeJS backend service in this folder is for reference purposes.
+Both a Java and NodeJS backend service have been included in this directory for reference purposes.
 
 **Run either...**
 
