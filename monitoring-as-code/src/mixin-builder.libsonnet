@@ -151,8 +151,8 @@ local createLinks(config) =
       asDropdown: false,
       icon: 'dashboard',
       includeVars: true,
-      tags: ['summary-view'],
-      title: 'summary-view',
+      tags: ['overview'],
+      title: 'Overview',
       type: 'dashboards',
     },
     {

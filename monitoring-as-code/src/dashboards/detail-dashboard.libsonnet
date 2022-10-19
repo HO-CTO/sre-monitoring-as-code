@@ -298,11 +298,8 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
   );
 
   dashboard.new(
-    title='%(product)s-%(journey)s-detail-view' % {
-      product: config.product,
-      journey: journeyKey,
-    },
-    uid=std.join('-', [config.product, journeyKey, 'detail-view']),
+    title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, config.product, journeyKey, 'detail'])),
+    uid=std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey, 'detail']),
     tags=[config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'detail-view'],
     schemaVersion=18,
     editable=true,
@@ -329,7 +326,7 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
 // @returns JSON for the detail dashboards
 local createDetailDashboards(config, links, sliSpecList) =
   {
-    [std.join('-', [config.product, journeyKey, 'detail-view.json'])]:
+    [std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey, 'detail']) + '.json']:
       createDetailDashboard(journeyKey, config, links, sliSpecList)
     for journeyKey in std.objectFields(sliSpecList)
   };

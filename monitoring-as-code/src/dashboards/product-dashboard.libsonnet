@@ -6,8 +6,10 @@ local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local row = grafana.row;
 
+// MaC imports
+local macConfig = import '../mac-config.libsonnet';
 local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
-
+local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
 
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
 local viewPanelsPerRow = 6;
@@ -75,7 +77,7 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
           links: [
             {
               title: 'Full %s Journey SLI dashboard' % journeyKey,
-              url: 'd/%s' % std.join('-', [config.product, journeyKey, 'journey-view?${environment:queryparam}']),
+              url: 'd/%s?${environment:queryparam}' % std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]),
             },
           ],
         },
@@ -133,10 +135,10 @@ local createProductDashboard(config, sliList, links) =
   local panels = createPanels(0, 0, 0, config, sliList);
 
   {
-    [std.join('-', [config.product, 'product-view.json'])]:
+    [std.join('-', [macConfig.macDashboardPrefix.uid, config.product]) + '.json']:
       dashboard.new(
-        title='%(product)s-product-view' % { product: config.product },
-        uid=std.join('-', [config.product, 'product-view']),
+        title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, config.product])),
+        uid=std.join('-', [macConfig.macDashboardPrefix.uid, config.product]),
         tags=[config.product, 'mac-version: %s' % config.macVersion, 'product-view'],
         schemaVersion=18,
         editable=true,

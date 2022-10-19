@@ -19,13 +19,13 @@ Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and
 - [docker](https://docs.docker.com)
 - [git](https://git-scm.com)
 
-## Docker installation
+### Docker installation
 
 See GitHub Releases page for most recent tagged version and pull the Docker image: -
 
 `docker pull ghcr.io/ho-cto/sre-monitoring-as-code:{tag}`
 
-## GitHub clone installation
+### GitHub clone installation
 
 **In a directory of your choosing run the following setup commands.**
 
@@ -42,16 +42,7 @@ docker build -t sre-monitoring-as-code:latest .
 
 ## Usage
 
-### Default mixin config 
-
-**To run the default monitoring and summary mixins bundles into the built container run the following command**
-
-```
-# Execute makefile script
-sh deploy.sh
-```
-
-### Custom mixin
+### Docker Run using custom mixin configuration
 
 **To run a custom mixin file**
 
@@ -60,10 +51,8 @@ sh deploy.sh
 touch grapi-mixin.jsonnet
 
 # Execute docker run command based on mounted directory where the mixin file has been added.
-docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output directory},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output
+docker run --mount type=bind,source="$PWD"/{user input directory},target=/input --mount type=bind,source="$PWD"/{user output directory},target=/output -it sre-monitoring-as-code:{tag} -m {service} -rd -i input -o output {namespace:- defaults to localhost if not supplied}
 ```
-
-### Configuration Arguments
 
 **Arguments to be passed to container at runtime**
 
@@ -75,6 +64,34 @@ docker run --mount type=bind,source="$PWD"/{user input directory},target=/input 
 | -a       | The type of account (np, pr or localhost), if not included defaults to localhost                                       |
 | -r       | Include if you only want to generate Prometheus rules, both generated if neither included                              |
 | -d       | Include if you only want to generate Grafana dashboards, both generated if neither included                            |
+
+### Execute built-in shell script from cloned repository
+
+**A default set of mixin configuration files are supplied in the repository and built container, these are: -**
+
+| Mixin      | Description                                                                               |
+|------------|-------------------------------------------------------------------------------------------|
+| overview   | Provides a summary dashboard of all consumers of MaC on a platform                        |
+| monitoring | Provides monitoring of the Prometheus/Grafana eco-system on which MaC runs                |
+| generic    | A global distribution of MaC using a set of 5 golden SLIs aggregated to the product level |
+| testing    | A mixin containing all MaC metric types and SLI libraries using for pipeline code tests   |
+
+
+**Distribute to local monitoring stack**
+
+A set of arguments are supplied in `deploy.sh` which allow you to distribute generated artefacts (dashboards and rules) to the monitoring local stack provided in this repo. 
+
+```
+TRANSFER_RULES="true"
+TRANSFER_DASHBOARDS="true"
+```
+
+**To run these default mixins execute the following command**
+
+```
+# Execute makefile script
+sh deploy.sh
+```
 
 ## Distribution 
 

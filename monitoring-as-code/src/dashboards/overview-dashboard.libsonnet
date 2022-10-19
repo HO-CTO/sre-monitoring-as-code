@@ -1,4 +1,4 @@
-// This file is for generating the summary dashboard which shows an overview of the SLI
+// This file is for generating the overview dashboard which shows an overview of the SLI
 // performances of all of the services being monitored
 
 // Grafana imports
@@ -8,10 +8,14 @@ local dashboard = grafana.dashboard;
 local template = grafana.template;
 local tablePanel = grafana.tablePanel;
 
+// MaC imports
+local macConfig = import '../mac-config.libsonnet';
+local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
+
 // PromQL selector for environment label
 local environmentLabelSelector = 'sli_environment=~"$environment"';
 
-// The panels for the summary dashboard
+// The panels for the overview dashboard
 local panels = [
   tablePanel.new(
     title='SLO Status Aggregated by Service (30d)',
@@ -140,8 +144,8 @@ local panels = [
         links:
           [
             {
-              title: '${__data.fields.service} product view',
-              url: '/d/${__data.fields.service}-product-view?${environment:queryparam}',
+              title: '%s-${__data.fields.service}' % macConfig.macDashboardPrefix.uid,
+              url: '/d/%s-${__data.fields.service}?${environment:queryparam}' % macConfig.macDashboardPrefix.uid,
             },
           ],
         custom+:
@@ -336,8 +340,8 @@ local panels = [
         links:
           [
             {
-              title: '${__data.fields.service} product view',
-              url: '/d/${__data.fields.service}-product-view?${environment:queryparam}',
+              title: '%s-${__data.fields.service} product view' % macConfig.macDashboardPrefix.uid,
+              url: '/d/%s-${__data.fields.service}?${environment:queryparam}' % macConfig.macDashboardPrefix.uid,
             },
           ],
         custom+:
@@ -348,19 +352,19 @@ local panels = [
   } } + { gridPos: { w: 24, h: 10 } },
 ];
 
-// Creates the summary dashboard containing two tables: one which shows overall SLI performance
+// Creates the overview dashboard containing two tables: one which shows overall SLI performance
 // for each service and how many SLIs they have and one which shows the SLI performance of
 // different SLI types for each service
 // @param config The config defined in the platform mixin file
-// @returns The JSON defining the summary dashboard
-local createSummaryDashboard(config) =
+// @returns The JSON defining the overview dashboard
+local createOverviewDashboard(config) =
   {
     grafanaDashboards+: {
-      'summary-view.json':
+      [std.join('-', [macConfig.macDashboardPrefix.uid, 'overview']) + '.json']:
         dashboard.new(
-          title='summary-view',
-          uid='summary-view',
-          tags=['mac-version: %s' % config.macVersion, 'summary-view'],
+          title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, 'overview'])),
+          uid=std.join('-', [macConfig.macDashboardPrefix.uid, 'overview']),
+          tags=['mac-version: %s' % config.macVersion, 'overview'],
           schemaVersion=18,
           editable=true,
           time_from='now-3h',
@@ -371,8 +375,8 @@ local createSummaryDashboard(config) =
               asDropdown: false,
               icon: 'dashboard',
               includeVars: true,
-              tags: ['summary-view'],
-              title: 'summary-view',
+              tags: ['overview'],
+              title: 'overview',
               type: 'dashboards',
             },
             {
@@ -400,5 +404,5 @@ local createSummaryDashboard(config) =
 
 // File exports
 {
-  createSummaryDashboard(config): createSummaryDashboard(config),
+  createOverviewDashboard(config): createOverviewDashboard(config),
 }
