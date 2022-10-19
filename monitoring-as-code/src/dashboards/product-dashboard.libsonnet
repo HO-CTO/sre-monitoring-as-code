@@ -77,7 +77,7 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
           links: [
             {
               title: 'Full %s Journey SLI dashboard' % journeyKey,
-              url: 'd/%s' % std.join('-', [config.product, journeyKey, 'journey-view?${environment:queryparam}']),
+              url: 'd/%s?${environment:queryparam}' % std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]),
             },
           ],
         },
