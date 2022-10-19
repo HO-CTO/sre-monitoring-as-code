@@ -37,6 +37,7 @@ const _getHistogramValue = async (name, labelFilter = {}) => {
     }
 
     return {
+      name: matches.groups?.metricName,
       labels: matches.groups?.labels.split(",").reduce((prev, curr) => {
         const [labelKey, labelValue] = curr.split("=");
         return { ...prev, [labelKey]: labelValue.replace(/"/g, "") };
