@@ -18,28 +18,36 @@ docker-compose --profile nodejs --profile java build
 
 You may omit `--profile` if you are targeting a specific app to build.
 
-## Running the apps
+## Running the backend service
 
-Once you have built the apps you may run them using the commands below
+Once you have built the apps you may run them using the commands below.
+
+The NodeJS and Java backend API services both share the same port number by default and so it is intended that only one of the backend services be run at a time.
+
+The existence of both a Java and NodeJS backend service in this folder is for reference purposes.
+
+**Run either...**
 
 For the node backend
 ```sh
 docker-compose --profile nodejs up
 ```
 
+**..or..**
+
 For the java backend
 ```sh
 docker-compose --profile java up
 ```
 
-## Viewing the apps
+## Frontend
 
 The apps will be hosted on localhost:
 
-VueJS Frontend will be on http://localhost:4000 where you may interact with the custom metrics
+VueJS Frontend will be on `http://localhost:4000` where you may interact with the custom metrics.
 
-Both backends wll be on http://localhost:4001. However the metrics endpoint are different.
-Node app will be on `/metrics`
-Java app will be on `/actuator/prometheus`
+Whichever backend profile you selected will be available at http://localhost:4001. However the metrics endpoint of both implementations are slightly different.
+The NodeJS metrics will be available at `http://localhost:4001/metrics`
+The Java metrics will be available at `http://localhost:4001/actuator/prometheus`
 
 
