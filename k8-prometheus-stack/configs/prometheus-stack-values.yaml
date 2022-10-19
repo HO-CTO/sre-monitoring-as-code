@@ -1,4 +1,5 @@
 ---
+# rules /etc/prometheus/rules/prometheus-prometheus-stack-sre-prometheus-rulefiles-0/*.yaml
 nameOverride: "sre"
 
 defaultRules:
@@ -6,8 +7,6 @@ defaultRules:
 
 ### Grafana  
 grafana:
-  adminPassword: admin   
-  # Setup Data Source (prometheus)
   securityContext:
     runAsUser: 0
     runAsGroup: 0
@@ -34,17 +33,14 @@ grafana:
         options:
           path: /var/lib/grafana/dashboards/app1
           foldersFromFilesStructure: true
-  additionalDataSources:  
-    - name: cloudwatch
-      jsonData:
-        authType: credentials
-        defaultRegion: eu-west-1
-      type: cloudwatch
+          datasource: Prometheus
+  additionalDataSources:
     - name: prometheus
       type: prometheus
       access: proxy
       orgId: 1
-      url: http://thanos-querier:10902
+#      url: http://thanos-querier:10902
+      url: http://prometheus-stack-sre-prometheus.monitoring:9090/
       password:
       user:
       database:
@@ -63,7 +59,13 @@ grafana:
         tlsClientCert: "..."
         tlsClientKey: "..."
       version: 1
-      editable: true
+      editable: true  
+    - name: cloudwatch
+      jsonData:
+        authType: credentials
+        defaultRegion: eu-west-1
+      type: cloudwatch
+  adminPassword: admin   
   extraVolumeMounts:
     - name: aws-credentials
       mountPath: /usr/share/grafana/.aws/
