@@ -5,9 +5,9 @@ import App from "./App.vue";
 
 import "./assets/main.css";
 
-import Home from "./views/home.vue";
-import Counter from "./views/counter.vue";
-import Gauge from "./views/Gauge.vue"
+import Home from "./views/Home.vue";
+import Counter from "./views/Counter.vue";
+import Gauge from "./views/Gauge.vue";
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -15,8 +15,8 @@ import Gauge from "./views/Gauge.vue"
 const routes = [
   { path: "/", component: Home },
   { path: "/counter", component: Counter },
-  { path: "/gauge", component: Gauge}
-]; 
+  { path: "/gauge", component: Gauge },
+];
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's

@@ -1,4 +1,5 @@
 const histogramDAO = require("../data/histogramDAO");
+const { defaultLabelKeys } = require("../prometheus");
 
 const listHistograms = async () => {
   const histograms = histogramDAO.listHistograms();
