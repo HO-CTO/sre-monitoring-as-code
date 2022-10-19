@@ -71,7 +71,7 @@ grafana:
       mountPath: /usr/share/grafana/.aws/
       readOnly: true
     - name: additional-dashboards
-      mountPath: /var/lib/grafana/dashboards/app1
+      mountPath: /var/lib/grafana/dashboards/app1 
       readOnly: true
 #      hostPath: /Users/georgeowusu/Documents/GIT/docker-desktop/grafana/provisioning/dashboards/monitoring
 #      hostPath: /Users/georgeowusu/Documents/GIT/docker-desktop/grafana/provisioning/dashboards/
@@ -122,6 +122,11 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
   serviceMonitor:
     selfMonitor: false
+  volumeMounts:
+    - name: additional-gog
+      mountPath: /etc/prometheus/rules/prometheus-prometheus-stack-sre-prometheus-rulefiles-0 
+      readOnly: true
+      hostPath: /Users/georgeowusu/Documents/GIT/sre-monitoring-as-code/local/prometheus/rule_configs
 
 
 
