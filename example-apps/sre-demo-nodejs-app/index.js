@@ -1,19 +1,14 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const promBundle = require('express-prom-bundle');
+const cors = require('cors')
 
-const nunjucks = require('nunjucks');
 const promClient = require('prom-client');
 
-const PORT = 8081;
+const PORT = process.env.PORT || 4001;
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
-
-nunjucks.configure('views', {
-    autoescape: true,
-    express: app
-});
+app.use(express.json());
+app.use(cors());
 
 // Create a Registry which registers the metrics
 const register = new promClient.Registry();
@@ -44,7 +39,7 @@ const counter = new promClient.Counter({
     help: 'A demo counter metric',
     labelNames: [
     "status"
-    ]
+    ],
 });
 
 register.registerMetric(counter);
@@ -70,28 +65,47 @@ const getLastExceptionValue = async () => {
     return getCounterValue(metricName, "EXCEPTION");
 }
 
+async function getCounterValues() {
+    const good = await getLastSuccessValue();
+    const bad = await getLastExceptionValue();
+    const total = good + bad;
+    return Promise.resolve({
+        good, bad, total
+    })
+}
+
 app.get('/metrics', async (req, res) => {
     res.setHeader('Content-Type', register.contentType);
     res.send(await register.metrics());
 });
 
-app.get('/', async (req, res) => {
-    const good = await getLastSuccessValue();
-    const bad = await getLastExceptionValue();
-    const total = good + bad;
-    res.render('index.html', {successful: good, exceptions: bad, total});
+app.get('/values', async(req, res) => {
+    const values = await getCounterValues(res);
+    res.json(values)
+    
 });
 
-app.post('/success', (req, res) => {
+app.get('/version', async(req, res) => {
+    res.json({
+        runtime: process.title,
+        version: process.version,
+    }
+    )
+    
+});
+
+app.post('/success', async (req, res) => {
     const inc = Number.parseFloat(req.body.amount);
     counter.labels({ status: "SUCCESS" }).inc(inc);
-    res.redirect('/');
+    const values = await getCounterValues();
+    res.json(values)
 });
 
-app.post('/exception', (req, res) => {
+app.post('/exception', async (req, res) => {
     const inc = Number.parseFloat(req.body.amount);
     counter.labels({ status: "EXCEPTION" }).inc(inc);
-    res.redirect('/');
+    const values = await getCounterValues();
+    res.json(values)
 });
 
 app.listen(PORT, () => {

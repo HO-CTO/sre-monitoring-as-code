@@ -1,13 +1,13 @@
 package hocto.sredemojavaapp;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class MetricRestController {
 
 	private MetricService metricService;
@@ -16,25 +16,29 @@ public class MetricRestController {
 		this.metricService = metricService;
 	}
 
-	@GetMapping("/")
-	public String index(Model model) {
-		model.addAttribute("successful", metricService.getSuccessValue());
-		model.addAttribute("exceptions", metricService.getExceptionsValue());
-		model.addAttribute("total", metricService.getTotalValue());
-
-		return "index";
+	@CrossOrigin(origins = "*")
+	@GetMapping("/values")
+	public SimpleCounterMetricResponse index() {
+		return new SimpleCounterMetricResponse(metricService.getSuccessValue(), metricService.getExceptionsValue(), metricService.getTotalValue());
 	}
 
-	@RequestMapping(value = "/success", method = RequestMethod.POST)
-	public String handleSuccess(@RequestParam(defaultValue = "1", name = "amount") String amount) {
-		this.metricService.incrementSuccessCounter(Double.parseDouble(amount));
-		return "redirect:/";
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value = "/success", method = RequestMethod.POST, produces = "application/json")
+	public SimpleCounterMetricResponse handleSuccess(@RequestBody SimpleCounterMetricRequest request) {
+		this.metricService.incrementSuccessCounter(request.getAmount());
+		return new SimpleCounterMetricResponse(metricService.getSuccessValue(), metricService.getExceptionsValue(), metricService.getTotalValue());
 	}
 
-	@RequestMapping(value = "/exception", method = RequestMethod.POST)
-	public String handleException(@RequestParam(defaultValue = "1", name = "amount") String amount) {
-		this.metricService.incrementExceptionCounter(Double.parseDouble(amount));
-		return "redirect:/";
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value = "/exception", method = RequestMethod.POST, produces = "application/json")
+	public SimpleCounterMetricResponse handleException(@RequestBody SimpleCounterMetricRequest request) {
+		this.metricService.incrementExceptionCounter(request.getAmount());
+		return new SimpleCounterMetricResponse(metricService.getSuccessValue(), metricService.getExceptionsValue(), metricService.getTotalValue());
 	}
 
+	@CrossOrigin(origins = "*")
+	@GetMapping(value = "/version")
+	public VersionResponse handleVersion() {
+		return new VersionResponse();
+	}
 }
