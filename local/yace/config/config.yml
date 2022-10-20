@@ -253,11 +253,6 @@ static:
     customTags:
       - key: Environment
         value: localstack
-    dimensions:
-      - name: QueueName
-        value: standard-queue
-      - name: queue_type
-        value: standard
   - namespace: AWS/ES
     name: my-id
     regions:
