@@ -1,18 +1,17 @@
 <template>
   <div>
     <div>
-      <button class="btn btn-primary">Create new counter</button>
+      <button @click="openModal" class="btn btn-primary">
+        Create new counter
+      </button>
     </div>
 
-    <Modal>
-      <NewCounterForm />
+    <Modal v-show="isModalVisible" @close="closeModal">
+      <template v-slot:content>
+        <NewCounterForm @created="handleCounterCreated" />
+      </template>
     </Modal>
 
-    <!-- <CounterInput
-      @counterChange="listCounters"
-      @counterCreated="handleCounterCreated"
-      @counterIncremented="handleCounterIncremented"
-    /> -->
     <CounterTable
       v-if="counter_metrics"
       :counterMetrics="counter_metrics"
@@ -26,7 +25,6 @@
 <script setup>
 import NewCounterForm from "../components/NewCounterForm.vue";
 import CounterTable from "../components/CounterTable.vue";
-import CounterInput from "../components/CounterInput.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
@@ -47,6 +45,7 @@ export default {
         delete: true,
         observe: false,
       },
+      isModalVisible: false,
     };
   },
   methods: {
@@ -57,16 +56,21 @@ export default {
     },
 
     async handleCounterCreated({ name, description, labelNames }) {
+      let labels = [];
+      if (labelNames.length != 0) {
+        labels = labelNames.split(",");
+      }
+
       await client.post("/counters", {
         name,
         description,
-        labelNames,
+        labelNames: labels,
       });
       await this.listCounters();
+      this.closeModal();
     },
 
     async handleCounterIncremented({ name, value = 1, labels }) {
-      console.log({ labels });
       await client.post(`/counters/${name}/increment`, {
         value,
         labels,
@@ -77,6 +81,15 @@ export default {
     async handleCounterDeleted({ name }) {
       const response = await client.delete(`/counters/${name}`);
       await this.listCounters();
+    },
+
+    openModal() {
+      console.log("Open modal");
+      this.isModalVisible = true;
+    },
+
+    closeModal() {
+      this.isModalVisible = false;
     },
   },
 };

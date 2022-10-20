@@ -71,7 +71,6 @@ export default {
       this.$emit("counterIncremented", payload);
     },
     async onDeleteClicked(name) {
-      console.log("Delete clicked");
       this.$emit("counterDeleted", { name });
     },
   },

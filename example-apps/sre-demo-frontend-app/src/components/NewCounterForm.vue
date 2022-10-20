@@ -29,13 +29,32 @@
           v-model="createCounterLabels"
         />
       </div>
-      <button class="btn btn-primary" type="button" @click="createCounter">
-        Create new counter
-      </button>
     </div>
+    <button
+      @click="
+        $emit('created', {
+          name: this.createCounterName,
+          description: this.createCounterDesc,
+          labelNames: this.createCounterLabels,
+        })
+      "
+      class="btn btn-primary"
+      role="button"
+    >
+      Create
+    </button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  emits: ["created"],
+  data() {
+    return {
+      createCounterName: "",
+      createCounterDesc: "",
+      createCounterLabels: "",
+    };
+  },
+};
 </script>
