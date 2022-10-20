@@ -38,6 +38,9 @@ discovery:
           # List of statistic types, e.g. "Minimum", "Maximum", etc.
           statistics:
             - Sum
+            - Minimum
+            - Maximum
+            - Average
           # Statistic period in seconds (Overrides job level setting)
           period: 60
           # How far back to request data for in seconds
@@ -47,18 +50,27 @@ discovery:
         - name: NumberOfMessagesDeleted
           statistics:
             - Sum
+            - Minimum
+            - Maximum
+            - Average
           period: 60
           length: 120
           nilToZero: true
         - name: ApproximateAgeOfOldestMessage
           statistics:
             - Sum
+            - Minimum
+            - Maximum
+            - Average
           period: 60
           length: 120
           nilToZero: true
         - name: NumberOfMessagesSent
           statistics:
             - Sum
+            - Minimum
+            - Maximum
+            - Average
           period: 60
           length: 120
           nilToZero: true
@@ -241,6 +253,11 @@ static:
     customTags:
       - key: Environment
         value: localstack
+    dimensions:
+      - name: QueueName
+        value: standard-queue
+      - name: queue_type
+        value: standard
   - namespace: AWS/ES
     name: my-id
     regions:

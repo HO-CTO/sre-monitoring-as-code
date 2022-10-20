@@ -224,7 +224,7 @@ services:
             - $HOME/.aws/credentials:/exporter/.aws/credentials
         entrypoint: /config/start.sh
         ports:
-            - 5003:5003
+            - 5000:5000
         environment:
             - AWS_PROFILE
             - AWS_SHARED_CREDENTIALS_FILE=/exporter/.aws/credentials
