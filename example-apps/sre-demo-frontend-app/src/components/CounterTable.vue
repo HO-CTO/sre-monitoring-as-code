@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h3>Counter metric</h3>
+    <h3>Counter metrics</h3>
     <div class="container">
       <div class="container" v-if="data.length == 0">
-        <p>Its empty</p>
+        <p>No metrics to display...</p>
       </div>
       <div v-else>
         <div>
@@ -41,6 +41,24 @@
                     @incrementClicked="this.onIncrementClicked"
                     @deleteClicked="this.onDeleteClicked(counter.name)"
                   />
+                  <Modal v-show="this.displayDeleteConfirm" @close="handleDeleteCancel">
+                    <template v-slot:content>
+                      <ConfirmDialog @submit="handleDeleteConfirm(counter.name)" @cancel="handleDeleteCancel">
+                        <template v-slot:title>
+                          Delete metric "{{ counter.name }}"?
+                        </template>
+                        <template v-slot:message>
+                          All instances of the metric named "{{ counter.name }}" will be deleted.
+                        </template>
+                        <template v-slot:submitButtonText>
+                          Yes, delete.
+                        </template>
+                        <template v-slot:submitButtonClass>
+                          btn-danger
+                        </template>
+                      </ConfirmDialog>
+                    </template>
+                  </Modal>
                 </td>
               </tr>
             </tbody>
@@ -54,6 +72,7 @@
 <script>
 import ActionButtons from "./ActionButtons.vue";
 import ConfirmDialog from "./ConfirmDialog.vue";
+import Modal from "./Modal.vue";
 export default {
   props: ["supportedActions", "counterMetrics"],
   data() {
@@ -67,9 +86,18 @@ export default {
       this.$emit("counterIncrementClicked");
     },
     async onDeleteClicked(name) {
-      this.$emit("counterDeleted", { name });
+      this.displayDeleteConfirm = true;
     },
+
+    handleDeleteConfirm(name) {
+      this.$emit("counterDeleted", { name });
+      this.displayDeleteConfirm = false;
+    },
+
+    handleDeleteCancel() {
+      this.displayDeleteConfirm = false;
+    }
   },
-  components: { ActionButtons, ConfirmDialog },
+  components: { ActionButtons, ConfirmDialog, Modal },
 };
 </script>

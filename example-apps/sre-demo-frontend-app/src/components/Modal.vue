@@ -9,9 +9,6 @@
         </div>
         <slot name="content"></slot>
         <div class="text-right mt-20">
-          <!-- <button @click="$emit('close')" class="btn mr-5" role="button">
-            Close
-          </button> -->
         </div>
       </div>
     </div>

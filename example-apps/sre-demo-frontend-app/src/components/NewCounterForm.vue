@@ -9,6 +9,7 @@
           id="counterName"
           type="text"
           v-model="createCounterName"
+          autocomplete="off"
         />
       </div>
       <div class="form-group">
@@ -18,6 +19,7 @@
           id="counterDesc"
           type="text"
           v-model="createCounterDesc"
+          autocomplete="off"
         />
       </div>
       <div class="form-group">
@@ -31,6 +33,7 @@
           type="text"
           v-model="createCounterLabels"
           placeholder="e.g. status,path,resource"
+          autocomplete="off"
         />
       </div>
     </div>

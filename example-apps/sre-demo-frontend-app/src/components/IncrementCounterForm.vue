@@ -10,6 +10,7 @@
             id="counterName"
             type="text"
             v-model="incrementCounterName"
+            autocomplete="off"
           />
         </label>
       </div>
@@ -21,6 +22,7 @@
             id="counterValue"
             type="number"
             v-model="incrementCounterValues"
+            autocomplete="off"
         /></label>
       </div>
       <div class="form-group">
@@ -35,6 +37,7 @@
             type="text"
             v-model="incrementCounterLabels"
             placeholder="e.g. status=SUCCESS,path=/homepage"
+            autocomplete="off"
         /></label>
       </div>
     </div>
