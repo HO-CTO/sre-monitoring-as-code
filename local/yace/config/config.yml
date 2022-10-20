@@ -172,25 +172,29 @@ static:
     metrics:
       - name: ApproximateNumberOfMessagesVisible
         statistics:
-          - Sum
+#          - Sum
+          - Average
         period: 60
         length: 120
         nilToZero: true
       - name: ApproximateAgeOfOldestMessage
         statistics:
-          - Sum
+#          - Sum
+          - Average
         period: 60
         length: 120
         nilToZero: true
       - name: NumberOfMessagesSent
         statistics:
-          - Sum
+#          - Sum
+          - Average
         period: 60
         length: 120
         nilToZero: true
       - name: NumberOfMessagesDeleted
         statistics:
-          - Sum
+#          - Sum
+          - Average
         period: 60
         length: 120
         nilToZero: true
