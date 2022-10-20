@@ -26,6 +26,14 @@ export default {
       .then((data) => data.json())
       .then((data) => {
         this.version = data;
+        if (data.runtime.includes("/")) {
+          const tokens = data.runtime.split("/");
+          const runtime = tokens[tokens.length - 1];
+          this.version = {
+            runtime,
+            version: data.version,
+          };
+        }
       });
   },
   data() {

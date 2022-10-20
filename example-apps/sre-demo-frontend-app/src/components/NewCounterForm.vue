@@ -22,11 +22,15 @@
       </div>
       <div class="form-group">
         <label for="counterLabels">Counter labels</label>
+        <p class="tiny-font">
+          This should be a comma separated list of label names.
+        </p>
         <input
           class="form-control"
           id="counterLabels"
           type="text"
           v-model="createCounterLabels"
+          placeholder="e.g. status,path,resource"
         />
       </div>
     </div>

@@ -38,13 +38,7 @@
                 <td>
                   <ActionButtons
                     :supportedActions="this.supportedActions"
-                    @incrementClicked="
-                      this.onIncrementClicked({
-                        name: counter.name,
-                        value: 1,
-                        labels: valueElem.labels,
-                      })
-                    "
+                    @incrementClicked="this.onIncrementClicked"
                     @deleteClicked="this.onDeleteClicked(counter.name)"
                   />
                 </td>
@@ -59,21 +53,23 @@
 
 <script>
 import ActionButtons from "./ActionButtons.vue";
+import ConfirmDialog from "./ConfirmDialog.vue";
 export default {
   props: ["supportedActions", "counterMetrics"],
   data() {
     return {
       data: this.counterMetrics,
+      displayDeleteConfirm: false,
     };
   },
   methods: {
     async onIncrementClicked(payload) {
-      this.$emit("counterIncremented", payload);
+      this.$emit("counterIncrementClicked");
     },
     async onDeleteClicked(name) {
       this.$emit("counterDeleted", { name });
     },
   },
-  components: { ActionButtons },
+  components: { ActionButtons, ConfirmDialog },
 };
 </script>

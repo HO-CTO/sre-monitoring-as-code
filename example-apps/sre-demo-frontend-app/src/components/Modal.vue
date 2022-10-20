@@ -2,7 +2,7 @@
   <div class="fullScreenModal" tabindex="-1" role="dialog">
     <div role="document">
       <div>
-        <div class="d-flex align-items-end">
+        <div class="d-flex justify-content-end">
           <button @click="$emit('close')" role="button" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

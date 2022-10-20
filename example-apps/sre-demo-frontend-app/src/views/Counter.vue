@@ -1,14 +1,20 @@
 <template>
   <div>
-    <div>
-      <button @click="openModal" class="btn btn-primary">
+    <div class="d-flex justify-content-end">
+      <button @click="openModal(MODAL_CREATE_COUNTER)" class="btn btn-success">
         Create new counter
       </button>
     </div>
 
     <Modal v-show="isModalVisible" @close="closeModal">
-      <template v-slot:content>
+      <template v-if="modalToDisplay === MODAL_CREATE_COUNTER" v-slot:content>
         <NewCounterForm @created="handleCounterCreated" />
+      </template>
+      <template
+        v-if="modalToDisplay === MODAL_INCREMENT_COUNTER"
+        v-slot:content
+      >
+        <IncrementCounterForm @submitted="handleCounterIncremented" />
       </template>
     </Modal>
 
@@ -16,7 +22,7 @@
       v-if="counter_metrics"
       :counterMetrics="counter_metrics"
       :supportedActions="supportedActions"
-      @counterIncremented="handleCounterIncremented"
+      @counterIncrementClicked="handleIncrementButtonClicked"
       @counterDeleted="handleCounterDeleted"
     />
   </div>
@@ -24,6 +30,7 @@
 
 <script setup>
 import NewCounterForm from "../components/NewCounterForm.vue";
+import IncrementCounterForm from "../components/IncrementCounterForm.vue";
 import CounterTable from "../components/CounterTable.vue";
 import Modal from "../components/Modal.vue";
 
@@ -31,6 +38,9 @@ import { client } from "../utils/axios";
 </script>
 
 <script>
+const MODAL_CREATE_COUNTER = "MODAL_CREATE_COUNTER";
+const MODAL_INCREMENT_COUNTER = "MODAL_INCREMENT_COUNTER";
+
 export default {
   async mounted() {
     await this.listCounters();
@@ -46,6 +56,7 @@ export default {
         observe: false,
       },
       isModalVisible: false,
+      modalToDisplay: "",
     };
   },
   methods: {
@@ -71,11 +82,21 @@ export default {
     },
 
     async handleCounterIncremented({ name, value = 1, labels }) {
+      let splitLabels = {};
+      if (labels.length != 0) {
+        let labelSplit = labels.split(",");
+        for (let elem in labelSplit) {
+          let elemSplit = labelSplit[elem].split("=");
+          splitLabels[elemSplit[0]] = elemSplit[1];
+        }
+      }
+
       await client.post(`/counters/${name}/increment`, {
         value,
-        labels,
+        labels: splitLabels,
       });
       await this.listCounters();
+      this.closeModal();
     },
 
     async handleCounterDeleted({ name }) {
@@ -83,13 +104,17 @@ export default {
       await this.listCounters();
     },
 
-    openModal() {
-      console.log("Open modal");
+    openModal(modal) {
+      this.modalToDisplay = modal;
       this.isModalVisible = true;
     },
 
     closeModal() {
       this.isModalVisible = false;
+    },
+
+    handleIncrementButtonClicked() {
+      this.openModal(MODAL_INCREMENT_COUNTER);
     },
   },
 };
