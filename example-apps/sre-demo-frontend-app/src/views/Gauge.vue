@@ -1,32 +1,132 @@
 <template>
   <div>
-    <Version />
-    <GaugeTable v-if="gauge_metrics" :gaugeMetrics="gauge_metrics" />
+    <div class="d-flex justify-content-end">
+      <button @click="openModal(MODAL_CREATE_GAUGE)" class="btn btn-success">
+        Create new gauge
+      </button>
+    </div>
+
+    <Modal v-show="isModalVisible" @close="closeModal">
+      <template v-if="modalToDisplay === MODAL_CREATE_GAUGE" v-slot:content>
+        <NewGaugeForm @created="handleGaugeCreated" />
+      </template>
+      <template v-if="modalToDisplay === MODAL_INCDEC_GAUGE" v-slot:content>
+        <IncDecGaugeForm
+          :gauge_name="gaugeName"
+          :gauge_option="gaugeOption"
+          @submitted="handleGaugeAction"
+        />
+      </template>
+    </Modal>
+
+    <GaugeTable
+      v-if="gauge_metrics"
+      :gaugeMetrics="gauge_metrics"
+      :supportedActions="supportedActions"
+      @gaugeActionClicked="handleActionButtonClicked"
+      @gaugeDeleted="handleGaugeDeleted"
+    />
   </div>
 </template>
 
 <script setup>
-import Version from "../components/Version.vue";
+import NewGaugeForm from "../components/NewGaugeForm.vue";
+import IncDecGaugeForm from "../components/IncDecGaugeForm.vue";
 import GaugeTable from "../components/GaugeTable.vue";
+import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
 </script>
 
 <script>
+const MODAL_CREATE_GAUGE = "MODAL_CREATE_GAUGE";
+const MODAL_INCDEC_GAUGE = "MODAL_INCDEC_GAUGE";
+
 export default {
   async mounted() {
-    this.getGaugeValue();
+    await this.listGauges();
   },
   data() {
     return {
       gauge_metrics: null,
+      supportedActions: {
+        increment: true,
+        decrement: true,
+        setValue: true,
+        delete: true,
+        observe: false,
+      },
+      isModalVisible: false,
+      modalToDisplay: "",
+      gaugeName: "",
+      gaugeOption: "",
     };
   },
   methods: {
-    async getGaugeValue() {
+    async listGauges() {
       this.gauge_metrics = null;
       const response = await client.get("/gauges");
       this.gauge_metrics = response.data;
+    },
+
+    async handleGaugeCreated({ name, description, labelNames }) {
+      let labels = [];
+      if (labelNames.length != 0) {
+        labels = labelNames.split(",");
+      }
+
+      await client.post("/gauges", {
+        name,
+        description,
+        labelNames: labels,
+      });
+      await this.listGauges();
+      this.closeModal();
+    },
+
+    async handleGaugeAction({ name, value = 1, labels }) {
+      let splitLabels = {};
+      if (labels.length != 0) {
+        let labelSplit = labels.split(",");
+        for (let elem in labelSplit) {
+          let elemSplit = labelSplit[elem].split("=");
+          splitLabels[elemSplit[0]] = elemSplit[1];
+        }
+      }
+      if (this.gaugeOption === "set") {
+        await client.put(`/gauges/${name}/`, {
+          value,
+          labels: splitLabels,
+        });
+      } else {
+        await client.post(`/gauges/${name}/${this.gaugeOption}`, {
+          value,
+          labels: splitLabels,
+        });
+      }
+      await this.listGauges();
+      this.closeModal();
+    },
+
+    async handleGaugeDeleted({ name }) {
+      await client.delete(`/gauges/${name}`);
+      await this.listGauges();
+    },
+
+    openModal(modal) {
+      this.modalToDisplay = modal;
+      this.isModalVisible = true;
+    },
+
+    closeModal() {
+      this.isModalVisible = false;
+    },
+
+    handleActionButtonClicked({ name, action }) {
+      this.gaugeName = name;
+      this.gaugeOption = action;
+      console.log(this.gaugeName);
+      this.openModal(MODAL_INCDEC_GAUGE);
     },
   },
 };

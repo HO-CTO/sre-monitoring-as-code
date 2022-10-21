@@ -104,7 +104,7 @@ export default {
     },
 
     async handleCounterDeleted({ name }) {
-      const response = await client.delete(`/counters/${name}`);
+      await client.delete(`/counters/${name}`);
       await this.listCounters();
     },
 

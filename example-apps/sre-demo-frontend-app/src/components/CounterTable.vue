@@ -31,7 +31,11 @@
                   />
                 </td>
               </tr>
-              <tr v-else v-for="(valueElem, index2) in counter.value" :key="index2">
+              <tr
+                v-else
+                v-for="(valueElem, index2) in counter.value"
+                :key="index2"
+              >
                 <td>{{ counter.name }}</td>
                 <td>{{ valueElem.labels }}</td>
                 <td>{{ valueElem.value }}</td>
