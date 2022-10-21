@@ -34,7 +34,7 @@
                 v-for="(valueElem, index2) in histogram.value"
                 :key="index2"
               >
-                <td>{{ histogram.name }}</td>
+                <td>{{ valueElem.name }}</td>
                 <td>{{ valueElem.labels }}</td>
                 <td>{{ valueElem.value }}</td>
                 <td>
