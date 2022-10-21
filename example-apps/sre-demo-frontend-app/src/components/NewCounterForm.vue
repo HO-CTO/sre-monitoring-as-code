@@ -37,17 +37,7 @@
         />
       </div>
     </div>
-    <button
-      @click="
-        $emit('created', {
-          name: this.createCounterName,
-          description: this.createCounterDesc,
-          labelNames: this.createCounterLabels,
-        })
-      "
-      class="btn btn-primary"
-      role="button"
-    >
+    <button @click="createCounter()" class="btn btn-primary" role="button">
       Create
     </button>
   </div>
@@ -62,6 +52,19 @@ export default {
       createCounterDesc: "",
       createCounterLabels: "",
     };
+  },
+  methods: {
+    createCounter() {
+      this.$emit("created", {
+        name: this.createCounterName,
+        description: this.createCounterDesc,
+        labelNames: this.createCounterLabels,
+      });
+
+      this.createCounterName = "";
+      this.createCounterDesc = "";
+      this.createCounterLabels = "";
+    },
   },
 };
 </script>

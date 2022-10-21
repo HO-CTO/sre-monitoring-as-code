@@ -8,8 +8,7 @@
           </button>
         </div>
         <slot name="content"></slot>
-        <div class="text-right mt-20">
-        </div>
+        <div class="text-right mt-20"></div>
       </div>
     </div>
   </div>

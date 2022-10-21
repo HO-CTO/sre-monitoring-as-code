@@ -14,7 +14,10 @@
         v-if="modalToDisplay === MODAL_INCREMENT_COUNTER"
         v-slot:content
       >
-        <IncrementCounterForm @submitted="handleCounterIncremented" />
+        <IncrementCounterForm
+          :counter_name="counterName"
+          @submitted="handleCounterIncremented"
+        />
       </template>
     </Modal>
 
@@ -57,6 +60,7 @@ export default {
       },
       isModalVisible: false,
       modalToDisplay: "",
+      counterName: "",
     };
   },
   methods: {
@@ -113,7 +117,8 @@ export default {
       this.isModalVisible = false;
     },
 
-    handleIncrementButtonClicked() {
+    handleIncrementButtonClicked({ name }) {
+      this.counterName = name;
       this.openModal(MODAL_INCREMENT_COUNTER);
     },
   },

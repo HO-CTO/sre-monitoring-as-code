@@ -11,6 +11,7 @@
             type="text"
             v-model="incrementCounterName"
             autocomplete="off"
+            readonly
           />
         </label>
       </div>
@@ -41,17 +42,7 @@
         /></label>
       </div>
     </div>
-    <button
-      @click="
-        $emit('submitted', {
-          name: this.incrementCounterName,
-          value: this.incrementCounterValues,
-          labels: this.incrementCounterLabels,
-        })
-      "
-      class="btn btn-primary"
-      role="button"
-    >
+    <button @click="incrementCounter()" class="btn btn-primary" role="button">
       Increment counter
     </button>
   </div>
@@ -59,13 +50,27 @@
 
 <script>
 export default {
+  props: ["counter_name"],
   emits: ["submitted"],
   data() {
     return {
-      incrementCounterName: "",
+      incrementCounterName: this.counter_name || "",
       incrementCounterValues: "",
       incrementCounterLabels: "",
     };
+  },
+  methods: {
+    incrementCounter() {
+      this.$emit("submitted", {
+        name: this.incrementCounterName,
+        value: this.incrementCounterValues,
+        labels: this.incrementCounterLabels,
+      });
+
+      this.incrementCounterName = "";
+      this.incrementCounterValues = "";
+      this.incrementCounterLabels = "";
+    },
   },
 };
 </script>

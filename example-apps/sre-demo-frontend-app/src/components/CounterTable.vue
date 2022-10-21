@@ -25,30 +25,39 @@
                   <ActionButtons
                     :supportedActions="this.supportedActions"
                     @incrementClicked="
-                      this.onIncrementClicked({ name: counter.name, value: 1 })
+                      this.onIncrementClicked({ name: counter.name })
                     "
-                    @deleteClicked="this.onDeleteClicked(counter.name)"
+                    @deleteClicked="this.onDeleteClicked()"
                   />
                 </td>
               </tr>
-              <tr v-else v-for="valueElem in counter.value">
+              <tr v-else v-for="(valueElem, index2) in counter.value" :key="index2">
                 <td>{{ counter.name }}</td>
                 <td>{{ valueElem.labels }}</td>
                 <td>{{ valueElem.value }}</td>
                 <td>
                   <ActionButtons
                     :supportedActions="this.supportedActions"
-                    @incrementClicked="this.onIncrementClicked"
+                    @incrementClicked="
+                      this.onIncrementClicked({ name: counter.name })
+                    "
                     @deleteClicked="this.onDeleteClicked(counter.name)"
                   />
-                  <Modal v-show="this.displayDeleteConfirm" @close="handleDeleteCancel">
+                  <Modal
+                    v-show="this.displayDeleteConfirm"
+                    @close="handleDeleteCancel"
+                  >
                     <template v-slot:content>
-                      <ConfirmDialog @submit="handleDeleteConfirm(counter.name)" @cancel="handleDeleteCancel">
+                      <ConfirmDialog
+                        @submit="handleDeleteConfirm(counter.name)"
+                        @cancel="handleDeleteCancel"
+                      >
                         <template v-slot:title>
                           Delete metric "{{ counter.name }}"?
                         </template>
                         <template v-slot:message>
-                          All instances of the metric named "{{ counter.name }}" will be deleted.
+                          All instances of the metric named "{{ counter.name }}"
+                          will be deleted.
                         </template>
                         <template v-slot:submitButtonText>
                           Yes, delete.
@@ -82,10 +91,10 @@ export default {
     };
   },
   methods: {
-    async onIncrementClicked(payload) {
-      this.$emit("counterIncrementClicked");
+    async onIncrementClicked({ name }) {
+      this.$emit("counterIncrementClicked", { name });
     },
-    async onDeleteClicked(name) {
+    async onDeleteClicked() {
       this.displayDeleteConfirm = true;
     },
 
@@ -96,7 +105,7 @@ export default {
 
     handleDeleteCancel() {
       this.displayDeleteConfirm = false;
-    }
+    },
   },
   components: { ActionButtons, ConfirmDialog, Modal },
 };
