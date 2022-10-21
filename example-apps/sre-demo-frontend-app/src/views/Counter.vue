@@ -7,16 +7,15 @@
     </div>
 
     <Modal v-show="isModalVisible" @close="closeModal">
-      <template v-if="modalToDisplay === MODAL_CREATE_COUNTER" v-slot:content>
-        <NewCounterForm @created="handleCounterCreated" />
-      </template>
-      <template
-        v-if="modalToDisplay === MODAL_INCREMENT_COUNTER"
-        v-slot:content
-      >
+      <template v-slot:content>
+        <NewCounterForm
+          @created="handleCounterCreated"
+          v-if="modalToDisplay === MODAL_CREATE_COUNTER"
+        />
         <IncrementCounterForm
           :counter_name="counterName"
           @submitted="handleCounterIncremented"
+          v-if="modalToDisplay === MODAL_INCREMENT_COUNTER"
         />
       </template>
     </Modal>

@@ -72,7 +72,8 @@ export default {
   computed: {
     capHistogramOption() {
       return (
-        this.histogram_option.charAt(0).toUpperCase() + this.histogram_option.slice(1)
+        this.histogram_option.charAt(0).toUpperCase() +
+        this.histogram_option.slice(1)
       );
     },
   },

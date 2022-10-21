@@ -7,14 +7,16 @@
     </div>
 
     <Modal v-show="isModalVisible" @close="closeModal">
-      <template v-if="modalToDisplay === MODAL_CREATE_GAUGE" v-slot:content>
-        <NewGaugeForm @created="handleGaugeCreated" />
-      </template>
-      <template v-if="modalToDisplay === MODAL_INCDEC_GAUGE" v-slot:content>
+      <template v-slot:content>
+        <NewGaugeForm
+          @created="handleGaugeCreated"
+          v-if="modalToDisplay === MODAL_CREATE_GAUGE"
+        />
         <IncDecGaugeForm
           :gauge_name="gaugeName"
           :gauge_option="gaugeOption"
           @submitted="handleGaugeAction"
+          v-if="modalToDisplay === MODAL_INCDEC_GAUGE"
         />
       </template>
     </Modal>

@@ -1,20 +1,25 @@
 <template>
   <div>
     <div class="d-flex justify-content-end">
-      <button @click="openModal(MODAL_CREATE_HISTOGRAM)" class="btn btn-success">
+      <button
+        @click="openModal(MODAL_CREATE_HISTOGRAM)"
+        class="btn btn-success"
+      >
         Create new histogram
       </button>
     </div>
 
     <Modal v-show="isModalVisible" @close="closeModal">
-      <template v-if="modalToDisplay === MODAL_CREATE_HISTOGRAM" v-slot:content>
-        <NewHistogramForm @created="handleHistogramCreated" />
-      </template>
-      <template v-if="modalToDisplay === MODAL_OBSERVE_HISTOGRAM" v-slot:content>
+      <template v-slot:content>
+        <NewHistogramForm
+          @created="handleHistogramCreated"
+          v-if="modalToDisplay === MODAL_CREATE_HISTOGRAM"
+        />
         <ObserveHistogramForm
           :histogram_name="histogramName"
           :histogram_option="histogramOption"
           @submitted="handleHistogramAction"
+          v-if="modalToDisplay === MODAL_OBSERVE_HISTOGRAM"
         />
       </template>
     </Modal>
@@ -123,7 +128,7 @@ export default {
     },
 
     handleActionButtonClicked({ name, action }) {
-      console.log({name, action})
+      console.log({ name, action });
       this.histogramName = name;
       this.histogramOption = action;
       this.openModal(MODAL_OBSERVE_HISTOGRAM);

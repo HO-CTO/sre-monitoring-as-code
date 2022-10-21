@@ -38,9 +38,7 @@
       </div>
       <div class="form-group">
         <label for="histogramBuckets">Histogram buckets (optional)</label>
-        <p class="tiny-font">
-          A comma separated list of bucket values.
-        </p>
+        <p class="tiny-font">A comma separated list of bucket values.</p>
         <input
           class="form-control"
           id="histogramBuckets"

@@ -24,7 +24,12 @@
                 <td>
                   <ActionButtons
                     :supportedActions="this.supportedActions"
-                    @observeClicked="onActionClicked({ name: histogram.name, action: 'observe' })"
+                    @observeClicked="
+                      onActionClicked({
+                        name: histogram.name,
+                        action: 'observe',
+                      })
+                    "
                     @deleteClicked="this.onDeleteClicked()"
                   />
                 </td>
@@ -40,7 +45,12 @@
                 <td>
                   <ActionButtons
                     :supportedActions="this.supportedActions"
-                    @observeClicked="onActionClicked({ name: histogram.name, action: 'observe' })"
+                    @observeClicked="
+                      onActionClicked({
+                        name: histogram.name,
+                        action: 'observe',
+                      })
+                    "
                     @deleteClicked="this.onDeleteClicked(histogram.name)"
                   />
 
@@ -57,8 +67,9 @@
                           Delete metric "{{ histogram.name }}"?
                         </template>
                         <template v-slot:message>
-                          All instances of the metric named "{{ histogram.name }}"
-                          will be deleted.
+                          All instances of the metric named "{{
+                            histogram.name
+                          }}" will be deleted.
                         </template>
                         <template v-slot:submitButtonText>
                           Yes, delete.
@@ -93,7 +104,7 @@ export default {
   },
   methods: {
     onActionClicked({ name, action }) {
-      console.log({name, action})
+      console.log({ name, action });
       this.$emit("histogramActionClicked", { name, action });
     },
 
