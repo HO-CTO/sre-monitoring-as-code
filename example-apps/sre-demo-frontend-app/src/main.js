@@ -8,6 +8,7 @@ import "./assets/main.css";
 import Home from "./views/Home.vue";
 import Counter from "./views/Counter.vue";
 import Gauge from "./views/Gauge.vue";
+import Histogram from "./views/Histogram.vue";
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -16,6 +17,7 @@ const routes = [
   { path: "/", component: Home },
   { path: "/counter", component: Counter },
   { path: "/gauge", component: Gauge },
+  { path: "/histogram", component: Histogram },
 ];
 
 // 3. Create the router instance and pass the `routes` option

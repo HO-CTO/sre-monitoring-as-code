@@ -6,11 +6,11 @@
           <router-link to="/">Home</router-link>
         </div>
         <div class="pr-10">
-          <router-link to="/counter">Counter</router-link>
+          <router-link to="/counter">Counters</router-link>
         </div>
         <div class="pr-10"><router-link to="/gauge">Gauges</router-link></div>
         <div class="pr-10">
-          <router-link to="/histograms">Histograms</router-link>
+          <router-link to="/histogram">Histograms</router-link>
         </div>
       </div>
       <div>

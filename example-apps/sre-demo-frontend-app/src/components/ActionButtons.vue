@@ -15,11 +15,11 @@
     <button @click="$emit('setValueClicked')" v-if="supportedActions.setValue">
       🔢
     </button>
-    <button @click="$emit('deleteClicked')" v-if="supportedActions.delete">
-      🗑️
-    </button>
     <button @click="$emit('observeClicked')" v-if="supportedActions.observe">
       🔎
+    </button>
+    <button @click="$emit('deleteClicked')" v-if="supportedActions.delete">
+      🗑️
     </button>
   </div>
 </template>
