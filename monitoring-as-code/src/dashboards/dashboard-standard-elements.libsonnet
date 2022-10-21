@@ -292,6 +292,15 @@ local createServiceTemplates(config) =
   +
   if std.objectHas(config, 'generic') && config.generic then [
     template.new(
+      name='metric_type',
+      datasource='prometheus',
+      query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, metric_type)' % config.product,
+      refresh='time',
+      includeAll=true,
+      multi=true,
+      label='Metric Type',
+    ),
+    template.new(
       name='product',
       datasource='prometheus',
       query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, sli_product)' % config.product,
