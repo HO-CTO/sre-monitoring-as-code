@@ -1,10 +1,10 @@
-name: 'PR NEW Workflow'
+name: 'CRON-TEST'
 
 on:
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
   schedule:
-    - cron: '25 14 * * *'
+    - cron: '40 14 * * *'
 
 env:
   REGISTRY: ghcr.io
