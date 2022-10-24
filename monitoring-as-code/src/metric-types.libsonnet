@@ -269,7 +269,7 @@
       },
       customSelectorLabels: {
         deadletterQueueName: 'dimension_QueueName',
-        deadletterQueueType: 'queue_type',
+        deadletterQueueType: 'dimension_queue_type',
       },
       customSelectors: {
         deadletterQueueName: '.+dlq.+',
