@@ -7,8 +7,9 @@ COPY package-lock.json package-lock.json
 
 EXPOSE 8081
 
+RUN npm install -g pm2
 RUN npm install
 
 COPY . .
 
-ENTRYPOINT [ "node", "index.js" ]
+ENTRYPOINT [ "pm2", "start", "index.js" ]
