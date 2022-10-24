@@ -74,16 +74,28 @@ export default {
       this.histogram_metrics = response.data;
     },
 
-    async handleHistogramCreated({ name, description, labelNames }) {
+    async handleHistogramCreated({
+      name,
+      description,
+      labelNames,
+      bucketsList,
+    }) {
       let labels = [];
       if (labelNames.length != 0) {
         labels = labelNames.split(",");
+      }
+
+      let buckets = [];
+      if (bucketsList.length != 0) {
+        buckets = bucketsList.split(",");
+        buckets = buckets.map(Number);
       }
 
       await client.post("/histograms", {
         name,
         description,
         labelNames: labels,
+        buckets,
       });
       await this.listHistograms();
       this.closeModal();

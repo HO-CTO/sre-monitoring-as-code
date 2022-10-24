@@ -32,6 +32,7 @@ const createHistogram = ({ name, description, labelNames, buckets }) => {
     name,
     description,
     labelNames,
+    buckets, 
   };
 };
 

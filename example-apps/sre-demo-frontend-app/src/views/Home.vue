@@ -1,10 +1,10 @@
 <template>
-  <div class="d-flex" style="gap: 2rem;">
+  <div class="d-flex" style="gap: 2rem">
     <a
       href="/#/counter"
       class="d-flex flex-column justify-content-center align-items-center border h-250 w-250 no-underline"
     >
-      <div style="color: white; font-size: 5em;">{{ this.countersCount }}</div>
+      <div style="color: white; font-size: 5em">{{ this.countersCount }}</div>
       <h3>Counters</h3>
     </a>
 
@@ -12,7 +12,7 @@
       href="/#/gauge"
       class="d-flex flex-column justify-content-center align-items-center border h-250 w-250 no-underline"
     >
-      <div style="color: white; font-size: 5em;">{{ this.gaugesCount }}</div>
+      <div style="color: white; font-size: 5em">{{ this.gaugesCount }}</div>
       <h3>Gauges</h3>
     </a>
 
@@ -20,7 +20,7 @@
       href="/#/histogram"
       class="d-flex flex-column justify-content-center align-items-center border h-250 w-250 no-underline"
     >
-      <div style="color: white; font-size: 5em;">{{ this.histogramsCount }}</div>
+      <div style="color: white; font-size: 5em">{{ this.histogramsCount }}</div>
       <h3>Histograms</h3>
     </a>
   </div>
@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     async refreshCounts() {
-
       const results = await Promise.all([
         client.get("/counters"),
         client.get("/gauges"),
@@ -52,8 +51,8 @@ export default {
       this.gaugesCount = results?.at(1).data?.length;
       this.histogramsCount = results?.at(2).data?.length;
     },
-  }
-}
+  },
+};
 </script>
 
 <style>

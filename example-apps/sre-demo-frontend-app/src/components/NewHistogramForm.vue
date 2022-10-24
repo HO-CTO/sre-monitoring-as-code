@@ -71,11 +71,13 @@ export default {
         name: this.createHistogramName,
         description: this.createHistogramDesc,
         labelNames: this.createHistogramLabels,
+        bucketsList: this.createHistogramBuckets,
       });
 
       this.createHistogramName = "";
       this.createHistogramDesc = "";
       this.createHistogramLabels = "";
+      this.createHistogramBuckets = "";
     },
   },
 };
