@@ -104,7 +104,6 @@ export default {
   },
   methods: {
     onActionClicked({ name, action }) {
-      console.log({ name, action });
       this.$emit("histogramActionClicked", { name, action });
     },
 

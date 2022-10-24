@@ -140,7 +140,6 @@ export default {
     },
 
     handleActionButtonClicked({ name, action }) {
-      console.log({ name, action });
       this.histogramName = name;
       this.histogramOption = action;
       this.openModal(MODAL_OBSERVE_HISTOGRAM);

@@ -127,7 +127,6 @@ export default {
     handleActionButtonClicked({ name, action }) {
       this.gaugeName = name;
       this.gaugeOption = action;
-      console.log(this.gaugeName);
       this.openModal(MODAL_INCDEC_GAUGE);
     },
   },

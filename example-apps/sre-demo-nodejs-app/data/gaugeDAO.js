@@ -8,7 +8,6 @@ const { promClient, register } = require('../prometheus');
 
 const _createGauge = ({name, description, labelNames, value}) => {
 
-    console.log({labelNames})
     const gauge = new promClient.Gauge({
         name: name,
         help: description,
