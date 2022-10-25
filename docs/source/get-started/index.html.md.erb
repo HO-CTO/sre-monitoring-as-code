@@ -130,6 +130,10 @@ The SLI types currently supported by the Monitoring as Code framework and their 
 | intervalTarget | Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals | Provided as a percentage target | 99 = 99% |
 
 
+### Metrics metric-types.libsonnet
+
+When creating your own metric type you can use the below as a baseline
+
 ### Observe and iterate (sre-monitoring-as-code) {#observe-and-iterate-heading}
 
 After implementing your SLI configuration, observe the dashboard journeys over a period of time (for example 1 sprint). After this time, iterate your SLIs to better understand your service’s performance and how the SLIs help your team make decisions.
