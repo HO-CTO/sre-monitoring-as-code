@@ -9,7 +9,7 @@
             class="form-control"
             id="counterName"
             type="text"
-            v-model="incrementCounterName"
+            :value="this.counter_name"
             autocomplete="off"
             readonly
           />
@@ -54,7 +54,6 @@ export default {
   emits: ["submitted"],
   data() {
     return {
-      incrementCounterName: this.counter_name || "",
       incrementCounterValues: "",
       incrementCounterLabels: "",
     };
@@ -62,12 +61,12 @@ export default {
   methods: {
     incrementCounter() {
       this.$emit("submitted", {
-        name: this.incrementCounterName,
+        name: this.counter_name,
         value: this.incrementCounterValues,
         labels: this.incrementCounterLabels,
       });
 
-      this.incrementCounterName = "";
+      // this.incrementCounterName = "";
       this.incrementCounterValues = "";
       this.incrementCounterLabels = "";
     },
