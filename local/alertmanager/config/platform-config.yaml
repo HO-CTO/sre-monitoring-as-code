@@ -48,4 +48,4 @@ receivers:
           url: '{{ .CommonAnnotations.link_url }}'
 
 templates:
-- /etc/alertmanager/ebsa-templates.tmpl
+- /etc/alertmanager/platform-templates.tmpl

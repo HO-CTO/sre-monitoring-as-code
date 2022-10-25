@@ -7,11 +7,11 @@ local mixinFunctions = import '../src/lib/mixin-functions.libsonnet';
 // Define product name and technow details
 local config = {
   product: 'monitoring',
-  applicationServiceName: 'EBSA Monitoring and Logging Components',
-  servicenowAssignmentGroup: 'HO_EBSA_PLATFORM',
+  applicationServiceName: 'Monitoring and Logging Components',
+  servicenowAssignmentGroup: 'HO_PLATFORM',
   // Alerts set to test only - remove/adjust once ready for alerts for production
   maxAlertSeverity: 'P1',
-  configurationItem: 'EBSA Prometheus, Grafana and Thanos',
+  configurationItem: 'Prometheus, Grafana and Thanos',
   alertingSlackChannel: 'sas-monitoring-test',
   grafanaUrl: 'http://localhost:3000',
   alertmanagerUrl: 'http://localhost:9093',
