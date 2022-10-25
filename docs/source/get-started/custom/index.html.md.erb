@@ -3,11 +3,10 @@ title: Custom metrics
 weight: 15
 ---
 
-<h1> Customisation of metric types </h1>
+<h1>Add custom metric types</h1>
 
 
 ```
-
 {
   'metric_type_name': {
     // The config for the metric type
@@ -97,15 +96,15 @@ At the top level of the `custom-metric-types.libsonnet` file, there should be an
 
 | Field | Description | Validation| Example| 
 | ------ |------------- | ---------- |--------|
-| Any string name | Any name for a metric type| snake_case_string | metric_type_name |
+| [metricTypeName](#metric-type-definition) | Any name for a metric type| snake_case_string | metric_type_name |
 
 ### Metric Type Definition
 
 | Field | Description | Validation|
 | ------|-------------| ----------|
 | [metricTypeConfig](#metric-type-config) | This is an object relating to the structure of the metric type | Object with selectorLabels, metric as a minimum | 
-| sliTypesConfig | This is an object relating to the structure of the sli types available | object with at least one sli type |
-| detailedDashboardConfig | The config for the detail dashboard elements that will be generated when this metric type is included in journey | See [Detailed Dashboard Config]() below.
+| [sliTypesConfig](#sli-type-config) | This is an object relating to the structure of the sli types available | object with at least one sli type |
+| [detailedDashboardConfig](#detail-dashboard-config) | The config for the detail dashboard elements that will be generated when this metric type is included in journey | See [Detailed Dashboard Config]() below.
 
 ### Metric Type Config
 
@@ -113,7 +112,34 @@ At the top level of the `custom-metric-types.libsonnet` file, there should be an
 | ------|-------------| ----------|--------|
 | selectorLabels | Selector labels which are needed to differentiate Prometheus scraped metrics  | camelCaseString | ```environment: 'localhost', products: 'monitoring', resource: 'api'``` |
 | metrics |  Requires a metrics keyword that will be mapped to sli values and used in detail dashboards | camelCaseString | ```metricsKeyword: 'averageAvailability'```
-| 
+| outboundSelectorLabels | Prometheus labels to select for outbound metrics (e.g. outbound HTTP requests). The structure is identical to `selectorLabels` | {[string]: string} |   ```environment: 'localhost', products: 'monitoring', resource: 'api'``` |
+| outboundMetrics | Same as `metrics` but for outbound metrics e.g. outbound HTTP request count. Displayed on detail dashboard. | { [string]: string } | ```{ count: 'http_client_requests_seconds_count', bucket: 'http_client_requests_seconds_bucket' }```
+| customSelectorLabels | Labels for custom selectors. Only applicable to certain SLI types. | { [string]: string ]} | ```{ customSelectorKeyword: "name_of_metric_label_for_custom_selector"  }``` |
+| customSelectors | Values for custom selectors. Only applicable to certain SLI types and detailed dashboard elements. | { [string]: string } | ```{customSelectorKeyword: "value for custom selector"} ``` |
+
+### SLI Type Config
+
+| Field | Description | Validation| Example|
+| ------|-------------| ----------|--------|
+| [sliTypeName](#sli-type-definition) | SLI Type Definition for the metric type. | SLI Type Definition | ```{ sliTypeName: { library: (import "sli-value-libraries/name-of-sli-value-library-file.libsonnet"), description: "Description for the SLI type", targetMetrics: { targetMetricKeyword: "metricKeyword" }}}```
+
+### SLI Type Definition
+
+| Field | Description | Validation | Example |
+| ----- | ----------- | ---------- | ------- |
+| library | An import statement for the SLI value library libsonnet file that will be used to calculate the sli_value. | Currently supported SLI value libraries are listed [here](https://github.com/HO-CTO/sre-monitoring-as-code/tree/main/monitoring-as-code/src/sli-value-libraries).| `(import 'sli-value-libraries/name-of-sli-value-library-file.libsonnet')` |
+| description | A description for the SLI type. | string | `Error rate for %(sliDescription)`
+| targetMetrics | Metric keywords used by the detail dashboard element files mapped to corresponding `metric` keywords defined in [metricTypeConfig](#metric-type-config) | { [string]: string } | ```{ bucket: 'bucket', sum: 'sum', count: 'count' }``` | 
+
+
+### Detail Dashboard Config
+
+| Field | Description | Validation| Example|
+| ------|-------------| ----------|--------|
+| standardTemplates | List of selector label keywords that standard dynamic templates will be generated for | string[] | `["selectorLabelKeyword"]`
+| elements | A list of elements that will be displayed on the detail dashboard for this metric type. | string[]. Currently supported options are httpRequestsAvailability, httpRequestsLatency, cloudwatchSqs, customMetric | `['httpRequestsAvailability', 'httpRequestsLatency']` | 
+| targetMetrics | Metric keywords used by the detail dashboard element files mapped to corresponding `metric` keywords defined in [metricTypeConfig](#metric-type-config). | { [string]: string } | ```{ bucket: 'bucket', sum: 'sum', count: 'count' }``` | 
+
 
 ## Adding custom metrics types
 
