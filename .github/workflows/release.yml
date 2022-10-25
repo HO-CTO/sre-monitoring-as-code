@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged == true
-      #contains(fromJson('["minor", "major", "patch"]'), github.event.pull_request.labels.*.name)
     outputs:
       version: ${{steps.calculate.outputs.version}}
     steps:
