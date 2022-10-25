@@ -1,0 +1,67 @@
+name: 'Release Workflow'
+on:
+  pull_request:
+    types: [ closed ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  calculate-semver:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged == true &&
+      contains(fromJson('["minor", "major", "patch"]'), github.event.pull_request.labels.*.name)
+    outputs:
+      version: ${{steps.calculate.outputs.version}}
+    steps:
+      - name: Parse the SemVer label
+        id: label
+        uses: UKHomeOffice/match-label-action@v1
+        with:
+          labels: minor,major,patch
+          mode: singular
+
+      - name: Calculate SemVer value
+        id: calculate
+        uses: UKHomeOffice/semver-calculate-action@v1
+        with:
+          increment: ${{ steps.label.outputs.matchedLabels }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_to_highest: ${{ github.base_ref == 'main' }}      
+     
+      - name: Calculate metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{steps.calculate.outputs.version}}
+            type=raw,value=latest,enable=${{ github.base_ref == 'main' }}
+
+  container-image-build:
+    needs: calculate-semver
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{needs.calculate-semver.outputs.version}}
+  
+  tag-semver:
+    needs: container-image-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tag repository with SemVer
+        uses: UKHomeOffice/semver-tag-action@v3
+        with:
+          tag: ${{steps.calculate.outputs.version}}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_use_head_tag: ${{ github.base_ref == 'main' }}
+
+  release-notes:
+    needs: tag-semver
+    runs-on: ubuntu-latest
+    steps:
+      - name: Draft release notes
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
