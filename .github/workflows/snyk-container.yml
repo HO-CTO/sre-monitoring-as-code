@@ -3,8 +3,8 @@ name: 'CRON-TEST'
 on:
   pull_request:
     types: [ labeled, opened, reopened, synchronize ]
-  schedule:
-    - cron: '05 15 * * *'
+  # schedule:
+  #  - cron: '05 15 * * *'
 
 env:
   REGISTRY: ghcr.io
