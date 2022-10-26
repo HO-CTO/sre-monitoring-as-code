@@ -18,7 +18,7 @@ local environmentLabelSelector = 'sli_environment=~"$environment"';
 // The panels for the overview dashboard
 local panels = [
   tablePanel.new(
-    title='SLO Status Aggregated by Service (30d)',
+    title='SLO Status Aggregated by Service (30d unless otherwise stated) ',
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
@@ -59,7 +59,7 @@ local panels = [
     ),
   ).addTarget(
     prometheus.target(
-      'sum without (exported_namespace) (label_replace( sum by(exported_namespace) (increase(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=~"$environment"}[30d])), "sli_environment", "$1", "exported_namespace", "(.*)"))',
+      'sum without (exported_namespace) (label_replace( sum by(exported_namespace) (increase(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=~"$environment"}[6h])), "sli_environment", "$1", "exported_namespace", "(.*)"))',
       format='table',
       instant=true,
       legendFormat='Traffic',
@@ -78,7 +78,7 @@ local panels = [
             'Value #B': '% Change',
             'Value #C': 'SLO Coverage',
             'Value #D': 'Fired Alerts',
-            'Value #E': 'Traffic',
+            'Value #E': 'Traffic (6h)',
             service: 'Service',
             sli_environment: 'Environment',
           },
