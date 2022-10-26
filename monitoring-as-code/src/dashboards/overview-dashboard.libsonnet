@@ -78,7 +78,7 @@ local panels = [
             'Value #B': '% Change',
             'Value #C': 'SLO Coverage',
             'Value #D': 'Fired Alerts',
-            'Value #E': 'Traffic (6H)',
+            'Value #E': 'Traffic (6h)',
             service: 'Service',
             sli_environment: 'Environment',
           },
