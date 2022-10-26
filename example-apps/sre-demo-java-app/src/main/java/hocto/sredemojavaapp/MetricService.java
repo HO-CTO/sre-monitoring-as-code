@@ -19,15 +19,11 @@ public class MetricService {
 
     private void initCounter() {
         successful = Counter.builder("simple.counter")
-            .tag("app", "demo")
-            .tag("team", "sre")
             .tag("status", "SUCCESS")
             .description("A demo counter metric")
             .register(meterRegistry);
 
         exceptions = Counter.builder("simple.counter")
-            .tag("app", "demo")
-            .tag("team", "sre")
             .tag("status", "EXCEPTION")
             .description("A demo counter metric")
             .register(meterRegistry);
