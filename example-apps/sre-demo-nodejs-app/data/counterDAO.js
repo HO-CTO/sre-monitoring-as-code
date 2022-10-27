@@ -6,11 +6,11 @@ const counters = [];
 
 const { promClient, register } = require('../prometheus');
 
-const _createCounter = ({name, description, labelNames = [], value}) => {
+const _createCounter = ({name, description, labels = {}, value}) => {
     const counter = new promClient.Counter({
         name: name,
         help: description,
-        labelNames,
+        labelNames: Object.keys(labels),
     });
 
     if (value) {
@@ -55,9 +55,9 @@ const getCounter = (id) => {
     return counter;
 }
 
-const createCounter = ({name, description, labelNames, value}) => {
+const createCounter = ({name, description, labels, value}) => {
     const newCounter = _createCounter({
-        name, description, labelNames, value
+        name, description, labels, value
     })
 
     register.registerMetric(newCounter);

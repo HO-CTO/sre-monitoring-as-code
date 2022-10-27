@@ -19,18 +19,18 @@ const getGauge = async (id) => {
   });
 };
 
-const createGauge = ({ name, description, labelNames = [], value }) => {
+const createGauge = ({ name, description, labels = {}, value }) => {
   gaugeDAO.createGauge({
     name,
     description,
-    labelNames,
+    labels,
     value,
   });
 
   return {
     name,
     description,
-    labelNames,
+    labels,
     value,
   };
 };

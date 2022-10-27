@@ -6,12 +6,12 @@ const gauges = [];
 
 const { promClient, register } = require('../prometheus');
 
-const _createGauge = ({name, description, labelNames, value}) => {
+const _createGauge = ({name, description, labels = {}, value}) => {
 
     const gauge = new promClient.Gauge({
         name: name,
         help: description,
-        labelNames,
+        labelNames: Object.keys(labels),
     });
 
     if (value) {
@@ -56,9 +56,9 @@ const getGauge = (id) => {
     return gauge;
 }
 
-const createGauge = ({name, description, labelNames, value}) => {
+const createGauge = ({name, description, labels, value}) => {
     const gauge = _createGauge({
-        name, description, labelNames, value
+        name, description, labels, value
     })
 
     register.registerMetric(gauge);

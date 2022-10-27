@@ -20,18 +20,18 @@ const getCounter = async (id) => {
   });
 };
 
-const createCounter = ({ name, description, labelNames = [], value }) => {
+const createCounter = ({ name, description, labels = {}, value }) => {
   counterDAO.createCounter({
     name,
     description,
-    labelNames,
+    labels,
     value,
   });
 
   return {
     name,
     description,
-    labelNames,
+    labels,
     value,
   };
 };
