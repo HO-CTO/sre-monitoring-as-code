@@ -34,6 +34,7 @@ public class CounterPOJO {
     public static class CounterValue {
         private Map<String, String> labels;
         private Double value;
+
         CounterValue(Map<String, String> labels, Double value) {
 
             this.labels = labels;

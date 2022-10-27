@@ -13,12 +13,12 @@ public class HistogramPOJO {
         this.name = name;
     }
 
-    public HistogramPOJO(String name, Map<String, String>  labels) {
+    public HistogramPOJO(String name, Map<String, String> labels) {
         this.name = name;
         this.labels = labels;
     }
 
-    public HistogramPOJO(String name, Map<String, String>  labels, List<HistogramValue> values) {
+    public HistogramPOJO(String name, Map<String, String> labels, List<HistogramValue> values) {
         this.name = name;
         this.labels = labels;
         this.value = values;
@@ -32,11 +32,11 @@ public class HistogramPOJO {
         this.name = name;
     }
 
-    public Map<String, String>  getLabels() {
+    public Map<String, String> getLabels() {
         return labels;
     }
 
-    public void setLabels(Map<String, String>  labels) {
+    public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 

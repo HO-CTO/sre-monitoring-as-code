@@ -43,7 +43,7 @@ public class GaugeDAO {
                                 meter.getId().getName(),
                                 new GaugePOJO.GaugeValue(tagsToMap(meter.getId().getTags()),
                                         ((Gauge) meter).value()))
-                                ).collect(Collectors.toList()
+                ).collect(Collectors.toList()
                 );
     }
 

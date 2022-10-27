@@ -22,12 +22,12 @@ public class CounterDAO {
     }
 
 
-
     private List<Tag> mapToTags(Map<String, String> map) {
         return List.of(
-            map.entrySet().stream().map(entry -> Tag.of(entry.getKey(), entry.getValue())).toArray(Tag[]::new)
+                map.entrySet().stream().map(entry -> Tag.of(entry.getKey(), entry.getValue())).toArray(Tag[]::new)
         );
     }
+
     private Map<String, String> tagsToMap(List<Tag> tags) {
         return Map.ofEntries(
                 tags.stream().map(tag -> Map.entry(tag.getKey(), tag.getValue())).toArray(Map.Entry[]::new)

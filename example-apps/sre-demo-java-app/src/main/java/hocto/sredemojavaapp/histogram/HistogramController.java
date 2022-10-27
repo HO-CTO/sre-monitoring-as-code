@@ -1,6 +1,5 @@
 package hocto.sredemojavaapp.histogram;
 
-import hocto.sredemojavaapp.gauge.GaugeChangeRequestBody;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

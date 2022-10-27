@@ -1,13 +1,13 @@
 package hocto.sredemojavaapp.histogram;
 
-import hocto.sredemojavaapp.gauge.GaugePOJO;
-import io.micrometer.core.instrument.*;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.distribution.CountAtBucket;
 import io.micrometer.core.instrument.distribution.HistogramSnapshot;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,7 +43,7 @@ public class HistogramDAO {
                                 meter.getId().getName(),
                                 tagsToMap(meter.getId().getTags()),
                                 getHistogramValues(meter.getId().getName(), tagsToMap(meter.getId().getTags()))
-                )).collect(Collectors.toList());
+                        )).collect(Collectors.toList());
     }
 
     public HistogramPOJO getHistogram(String name) {
@@ -52,7 +52,7 @@ public class HistogramDAO {
             throw new RuntimeException(String.format("No gauge with name \"%s\" found", name));
         }
 
-        return new HistogramPOJO(histogram.getId().getName(), tagsToMap(histogram.getId().getTags()), getHistogramValues(histogram.getId().getName(), tagsToMap(histogram.getId().getTags()) ));
+        return new HistogramPOJO(histogram.getId().getName(), tagsToMap(histogram.getId().getTags()), getHistogramValues(histogram.getId().getName(), tagsToMap(histogram.getId().getTags())));
     }
 
     public HistogramPOJO createHistogram(String name, Map<String, String> labels, Double initialValue, List<Double> buckets) {
@@ -89,10 +89,10 @@ public class HistogramDAO {
         double count = histogramSnapshot.count();
 
         List<HistogramPOJO.HistogramValue> histogramValues = Arrays.stream(histogramCounts).map(
-                countAtBucket -> new HistogramPOJO.HistogramValue(
-                    name.concat("_bucket"),
-                        countAtBucket.count(),
-                        addBucketToLabels(labels, String.valueOf(countAtBucket.bucket()))))
+                        countAtBucket -> new HistogramPOJO.HistogramValue(
+                                name.concat("_bucket"),
+                                countAtBucket.count(),
+                                addBucketToLabels(labels, String.valueOf(countAtBucket.bucket()))))
                 .collect(Collectors.toList());
 
         histogramValues.add(new HistogramPOJO.HistogramValue(name.concat("_sum"), sum, labels));
@@ -136,7 +136,7 @@ public class HistogramDAO {
         final HistogramPOJO result = new HistogramPOJO(
                 histogram.getId().getName(),
                 tagsToMap(histogram.getId().getTags()),
-                getHistogramValues(histogram.getId().getName(),  tagsToMap(histogram.getId().getTags()))
+                getHistogramValues(histogram.getId().getName(), tagsToMap(histogram.getId().getTags()))
         );
 
         return result;
