@@ -61,7 +61,7 @@ public class GaugeDAO {
     public GaugePOJO createGauge(String name, Map<String, String> labels, int initialValue) {
 
         GaugeSensor gaugeSensor = new GaugeSensor(name, initialValue);
-        Gauge.Builder<GaugeSensor> builder = Gauge.builder(gaugeSensor.getName(), gaugeSensor, GaugeSensor::getValue);
+        Gauge.Builder<GaugeSensor> builder = Gauge.builder(gaugeSensor.getName(), gaugeSensor, GaugeSensor::getValue).strongReference(true);
         labels.forEach(builder::tag);
         this.createdGauges.add(gaugeSensor);
         builder.register(meterRegistry);
@@ -91,40 +91,37 @@ public class GaugeDAO {
 
     public GaugePOJO incrementGauge(String name, Map<String, String> labels, int value) {
 
-        Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
-        sensor.get().setValue(sensor.get().getValue() + value);
-
         final Gauge gauge = meterRegistry.find(name).tags(mapToTags(labels)).gauge();
         if (gauge == null) {
             throw new RuntimeException(String.format("No gauge with name \"%s\" found", name));
         }
-        ;
+
+        Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
+        sensor.get().setValue(sensor.get().getValue() + value);
 
         return new GaugePOJO(gauge.getId().getName(), tagsToMap(gauge.getId().getTags()), gauge.value());
     }
 
     public GaugePOJO decrementGauge(String name, Map<String, String> labels, int value) {
-        Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
-        sensor.get().setValue(sensor.get().getValue() - value);
-
         final Gauge gauge = meterRegistry.find(name).tags(mapToTags(labels)).gauge();
         if (gauge == null) {
             throw new RuntimeException(String.format("No gauge with name \"%s\" found", name));
         }
-        ;
+
+        Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
+        sensor.get().setValue(sensor.get().getValue() - value);
 
         return new GaugePOJO(gauge.getId().getName(), tagsToMap(gauge.getId().getTags()), gauge.value());
     }
 
     public GaugePOJO setGauge(String name, Map<String, String> labels, int value) {
-        Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
-        sensor.get().setValue(value);
-
         final Gauge gauge = meterRegistry.find(name).tags(mapToTags(labels)).gauge();
         if (gauge == null) {
             throw new RuntimeException(String.format("No gauge with name \"%s\" found", name));
         }
-        ;
+
+        Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
+        sensor.get().setValue(value);
 
         return new GaugePOJO(gauge.getId().getName(), tagsToMap(gauge.getId().getTags()), gauge.value());
     }
