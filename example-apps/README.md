@@ -50,4 +50,14 @@ Whichever backend profile you selected will be available at http://localhost:400
 The NodeJS metrics will be available at http://localhost:4001/metrics
 The Java metrics will be available at http://localhost:4001/actuator/prometheus
 
+## Viewing the apps
+
+The apps will be hosted on localhost:
+
+VueJS Frontend will be on http://localhost:4000 where you may interact with the custom metrics
+
+Both backends wll be on http://localhost:4001. However the metrics endpoint are different.
+Node app will be on `/metrics`
+Java app will be on `/actuator/prometheus`
+
 
