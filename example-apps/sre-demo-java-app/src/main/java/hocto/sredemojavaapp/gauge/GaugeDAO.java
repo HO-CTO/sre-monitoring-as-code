@@ -5,10 +5,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -69,7 +66,7 @@ public class GaugeDAO {
 
         gaugeSensor.setValue(initialValue);
 
-        double value = meterRegistry.find(name).gauge().value();
+        double value = Objects.requireNonNull(meterRegistry.find(name).gauge()).value();
         return new GaugePOJO(name, new GaugePOJO.GaugeValue(labels, value));
     }
 
@@ -99,7 +96,7 @@ public class GaugeDAO {
         }
 
         Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
-        sensor.get().setValue(sensor.get().getValue() + value);
+        sensor.ifPresent(gaugeSensor -> gaugeSensor.setValue(gaugeSensor.getValue() + value));
 
         return new GaugePOJO(gauge.getId().getName(), new GaugePOJO.GaugeValue(tagsToMap(gauge.getId().getTags()), gauge.value()));
     }
@@ -111,7 +108,7 @@ public class GaugeDAO {
         }
 
         Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
-        sensor.get().setValue(sensor.get().getValue() - value);
+        sensor.ifPresent(gaugeSensor -> gaugeSensor.setValue(gaugeSensor.getValue() - value));
 
         return new GaugePOJO(gauge.getId().getName(), new GaugePOJO.GaugeValue(tagsToMap(gauge.getId().getTags()), gauge.value()));
     }
@@ -123,12 +120,12 @@ public class GaugeDAO {
         }
 
         Optional<GaugeSensor> sensor = createdGauges.stream().filter(gs -> gs.getName().equals(name)).findFirst();
-        sensor.get().setValue(value);
+        sensor.ifPresent(gaugeSensor -> gaugeSensor.setValue(value));
 
         return new GaugePOJO(gauge.getId().getName(), new GaugePOJO.GaugeValue(tagsToMap(gauge.getId().getTags()), gauge.value()));
     }
 
-    public class GaugeSensor {
+    public static class GaugeSensor {
 
         private final String name;
         private final AtomicInteger value;
