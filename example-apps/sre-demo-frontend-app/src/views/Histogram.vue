@@ -80,13 +80,17 @@ export default {
       labelNames,
       bucketsList,
     }) {
-      let labels = [];
+      let splitLabels = {};
       if (labelNames.length != 0) {
-        labels = labelNames.split(",");
+        let labelSplit = labelNames.split(",");
+        for (let elem in labelSplit) {
+          let elemSplit = labelSplit[elem].split("=");
+          splitLabels[elemSplit[0]] = elemSplit[1];
+        }
       }
 
       let buckets = [];
-      if (bucketsList.length != 0) {
+      if (bucketsList && bucketsList.length != 0) {
         buckets = bucketsList.split(",");
         buckets = buckets.map(Number);
       }
@@ -94,7 +98,7 @@ export default {
       await client.post("/histograms", {
         name,
         description,
-        labelNames: labels,
+        labels: splitLabels,
         buckets,
       });
       await this.listHistograms();

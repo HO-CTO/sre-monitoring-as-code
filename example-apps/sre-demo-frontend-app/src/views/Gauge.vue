@@ -72,15 +72,19 @@ export default {
     },
 
     async handleGaugeCreated({ name, description, labelNames }) {
-      let labels = [];
+      let splitLabels = {};
       if (labelNames.length != 0) {
-        labels = labelNames.split(",");
+        let labelSplit = labelNames.split(",");
+        for (let elem in labelSplit) {
+          let elemSplit = labelSplit[elem].split("=");
+          splitLabels[elemSplit[0]] = elemSplit[1];
+        }
       }
 
       await client.post("/gauges", {
         name,
         description,
-        labelNames: labels,
+        labels: splitLabels,
       });
       await this.listGauges();
       this.closeModal();

@@ -7,6 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/histograms")
+@CrossOrigin(origins = "*")
 public class HistogramController {
 
     private final HistogramService histogramService;

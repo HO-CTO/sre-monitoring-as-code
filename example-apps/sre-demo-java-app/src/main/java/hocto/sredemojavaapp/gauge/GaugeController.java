@@ -6,6 +6,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/gauges")
+@CrossOrigin(origins = "*")
 public class GaugeController {
 
     private final GaugeService gaugeService;

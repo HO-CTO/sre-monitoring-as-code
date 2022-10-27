@@ -37,7 +37,7 @@ public class CounterDAO {
     public List<CounterPOJO> listCounters() {
         return meterRegistry.getMeters().stream()
                 .filter(meter -> this.createdCounters.contains(meter.getId().getName()))
-                .map(meter -> new CounterPOJO(meter.getId().getName(), tagsToMap(meter.getId().getTags()), ((Counter) meter).count())).collect(Collectors.toList());
+                .map(meter -> new CounterPOJO(meter.getId().getName(), new CounterPOJO.CounterValue(tagsToMap(meter.getId().getTags()), ((Counter) meter).count()))).collect(Collectors.toList());
     }
 
     public CounterPOJO getCounter(String name) {
@@ -46,7 +46,7 @@ public class CounterDAO {
             throw new RuntimeException(String.format("No counter with name \"%s\" found", name));
         }
 
-        return new CounterPOJO(counter.getId().getName(), tagsToMap(counter.getId().getTags()), counter.count());
+        return new CounterPOJO(counter.getId().getName(), new CounterPOJO.CounterValue(tagsToMap(counter.getId().getTags()), counter.count()));
     }
 
     public CounterPOJO createCounter(String name, Map<String, String> labels, Double initialValue) {
@@ -54,12 +54,15 @@ public class CounterDAO {
         Counter.Builder builder = Counter.builder(name);
         labels.forEach(builder::tag);
         Counter newCounter = builder.register(meterRegistry);
-        newCounter.increment(initialValue);
+
+        if (initialValue != null) {
+            newCounter.increment(initialValue);
+        }
 
         this.createdCounters.add(name);
 
         double value = meterRegistry.find(name).counter().count();
-        return new CounterPOJO(name, labels, value);
+        return new CounterPOJO(name, new CounterPOJO.CounterValue(labels, value));
     }
 
     public CounterPOJO deleteCounter(String name) {
@@ -70,8 +73,9 @@ public class CounterDAO {
 
         final CounterPOJO result = new CounterPOJO(
                 counter.getId().getName(),
-                tagsToMap(counter.getId().getTags()),
-                counter.count()
+                new CounterPOJO.CounterValue(tagsToMap(counter.getId().getTags()),
+                        counter.count())
+
         );
 
         createdCounters.remove(counter.getId().getName());
@@ -88,6 +92,6 @@ public class CounterDAO {
 
         counter.increment(value);
 
-        return new CounterPOJO(counter.getId().getName(), tagsToMap(counter.getId().getTags()), counter.count());
+        return new CounterPOJO(counter.getId().getName(), new CounterPOJO.CounterValue(tagsToMap(counter.getId().getTags()), counter.count()));
     }
 }

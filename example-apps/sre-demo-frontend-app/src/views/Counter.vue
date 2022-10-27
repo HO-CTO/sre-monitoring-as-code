@@ -67,18 +67,23 @@ export default {
       this.counter_metrics = null;
       const response = await client.get("/counters");
       this.counter_metrics = response.data;
+      console.log({metrics: this.counter_metrics})
     },
 
     async handleCounterCreated({ name, description, labelNames }) {
-      let labels = [];
+      let splitLabels = {};
       if (labelNames.length != 0) {
-        labels = labelNames.split(",");
+        let labelSplit = labelNames.split(",");
+        for (let elem in labelSplit) {
+          let elemSplit = labelSplit[elem].split("=");
+          splitLabels[elemSplit[0]] = elemSplit[1];
+        }
       }
 
       await client.post("/counters", {
         name,
         description,
-        labelNames: labels,
+        labels: splitLabels
       });
       await this.listCounters();
       this.closeModal();

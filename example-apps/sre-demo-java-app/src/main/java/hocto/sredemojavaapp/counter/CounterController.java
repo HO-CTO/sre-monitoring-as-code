@@ -7,6 +7,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/counters")
+@CrossOrigin(origins = "*")
 public class CounterController {
 
     private final CounterService counterService;
