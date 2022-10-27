@@ -82,8 +82,8 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
       { color: 'grey', value: null },
       // { color: 'red', value: sliSpec.sloTarget / 300 },
       { color: 'red', value: 0 },
-      // { color: 'orange', value: sliSpec.sloTarget / 100 },
-      { color: 'green', value: sliSpec.sloTarget / 100 },
+      { color: 'orange', value: sliSpec.sloTarget / 100 },
+      { color: 'green', value: sliSpec.sloTarget / 98 },
       // { color: 'green', value: sliSpec.sloTarget / 200 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
@@ -134,8 +134,8 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
       { color: 'grey', value: null },
       // { color: 'red', value: sloTargetLegend / 300 },
       { color: 'red', value: 0 },
-      // { color: 'orange', value: sloTargetLegend / 100 },
-      { color: 'green', value: sloTargetLegend / 100 },
+      { color: 'orange', value: sloTargetLegend / 100 },
+      { color: 'green', value: sloTargetLegend / 98 },
       // { color: 'green', value: sloTargetLegend / 200 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
