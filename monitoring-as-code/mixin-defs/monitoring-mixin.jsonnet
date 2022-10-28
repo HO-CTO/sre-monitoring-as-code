@@ -71,6 +71,10 @@ local sliSpecList = {
         availability: {
           intervalTarget: 90,
         },
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
       },
     },
   },
@@ -139,7 +143,7 @@ local sliSpecList = {
       sliTypes: {
         latency: {
           histogramSecondsTarget: 15,
-          percentile: 80,
+          percentile: 90,
         },
       },
       sloTarget: 90,
@@ -176,7 +180,7 @@ local sliSpecList = {
       sliTypes: {
         latency: {
           histogramSecondsTarget: 10,
-          percentile: 80,
+          percentile: 90,
         },
       },
     },

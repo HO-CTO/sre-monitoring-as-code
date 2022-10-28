@@ -64,6 +64,8 @@
       },
       metrics: {
         count: 'grafana_http_request_duration_seconds_count',
+        sum: 'grafana_http_request_duration_seconds_sum',
+        bucket: 'grafana_http_request_duration_seconds_bucket',
       },
     },
     sliTypesConfig: {
@@ -72,6 +74,15 @@
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
+        },
+      },
+      latency: {
+        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
+        description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        targetMetrics: {
+          bucket: 'bucket',
+          sum: 'sum',
+          count: 'count',
         },
       },
     },
