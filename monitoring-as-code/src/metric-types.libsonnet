@@ -88,9 +88,10 @@
     },
     detailDashboardConfig: {
       standardTemplates: ['resource', 'errorStatus'],
-      elements: ['httpRequestsAvailability'],
+      elements: ['httpRequestsAvailability', 'httpRequestsLatency'],
       targetMetrics: {
         requestCount: 'count',
+        requestBucket: 'bucket',
       },
     },
   },
