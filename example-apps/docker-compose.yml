@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
   frontend:
     image: sre-demo-frontend-app
     build: ./sre-demo-frontend-app
@@ -23,3 +34,7 @@ services:
     ports:
         - 4001:4001
     restart: on-failure
+
+volumes:
+  db:
+    driver: local

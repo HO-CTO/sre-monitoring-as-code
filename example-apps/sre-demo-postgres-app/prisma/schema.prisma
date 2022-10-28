@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CustomMetricsLogs {
+  id Int @id @default(autoincrement())
+  version String
+  metric String
+  api String
+}
+
+model Counter{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  value Int
+  labels String[]
+}
+
+model Gauge{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  value Int
+  labels String[]
+}
+
+model Histogram{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  buckets Int[]
+  observe Int[]
+  labels String[]
+}
