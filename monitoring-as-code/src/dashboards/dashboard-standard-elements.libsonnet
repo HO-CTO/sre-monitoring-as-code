@@ -79,9 +79,10 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
     )
   ).addThresholds(
     [
-      { color: 'red', value: null },
+      { color: 'grey', value: null },
+      { color: 'red', value: 0 },
       { color: 'orange', value: sliSpec.sloTarget / 100 },
-      { color: 'green', value: sliSpec.sloTarget / 200 },
+      { color: 'green', value: sliSpec.sloTarget / 98 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
@@ -128,9 +129,10 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
     )
   ).addThresholds(
     [
-      { color: 'red', value: null },
+      { color: 'grey', value: null },
+      { color: 'red', value: 0 },
       { color: 'orange', value: sloTargetLegend / 100 },
-      { color: 'green', value: sloTargetLegend / 200 },
+      { color: 'green', value: sloTargetLegend / 98 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
