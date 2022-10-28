@@ -69,6 +69,10 @@ local sliSpecList = {
         availability: {
           intervalTarget: 90,
         },
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
       },
     },
     SLI04: {
