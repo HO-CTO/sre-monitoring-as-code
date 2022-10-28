@@ -6,11 +6,11 @@ const histograms = [];
 
 const { promClient, register } = require("../prometheus");
 
-const _createHistogram = ({ name, description, labelNames, buckets }) => {
+const _createHistogram = ({ name, description, labels = {}, buckets }) => {
   const histogramConfig = {
     name: name,
     help: description,
-    labelNames,
+    labelNames: Object.keys(labels),
   };
 
   if (buckets) {
@@ -58,11 +58,11 @@ const getHistogram = (id) => {
   return gauge;
 };
 
-const createHistogram = ({ name, description, labelNames, buckets, value }) => {
+const createHistogram = ({ name, description, labels, buckets, value }) => {
   const histogram = _createHistogram({
     name,
     description,
-    labelNames,
+    labels,
     buckets,
   });
 

@@ -5,7 +5,7 @@ services:
     image: sre-demo-frontend-app
     build: ./sre-demo-frontend-app
     ports: 
-      - 4000:4000
+      - 4000:80
     restart: on-failure
     
   nodejs:
