@@ -96,6 +96,7 @@ S3
 scribing
 selectorLabels
 servicenow
+ServiceNow
 SLI
 SLIs
 sliSpec
