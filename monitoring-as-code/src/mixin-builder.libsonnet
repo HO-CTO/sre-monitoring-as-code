@@ -242,6 +242,7 @@ local buildMixin(passedConfig, passedSliSpecList) =
     grafanaDashboardFolder: config.product,
     grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
                         dashboardFunctions.createProductDashboard(config, sliList, links) +
+                        dashboardFunctions.createGenericProductDashboard(config, sliList, links) +
                         dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
 
     prometheusRules+: createPrometheusRules(config, sliList),
