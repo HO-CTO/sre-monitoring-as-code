@@ -3,9 +3,11 @@ Alertmanager
 alertname
 alertPayloadConfig
 blackbox
+ci_type
 cloudwatch
 Cloudwatch
 cmdb_ci_service_auto
+CMDB_CI_Service_Auto
 codebase
 config
 contributing.md
@@ -28,6 +30,7 @@ errorStatus
 etcetera
 evalInterval
 Fong-Jones
+forecasted
 formatter
 GDS
 .githooks
@@ -36,6 +39,8 @@ Grafana
 Grafonnet
 grafonnet
 grapi
+grapi_writeback_SLI05_ErrorBudgetBurn
+GRAPI
 http
 http-errors
 http_server_requests_seconds
@@ -97,6 +102,7 @@ sliSpec
 sliTypesConfig
 sli-value-libraries
 sli05
+SLI05
 slo
 SLO
 SLOs
@@ -109,6 +115,7 @@ sre-demo-node-app
 sre-monitoring-as-code
 standardTemplates
 svc
+Svc
 targetMetrics
 TBC
 templating
