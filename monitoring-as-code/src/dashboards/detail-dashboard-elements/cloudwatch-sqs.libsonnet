@@ -5,9 +5,7 @@
 // oldestMessage - Metric representing the age of oldest message
 
 // Additional config:
-// deadletterQueueType custom selector label in metric type config
 // deadletterQueueName custom selector label in metric type config
-// deadletterQueueType custom selector in metric type config
 // deadletterQueueName custom selector in metric type config
 
 // MaC imports
@@ -91,12 +89,12 @@ local createCustomSelectors(direction, customSelectorLabels, customSelectorValue
       customSelectorLabels.deadletterQueueName
     )),
     standardQueue: std.join(', ', std.map(
-      function(selectorLabel) '%s!~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueType)],
-      customSelectorLabels.deadletterQueueType
+      function(selectorLabel) '%s!~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueName)],
+      customSelectorLabels.deadletterQueueName
     )),
     deadletterQueue: std.join(', ', std.map(
-      function(selectorLabel) '%s=~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueType)],
-      customSelectorLabels.deadletterQueueType
+      function(selectorLabel) '%s=~"%s|"' % [selectorLabel, std.join('|', customSelectorValues.deadletterQueueName)],
+      customSelectorLabels.deadletterQueueName
     )),
   };
 

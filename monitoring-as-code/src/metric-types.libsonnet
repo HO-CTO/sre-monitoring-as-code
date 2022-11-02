@@ -281,11 +281,9 @@
       },
       customSelectorLabels: {
         deadletterQueueName: 'dimension_QueueName',
-        deadletterQueueType: 'dimension_queue_type',
       },
       customSelectors: {
         deadletterQueueName: '.+dlq.+',
-        deadletterQueueType: 'deadletter',
       },
     },
     sliTypesConfig: {
