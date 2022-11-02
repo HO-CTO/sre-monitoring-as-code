@@ -4,6 +4,7 @@
 // MaC imports
 local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
 local macConfig = import '../mac-config.libsonnet';
+local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
@@ -313,6 +314,8 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
     std.prune(createTemplates(
       metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig
     ))
+  ).addPanel(
+    dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.detailView), gridPos={ h: 3, w: 24, x: 0, y: 0 }
   ).addPanels(
     std.prune(createPanels(
       metrics, selectorLabels, customSelectorLabels, customSelectorValues, selectors, detailDashboardConfig

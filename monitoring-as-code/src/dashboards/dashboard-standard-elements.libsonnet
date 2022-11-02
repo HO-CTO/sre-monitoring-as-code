@@ -11,6 +11,18 @@ local graphPanel = grafana.graphPanel;
 local statPanel = grafana.statPanel;
 local template = grafana.template;
 
+// Creates a text panel to present the documentation for a dashboard
+// @param dashboardName The dashboard name to determine which docs from macConfig should be published in the content
+// @returns Grafana Text Panel with published contents.
+local createDocsTextPanel(dashboardName) =
+  grafana.text.new(
+    title=null,
+    content='%s' % dashboardName,
+    mode='markdown',
+    datasource=null,
+    transparent=true
+  );
+
 // Creates the description for an SLI
 // @param sliSpec The spec for the SLI having its standard elements created
 // @returns The description for the SLI
@@ -319,4 +331,5 @@ local createServiceTemplates(config) =
     createDashboardStandardElements(sliKey, journeyKey, sliSpec, config),
   createServiceTemplates(config): createServiceTemplates(config),
   createAveragedSliTypesPanel(sloTargetLegend, sliSpec, expr): createAveragedSliTypesPanel(sloTargetLegend, sliSpec, expr),
+  createDocsTextPanel(dashboardName): createDocsTextPanel(dashboardName),
 }

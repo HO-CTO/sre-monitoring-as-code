@@ -13,6 +13,14 @@ local macDashboardPrefix = {
   uid: std.strReplace(std.asciiLower(macPrefix), ' ', '-'),
 };
 
+// Dashboard documentation to be added to text panel
+local dashboardDocs = {
+  overView: '#### Overview\n\n**Purpose:** Observability of all products and tenants running on a platform.\n\n**Directions for use:** An aggregated SLO Status is presented in table panels by Product. The first table displays the aggregated SLO Status with supplementary data regarding traffic and alerts. The second table displays the SLO Status grouped by SLI type. The dashboard can be filtered by Environment.',
+  productView: '#### Product View\n\n**Purpose:** Observability of all the user journeys running on an individual product.\n\n**Directions for use:** Distinct user journeys are presented as row panels. SLIs are presented as stat panels with colour thresholds indicating the SLO Status. SLI Types (such as Availability and Latency) are aggregated into a single SLI Stat Panel. The dashboard can be filtered by Environment.',
+  journeyView: '#### User Journey View\n\n**Purpose:** Observability of all the SLIs in a single user journey.\n\n**Directions for use:** SLIs are presented in a series of 3 core panels: (1) a stat panel showing SLO Status, (2) an error budget burn graph and (3) a request/error graph. SLIs types relating to the same source metric are grouped under a single SLI Row Panel. Colour thresholds indicate the SLO Status. The dashboard can be filtered by Error Budget Period and Environment.',
+  detailView: '#### Detail View\n\n**Purpose:** Observability of all whitebox and blackbox metrics which contribute to SLIs and Service Health. For troubleshooting.\n\n**Directions for use:** TBC.',
+};
+
 // Config items
 // Collection of imports for detail dashboard elements
 local detailDashboardElements = {
@@ -59,6 +67,7 @@ local alertPayloadTemplate = {
 {
   macPrefix: macPrefix,
   macDashboardPrefix: macDashboardPrefix,
+  dashboardDocs: dashboardDocs,
   metricTypes: defaultMetricTypes + customMetricTypes,
   detailDashboardElements: detailDashboardElements,
   burnRateWindowList: burnRateWindowList,
