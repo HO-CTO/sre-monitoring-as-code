@@ -9,6 +9,7 @@ local template = grafana.template;
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
 local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
+local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 
 // Create the Grafana panels grouping all SLI types under a single SLI panel
 // @param slis A map of SLIs keyed by the SLI type
@@ -78,6 +79,8 @@ local createJourneyDashboards(config, sliList, links) =
         )
       ).addTemplates(
         config.templates
+      ).addPanel(
+        dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.journeyView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
       ).addPanels(
         std.flattenArrays([
           std.flattenArrays(createDashboardInfo(sliKey, sliList[journeyKey][sliKey]))

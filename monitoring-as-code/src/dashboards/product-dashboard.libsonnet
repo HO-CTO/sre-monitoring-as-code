@@ -148,7 +148,11 @@ local createProductDashboard(config, sliList, links) =
         dashboardLinks=links
       ).addTemplates(
         config.templates
-      ).addPanels(std.prune(panels)),
+      ).addPanel(
+        dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.productView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
+      ).addPanels(
+        std.prune(panels)
+      ),
   };
 
 // File exports

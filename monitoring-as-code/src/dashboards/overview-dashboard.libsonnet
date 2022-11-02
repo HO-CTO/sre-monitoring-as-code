@@ -11,12 +11,14 @@ local tablePanel = grafana.tablePanel;
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
 local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
+local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 
 // PromQL selector for environment label
 local environmentLabelSelector = 'sli_environment=~"$environment"';
 
 // The panels for the overview dashboard
 local panels = [
+
   tablePanel.new(
     title='SLO Status Aggregated by Service (30d unless otherwise stated) ',
     datasource='prometheus',
@@ -398,6 +400,8 @@ local createOverviewDashboard(config) =
             multi=true,
             label='Environment',
           )
+        ).addPanel(
+          dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.overView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
         ).addPanels(std.prune(panels)),
     },
   };
