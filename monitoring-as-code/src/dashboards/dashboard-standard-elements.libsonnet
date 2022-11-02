@@ -81,6 +81,7 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
     [
       { color: 'grey', value: null },
       { color: 'red', value: 0 },
+      { color: 'red', value: -99999 },  // minus numbers will now be red instead of grey
       { color: 'orange', value: sliSpec.sloTarget / 100 },
       { color: 'green', value: sliSpec.sloTarget / 98 },
     ],
