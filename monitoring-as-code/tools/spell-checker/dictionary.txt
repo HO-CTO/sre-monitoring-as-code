@@ -19,6 +19,7 @@ dashboardSelectors
 datasources
 detailDashboardConfig
 detailDashboardElements
+DDaT
 Dockerfile
 eco-system
 errorStatus
