@@ -13,7 +13,7 @@ local macDashboardPrefix = {
   uid: std.strReplace(std.asciiLower(macPrefix), ' ', '-'),
 };
 
-// Dashboard documentation to be added to text panel
+// Dashboard documentation to be added to text panel. Content to be written as markdown.
 local dashboardDocs = {
   overView: '#### Overview\n\n**Purpose:** Observability of all products and tenants running on a platform.\n\n**Directions for use:** An aggregated SLO Status is presented in table panels by Product. The first table displays the aggregated SLO Status with supplementary data regarding traffic and alerts. The second table displays the SLO Status grouped by SLI type. The dashboard can be filtered by Environment.',
   productView: '#### Product View\n\n**Purpose:** Observability of all the user journeys running on an individual product.\n\n**Directions for use:** Distinct user journeys are presented as row panels. SLIs are presented as stat panels with colour thresholds indicating the SLO Status. SLI Types (such as Availability and Latency) are aggregated into a single SLI Stat Panel. The dashboard can be filtered by Environment.',
