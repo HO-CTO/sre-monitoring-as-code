@@ -7,6 +7,8 @@ weight: 40
 
 Following the design principle of "Hierarchical dashboards with drill-downs to the next level" <sup>1</sup>, we have developed a five tier dashboard structure to fulfil different persona needs as follows: -
 
+![Dashboard Hierarchy](../../images/dashboard-hierarchy.png)
+
 | Dashboard            | Description                                                                                                          | Persona / User           | Dashboard Title  |
 | ---------------------| ---------------------------------------------------------------------------------------------------------------------|--------------------------|----------------------------------------------------------|
 | Overview             | Observability of all products and tenants running on a platform.                                                     | Service Manager          | SRE MaC / Overview                                       |
@@ -14,25 +16,40 @@ Following the design principle of "Hierarchical dashboards with drill-downs to t
 | User Journey View    | Observability of all the SLIs in a single user journey.                                                              | Product Manager and Team | SRE MaC / {Product Name} / {User Journey Name}           |
 | Detail View          | Observability of all whitebox and blackbox metrics which contribute to SLIs and Service Health. For troubleshooting. | Engineers | detail-view  | SRE MaC / {Product Name} / {User Journey Name} / Detail  |
 
-These hierarchical dashboards support a generic troubleshooting workflow: -
-
 ## Dashboard Design Principles
 
-* Methodical dashboards according to an SLI/SLO strategy.
-* Hierarchical dashboards with drill-downs to the next level.
-* Actively reduce sprawl.
-    * Regularly review existing dashboards to make sure they are still relevant.
-    * Only approved dashboards added to master dashboard list.
-    * Tracking dashboard use.
-* Scripting libraries to generate dashboards, ensure consistency in pattern and style. grafonnet (Jsonnet)
-    * No editing in the browser. Dashboard viewers change views with variables.
-* Browsing for dashboards is the exception, not the rule.
-* Perform experimentation and testing on a feature branch (consider nonprod environment to be production).
-* Expressive charts with meaningful use of colour and normalising axes where you can.
-    * Example of meaningful colour: Blue means it’s good, red means it’s bad. Thresholds can help with that.
-    * Example of normalising axes: When comparing CPU usage, measure by percentage rather than raw number, because machines can have a different number of cores. Normalising CPU usage by the number of cores reduces cognitive load because the viewer can trust that at 100% all cores are being used, without having to know the number of CPUs.
+### 1.0 Methodology
 
+| ID  | Principles                                                                   |
+|-----|------------------------------------------------------------------------------|
+| 1.1 | Methodical dashboards according to DDaT SLI/SLO standards.                   |
+|     | - Dashboards focused on symptoms rather than causes.                         |
+|     | - The ability to visualise adherence to SLOs in a dashboard                  |
+|     | - The ability to visualise Error budget in a dashboard                       |
+|     | - The ability to visualise Burn Rate in a dashboard                          |
+| 1.2 | Align SLI/SLO dashboards to standard Google SLI Categories                   |
 
+### 2.0 Automation
 
+| ID  | Principles                                                                   |
+|-----|------------------------------------------------------------------------------|
+| 2.1 | Scripting libraries to generate dashboards, ensure consistency in pattern and style. |
+|     | - No editing in the browser. Dashboard viewers change views with variables. |
+| 2.2 | Version controlled dashboards iterated inline with code management best practices |
+| 2.3 | Reuse dashboards and enforce consistency by using templates and variables. |
+| 2.4 | Dashboards should be linked to by alerts. |
+
+### 3.0 Visualisation
+
+| ID  | Principles                                                                  |
+|-----|-----------------------------------------------------------------------------|
+| 3.1 | Keep graphs simple and focused on answering one question                    |
+| 3.2 | Dashboards should reduce cognitive load and be quick to figure out          |
+| 3.3 | Expressive charts with meaningful use of colour and normalising axes where you can. |
+|     | - Example of meaningful colour: Green/Blue means it’s good, red means it’s bad. |
+|     | - Example of normalising axes: When comparing CPU usage, measure by percentage rather than raw number. |
+| 3.4 | Use a meaningful name                                                       |
+| 3.5 | Browsing should be directed with links.                                     |
+| 3.6 | Add documentation to dashboards and panels                                  |
 
 
