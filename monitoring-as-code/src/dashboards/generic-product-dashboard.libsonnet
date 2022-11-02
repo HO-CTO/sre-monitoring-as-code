@@ -8,6 +8,7 @@ local row = grafana.row;
 local prometheus = grafana.prometheus;
 local graphPanel = grafana.graphPanel;
 
+
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
 local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
@@ -208,6 +209,12 @@ local createSloErrorStatusPanel(sliDescription, sliSpec) =
     {
       alias: '/SLO Fail/',
       color: 'red',
+    },
+  ).addSeriesOverride(
+    {
+      alias: '/SLO Target/',
+      // Green colour which displays well on dashboard
+      color: 'black',
     },
   );
 
