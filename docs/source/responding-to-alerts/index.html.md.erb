@@ -5,17 +5,17 @@ weight: 41
 
 # Responding to alerts
 
-Debugging a digital service is never as clean as the idealized model presented below. However, using a combination of alerts, system metrics in dashboards and logs can help understand the current operating state. Google SRE has presented some useful steps below that can make the process less painful and more productive. We have overlayed how our Monitoring-as-Code framework can support those users responding to system problems.
+Debugging a digital service is never as clean as the idealised model presented below. However, using a combination of alerts, system metrics in dashboards and logs can help understand the current operating state. Google SRE has presented some useful steps below that can make the process less painful and more productive. We have overlaid how our Monitoring-as-Code framework can support those users responding to system problems.
 
 ![responding to alerts](../../images/responding-to-alerts.png)
 
-Diagram courtesy of [Effective Troublshooting - Google SRE Workbook](https://sre.google/sre-book/effective-troubleshooting/)
+Diagram courtesy of [Effective Troubleshooting - Google SRE Workbook](https://sre.google/sre-book/effective-troubleshooting/)
 
 ## Problem report
 
 Every digital service issue starts with a problem report, which might be an automated alert or one of our users saying, “The system is slow.” Monitoring-as-Code will deliver an automated alert if an SLO is in danger of being breached. Depending on how quickly the Error Budget is forecast to breach will determine what level of alert is triggered. Below we have detailed the typical makeup of an alert.
 
-    ALERT: grapi - severity: 2 - Availability - FLAPI Create Email Address Write Back API
+    ALERT: grapi - severity: 2 - Availability - GRAPI Create Email Address Write Back API
     Alert from HO-Monitoring <dashboard-link> <silence-link> <runbook-link>
     • alertname: grapi_writeback_SLI05_ErrorBudgetBurn
     • assignment_group: Great Respect API
@@ -46,7 +46,7 @@ On receipt of an alert you should: -
 
 ## Triage
 
-On receipt of an alert and in the absence of auto-ticketing. You should create an ServiceNow incident populating the fields using the alert labels provided for **Primary Service Impacted**, **Configuration Item**, **Assignment Group** and **Severity**.
+On receipt of an alert and in the absence of auto-ticketing. You should create a ServiceNow incident populating the fields using the alert labels provided for **Primary Service Impacted**, **Configuration Item**, **Assignment Group** and **Severity**.
 
 ## Examine
 
@@ -58,7 +58,7 @@ Consult the product-view dashboard (pictured below) to confirm the SLI which is 
 
 ### journey-view
 
-Use the journey-view dashboard (pictured below) to discover remaining error budget, the error rate spikes that have caused the forecasted breack of SLO before drilling down to the detail view.
+Use the journey-view dashboard (pictured below) to discover remaining error budget, the error rate spikes that have caused the forecasted breach of SLO before drilling down to the detail view.
 
 ![Journey view dashboard](../../images/journey-view.png)
 
