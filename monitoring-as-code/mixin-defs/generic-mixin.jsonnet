@@ -79,6 +79,42 @@ local sliSpecList = {
         },
       },
     },
+    SLI04: {
+      title: 'grafana avail',
+      sliDescription: 'grafana availability',
+      period: '30d',
+      metricType: 'grafana_http_request_duration_seconds',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+        errorStatus: '4..|5..',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+      },
+    },
+    SLI05: {
+      title: 'prom scrape',
+      sliDescription: 'all prometheus scrape targets are available',
+      period: '7d',
+      metricType: 'up',
+      comparison: '==',
+      evalInterval: '1m',
+      selectors: {},
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 

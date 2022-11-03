@@ -4,7 +4,7 @@
 // Grafana imports
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
-local row = grafana.row;
+// local row = grafana.row;
 local prometheus = grafana.prometheus;
 // local graphPanel = grafana.graphPanel;
 local statPanel = grafana.statPanel;
@@ -19,10 +19,10 @@ local stringFormattingFunctions = import '../util/string-formatting-functions.li
 // local viewPanelsPerRow = 6;
 
 // The width and height of the view panels
-local viewPanelSize = {
-  x: 4,
-  y: 4,
-};
+// local viewPanelSize = {
+//   x: 4,
+//   y: 4,
+// };
 
 // Creates a row panel which is used to contain all of the SLIs in each journey
 // @param journeyIndex The index of the current journey having its panels created
