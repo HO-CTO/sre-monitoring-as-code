@@ -82,7 +82,7 @@ local createSloErrorStatusPanel =
         metricTarget: '0.10',
         period: '30d',
       },
-      legendFormat='SLO Fail needs to be Error Budget',
+      legendFormat='Error Budget',
     )
   ).addTarget(
     // SLO Target
@@ -104,25 +104,6 @@ local createSloErrorStatusPanel =
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
-
-//  .addSeriesOverride(
-//     {
-//       alias: '/SLO OK/',
-//       // Green colour which displays well on dashboard
-//       color: '#73BF69',
-//     },
-//   ).addSeriesOverride(
-//     {
-//       alias: '/SLO Fail/',
-//       color: 'red',
-//     },
-//   ).addSeriesOverride(
-//     {
-//       alias: '/SLO Target/',
-//       // Green colour which displays well on dashboard
-//       color: 'black',
-//     },
-//   );
 
 // Creates the product dashboard containing a row panel for each journey and then a view panel for
 // each SLI in that journey under the row panel
