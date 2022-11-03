@@ -13,7 +13,12 @@ local statPanel = grafana.statPanel;
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
 // local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
+//local debug = import '../util/debug.libsonnet';
 local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
+local genericSloTarget = 90;
+local genericMetricTarget = 10;
+local genericEvalInterval = '5m';
+local genericPeriod = '30d';
 
 // The maximum number of view panels that can be placed in a row (not the same as row panel)
 // local viewPanelsPerRow = 6;
@@ -38,7 +43,7 @@ local stringFormattingFunctions = import '../util/string-formatting-functions.li
 //     ) + { gridPos: { x: 0, y: (journeyIndex) + (noOfPanelRows * viewPanelSize.y) - viewPanelSize.y, w: 24, h: 1 } },
 //   ];
 
-local createSloErrorStatusPanel =
+local createSloErrorStatusPanel() =
   statPanel.new(
     title='$metric_sli_type',
     datasource='prometheus',
@@ -51,7 +56,7 @@ local createSloErrorStatusPanel =
     repeat='metric_sli_type',
     repeatDirection='h',
   ).addTarget(
-    // Proportion of intervals SLO has pased
+    // SLO Status
 
     prometheus.target(
       |||
@@ -59,9 +64,12 @@ local createSloErrorStatusPanel =
         / 
         sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
       ||| % {
-        evalInterval: '5m',
-        target: '0.90',
-        period: '30d',
+        // evalInterval: '30d',
+        evalInterval: genericEvalInterval,
+        target: genericMetricTarget,
+        //target: 'metric_target=~"$metric_target"',
+        //period: '30d',
+        period: genericPeriod,
       },
       legendFormat='SLO Status',
     )
@@ -75,14 +83,15 @@ local createSloErrorStatusPanel =
         /
         %(target)s
       ||| % {
-        evalInterval: '5m',
-        target: '0.90',
-        //      target: (100 - sliSpec.sloTarget) / 100,
+
+        evalInterval: genericEvalInterval,
         //        metricTarget: sliSpec.metricTarget,
-        metricTarget: '0.10',
-        period: '30d',
+        target: (100 - genericSloTarget) / 100,
+
+        metricTarget: genericMetricTarget,
+        period: genericPeriod,
       },
-      legendFormat='Error Budget',
+      legendFormat='Remaining Error Budget',
     )
   ).addTarget(
     // SLO Target
@@ -90,7 +99,8 @@ local createSloErrorStatusPanel =
       |||
         %(target)s
       ||| % {
-        target: '0.90',
+        //target: '0.90',
+        target: (genericSloTarget / 100),
       },
       legendFormat='SLO Target',
     )
@@ -100,7 +110,8 @@ local createSloErrorStatusPanel =
       { color: 'red', value: 0 },
       { color: 'red', value: -99999 },  // minus numbers will now be red instead of grey
       //     { color: 'orange', value: sliSpec.sloTarget / 100 },
-      //     { color: 'green', value: sliSpec.sloTarget / 98 },
+      { color: 'orange', value: genericSloTarget / 100 },
+      { color: 'green', value: genericSloTarget / 98 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
@@ -113,10 +124,11 @@ local createSloErrorStatusPanel =
 // @returns The JSON defining the product dashboard
 
 local createGenericProductDashboard(config, sliList, links) =
+
   //  if std.objectHas(config, 'generic') && config.generic then
   //  local panels = createPanels(0, 0, 0, config, sliList);
   //  local panels = createSloErrorStatusPanel("sliDescription", sliSpec);
-  local panel = createSloErrorStatusPanel;
+  local panel = createSloErrorStatusPanel();
 
   {
     [std.join('-', [macConfig.macDashboardPrefix.uid, config.product]) + '-dynamic.json']:

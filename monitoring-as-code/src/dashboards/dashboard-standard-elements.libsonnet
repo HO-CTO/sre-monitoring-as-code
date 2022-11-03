@@ -303,6 +303,15 @@ local createServiceTemplates(config) =
       multi=true,
       label='Metric Sli Type',
     ),
+    template.new(
+      name='metric_target',
+      datasource='prometheus',
+      query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, metric_target)' % config.product,
+      refresh='time',
+      includeAll=true,
+      multi=true,
+      label='Metric Target',
+    ),
     // template.new(
     //   name='metric_type',
     //   datasource='prometheus',
