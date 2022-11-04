@@ -113,7 +113,25 @@ local createSloErrorStatusPanel() =
       { color: 'orange', value: genericSloTarget / 100 },
       { color: 'green', value: genericSloTarget / 98 },
     ],
-  ) + { options+: { textMode: 'Value and name' } };
+    // ) + { options+: { textMode: 'Value and name' } } + { fieldConfig+: {
+    //   overrides+:
+    //     [
+    //       {
+    //         matcher: { id: 'byName', options: 'SLO Target' },
+    //         properties: [{ id: 'colour', value: { fixedColor: '010101fc', mode: 'fixed' }}],
+    //       },
+    //     ],
+    //     }
+    // };
+  ) + { options+: { textMode: 'Value and name' } } + {
+    overrides+:
+      [
+        {
+          matcher: { id: 'byName', options: 'SLO Target' },
+          properties: [{ id: 'colour', value: { fixedColor: '010101fc', mode: 'fixed' } }],
+        },
+      ],
+  };
 
 
 // Creates the product dashboard containing a row panel for each journey and then a view panel for

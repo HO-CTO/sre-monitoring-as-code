@@ -224,6 +224,23 @@ local createPrometheusAlerts(config, sliList) =
     }],
   };
 
+
+// Builds the dashboards for various different services
+// @param passedConfig The config defined in the mixin file before being updated
+// @param passedSliSpecList The list of SLI specs defined in the mixin file before being updated
+// @returns The JSON for the dashboards and rules
+
+local createDashboards(config, sliList, links, sliSpecList) = {
+  grafanaDashboards:
+    if std.objectHas(config, 'generic') && config.generic then
+      dashboardFunctions.createGenericProductDashboard(config, sliList, links) +
+      dashboardFunctions.createDetailDashboards(config, links, sliSpecList)
+    else
+      dashboardFunctions.createJourneyDashboards(config, sliList, links) +
+      dashboardFunctions.createProductDashboard(config, sliList, links) +
+      dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
+};
+
 // Builds the dashboards and rules for the mixin file it is called from
 // @param passedConfig The config defined in the mixin file before being updated
 // @param passedSliSpecList The list of SLI specs defined in the mixin file before being updated
@@ -240,10 +257,7 @@ local buildMixin(passedConfig, passedSliSpecList) =
 
   {
     grafanaDashboardFolder: config.product,
-    grafanaDashboards+: dashboardFunctions.createJourneyDashboards(config, sliList, links) +
-                        dashboardFunctions.createProductDashboard(config, sliList, links) +
-                        dashboardFunctions.createGenericProductDashboard(config, sliList, links) +
-                        dashboardFunctions.createDetailDashboards(config, links, sliSpecList),
+    grafanaDashboards+: createDashboards(config, sliList, links, sliSpecList).grafanaDashboards,
 
     prometheusRules+: createPrometheusRules(config, sliList),
     prometheusAlerts+: createPrometheusAlerts(config, sliList),
