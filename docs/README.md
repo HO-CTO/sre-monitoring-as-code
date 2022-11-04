@@ -101,7 +101,13 @@ Run `bundle exec middleman build --verbose` to get detailed error messages to he
 
 Diagrams are maintained in DrawIO [DrawIO](https://app.diagrams.net) using the file [monitoring_as_code.drawio](https://github.com/HO-CTO/sre-monitoring-as-code/blob/369-render-diagrams/docs/monitoring_as_code.drawio). 
 Once landing in DrawIO web interface select `Save diagrams to: Device > Open Existing Diagram` and select [monitoring_as_code.drawio](https://github.com/HO-CTO/sre-monitoring-as-code/blob/369-render-diagrams/docs/monitoring_as_code.drawio) from you're local repository. 
-You must version control this '.drawio' file as you would any other engineering artefact.
+Edit and add new diagrams as you see fit. Files should be numbered and referenced in the docs-as-code markdown as follows: -
+
+```
+![Image descriptor](../images/monitoring_as_code-{reference to drawio tab number eg. 1}.png)
+```
+
+'.drawio' file is version controlled the same as any other engineering artefact. We use the [drawio-export-action](https://github.com/rlespinasse/drawio-export-action) to render the diagrams as png files from the DrawIO xml.
 
 ## Licence
 
