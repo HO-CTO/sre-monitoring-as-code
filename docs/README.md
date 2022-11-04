@@ -99,7 +99,7 @@ Run `bundle exec middleman build --verbose` to get detailed error messages to he
 
 ## Diagrams
 
-Diagrams are maintained in DrawIO [DrawIO](https://app.diagrams.net) using the file [monitoring_as_code.drawio](https://github.com/HO-CTO/sre-monitoring-as-code/blob/369-render-diagrams/docs/monitoring_as_code.drawio). 
+Diagrams are maintained in [DrawIO](https://app.diagrams.net) using the file [monitoring_as_code.drawio](https://github.com/HO-CTO/sre-monitoring-as-code/blob/369-render-diagrams/docs/monitoring_as_code.drawio). 
 Once landing in DrawIO web interface select `Save diagrams to: Device > Open Existing Diagram` and select [monitoring_as_code.drawio](https://github.com/HO-CTO/sre-monitoring-as-code/blob/369-render-diagrams/docs/monitoring_as_code.drawio) from you're local repository. 
 Edit and add new diagrams as you see fit. Files should be numbered and referenced in the docs-as-code markdown as follows: -
 
