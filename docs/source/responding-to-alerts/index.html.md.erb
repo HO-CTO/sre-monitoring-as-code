@@ -7,7 +7,7 @@ weight: 41
 
 Debugging a digital service is never as clean as the idealised model presented below. However, using a combination of alerts, system metrics in dashboards and logs can help understand the current operating state. Google SRE has presented some useful steps below that can make the process less painful and more productive. We have overlaid how our Monitoring-as-Code framework can support those users responding to system problems.
 
-![responding to alerts](../../images/responding-to-alerts.png)
+![responding to alerts](../../images/monitoring_as_code-8.png)
 
 Diagram courtesy of [Effective Troubleshooting - Google SRE Workbook](https://sre.google/sre-book/effective-troubleshooting/)
 
@@ -54,19 +54,19 @@ On receipt of an alert and in the absence of auto-ticketing. You should create a
 
 Consult the product-view dashboard (pictured below) to confirm the SLI which is at risk of breaching its SLO. Select the associated SLI to drill-down into the journey-view.
 
-![Product view dashboard](../../images/product-view.png)
+![Product view dashboard](../../images/monitoring_as_code-5.png)
 
 ### journey-view
 
 Use the journey-view dashboard (pictured below) to discover remaining error budget, the error rate spikes that have caused the forecasted breach of SLO before drilling down to the detail view.
 
-![Journey view dashboard](../../images/journey-view.png)
+![Journey view dashboard](../../images/monitoring_as_code-6.png)
 
 ### detail-view
 
 Use the detail-view dashboard (pictured below) to drill into the telemetry label values in greater detail. For example with availability http errors use the dashboard to identify which paths and status codes are contributing to the error budget burn.
 
-![Detail view dashboard](../../images/detail-view.png)
+![Detail view dashboard](../../images/monitoring_as_code-7.png)
 
 ## Diagnose
 
