@@ -5,11 +5,11 @@ host: https://ho-cto.github.io/sre-monitoring-as-code
 show_govuk_logo: false
 service_name: sre-monitoring-as-code
 service_link: /sre-monitoring-as-code
-phase: INTERNAL
+phase: Public
 
 # Links to show on right-hand-side of header
 header_links:
-  Documentation: /
+  Documentation: /sre-monitoring-as-code
   #  Support: https://www.larry-the-cat.service.gov.uk/support
   #  About: https://www.larry-the-cat.service.gov.uk/about
   #  Get Started: https://www.larry-the-cat.service.gov.uk/get-started
