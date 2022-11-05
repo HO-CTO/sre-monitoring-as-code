@@ -20,12 +20,13 @@
       </template>
     </Modal>
 
-    <CounterTable
+    <MetricTable
       v-if="counter_metrics"
-      :counterMetrics="counter_metrics"
+      :metrics="counter_metrics"
       :supportedActions="supportedActions"
-      @counterIncrementClicked="handleIncrementButtonClicked"
-      @counterDeleted="handleCounterDeleted"
+      metric-type="Counter"
+      @actionClicked="handleIncrementButtonClicked"
+      @metricDeleted="handleCounterDeleted"
     />
   </div>
 </template>
@@ -33,10 +34,10 @@
 <script setup>
 import NewCounterForm from "../components/NewCounterForm.vue";
 import IncrementCounterForm from "../components/IncrementCounterForm.vue";
-import CounterTable from "../components/CounterTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
+import MetricTable from "../components/MetricTable.vue";
 </script>
 
 <script>
@@ -72,7 +73,7 @@ export default {
 
     async handleCounterCreated({ name, description, labelNames }) {
       let splitLabels = {};
-      if (labelNames.length != 0) {
+      if (labelNames.length !== 0) {
         let labelSplit = labelNames.split(",");
         for (let elem in labelSplit) {
           let elemSplit = labelSplit[elem].split("=");
@@ -91,7 +92,7 @@ export default {
 
     async handleCounterIncremented({ name, value = 1, labels }) {
       let splitLabels = {};
-      if (labels.length != 0) {
+      if (labels.length !== 0) {
         let labelSplit = labels.split(",");
         for (let elem in labelSplit) {
           let elemSplit = labelSplit[elem].split("=");

@@ -24,19 +24,20 @@
       </template>
     </Modal>
 
-    <HistogramTable
+    <MetricTable
       v-if="histogram_metrics"
-      :histogramMetrics="histogram_metrics"
+      :metrics="histogram_metrics"
       :supportedActions="supportedActions"
-      @histogramActionClicked="handleActionButtonClicked"
-      @histogramDeleted="handleHistogramDeleted"
+      metric-type="Histogram"
+      @actionClicked="handleActionButtonClicked"
+      @metricDeleted="handleHistogramDeleted"
     />
   </div>
 </template>
 
 <script setup>
 import NewHistogramForm from "../components/NewHistogramForm.vue";
-import HistogramTable from "../components/HistogramTable.vue";
+import MetricTable from "../components/MetricTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
@@ -81,7 +82,7 @@ export default {
       bucketsList,
     }) {
       let splitLabels = {};
-      if (labelNames.length != 0) {
+      if (labelNames.length !== 0) {
         let labelSplit = labelNames.split(",");
         for (let elem in labelSplit) {
           let elemSplit = labelSplit[elem].split("=");
@@ -90,7 +91,7 @@ export default {
       }
 
       let buckets = [];
-      if (bucketsList && bucketsList.length != 0) {
+      if (bucketsList && bucketsList.length !== 0) {
         buckets = bucketsList.split(",");
         buckets = buckets.map(Number);
       }
@@ -107,7 +108,7 @@ export default {
 
     async handleHistogramAction({ name, value = 1, labels }) {
       let splitLabels = {};
-      if (labels.length != 0) {
+      if (labels.length !== 0) {
         let labelSplit = labels.split(",");
         for (let elem in labelSplit) {
           let elemSplit = labelSplit[elem].split("=");

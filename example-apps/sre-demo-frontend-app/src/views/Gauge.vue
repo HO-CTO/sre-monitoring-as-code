@@ -21,12 +21,13 @@
       </template>
     </Modal>
 
-    <GaugeTable
+    <MetricTable
       v-if="gauge_metrics"
-      :gaugeMetrics="gauge_metrics"
+      :metrics="gauge_metrics"
       :supportedActions="supportedActions"
-      @gaugeActionClicked="handleActionButtonClicked"
-      @gaugeDeleted="handleGaugeDeleted"
+      metric-type="Gauge"
+      @actionClicked="handleActionButtonClicked"
+      @metricDeleted="handleGaugeDeleted"
     />
   </div>
 </template>
@@ -34,7 +35,7 @@
 <script setup>
 import NewGaugeForm from "../components/NewGaugeForm.vue";
 import IncDecGaugeForm from "../components/IncDecGaugeForm.vue";
-import GaugeTable from "../components/GaugeTable.vue";
+import MetricTable from "../components/MetricTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
