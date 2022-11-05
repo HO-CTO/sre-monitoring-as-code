@@ -35,6 +35,14 @@ app.get("/version", async (req, res) => {
   });
 });
 
+app.use((error, req, res, next) => {
+  res.status(500).json({
+    error: {
+      message: error.message,
+    },
+  })
+});
+
 app.listen(PORT, () => {
   console.log(
     `sre-demo-nodejs-app listening on port: http://localhost:${PORT}`

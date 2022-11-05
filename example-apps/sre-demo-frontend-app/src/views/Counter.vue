@@ -6,7 +6,7 @@
       </button>
     </div>
 
-    <Modal v-show="isModalVisible" @close="closeModal">
+    <Modal v-show="isModalVisible" @close="closeModal" :error="error">
       <template v-slot:content>
         <NewCounterForm
           @created="handleCounterCreated"
@@ -61,6 +61,7 @@ export default {
       isModalVisible: false,
       modalToDisplay: "",
       counterName: "",
+      error: "",
     };
   },
   methods: {
@@ -68,10 +69,12 @@ export default {
       this.counter_metrics = null;
       const response = await client.get("/counters");
       this.counter_metrics = response.data;
-      console.log({metrics: this.counter_metrics})
+      console.log({ metrics: this.counter_metrics });
     },
 
     async handleCounterCreated({ name, description, labelNames }) {
+      this.error = "";
+
       let splitLabels = {};
       if (labelNames.length !== 0) {
         let labelSplit = labelNames.split(",");
@@ -81,13 +84,17 @@ export default {
         }
       }
 
-      await client.post("/counters", {
-        name,
-        description,
-        labels: splitLabels
-      });
-      await this.listCounters();
-      this.closeModal();
+      try {
+        await client.post("/counters", {
+          name,
+          description,
+          labels: splitLabels,
+        });
+        await this.listCounters();
+        this.closeModal();
+      } catch (e) {
+        this.error = e?.response?.data?.error?.message || "";
+      }
     },
 
     async handleCounterIncremented({ name, value = 1, labels }) {
@@ -120,6 +127,7 @@ export default {
 
     closeModal() {
       this.isModalVisible = false;
+      this.error = "";
     },
 
     handleIncrementButtonClicked({ name }) {

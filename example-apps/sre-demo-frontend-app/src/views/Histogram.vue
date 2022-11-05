@@ -9,7 +9,7 @@
       </button>
     </div>
 
-    <Modal v-show="isModalVisible" @close="closeModal">
+    <Modal v-show="isModalVisible" @close="closeModal" :error="error">
       <template v-slot:content>
         <NewHistogramForm
           @created="handleHistogramCreated"
@@ -66,6 +66,7 @@ export default {
       modalToDisplay: "",
       histogramName: "",
       histogramOption: "",
+      error: "",
     };
   },
   methods: {
@@ -81,6 +82,7 @@ export default {
       labelNames,
       bucketsList,
     }) {
+      this.error = "";
       let splitLabels = {};
       if (labelNames.length !== 0) {
         let labelSplit = labelNames.split(",");
@@ -96,14 +98,18 @@ export default {
         buckets = buckets.map(Number);
       }
 
-      await client.post("/histograms", {
-        name,
-        description,
-        labels: splitLabels,
-        buckets,
-      });
-      await this.listHistograms();
-      this.closeModal();
+      try {
+        await client.post("/histograms", {
+          name,
+          description,
+          labels: splitLabels,
+          buckets,
+        });
+        await this.listHistograms();
+        this.closeModal();
+      } catch (e) {
+        this.error = e?.response?.data?.error?.message || "";
+      }
     },
 
     async handleHistogramAction({ name, value = 1, labels }) {
@@ -142,6 +148,7 @@ export default {
 
     closeModal() {
       this.isModalVisible = false;
+      this.error = "";
     },
 
     handleActionButtonClicked({ name, action }) {

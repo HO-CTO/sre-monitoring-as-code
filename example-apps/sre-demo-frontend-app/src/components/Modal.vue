@@ -7,12 +7,22 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <div v-if="error !== ''" class="alert alert-danger mt-5" role="alert">
+          <h4 class="alert-heading">Error</h4>
+          {{ error }}.
+        </div>
         <slot name="content"></slot>
         <div class="text-right mt-20"></div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["error"],
+};
+</script>
 
 <style>
 .fullScreenModal {

@@ -6,7 +6,7 @@
       </button>
     </div>
 
-    <Modal v-show="isModalVisible" @close="closeModal">
+    <Modal v-show="isModalVisible" @close="closeModal" :error="error">
       <template v-slot:content>
         <NewGaugeForm
           @created="handleGaugeCreated"
@@ -63,6 +63,7 @@ export default {
       modalToDisplay: "",
       gaugeName: "",
       gaugeOption: "",
+      error: "",
     };
   },
   methods: {
@@ -73,27 +74,31 @@ export default {
     },
 
     async handleGaugeCreated({ name, description, labelNames }) {
+      this.error = "";
       let splitLabels = {};
-      if (labelNames.length != 0) {
+      if (labelNames.length !== 0) {
         let labelSplit = labelNames.split(",");
         for (let elem in labelSplit) {
           let elemSplit = labelSplit[elem].split("=");
           splitLabels[elemSplit[0]] = elemSplit[1];
         }
       }
-
-      await client.post("/gauges", {
-        name,
-        description,
-        labels: splitLabels,
-      });
-      await this.listGauges();
-      this.closeModal();
+      try {
+        await client.post("/gauges", {
+          name,
+          description,
+          labels: splitLabels,
+        });
+        await this.listGauges();
+        this.closeModal();
+      } catch (e) {
+        this.error = e?.response?.data?.error?.message || "";
+      }
     },
 
     async handleGaugeAction({ name, value = 1, labels }) {
       let splitLabels = {};
-      if (labels.length != 0) {
+      if (labels.length !== 0) {
         let labelSplit = labels.split(",");
         for (let elem in labelSplit) {
           let elemSplit = labelSplit[elem].split("=");
@@ -127,6 +132,7 @@ export default {
 
     closeModal() {
       this.isModalVisible = false;
+      this.error = "";
     },
 
     handleActionButtonClicked({ name, action }) {
