@@ -20,12 +20,18 @@ const getHistogram = async (id) => {
   });
 };
 
-const createHistogram = ({ name, description, labels = {}, buckets }) => {
+const createHistogram = ({ name, description, labels = {}, buckets}) => {
+  
+  let bucketsList = undefined
+  if (buckets.length > 0){
+    bucketsList = buckets
+  }
+
   histogramDAO.createHistogram({
     name,
     description,
     labels,
-    buckets,
+    buckets: bucketsList
   });
 
   return {
