@@ -139,14 +139,56 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
       legendFormat='SLO Target %(%s).1f %%' % sloTargetLegend,
       instant=true,
     )
+  ).addTarget(
+    prometheus.target(
+      |||
+        (%(target)s - (1 - (sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"}
+        %(comparison)s bool %(metricTarget)s)[%(period)s:%(evalInterval)s]))
+        /
+        sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"}
+        < bool Inf)[%(period)s:%(evalInterval)s])))))
+        /
+        %(target)s
+      ||| % {
+        sliLabelSelectors: sliSpec.dashboardSliLabelSelectors,
+        sliType: sliSpec.sliType,
+        period: sliSpec.period,
+        evalInterval: sliSpec.evalInterval,
+        target: (100 - sliSpec.sloTarget) / 100,
+        metricTarget: sliSpec.metricTarget,
+        comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
+      },
+      legendFormat='Remaining Error Budget',
+      instant=true,
+    )
+  ).addTarget(
+    // SLO Target
+    prometheus.target(
+      |||
+        %(target)s
+      ||| % {
+        target: (100 - sliSpec.sloTarget) / 100,
+      },
+      legendFormat='SLO Target',
+    )
   ).addThresholds(
     [
       { color: 'grey', value: null },
       { color: 'red', value: 0 },
+      { color: 'red', value: -99999 },  // minus numbers will now be red instead of grey
       { color: 'orange', value: sloTargetLegend / 100 },
       { color: 'green', value: sloTargetLegend / 98 },
     ],
-  ) + { options+: { textMode: 'Value and name' } };
+  ) + { options+: { textMode: 'Value and name' } } + {
+    overrides+:
+      [
+        {
+          matcher: { id: 'byName', options: 'SLO Target' },
+          properties: [{ id: 'colour', value: { fixedColor: '010101fc', mode: 'fixed' } }],
+          //          properties: [{ id: 'colour', value: { fixedColor: 'black', mode: 'fixed' } }],
+        },
+      ],
+  };
 
 // Creates the dashboard panel for remaining error budget
 // @param sliSpec The spec for the SLI having its standard elements created
