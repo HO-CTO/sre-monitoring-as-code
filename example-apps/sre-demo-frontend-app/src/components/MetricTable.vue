@@ -1,37 +1,49 @@
 <template>
   <div>
-    <h3>Gauge metrics</h3>
+    <h3>{{ this.metricType }} metrics</h3>
     <div class="container">
-      <div class="container" v-if="data.length == 0">
-        <p>No metrics to display...</p>
+      <div class="container" v-if="data.length === 0">
+        <p>No {{ this.metricType }} metrics to display...</p>
       </div>
       <div v-else>
         <div>
           <table class="table">
             <thead>
               <tr>
-                <th>Gauge Name</th>
+                <th>{{ this.metricType }} Name</th>
                 <th>Labels</th>
                 <th>Value</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody v-for="(gauge, index) in data" :key="index">
-              <tr v-if="gauge.value.length == 0">
-                <td>{{ gauge.name }}</td>
+            <tbody v-for="(metric, index) in data" :key="index">
+              <tr v-if="metric.value.length === 0">
+                <td>{{ metric.name }}</td>
                 <td>no labels</td>
                 <td>no value</td>
                 <td>
                   <ActionButtons
                     :supportedActions="this.supportedActions"
                     @incrementClicked="
-                      onActionClicked({ name: gauge.name, action: 'increment' })
+                      onActionClicked({
+                        name: metric.name,
+                        action: 'increment',
+                      })
                     "
                     @decrementClicked="
-                      onActionClicked({ name: gauge.name, action: 'decrement' })
+                      onActionClicked({
+                        name: metric.name,
+                        action: 'decrement',
+                      })
                     "
                     @setValueClicked="
-                      onActionClicked({ name: gauge.name, action: 'set' })
+                      onActionClicked({ name: metric.name, action: 'set' })
+                    "
+                    @observeClicked="
+                      onActionClicked({
+                        name: metric.name,
+                        action: 'observe',
+                      })
                     "
                     @deleteClicked="this.onDeleteClicked()"
                   />
@@ -39,48 +51,56 @@
               </tr>
               <tr
                 v-else
-                v-for="(valueElem, index2) in gauge.value"
+                v-for="(metricValue, index2) in metric.value"
                 :key="index2"
               >
-                <td>{{ gauge.name }}</td>
-                <td>{{ valueElem.labels }}</td>
-                <td>{{ valueElem.value }}</td>
+                <td>{{ metricValue.name || metric.name }}</td>
+                <td>{{ metricValue.labels }}</td>
+                <td>{{ metricValue.value }}</td>
                 <td>
                   <ActionButtons
                     :supportedActions="this.supportedActions"
                     @incrementClicked="
-                      onActionClicked({ name: gauge.name, action: 'increment' })
+                      onActionClicked({
+                        name: metric.name,
+                        action: 'increment',
+                      })
                     "
                     @decrementClicked="
-                      onActionClicked({ name: gauge.name, action: 'decrement' })
+                      onActionClicked({
+                        name: metric.name,
+                        action: 'decrement',
+                      })
                     "
                     @setValueClicked="
-                      onActionClicked({ name: gauge.name, action: 'set' })
+                      onActionClicked({ name: metric.name, action: 'set' })
                     "
-                    @deleteClicked="this.onDeleteClicked(gauge.name)"
+                    @observeClicked="
+                      onActionClicked({
+                        name: metric.name,
+                        action: 'observe',
+                      })
+                    "
+                    @deleteClicked="this.onDeleteClicked(metric.name)"
                   />
-
                   <Modal
                     v-show="this.displayDeleteConfirm"
                     @close="handleDeleteCancel"
                   >
                     <template v-slot:content>
                       <ConfirmDialog
-                        @submit="handleDeleteConfirm(gauge.name)"
+                        @submit="handleDeleteConfirm(metric.name)"
                         @cancel="handleDeleteCancel"
                       >
                         <template v-slot:title>
-                          Delete metric "{{ gauge.name }}"?
+                          Delete metric "{{ metric.name }}"?
                         </template>
                         <template v-slot:message>
-                          All instances of the metric named "{{ gauge.name }}"
+                          All instances of the metric named "{{ metric.name }}"
                           will be deleted.
                         </template>
                         <template v-slot:submitButtonText>
                           Yes, delete.
-                        </template>
-                        <template v-slot:submitButtonClass>
-                          btn-danger
                         </template>
                       </ConfirmDialog>
                     </template>
@@ -99,17 +119,18 @@
 import ActionButtons from "./ActionButtons.vue";
 import ConfirmDialog from "./ConfirmDialog.vue";
 import Modal from "./Modal.vue";
+
 export default {
-  props: ["supportedActions", "gaugeMetrics"],
+  props: ["supportedActions", "metrics", "metricType"],
   data() {
     return {
-      data: this.gaugeMetrics,
+      data: this.metrics,
       displayDeleteConfirm: false,
     };
   },
   methods: {
     onActionClicked({ name, action }) {
-      this.$emit("gaugeActionClicked", { name, action });
+      this.$emit("actionClicked", { name, action });
     },
 
     onDeleteClicked() {
@@ -117,7 +138,7 @@ export default {
     },
 
     handleDeleteConfirm(name) {
-      this.$emit("gaugeDeleted", { name });
+      this.$emit("metricDeleted", { name });
       this.displayDeleteConfirm = false;
     },
 

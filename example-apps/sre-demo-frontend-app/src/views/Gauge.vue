@@ -6,7 +6,7 @@
       </button>
     </div>
 
-    <Modal v-show="isModalVisible" @close="closeModal">
+    <Modal v-show="isModalVisible" @close="closeModal" :error="error">
       <template v-slot:content>
         <NewGaugeForm
           @created="handleGaugeCreated"
@@ -21,12 +21,13 @@
       </template>
     </Modal>
 
-    <GaugeTable
+    <MetricTable
       v-if="gauge_metrics"
-      :gaugeMetrics="gauge_metrics"
+      :metrics="gauge_metrics"
       :supportedActions="supportedActions"
-      @gaugeActionClicked="handleActionButtonClicked"
-      @gaugeDeleted="handleGaugeDeleted"
+      metric-type="Gauge"
+      @actionClicked="handleActionButtonClicked"
+      @metricDeleted="handleGaugeDeleted"
     />
   </div>
 </template>
@@ -34,10 +35,11 @@
 <script setup>
 import NewGaugeForm from "../components/NewGaugeForm.vue";
 import IncDecGaugeForm from "../components/IncDecGaugeForm.vue";
-import GaugeTable from "../components/GaugeTable.vue";
+import MetricTable from "../components/MetricTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
+import { splitLabels } from "../utils/splitLabels";
 </script>
 
 <script>
@@ -62,6 +64,7 @@ export default {
       modalToDisplay: "",
       gaugeName: "",
       gaugeOption: "",
+      error: "",
     };
   },
   methods: {
@@ -72,42 +75,30 @@ export default {
     },
 
     async handleGaugeCreated({ name, description, labelNames }) {
-      let splitLabels = {};
-      if (labelNames.length != 0) {
-        let labelSplit = labelNames.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
+      this.error = "";
+      try {
+        await client.post("/gauges", {
+          name,
+          description,
+          labels: splitLabels(labelNames),
+        });
+        await this.listGauges();
+        this.closeModal();
+      } catch (e) {
+        this.error = e?.response?.data?.error?.message || "";
       }
-
-      await client.post("/gauges", {
-        name,
-        description,
-        labels: splitLabels,
-      });
-      await this.listGauges();
-      this.closeModal();
     },
 
     async handleGaugeAction({ name, value = 1, labels }) {
-      let splitLabels = {};
-      if (labels.length != 0) {
-        let labelSplit = labels.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
       if (this.gaugeOption === "set") {
         await client.put(`/gauges/${name}/`, {
           value,
-          labels: splitLabels,
+          labels: splitLabels(labels),
         });
       } else {
         await client.post(`/gauges/${name}/${this.gaugeOption}`, {
           value,
-          labels: splitLabels,
+          labels: splitLabels(labels),
         });
       }
       await this.listGauges();
@@ -126,6 +117,7 @@ export default {
 
     closeModal() {
       this.isModalVisible = false;
+      this.error = "";
     },
 
     handleActionButtonClicked({ name, action }) {

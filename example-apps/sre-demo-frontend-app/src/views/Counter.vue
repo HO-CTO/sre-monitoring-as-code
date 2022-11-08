@@ -6,7 +6,7 @@
       </button>
     </div>
 
-    <Modal v-show="isModalVisible" @close="closeModal">
+    <Modal v-show="isModalVisible" @close="closeModal" :error="error">
       <template v-slot:content>
         <NewCounterForm
           @created="handleCounterCreated"
@@ -20,12 +20,13 @@
       </template>
     </Modal>
 
-    <CounterTable
+    <MetricTable
       v-if="counter_metrics"
-      :counterMetrics="counter_metrics"
+      :metrics="counter_metrics"
       :supportedActions="supportedActions"
-      @counterIncrementClicked="handleIncrementButtonClicked"
-      @counterDeleted="handleCounterDeleted"
+      metric-type="Counter"
+      @actionClicked="handleIncrementButtonClicked"
+      @metricDeleted="handleCounterDeleted"
     />
   </div>
 </template>
@@ -33,10 +34,11 @@
 <script setup>
 import NewCounterForm from "../components/NewCounterForm.vue";
 import IncrementCounterForm from "../components/IncrementCounterForm.vue";
-import CounterTable from "../components/CounterTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
+import { splitLabels } from "../utils/splitLabels";
+import MetricTable from "../components/MetricTable.vue";
 </script>
 
 <script>
@@ -60,6 +62,7 @@ export default {
       isModalVisible: false,
       modalToDisplay: "",
       counterName: "",
+      error: "",
     };
   },
   methods: {
@@ -67,41 +70,28 @@ export default {
       this.counter_metrics = null;
       const response = await client.get("/counters");
       this.counter_metrics = response.data;
-      console.log({metrics: this.counter_metrics})
+      console.log({ metrics: this.counter_metrics });
     },
 
     async handleCounterCreated({ name, description, labelNames }) {
-      let splitLabels = {};
-      if (labelNames.length != 0) {
-        let labelSplit = labelNames.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
+      this.error = "";
+      try {
+        await client.post("/counters", {
+          name,
+          description,
+          labels: splitLabels(labelNames),
+        });
+        await this.listCounters();
+        this.closeModal();
+      } catch (e) {
+        this.error = e?.response?.data?.error?.message || "";
       }
-
-      await client.post("/counters", {
-        name,
-        description,
-        labels: splitLabels
-      });
-      await this.listCounters();
-      this.closeModal();
     },
 
     async handleCounterIncremented({ name, value = 1, labels }) {
-      let splitLabels = {};
-      if (labels.length != 0) {
-        let labelSplit = labels.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
-
       await client.post(`/counters/${name}/increment`, {
         value,
-        labels: splitLabels,
+        labels: splitLabels(labels),
       });
       await this.listCounters();
       this.closeModal();
@@ -119,6 +109,7 @@ export default {
 
     closeModal() {
       this.isModalVisible = false;
+      this.error = "";
     },
 
     handleIncrementButtonClicked({ name }) {
