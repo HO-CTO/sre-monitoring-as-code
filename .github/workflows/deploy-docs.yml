@@ -33,6 +33,7 @@ jobs:
           format: png
           transparent: true
           output: source/images
+          action-mode: all
       - name: Upload artifact
         uses: actions/upload-artifact@v3.1.1
         with:
