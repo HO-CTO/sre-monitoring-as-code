@@ -4,4 +4,4 @@ REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 SINCE_COMMIT=$(git cherry -v main HEAD | head -1 | cut -d " " -f 2)
 
-docker run --rm -v "$REPO_ROOT_DIR:/app" trufflesecurity/trufflehog:3.14.0 git file:///app --only-verified --no-update --debug --trace --since-commit="$SINCE_COMMIT" --branch="$CURRENT_BRANCH" --fail
+docker run --rm -v "$REPO_ROOT_DIR:/app" trufflesecurity/trufflehog:3.14.0 git file:///app --only-verified --no-update --since-commit="$SINCE_COMMIT" --branch="$CURRENT_BRANCH" --fail
