@@ -4,6 +4,7 @@ weight: 1
 ---
 
 # Home Office Monitoring-as-Code Overview
+
 The Home Office Monitoring-as-Code (MaC) is a monitoring and alerting framework.
 It's a Jsonnet Mixin implementation of Service Level Indicators (SLIs), Service Level Objectives (SLOs) and Error Budgets. It uses Prometheus and Grafana, which are open-source monitoring and alerting systems.
 
@@ -15,7 +16,8 @@ Monitoring-as-code allows platform teams to:
 
 The Monitoring-as-Code implementation follows [SRE best practices](https://sre.google/sre-book/table-of-contents/).
 
-## How MaC works
+#### How MaC works
+
 MaC takes a Mixin.jsonnet file as an input. Mixin is a monitoring definition file, a set of SLIs and SLOs rules and alerts, packaged together in a reuseable and extensible bundle. The monitoring mixin files bundle up your SLI configuration, alerting and Grafana dashboards into a single package. At the moment, you will need to compose runbooks separately afterwards.
 
 MaC contains configuration libraries you can use out of the box. In the future you can also configure them yourself.
