@@ -98,7 +98,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":alert: GitHub Action Failure: ${{github.repository}} :alert:",
+                    "text": ":warning: GitHub Workflow Failure: ${{github.repository}} :warning:",
                     "emoji": true
                   }
                 },
