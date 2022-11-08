@@ -41,6 +41,7 @@ import MetricTable from "../components/MetricTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
+import { splitLabels } from "../utils/splitLabels";
 import ObserveHistogramForm from "../components/ObserveHistogramForm.vue";
 </script>
 
@@ -83,15 +84,6 @@ export default {
       bucketsList,
     }) {
       this.error = "";
-      let splitLabels = {};
-      if (labelNames.length !== 0) {
-        let labelSplit = labelNames.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
-
       let buckets = [];
       if (bucketsList && bucketsList.length !== 0) {
         buckets = bucketsList.split(",");
@@ -102,7 +94,7 @@ export default {
         await client.post("/histograms", {
           name,
           description,
-          labels: splitLabels,
+          labels: splitLabels(labelNames),
           buckets,
         });
         await this.listHistograms();
@@ -113,23 +105,15 @@ export default {
     },
 
     async handleHistogramAction({ name, value = 1, labels }) {
-      let splitLabels = {};
-      if (labels.length !== 0) {
-        let labelSplit = labels.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
       if (this.histogramOption === "set") {
         await client.put(`/histograms/${name}/`, {
           value,
-          labels: splitLabels,
+          labels: splitLabels(labels),
         });
       } else {
         await client.post(`/histograms/${name}/${this.histogramOption}`, {
           value,
-          labels: splitLabels,
+          labels: splitLabels(labels),
         });
       }
       await this.listHistograms();

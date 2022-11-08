@@ -39,6 +39,7 @@ import MetricTable from "../components/MetricTable.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
+import { splitLabels } from "../utils/splitLabels";
 </script>
 
 <script>
@@ -75,19 +76,11 @@ export default {
 
     async handleGaugeCreated({ name, description, labelNames }) {
       this.error = "";
-      let splitLabels = {};
-      if (labelNames.length !== 0) {
-        let labelSplit = labelNames.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
       try {
         await client.post("/gauges", {
           name,
           description,
-          labels: splitLabels,
+          labels: splitLabels(labelNames),
         });
         await this.listGauges();
         this.closeModal();
@@ -97,23 +90,15 @@ export default {
     },
 
     async handleGaugeAction({ name, value = 1, labels }) {
-      let splitLabels = {};
-      if (labels.length !== 0) {
-        let labelSplit = labels.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
       if (this.gaugeOption === "set") {
         await client.put(`/gauges/${name}/`, {
           value,
-          labels: splitLabels,
+          labels: splitLabels(labels),
         });
       } else {
         await client.post(`/gauges/${name}/${this.gaugeOption}`, {
           value,
-          labels: splitLabels,
+          labels: splitLabels(labels),
         });
       }
       await this.listGauges();

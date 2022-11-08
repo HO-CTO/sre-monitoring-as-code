@@ -37,6 +37,7 @@ import IncrementCounterForm from "../components/IncrementCounterForm.vue";
 import Modal from "../components/Modal.vue";
 
 import { client } from "../utils/axios";
+import { splitLabels } from "../utils/splitLabels";
 import MetricTable from "../components/MetricTable.vue";
 </script>
 
@@ -74,21 +75,11 @@ export default {
 
     async handleCounterCreated({ name, description, labelNames }) {
       this.error = "";
-
-      let splitLabels = {};
-      if (labelNames.length !== 0) {
-        let labelSplit = labelNames.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
-
       try {
         await client.post("/counters", {
           name,
           description,
-          labels: splitLabels,
+          labels: splitLabels(labelNames),
         });
         await this.listCounters();
         this.closeModal();
@@ -98,18 +89,9 @@ export default {
     },
 
     async handleCounterIncremented({ name, value = 1, labels }) {
-      let splitLabels = {};
-      if (labels.length !== 0) {
-        let labelSplit = labels.split(",");
-        for (let elem in labelSplit) {
-          let elemSplit = labelSplit[elem].split("=");
-          splitLabels[elemSplit[0]] = elemSplit[1];
-        }
-      }
-
       await client.post(`/counters/${name}/increment`, {
         value,
-        labels: splitLabels,
+        labels: splitLabels(labels),
       });
       await this.listCounters();
       this.closeModal();
