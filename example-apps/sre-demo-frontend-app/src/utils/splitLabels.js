@@ -4,7 +4,7 @@
  * @param tokenDelimiter The delimiter separating key value pairs.
  * @param keyValueDelimiter The delimiter separating keys from values.
  */
-const splitLabels = (
+export const splitLabels = (
   labelString,
   tokenDelimiter = ",",
   keyValueDelimiter = "="
@@ -24,5 +24,3 @@ const splitLabels = (
 
   return result;
 };
-
-module.exports = { splitLabels };
