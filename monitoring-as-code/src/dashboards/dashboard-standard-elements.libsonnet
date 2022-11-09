@@ -181,10 +181,11 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, av
   ).addThresholds(
     [
       { color: 'grey', value: null },
+      { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
       { color: 'red', value: 0 },
       { color: 'orange', value: sloTargetLegend / 100 },
       { color: 'green', value: sloTargetLegend / 98 },
-      { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
+
     ],
   ) + { options+: { textMode: 'Value and name' } } + {
     fieldConfig+: {
@@ -211,14 +212,15 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, av
                   mode: 'absolute',
                   steps: [
                     { color: 'grey', value: null },
+                    { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
                     { color: 'red', value: 0 },
-                    // { color: 'orange', value: sloTargetLegend / 100 },
-                    // { color: 'green', value: sloTargetLegend / 98 },
-
-                    // { color: 'orange', value: debug.debug(sloTargetLegend) },
                     { color: 'orange', value: 0.1 },
                     { color: 'green', value: 0.5 },
-                    { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
+
+                    // { color: 'orange', value: sloTargetLegend / 100 },
+                    // { color: 'green', value: sloTargetLegend / 98 },
+                    // { color: 'orange', value: debug.debug(sloTargetLegend) },
+
                   ],
                 },
               },
