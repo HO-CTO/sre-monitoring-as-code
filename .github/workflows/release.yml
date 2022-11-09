@@ -1,4 +1,4 @@
-name: 'Docker Build Tag'
+name: 'Release'
 
 on:
   pull_request:
