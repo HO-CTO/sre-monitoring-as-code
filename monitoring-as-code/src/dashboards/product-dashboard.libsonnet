@@ -101,8 +101,7 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
     ||| % {
       sumOfSlis: topSloStatusExpr,
       noOfSlis: std.length(slis),
-      //     sloTarget: 0.90,
-      sloTarget: slis[std.objectFields(slis)[0]].slo_target,
+      sloTarget: (slis[std.objectFields(slis)[0]].slo_target / 100),
     };
 
   [
