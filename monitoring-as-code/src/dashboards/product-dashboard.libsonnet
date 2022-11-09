@@ -5,7 +5,7 @@
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local row = grafana.row;
-local debug = import '../util/debug.libsonnet';
+//local debug = import '../util/debug.libsonnet';
 
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
@@ -105,7 +105,7 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
     };
 
   [
-    dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgSloStatusExpr, avgErrorBudgetExpr, debug.debug(avgSloTargetExpr))
+    dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr)
     +
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
