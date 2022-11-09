@@ -97,10 +97,12 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   //
   local avgSloTargetExpr =
     |||
-      (vector(0.90) and on() (( %(sumOfSlis)s  ) / %(noOfSlis)s ))
+      (vector( %(sloTarget)s ) and on() (( %(sumOfSlis)s  ) / %(noOfSlis)s ))
     ||| % {
       sumOfSlis: topSloStatusExpr,
       noOfSlis: std.length(slis),
+      //     sloTarget: 0.90,
+      sloTarget: slis[std.objectFields(slis)[0]].slo_target,
     };
 
   [
