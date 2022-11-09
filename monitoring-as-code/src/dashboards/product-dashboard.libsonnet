@@ -46,6 +46,10 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
   local slis = std.objectValues(sliList[journeyKey])[sliIndex];
 
+  //
+  // Setup Panel Expressions - SLO status
+  //
+
   // Array of all the SLO status expressions for the slis
   local exprSloStatusArray(sliList) =
     [
@@ -64,6 +68,10 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
       sumOfSlis: topSloStatusExpr,
       noOfSlis: std.length(slis),
     };
+
+  //
+  // Setup Panel Expressions - error budget
+  //
 
   // Array of all the error budget expressions for the slis
   local exprErrorBudgetArray(sliList) =
@@ -84,6 +92,9 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
       noOfSlis: std.length(slis),
     };
 
+  //
+  // Setup Panel Expressions - SLO Target
+  //
   local avgSloTargetExpr =
     |||
       (vector(0.90) and on() (( %(sumOfSlis)s  ) / %(noOfSlis)s ))
