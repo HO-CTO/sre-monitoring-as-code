@@ -1,4 +1,4 @@
-// This file is for creating the standard elements used across dashboards for an SLI d
+// This file is for creating the standard elements used across dashboards for an SLI
 
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
