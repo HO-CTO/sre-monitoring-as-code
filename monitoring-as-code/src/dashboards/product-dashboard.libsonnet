@@ -5,7 +5,6 @@
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local row = grafana.row;
-local debug = import '../util/debug.libsonnet';
 
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
@@ -46,35 +45,45 @@ local createView(journeyIndex, sliIndex, noOfPanelRows, config, sliList) =
   local journeyKey = std.objectFields(sliList)[journeyIndex];
   local slis = std.objectValues(sliList[journeyKey])[sliIndex];
 
-  // Array of all the expressions for the slis
-  local exprArray(sliList) =
+  // Array of all the SLO status expressions for the slis
+  local exprSloStatusArray(sliList) =
     [
       sliList[sliKey].slo_expr
       for sliKey in std.objectFields(sliList)
     ];
 
-  // Joining the arrays with a +
-  local topExpr = std.join(' + ', exprArray(slis));
+  // Array of all the error budget expressions for the slis
+  local exprErrorBudgetArray(sliList) =
+    [
+      sliList[sliKey].eb_expr
+      for sliKey in std.objectFields(sliList)
+    ];
 
-  // Final average expression
-  local avgExpr =
+  // Joining the slo status arrays with a +
+  local topSloStatusExpr = std.join(' + ', exprSloStatusArray(slis));
+
+  // Joining the error budget arrays with a +
+  local topErrorBudgetExpr = std.join(' + ', exprErrorBudgetArray(slis));
+
+  // Final slo status average expression
+  local avgSloStatusExpr =
     |||
       ( %(sumOfSlis)s  ) / %(noOfSlis)s
     ||| % {
-      sumOfSlis: topExpr,
+      sumOfSlis: topSloStatusExpr,
       noOfSlis: std.length(slis),
     };
 
-  local errorBudgetExpr =
+  local avgErrorBudgetExpr =
     |||
       ( %(sumOfSlis)s  ) / %(noOfSlis)s
     ||| % {
-      sumOfSlis: topExpr,
+      sumOfSlis: topErrorBudgetExpr,
       noOfSlis: std.length(slis),
     };
 
   [
-    dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], debug.debug(avgExpr), errorBudgetExpr)
+    dashboardFunctions.createAveragedSliTypesPanel(slis[std.objectFields(slis)[0]].slo_target, slis[std.objectFields(slis)[0]], avgSloStatusExpr, avgErrorBudgetExpr)
     +
     {
       gridPos: { x: viewPanelSize.x * (sliIndex % viewPanelsPerRow), y: (journeyIndex + 1) +
