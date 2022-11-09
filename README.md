@@ -14,11 +14,15 @@ Monitoring Mixins bundle up SLI configuration, Alerting, Grafana dashboards, and
 
 ## Repository structure
 
-| Directory | Description |
-| ----------| ----------- |
-| `docs/` | Contains the technical documentation for Monitoring-as-Code using Tech Docs Template and Middleman. |
-| `local/` | Contains a docker-compose implementation of Prometheus, Thanos, Grafana and Alertmanager. The purpose of this project is to test Monitoring-as-Code locally with your application. |
-| `monitoring-as-code/` | Contains the Jsonnet mixin implementation of SLIs/SLO/Error Budgets for Prometheus and Grafana |
+| Directory             | Description                                                                                                                                                                        |
+|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `.githooks/`          | Contains the client-side pre-commit and pre-push git hooks which form part of our engineering workflow.                                                                            |
+| `.github/`            | Contains the GitHub Action workflows and associated config.                                                                                                                        |
+| `docs/`               | Contains the technical documentation for Monitoring-as-Code using Tech Docs Template and Middleman.                                                                                |
+| `example-apps/`       | Contains example apps to showcase how custom metrics can be shown within the MaC framework.                                                                                        |
+| `local/`              | Contains a docker-compose implementation of Prometheus, Thanos, Grafana and Alertmanager. The purpose of this project is to test Monitoring-as-Code locally with your application. |
+| `monitoring-as-code/` | Contains the Jsonnet mixin implementation of SLIs/SLO/Error Budgets for Prometheus and Grafana.                                                                                    |
+| `security/`           | Contains the GitLeaks secret scan configuration.                                                                                                                                   |
 
 `Installation` and `usage` information is provided in a Readme within each of the directories.
 
