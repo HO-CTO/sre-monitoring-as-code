@@ -144,7 +144,7 @@ local getErrorBudgetExpr(sli, periodSli, sloTarget) =
 // @param sloStatusExpr The full expersion for the average dashbaord
 // @returns The average panel object
 
-local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr) =
+local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr) =
   statPanel.new(
     title='SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
     datasource='prometheus',
@@ -170,12 +170,17 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, av
     )
   ).addTarget(
     // SLO Target
+    // prometheus.target(
+    //   |||
+    //     %(target)s
+    //   ||| % {
+    //     target: (sliSpec.slo_target / 100),
+    //   },
+    //   legendFormat='SLO Target',
+    // )
+    // SLO Target
     prometheus.target(
-      |||
-        %(target)s
-      ||| % {
-        target: (sliSpec.slo_target / 100),
-      },
+      expr=avgSloTargetExpr,
       legendFormat='SLO Target',
     )
   ).addThresholds(
@@ -413,6 +418,6 @@ local createServiceTemplates(config) =
   createDashboardStandardElements(sliKey, journeyKey, sliSpec, config):
     createDashboardStandardElements(sliKey, journeyKey, sliSpec, config),
   createServiceTemplates(config): createServiceTemplates(config),
-  createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr): createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr),
+  createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr): createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr),
   createDocsTextPanel(dashboardName): createDocsTextPanel(dashboardName),
 }
