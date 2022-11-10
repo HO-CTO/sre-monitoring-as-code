@@ -3,11 +3,21 @@
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
 
+
 // Creates metadata about the type and category of the SLI
 // @param category The category of the SLI type
 // @param sliSpec The spec for the SLI having metadata created
 // @returns JSON containing metadata about the type and category of the SLI
 local createSliMetadata(sliSpec) =
+  {
+    sli_type: sliSpec.sliType,
+  };
+
+// Creates metadata about the type and category of the SLI
+// @param category The category of the SLI type
+// @param sliSpec The spec for the SLI having metadata created
+// @returns JSON containing metadata about the type and category of the SLI
+local createGenericSliMetadata(sliSpec) =
   {
     sli_type: sliSpec.sliType,
     metric_type: sliSpec.metricType,
@@ -43,7 +53,7 @@ local createStandardRecordingRules(sliSpec, sliMetadata) =
 // @param sliSpec The spec for the SLI having its recording rules created
 // @returns JSON defining the recording rules
 local createRecordingRules(sliSpec, config) =
-  local sliMetadata = createSliMetadata(sliSpec);
+  local sliMetadata = if std.objectHas(config, 'generic') && config.generic then createGenericSliMetadata(sliSpec) else createSliMetadata(sliSpec);
 
   {
     recording_rules+: std.flattenArrays([
