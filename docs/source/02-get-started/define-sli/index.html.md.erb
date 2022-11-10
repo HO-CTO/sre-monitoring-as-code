@@ -1,0 +1,134 @@
+---
+title: Define sli
+weight: 1
+---
+
+# Defining your own SLIs
+You start to implement the SRE Monitoring-as-Code framework in your environment by defining and implementing the SLIs and SLOs for your service.
+
+## Define and implement your SLIs and SLOs
+Before you can implement the SRE Monitoring-as-Code framework in your environment you must:
+
+1. Define user journeys and service-level indicators for your service.
+2. Agree baseline SLOs for each SLI.
+3. Implement SLI Definitions.
+4. Observe and iterate.
+
+### Define user journeys and service-level indicators for your service {#define-user-journeys-heading}
+
+Setting SLIs helps you set realistic objectives for your service and avoid over-committing resources on Site Reliability Engineering (SRE). SLIs benefit your service by:
+
+- defining Service Level Objectives (SLO) for your service’s user journeys
+- helping prioritise your work and improve your infrastructure
+- creating metrics to help classify incidents
+- measuring how your system performs in the medium to long term
+
+You should run an SLI workshop to define the specific SLIs for your service. Follow the steps in The GDS Way to [run an SLI workshop](https://gds-way.cloudapps.digital/standards/slis.html)
+
+
+### Agree baseline SLOs for each SLI {#agree-baseline-slos-heading}
+
+Current performance based on SLIs is usually a good place to start, especially if you do not have any other information. It also helps to set a baseline that you can improve to reflect service objectives.
+
+Once you have everything in place, you can (implement your SLIs and SLOs)[#implement-slis-task-heading]
+
+### Implement SLI Definitions (sre-monitoring-as-code) {#create-implementation-tasks-heading}
+
+![Low level diagram showing workflow](../../images/monitoring_as_code-3.png)
+
+Teams must create a definition file (mixin) for each product they wish to monitor. A boiler plate mixin is provided in the sre-monitoring-as-code repository.
+
+Within the definition file you need to pass in the following global variables for your service: -
+
+| Global variables            | Description        | Formatting Best Practice | Example |
+| ----------------------------| -------------------|--------------------------|---------|
+| product                     | Short Product Name | Lower case or hypenated  | grapi   |
+| applicationServiceName      | ServiceNow Primary Impacted Service Name | Must match the Service Now Primary Impacted Service | Great Respect API |
+| servicenowAssignmentGroup   | ServiceNow Assignment Group | This is the ServiceNow Assignment Group who are the accountable owner of the Technical Service in question. | Great Respect API |
+| configurationItem           | ServiceNow Technical Service Subcomponent name | Must match the ServiceNow Technical service subcomponent name | Great Respect API (App Svc) |
+| max_alert_severity          | Severity of the event. | ServiceNow values for severity range from 1 – Critical to 5 – OK, with the severity of 0 – Clear.| 3 |
+| alertingSlackChannel        | Slack Channel to which will be the recipient of alerts | Prefixed with a hash and should match an existing Slack Channel | #prd-alerts |
+| runbookUrl                  | Link to runbook detailing actionable operation instructions | https link to docs as code or confluence runbook | https://ho-cto.github.io/sre-monitoring-as-code/runbook |
+| grafanaUrl                  | Link to Grafana dashboards providing further insight on SLIs | https link to platform hosted grafana without any paths | https://grafana.ho-platform-x.gov.uk |
+| alertmanagerUrl             | Link to Alertmanager console providing further insight on alerts and silencing options | https link to platform hosted grafana without any paths | https://alertmanager.ho-platform-x.gov.uk |
+| generic                     | Indicates that the Mixin file is intended to be generic across mutliple services and adds additional product selectors to the dashboards. | Boolean value | false |
+
+Once setting global variables you will then need to break down each user journey into a different yaml stanza. See "journey01" example below.
+
+    local sliSpecList = {
+      # user journey name
+      journey01: {
+        # sli per critical user journey step
+        SLI01: {
+          title: 'grapi search results requests',
+          sliDescription: 'grapi search results requests',
+          configurationItem: 'GRAPI API Search (App Svc)',
+          period: '30d',
+          metricType: 'http_server_requests_seconds',
+          evalInterval: '5m',
+          selectors: {
+            product: '.+/grapi-search-api-helm',
+            resource: '/search',
+            errorStatus: '4..|5..',
+          },
+          sloTarget: 90.0,
+          sliTypes: {
+            availability: {
+              intervalTarget: 90,
+            },
+            latency: {
+              histogramSecondsTarget: 15,
+              percentile: 90,
+            },
+          },
+        },
+      },
+    };
+
+Local variables should be supplied for each SLI as follows: -
+
+| Local variables            | Description        | Formatting Best Practice | Example |
+| ----------------------------| -------------------|--------------------------|---------|
+| title                     | Meaningful SLI summary | This is propagated into Dashboards and Alerts and should describe the element of the user journey | Landing page requests |
+| sliDescription   | Meaningful metric description | This is propagated into Dashboards and Alerts and should describe the metric used for calculations | HTTP actuator requests |
+| period      | The rolling period of which the SLI will cover | Default should be 30 days | 30d |
+| metricType          | The metric to be used to calculate the SLI | This should match the metric exposed and captured by Prometheus | http_server_requests_seconds_count |
+| evalInterval | How frequently Prometheus will evaluate rules | Evaluation interval should be greater or equal to Prometheus scrape interval | 1m |
+| selectors | This refers to the Label selectors which are used in the Promql expressions to filter data samples | Minimum needs to include the job to filter | 'job=~"grapi", uri=~"/grapi/v1/case"' |
+| sloTarget | Your statement of desired performance over the compliance period defined in the "period" property. | Provided as a percentage target | 90 = 90 |
+| sliTypes | This map of SLI types based on standard Google SLI categories | Must match SLI types aligned to metric type in metric_types.libsonnet | ```{ availability{...},   latency{...} }``` <br> configuration for the each sli type is listed below|
+
+### Possible SLI types
+
+The monitoring-as-code sli types is closely aligned with Googles sli types. [See here for more details](https://sre.google/workbook/implementing-slos/#slis-for-different-types-of-services).
+The SLI types currently supported by the Monitoring as Code framework and their respective configuration fields are listed below. Not all SLI types will be applicable to every metric type. See the [metric-types.libsonnet](https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/monitoring-as-code/src/metric-types.libsonnet) file for further details about which SLI types are supported by each metric type.
+
+#### availability
+
+| Field name | Description | Validation | Example |
+| intervalTarget | Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals | Provided as a percentage target | 99 = 99% |
+
+#### latency
+
+| Field name | Description | Validation | Example |
+| histogramSecondsTarget | For "latency" sli types with a histogram metric, a seconds target is provided to determine the goal the latency percentile provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
+| percentile | For "latency" sli types with a histogram metric we measure percentiles in order to meaningfully describe the distribution of latencies. | The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases) | 99 = 99th percentile |
+
+#### freshness
+
+| counterSecondsTarget | For "latency" sli types with a counter metric, a seconds target is provided to determine the goal the average latency provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
+| intervalTarget | Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals | Provided as a percentage target | 99 = 99% |
+
+#### correctness
+
+| Field name | Description | Validation | Example |
+| intervalTarget | Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals | Provided as a percentage target | 99 = 99% |
+
+
+### Metrics metric-types.libsonnet
+
+When creating your own metric type you can use the below as a baseline
+
+### Observe and iterate (sre-monitoring-as-code) {#observe-and-iterate-heading}
+
+After implementing your SLI configuration, observe the dashboard journeys over a period of time (for example 1 sprint). After this time, iterate your SLIs to better understand your service’s performance and how the SLIs help your team make decisions.
