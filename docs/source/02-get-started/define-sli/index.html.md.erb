@@ -1,5 +1,5 @@
 ---
-title: Define sli
+title: Define SLI
 weight: 1
 ---
 
@@ -58,7 +58,7 @@ Once setting global variables you will then need to break down each user journey
     local sliSpecList = {
       # user journey name
       journey01: {
-        # sli per critical user journey step
+        # SLI per critical user journey step
         SLI01: {
           title: 'grapi search results requests',
           sliDescription: 'grapi search results requests',
@@ -96,11 +96,11 @@ Local variables should be supplied for each SLI as follows: -
 | evalInterval | How frequently Prometheus will evaluate rules | Evaluation interval should be greater or equal to Prometheus scrape interval | 1m |
 | selectors | This refers to the Label selectors which are used in the Promql expressions to filter data samples | Minimum needs to include the job to filter | 'job=~"grapi", uri=~"/grapi/v1/case"' |
 | sloTarget | Your statement of desired performance over the compliance period defined in the "period" property. | Provided as a percentage target | 90 = 90 |
-| sliTypes | This map of SLI types based on standard Google SLI categories | Must match SLI types aligned to metric type in metric_types.libsonnet | ```{ availability{...},   latency{...} }``` <br> configuration for the each sli type is listed below|
+| sliTypes | This map of SLI types based on standard Google SLI categories | Must match SLI types aligned to metric type in metric_types.libsonnet | ```{ availability{...},   latency{...} }``` <br> configuration for the each SLI type is listed below|
 
 ### Possible SLI types
 
-The monitoring-as-code sli types is closely aligned with Googles sli types. [See here for more details](https://sre.google/workbook/implementing-slos/#slis-for-different-types-of-services).
+The monitoring-as-code SLI types is closely aligned with Googles SLI types. [See here for more details](https://sre.google/workbook/implementing-slos/#slis-for-different-types-of-services).
 The SLI types currently supported by the Monitoring as Code framework and their respective configuration fields are listed below. Not all SLI types will be applicable to every metric type. See the [metric-types.libsonnet](https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/monitoring-as-code/src/metric-types.libsonnet) file for further details about which SLI types are supported by each metric type.
 
 #### availability
@@ -111,12 +111,12 @@ The SLI types currently supported by the Monitoring as Code framework and their 
 #### latency
 
 | Field name | Description | Validation | Example |
-| histogramSecondsTarget | For "latency" sli types with a histogram metric, a seconds target is provided to determine the goal the latency percentile provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
-| percentile | For "latency" sli types with a histogram metric we measure percentiles in order to meaningfully describe the distribution of latencies. | The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases) | 99 = 99th percentile |
+| histogramSecondsTarget | For "latency" SLI types with a histogram metric, a seconds target is provided to determine the goal the latency percentile provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
+| percentile | For "latency" SLI types with a histogram metric we measure percentiles in order to meaningfully describe the distribution of latencies. | The 99 percentile, is defined as the value that 99 out of 100 samples fall below. Thus 99 users out of 100, observe a latency less than this value, and 1 in every 100 observe a latency equal to or greater. We choose the 99%tile, because it represents the tail of the latency distribution (that is the worst cases) | 99 = 99th percentile |
 
 #### freshness
 
-| counterSecondsTarget | For "latency" sli types with a counter metric, a seconds target is provided to determine the goal the average latency provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
+| counterSecondsTarget | For "latency" SLI types with a counter metric, a seconds target is provided to determine the goal the average latency provided must meet to be determined as a good interval. | Provided in seconds | 0.25 = 250 milliseconds |
 | intervalTarget | Statement of desired performance within an interval, the length of which is determined by "evalInterval". We use windows-based SLIs so we study the ratio of the number of measurement intervals that meets some goodness criterion to the total number of intervals | Provided as a percentage target | 99 = 99% |
 
 #### correctness
