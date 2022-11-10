@@ -57,13 +57,23 @@ local createSloErrorStatusPanel() =
     repeatDirection='h',
   ).addTarget(
     // SLO Status
-
-    // sli_value{service="generic", metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"}
-
+    // prometheus.target(
+    //   |||
+    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool  sli_value{service="generic", metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"} )[%(period)s:%(evalInterval)s]))
+    //     /
+    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
+    //   ||| % {
+    //     // evalInterval: '30d',
+    //     evalInterval: genericEvalInterval,
+    //     target: genericMetricTarget,
+    //     //target: 'metric_target=~"$metric_target"',
+    //     //period: '30d',
+    //     period: genericPeriod,
+    //  },
     prometheus.target(
       |||
-        sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool  sli_value{service="generic", metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"} )[%(period)s:%(evalInterval)s]))
-        / 
+        sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(target)s)[%(period)s:%(evalInterval)s]))
+        /
         sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
       ||| % {
         // evalInterval: '30d',
@@ -73,19 +83,6 @@ local createSloErrorStatusPanel() =
         //period: '30d',
         period: genericPeriod,
       },
-      // prometheus.target(
-      //   |||
-      //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(target)s)[%(period)s:%(evalInterval)s]))
-      //     /
-      //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
-      //   ||| % {
-      //     // evalInterval: '30d',
-      //     evalInterval: genericEvalInterval,
-      //     target: genericMetricTarget,
-      //     //target: 'metric_target=~"$metric_target"',
-      //     //period: '30d',
-      //     period: genericPeriod,
-      //   },
       legendFormat='SLO Status',
     )
   ).addTarget(
@@ -159,8 +156,8 @@ local createSloErrorStatusPanel() =
       [
         {
           matcher: { id: 'byName', options: 'SLO Target' },
-          properties: [{ id: 'colour', value: { fixedColor: '010101fc', mode: 'fixed' } }],
-          //          properties: [{ id: 'colour', value: { fixedColor: 'black', mode: 'fixed' } }],
+          //  properties: [{ id: 'colour', value: { fixedColor: '010101fc', mode: 'fixed' } }],
+          properties: [{ id: 'colour', value: { fixedColor: 'black', mode: 'fixed' } }],
         },
       ],
   };

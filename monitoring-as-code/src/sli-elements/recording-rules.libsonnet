@@ -16,7 +16,7 @@ local createGenericSliMetadata(sliSpec) =
   {
     sli_type: sliSpec.sliType,
     metric_type: sliSpec.metricType,
-    metric_sli_type: sliSpec.metricType + ':' + sliSpec.sliType,
+    metric_sli_type: sliSpec.metricType + ':' + sliSpec.sliType + ':' + sliSpec.metricTarget,
     metric_target: sliSpec.metricTarget,
   };
 // Creates standard recording rules that are the same for all SLI types
