@@ -2,7 +2,7 @@
 
 ## Background
 
-The documentation is available to view online [here][tbc].
+[Our documentation is available to view online](https://ho-cto.github.io/sre-monitoring-as-code/)
 
 The repo contains a basic skeleton directory structure created by Middleman App with minimal customisation of index.html.erb in /source. It can be built to local static website files, or run in preview by Middleman server.
 
@@ -40,7 +40,9 @@ You can add content by editing the `.html.md.erb` files. These files support con
 
 👉 Learn more about [producing more complex page structures][multipage] for your website.
 
-## Preview and build your changes locally in Docker (preferred)
+## Previewing documentation locally
+
+### Preview your changes locally in Docker
 
 Instead of building and running locally and having to install the required dependencies, you can instead run this in Docker.
 
@@ -67,11 +69,11 @@ To make changes update the required files and restart the container with:
 docker-compose restart
 ```
 
-## Preview your changes locally (without Docker)
+### Preview your changes locally (without Docker)
 
-To preview your new website locally, navigate to your project folder and run:
+Assuming you've installed all the pre-requisites, to preview your new website locally navigate to your project folder and run:
 
-```sh
+```
 bundle exec middleman server
 ```
 
@@ -108,6 +110,26 @@ Edit and add new diagrams as you see fit. Files should be numbered and reference
 ```
 
 '.drawio' file is version controlled the same as any other engineering artefact. We use the [drawio-export-action](https://github.com/rlespinasse/drawio-export-action) to render the diagrams as png files from the DrawIO xml.
+
+### Preview diagrams locally
+
+Diagrams can be rendered locally using a Docker image equivalent of the GitHub Action referred to above [rlespinasse/drawio-export](https://github.com/rlespinasse/drawio-export). 
+
+Run the following Docker commands to generate the images on your local machine.
+
+Move to `docs` directory.
+```
+cd docs
+```
+Pull the Docker image.
+```
+docker pull rlespinasse/drawio-export
+```
+Run the Docker image with format `f` and output `o` options as per the GitHub Workflow configuration.
+```
+docker run -it -v $(pwd):/data rlespinasse/drawio-export -f png -o source/images
+```
+Preview the content once again using `bundle exec middleman server`.
 
 ## Licence
 
