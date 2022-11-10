@@ -281,6 +281,27 @@ local sliSpecList = {
         },
       },
     },
+    SLI15: {
+      title: 'nodejs',
+      sliDescription: 'nodejs',
+      period: '30d',
+      metricType: 'nodejs_http_request_duration_seconds',
+      evalInterval: '5m',
+      selectors: {
+        product: 'test',
+        errorStatus: '4..|5..',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 
