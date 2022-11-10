@@ -11,6 +11,7 @@ local graphPanel = grafana.graphPanel;
 local statPanel = grafana.statPanel;
 local template = grafana.template;
 
+
 // Creates a text panel to present the documentation for a dashboard
 // @param dashboardName The dashboard name to determine which docs from macConfig should be published in the content
 // @returns Grafana Text Panel with published contents.
@@ -103,7 +104,7 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
 // @returns The string expresion for the target
 local getExprFromSli(sli, periodSli) =
   |||
-    sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(target)s)[%(period)s:%(evalInterval)s]) )
+    sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(metricTarget)s)[%(period)s:%(evalInterval)s]) )
     / 
     sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
   ||| % {
@@ -111,17 +112,39 @@ local getExprFromSli(sli, periodSli) =
     sliType: sli.sliType,
     period: periodSli,
     evalInterval: sli.evalInterval,
-    target: sli.metricTarget,
+    metricTarget: sli.metricTarget,
     comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
   };
+
+// Creates the target expresion for an sli
+// @param sli The SLI that we are creating the expresion for
+// @returns The string expresion for the target
+local getErrorBudgetExpr(sli, periodSli, sloTarget) =
+  |||
+    (%(sloTarget)s - (1 - (
+    sum( sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} %(comparison)s bool %(metricTarget)s)[%(period)s:%(evalInterval)s]) )
+    / 
+    sum(sum_over_time((sli_value{%(sliLabelSelectors)s, sli_type="%(sliType)s"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
+    )))
+    /%(sloTarget)s
+  ||| % {
+    sliLabelSelectors: sli.dashboardSliLabelSelectors,
+    sliType: sli.sliType,
+    period: periodSli,
+    evalInterval: sli.evalInterval,
+    metricTarget: sli.metricTarget,
+    sloTarget: (100 - sloTarget) / 100,
+    comparison: if std.objectHas(sli, 'comparison') then sli.comparison else '<',
+  };
+
 
 // Creates the averaged panel for SLI performance
 // @param sloTargetLegend The SLO target to be used as the panel legend
 // @param sliSpec The spec for the SLI having its standard elements created
-// @param fullExpr The full expersion for the average dashbaord
+// @param sloStatusExpr The full expersion for the average dashbaord
 // @returns The average panel object
 
-local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
+local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr) =
   statPanel.new(
     title='SLO Performance (%(period)s)' % { period: sliSpec.slo_period },
     datasource='prometheus',
@@ -133,20 +156,84 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, fullExpr) =
     graphMode='none',
   ).addTarget(
     prometheus.target(
-      expr=fullExpr,
+      expr=avgSloStatusExpr,
       // to avoid displaying floating point numbers with a long tail of decimals, .1f will round it
       // to a single decimal
-      legendFormat='SLO Target %(%s).1f %%' % sloTargetLegend,
+      legendFormat='SLO Status',
       instant=true,
+    )
+  ).addTarget(
+    prometheus.target(
+      expr=avgErrorBudgetExpr,
+      legendFormat='Error Budget',
+      instant=true,
+    )
+  ).addTarget(
+    // SLO Target
+    // prometheus.target(
+    //   |||
+    //     %(target)s
+    //   ||| % {
+    //     target: (sliSpec.slo_target / 100),
+    //   },
+    //   legendFormat='SLO Target',
+    // )
+    // SLO Target
+    prometheus.target(
+      expr=avgSloTargetExpr,
+      legendFormat='SLO Target',
     )
   ).addThresholds(
     [
       { color: 'grey', value: null },
+      { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
       { color: 'red', value: 0 },
       { color: 'orange', value: sloTargetLegend / 100 },
       { color: 'green', value: sloTargetLegend / 98 },
+
     ],
-  ) + { options+: { textMode: 'Value and name' } };
+  ) + { options+: { textMode: 'Value and name' } } + {
+    fieldConfig+: {
+      overrides+:
+        [
+          {
+            matcher: { id: 'byName', options: 'SLO Target' },
+            properties: [
+              {
+                id: 'color',
+                value: {
+                  fixedColor: '#090000',
+                  mode: 'fixed',
+                },
+              },
+            ],
+          },
+          {
+            matcher: { id: 'byName', options: 'Error Budget' },
+            properties: [
+              {
+                id: 'thresholds',
+                value: {
+                  mode: 'absolute',
+                  steps: [
+                    { color: 'grey', value: null },
+                    { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
+                    { color: 'red', value: 0 },
+                    { color: 'orange', value: 0.1 },
+                    { color: 'green', value: 0.5 },
+
+                    // { color: 'orange', value: sloTargetLegend / 100 },
+                    // { color: 'green', value: sloTargetLegend / 98 },
+                    // { color: 'orange', value: debug.debug(sloTargetLegend) },
+
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+    },
+  };
 
 // Creates the dashboard panel for remaining error budget
 // @param sliSpec The spec for the SLI having its standard elements created
@@ -276,6 +363,7 @@ local createDashboardStandardElements(sliKey, journeyKey, sliSpec, config) =
     // Creates certain values needed for the average products view panel
     slo_period: sliSpec.period,
     slo_expr: getExprFromSli(sliSpec, self.slo_period),
+    eb_expr: getErrorBudgetExpr(sliSpec, self.slo_period, self.slo_target),
     slo_target: sliSpec.sloTarget,
     slo_desc: sliSpec.sliDescription,
 
@@ -330,6 +418,6 @@ local createServiceTemplates(config) =
   createDashboardStandardElements(sliKey, journeyKey, sliSpec, config):
     createDashboardStandardElements(sliKey, journeyKey, sliSpec, config),
   createServiceTemplates(config): createServiceTemplates(config),
-  createAveragedSliTypesPanel(sloTargetLegend, sliSpec, expr): createAveragedSliTypesPanel(sloTargetLegend, sliSpec, expr),
+  createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr): createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, avgErrorBudgetExpr, avgSloTargetExpr),
   createDocsTextPanel(dashboardName): createDocsTextPanel(dashboardName),
 }
