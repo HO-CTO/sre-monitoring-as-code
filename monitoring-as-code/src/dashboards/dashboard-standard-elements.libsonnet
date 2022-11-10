@@ -202,7 +202,7 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, av
               {
                 id: 'color',
                 value: {
-                  fixedColor: '#090000',
+                  fixedColor: 'black',
                   mode: 'fixed',
                 },
               },
