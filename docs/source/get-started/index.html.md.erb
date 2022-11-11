@@ -19,10 +19,28 @@ To start using Monitoring-as-Code, you also need to:
 - [Install Docker](https://www.docker.com/get-started/)
 - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-## Test your installation
-You can use the mixin files within `monitoring-as-code/mixin-defs` to test MaC works as expected.  
+## Run MaC
+You can use the mixin files within `monitoring-as-code/mixin-defs` to run MaC.
 This is a more detailed explanation on creating an [example artifact here](https://github.com/HO-CTO/sre-monitoring-as-code/tree/main/monitoring-as-code).  
-Once you have created the artifact you can view them in a local Grafana and Prometheus environment using [these instructions](https://github.com/HO-CTO/sre-monitoring-as-code/tree/main/monitoring-as-code).  
+However here are some instructions to get the artifacts created.
+
+<pre>
+git clone git@github.com:HO-CTO/sre-monitoring-as-code.git
+cd monitoring-as-code
+docker build -t sre-monitoring-as-code:latest .
+</pre>
+
+Once you have created the artifact you can view them in a local Grafana and Prometheus environment using [these instructions](https://github.com/HO-CTO/sre-monitoring-as-code/tree/main/local).  
+
+However here are some instructions to get the SLIs showing within Grafana and Prometheus.  
+Make sure your environment is set up as [mentioned in the readme](https://github.com/HO-CTO/sre-monitoring-as-code/tree/main/local#before-running-the-monitoring-local-environment).  
+
+<pre>
+docker-compose up -d
+</pre>
+
+Navigate to http://localhost:3000 to view the Grafana dashboards.
+Navigate to http://localhost:9081 to view the Prometheus web client.
 
 ## Contribution
 
