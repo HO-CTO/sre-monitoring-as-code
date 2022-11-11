@@ -12,6 +12,14 @@ services:
       - db:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
+  db_exporter:
+    depends_on: [db]
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@db:5432/postgres?sslmode=disable
+    ports:
+      - 9187:9187
+
   frontend:
     image: sre-demo-frontend-app
     build: ./sre-demo-frontend-app
