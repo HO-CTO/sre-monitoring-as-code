@@ -16,7 +16,7 @@ jobs:
   container-image:
     runs-on: ubuntu-latest
     steps:
-    - uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/shared/build-container-image.yml
+    - uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/shared/build-container-image.yml@main
       with:
         image-registry: ${{ env.REGISTRY }}
         image-name: ${{ env.IMAGE_NAME }}
