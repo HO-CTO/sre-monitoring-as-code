@@ -53,6 +53,11 @@ The Java metrics will be available at http://localhost:4001/actuator/prometheus
 ## Database
 
 If you wish to run the postgres database, you can use the `--profile db` flag while doing docker compose.
+
+```
+docker-compose --profile db up
+```
+
 This will run postgres on port `5432`. The postgres exporter will export prometheus metrics on port `9187`.
 You can view the metrics on http://localhost:9187/metrics
 
