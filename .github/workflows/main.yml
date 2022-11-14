@@ -23,7 +23,7 @@ jobs:
     secrets: inherit
 
   notify-alerts:
-    needs: container-image-test
+    needs: container-image
     runs-on: ubuntu-latest
     steps:
       - name: Post to a Slack channel
