@@ -15,13 +15,12 @@ env:
 jobs:
   container-image:
     runs-on: ubuntu-latest
-    steps:
-    - uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/shared/build-container-image.yml@main
-      with:
-        image-registry: ${{ env.REGISTRY }}
-        image-name: ${{ env.IMAGE_NAME }}
-        image-build-context: ./monitoring-as-code
-        repository-name: ${{ env.REPO_NAME }}
+    uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/shared/build-container-image.yml@main
+    with:
+      image-registry: ${{ env.REGISTRY }}
+      image-name: ${{ env.IMAGE_NAME }}
+      image-build-context: ./monitoring-as-code
+      repository-name: ${{ env.REPO_NAME }}
     secrets: inherit
 
   notify-alerts:
