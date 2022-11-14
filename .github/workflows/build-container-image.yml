@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
           name: ${{ inputs.repository-name }}
-          path: /tmp/${{ einputs.repository-name }}.tar
+          path: /tmp/${{ inputs.repository-name }}.tar
 
   container-image-test:
     needs: container-image-build
