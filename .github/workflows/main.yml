@@ -14,7 +14,6 @@ env:
 
 jobs:
   container-image:
-    runs-on: ubuntu-latest
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
     with:
       image-registry: ${{ env.REGISTRY }}
