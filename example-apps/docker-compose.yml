@@ -1,6 +1,26 @@
 version: '3'
 
 services:
+  db:
+    profiles: ["db"]
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  db_exporter:
+    profiles: ["db"]
+    depends_on: [db]
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:postgres@db:5432/postgres?sslmode=disable
+    ports:
+      - 9187:9187
+
   frontend:
     image: sre-demo-frontend-app
     build: ./sre-demo-frontend-app
@@ -23,3 +43,7 @@ services:
     ports:
         - 4001:4001
     restart: on-failure
+
+volumes:
+  db:
+    driver: local
