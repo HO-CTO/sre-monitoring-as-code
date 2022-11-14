@@ -57,22 +57,9 @@ local createSloErrorStatusPanel() =
     repeatDirection='h',
   ).addTarget(
     // SLO Status
-    // prometheus.target(
-    //   |||
-    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool  sli_value{service="generic", metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"} )[%(period)s:%(evalInterval)s]))
-    //     /
-    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
-    //   ||| % {
-    //     // evalInterval: '30d',
-    //     evalInterval: genericEvalInterval,
-    //     target: genericMetricTarget,
-    //     //target: 'metric_target=~"$metric_target"',
-    //     //period: '30d',
-    //     period: genericPeriod,
-    //  },
     prometheus.target(
       |||
-        sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(target)s)[%(period)s:%(evalInterval)s]))
+        sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool  sli_value{metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"} )[%(period)s:%(evalInterval)s]))
         /
         sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
       ||| % {
@@ -83,6 +70,19 @@ local createSloErrorStatusPanel() =
         //period: '30d',
         period: genericPeriod,
       },
+      // prometheus.target(
+      //   |||
+      //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(target)s)[%(period)s:%(evalInterval)s]))
+      //     /
+      //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
+      //   ||| % {
+      //     // evalInterval: '30d',
+      //     evalInterval: genericEvalInterval,
+      //     target: genericMetricTarget,
+      //     //target: 'metric_target=~"$metric_target"',
+      //     //period: '30d',
+      //     period: genericPeriod,
+      //   },
       legendFormat='SLO Status',
     )
   ).addTarget(

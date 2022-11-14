@@ -308,8 +308,8 @@ local createServiceTemplates(config) =
     template.new(
       name='metric_target',
       datasource='prometheus',
-      //      query='label_values(sli_value{service="%s", sli_environment=~"$environment", metric_sli_type=~"$metric_sli_type"}, metric_target)' % config.product,
-      query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, metric_sli_type)' % config.product,
+      query='label_values(sli_value{service="%s", sli_environment=~"$environment", metric_sli_type=~"$metric_sli_type.*"}, metric_target)' % config.product,
+      //query='label_values(sli_value{service="%s", sli_environment=~"$environment"}, metric_sli_type)' % config.product,
       regex='/([^:]+)$/',
       refresh='time',
       includeAll=true,
