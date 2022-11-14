@@ -16,7 +16,7 @@ local config = {
 };
 
 local sliSpecList = {
-  requests: {
+  requests_response: {
     SLI01: {
       title: 'nginx ingress',
       sliDescription: 'Requests through NGINX',
@@ -60,6 +60,29 @@ local sliSpecList = {
       },
     },
     SLI03: {
+      title: 'nodejs',
+      sliDescription: 'Requests through nodejs',
+      period: '7d',
+      metricType: 'nodejs_http_request_duration_seconds',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+        errorStatus: '4..|5..',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        latency: {
+          histogramSecondsTarget: 15,
+          percentile: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
+  },
+  messageQuene: {
+    SLI01: {
       title: 'sqs messages',
       sliDescription: 'All queues for the service',
       period: '30d',
@@ -79,23 +102,50 @@ local sliSpecList = {
         },
       },
     },
-    SLI04: {
-      title: 'nodejs',
-      sliDescription: 'Requests through nodejs',
-      period: '7d',
-      metricType: 'nodejs_http_request_duration_seconds',
+  },
+  storage: {
+    SLI01: {
+      title: 'rds read',
+      sliDescription: 'aws rds read',
+      period: '30d',
+      metricType: 'aws_rds_read',
       evalInterval: '5m',
       selectors: {
         product: '.*',
-        errorStatus: '4..|5..',
       },
       sloTarget: 90,
       sliTypes: {
         latency: {
-          histogramSecondsTarget: 15,
-          percentile: 90,
+          counterSecondsTarget: 0.25,
+          intervalTarget: 90,
         },
-        availability: {
+        iops: {
+          intervalTarget: 90,
+        },
+        throughput: {
+          intervalTarget: 90,
+        },
+      },
+    },
+    SLI02: {
+      title: 'rds write',
+      sliDescription: 'aws rds write',
+      period: '30d',
+      metricType: 'aws_rds_write',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        latency: {
+          counterSecondsTarget: 0.25,
+          intervalTarget: 90,
+        },
+        iops: {
+          intervalTarget: 90,
+        },
+        throughput: {
           intervalTarget: 90,
         },
       },
