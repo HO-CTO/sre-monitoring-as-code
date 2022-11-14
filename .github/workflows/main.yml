@@ -16,10 +16,10 @@ jobs:
   container-image:
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
     with:
-      image-registry: ${{ env.REGISTRY }}
-      image-name: ${{ env.IMAGE_NAME }}
+      image-registry: "$REGISTRY"
+      image-name: "$IMAGE_NAME"
       image-build-context: ./monitoring-as-code
-      repository-name: ${{ env.REPO_NAME }}
+      repository-name: "$REPO_NAME"
     secrets: inherit
 
   notify-alerts:
