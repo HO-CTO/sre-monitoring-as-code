@@ -12,7 +12,7 @@ RUN jb init && \
      jb install https://github.com/grafana/grafonnet-lib/grafonnet && \
      jb install https://github.com/grafana/jsonnet-libs/grafana-builder
 
-FROM alpine:3.16.2 AS runner
+FROM alpine:3.16.3 AS runner
 
 # Pass semver or PR from GitHub workflow
 ARG MAC_VERSION
