@@ -66,9 +66,9 @@ jobs:
           path: /tmp
       - name: Load Docker image
         run: |
-          docker load --input /tmp/${inputs.repositoryName}.tar
+          docker load --input /tmp/${{ inputs.repositoryName }}.tar
           docker image ls
-          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep ${inputs.repositoryName})" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep ${{ inputs.repositoryName }})" >> $GITHUB_ENV
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -80,7 +80,7 @@ jobs:
       - name: Snyk Container Scan
         id: snyk-dockerfile
         run: |
-          snyk container test --file=${inputs.imageBuildContext}/Dockerfile --sarif-file-output=snyk.sarif --app-vulns --severity-threshold=medium ${{ env.IMAGE_TAG }}
+          snyk container test --file=${{inputs.imageBuildContext}}/Dockerfile --sarif-file-output=snyk.sarif --app-vulns --severity-threshold=medium ${{ env.IMAGE_TAG }}
         continue-on-error: true
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
