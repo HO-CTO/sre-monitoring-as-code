@@ -30,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ inputs.image-registry }}/${{ inputs.image-name }}
+          images: ${{ github.event.inputs.image-registry }}/${{ github.event.inputs.image-name }}
           tags: |
             type=raw,value=${{ github.sha }}
       - name: Build container
