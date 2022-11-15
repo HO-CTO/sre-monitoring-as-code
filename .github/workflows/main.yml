@@ -14,7 +14,7 @@ env:
 
 jobs:
   echo:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Echo github
         run: echo ${{toJSON(github)}}
