@@ -16,8 +16,8 @@ jobs:
   echo:
     run-on: ubuntu-latest
     steps:
-      name: Echo github
-      run: echo ${{toJSON(github)}}
+      - name: Echo github
+        run: echo ${{toJSON(github)}}
   container-image:
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
     with:
