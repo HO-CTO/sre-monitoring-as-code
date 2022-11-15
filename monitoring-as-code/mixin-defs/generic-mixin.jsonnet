@@ -16,7 +16,7 @@ local config = {
 };
 
 local sliSpecList = {
-  requests_response: {
+  a_requests_response: {
     SLI01: {
       title: 'nginx ingress',
       sliDescription: 'Requests through NGINX',
@@ -81,7 +81,7 @@ local sliSpecList = {
       },
     },
   },
-  messageQuene: {
+  b_pub_sub: {
     SLI01: {
       title: 'sqs messages',
       sliDescription: 'All queues for the service',
@@ -103,7 +103,7 @@ local sliSpecList = {
       },
     },
   },
-  storage: {
+  c_storage: {
     SLI01: {
       title: 'rds read',
       sliDescription: 'aws rds read',
