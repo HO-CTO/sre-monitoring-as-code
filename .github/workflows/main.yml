@@ -13,11 +13,6 @@ env:
   REPO_NAME: ${{ github.event.repository.name }}
 
 jobs:
-  echo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo github
-        run: echo ${{toJSON(github)}}
   container-image:
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
     with:
@@ -25,6 +20,9 @@ jobs:
       imageName: ${{ github.repository }}
       imageBuildContext: ./monitoring-as-code
       repositoryName: ${{ github.event.repository.name }}
+      promtoolImageName: sre-promtool
+      promtoolVersion: 2.38.0
+      user: ho-cto
     secrets: inherit
 
   notify-alerts:
