@@ -20,11 +20,15 @@ jobs:
         run: echo ${{toJSON(env.REGISTRY)}}
   container-image:
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+      REPO_NAME: ${{ github.event.repository.name }}
     with:
-      imageRegistry: env.REGISTRY
-      imageName: "$IMAGE_NAME"
+      imageRegistry: ${{env.REGISTRY}}
+      imageName: ${{env.IMAGE_NAME}}
       imageBuildContext: ./monitoring-as-code
-      repositoryName: "$REPO_NAME"
+      repositoryName: ${{env.REPO_NAME}}
     secrets: inherit
 
   notify-alerts:
