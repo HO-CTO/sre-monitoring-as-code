@@ -15,8 +15,7 @@ env:
 jobs:
   container-image:
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
-    steps:
-      - uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
+    with:
       imageRegistry: ghcr.io
       imageName: ${{ github.repository }}
       imageBuildContext: ./monitoring-as-code
