@@ -21,14 +21,10 @@ jobs:
   container-image:
     uses: arifulhaqueHO/sre-monitoring-as-code/.github/workflows/build-container-image.yml@main
     with:
-      imageRegistry: $REGISTRY
-      imageName: $IMAGE_NAME
+      imageRegistry: ghcr.io
+      imageName: ${{ github.repository }}
       imageBuildContext: ./monitoring-as-code
-      repositoryName: $REPO_NAME
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
-      REPO_NAME: ${{ github.event.repository.name }}
+      repositoryName: ${{ github.event.repository.name }}
     secrets: inherit
 
   notify-alerts:
