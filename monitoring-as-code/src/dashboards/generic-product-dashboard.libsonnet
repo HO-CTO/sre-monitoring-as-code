@@ -57,9 +57,22 @@ local createSloErrorStatusPanel() =
     repeatDirection='h',
   ).addTarget(
     // SLO Status
+    // prometheus.target(
+    //   |||
+    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type.*", sli_environment=~"$environment"} < bool  sli_value{metric_sli_type=~"$metric_sli_type.*",  metric_target=~"$metric_target"} )[%(period)s:%(evalInterval)s]))
+    //     /
+    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type.*", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
+    //   ||| % {
+    //     // evalInterval: '30d',
+    //     evalInterval: genericEvalInterval,
+    //     target: genericMetricTarget,
+    //     //target: 'metric_target=~"$metric_target"',
+    //     //period: '30d',
+    //     period: genericPeriod,
+    //   },
     prometheus.target(
       |||
-        sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool  sli_value{metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"} )[%(period)s:%(evalInterval)s]))
+        sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(target)s)[%(period)s:%(evalInterval)s]))
         /
         sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
       ||| % {
@@ -70,42 +83,13 @@ local createSloErrorStatusPanel() =
         //period: '30d',
         period: genericPeriod,
       },
-      // prometheus.target(
-      //   |||
-      //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(target)s)[%(period)s:%(evalInterval)s]))
-      //     /
-      //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s]) > 0)
-      //   ||| % {
-      //     // evalInterval: '30d',
-      //     evalInterval: genericEvalInterval,
-      //     target: genericMetricTarget,
-      //     //target: 'metric_target=~"$metric_target"',
-      //     //period: '30d',
-      //     period: genericPeriod,
-      //   },
       legendFormat='SLO Status',
     )
   ).addTarget(
     // Proportion Error Budget
-    // prometheus.target(
-    //   |||
-    //     (%(target)s - (1 - (sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(metricTarget)s)[%(period)s:%(evalInterval)s]))
-    //     /
-    //     sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s])))))
-    //     /
-    //     %(target)s
-    //   ||| % {
-
-    //     evalInterval: genericEvalInterval,
-    //     //        metricTarget: sliSpec.metricTarget,
-    //     target: (100 - genericSloTarget) / 100,
-
-    //     metricTarget: genericMetricTarget,
-    //     period: genericPeriod,
-    //   },
     prometheus.target(
       |||
-        (%(target)s - (1 - (sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool sli_value{service="generic", metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"})[%(period)s:%(evalInterval)s]))
+        (%(target)s - (1 - (sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool %(metricTarget)s)[%(period)s:%(evalInterval)s]))
         /
         sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s])))))
         /
@@ -119,6 +103,22 @@ local createSloErrorStatusPanel() =
         metricTarget: genericMetricTarget,
         period: genericPeriod,
       },
+      // prometheus.target(
+      // |||
+      //   (%(target)s - (1 - (sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type.*", sli_environment=~"$environment"} < bool sli_value{service="generic", metric_sli_type=~"$metric_sli_type",  metric_target=~"$metric_target"})[%(period)s:%(evalInterval)s]))
+      //   /
+      //   sum(sum_over_time((sli_value{service="generic", metric_sli_type=~"$metric_sli_type.*", sli_environment=~"$environment"} < bool Inf)[%(period)s:%(evalInterval)s])))))
+      //   /
+      //   %(target)s
+      // ||| % {
+
+      //   evalInterval: genericEvalInterval,
+      //   //        metricTarget: sliSpec.metricTarget,
+      //   target: (100 - genericSloTarget) / 100,
+
+      //   metricTarget: genericMetricTarget,
+      //   period: genericPeriod,
+      // },
       legendFormat='Remaining Error Budget',
     )
   ).addTarget(
