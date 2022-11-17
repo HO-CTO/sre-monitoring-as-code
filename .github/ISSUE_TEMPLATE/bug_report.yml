@@ -1,0 +1,54 @@
+name: Bug Report
+description: Report an issue
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    id: title
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: New issue agreement
+      description: By submitting this issue, you have searched the [existing issues](https://github.com/HO-CTO/sre-monitoring-as-code/issues) and cannot find another that matches this one.
+      options:
+        - label: I agree
+          required: true
+          
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: A clear and concise steps to reproduce the bug
+      placeholder: |
+        Steps to reproduce the behavior:
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior 
+      description: A clear and concise description of what you expected to happen.
+
+  - type: textarea
+    id: other
+    attributes:
+      label: Any other information
+      description: Any other information or screen captures that might help demonstrate the issue.
