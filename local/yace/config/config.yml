@@ -209,6 +209,23 @@ discovery:
           period: 60
           length: 120
           nilToZero: true
+      metrics:
+        - name: TotalRequestLatency
+          statistics:
+            - Sum
+            - Minimum
+            - Maximum
+            - Average
+          period: 60
+          length: 120
+          nilToZero: true
+      metrics:
+        - name: AllRequests
+          statistics:
+            - Sum
+          period: 60
+          length: 120
+          nilToZero: true
 static:
   - namespace: AWS/SQS
     name: my-id
@@ -291,6 +308,18 @@ static:
     regions:
       - eu-west-2
     metrics:
+      - name: AllRequests
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: TotalRequestLatency
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
       - name: 4xxErrors
         statistics:
           - Sum

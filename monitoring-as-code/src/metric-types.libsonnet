@@ -522,10 +522,10 @@
         product: 'job',
       },
       metrics: {
-        averageLatency: 'TotalRequestLatency',
-        sum4xx: '4xxErrors',
-        sum5xx: '5xxErrors',
-        requestsSum: 'AllRequests',
+        averageLatency: 'aws_s3_total_request_latency_average',
+        sum4xx: 'aws_s3_4xx_errors_sum',
+        sum5xx: 'aws_s3_5xx_errors_sum',
+        requestsSum: 'aws_s3_all_requests_sum',
       },
     },
     sliTypesConfig: {
