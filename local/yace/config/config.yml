@@ -14,6 +14,10 @@ discovery:
       - Team
       - CreatedBy
       - Environment
+    s3:
+      - Team
+      - CreatedBy
+      - Environment
   # List of auto-discovery jobs
   jobs:
     # AWS ALB Service CloudWatch Namespace
@@ -176,6 +180,35 @@ discovery:
           period: 60
           length: 120
           nilToZero: true
+    - type: s3
+      regions:
+        - eu-west-2
+      addCloudwatchTimestamp: true
+      delay: 120
+      length: 120
+      searchTags:
+        - key: Environment
+          value: '@@YACE_ENVIRONMENT_TAG@@'
+      metrics:
+        - name: 4xxErrors
+          statistics:
+            - Sum
+            - Minimum
+            - Maximum
+            - Average
+          period: 60
+          length: 120
+          nilToZero: true
+      metrics:
+        - name: 5xxErrors
+          statistics:
+            - Sum
+            - Minimum
+            - Maximum
+            - Average
+          period: 60
+          length: 120
+          nilToZero: true
 static:
   - namespace: AWS/SQS
     name: my-id
@@ -253,6 +286,23 @@ static:
     customTags:
       - key: Environment
         value: localstack
+  - namespace: AWS/S3
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: 4xxErrors
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 5xxErrors
+        statistics:
+          - Sum
+        period: 60
+        length: 120
+        nilToZero: true
   - namespace: AWS/ES
     name: my-id
     regions:
