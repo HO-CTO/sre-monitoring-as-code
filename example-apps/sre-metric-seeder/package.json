@@ -6,8 +6,11 @@
   "dependencies": {
     "typescript": "^4.9.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ts-node": "10.9.1"
+  },
   "scripts": {
+    "start": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
