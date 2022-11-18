@@ -518,7 +518,7 @@
   aws_s3: {
     metricTypeConfig: {
       selectorLabels: {
-        environment: 'Environment',
+        environment: 'namespace',
         product: 'job',
       },
       metrics: {
