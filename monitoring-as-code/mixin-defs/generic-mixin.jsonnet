@@ -103,7 +103,7 @@ local sliSpecList = {
     SLI05: {
       title: 's3',
       sliDescription: 's3',
-      period: '30d',
+      period: '7d',
       metricType: 'aws_s3',
       evalInterval: '5m',
       selectors: {
