@@ -12,10 +12,10 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: New issue agreement
+      label: Before Submitting
       description: By submitting this issue, you have searched the [existing issues](https://github.com/HO-CTO/sre-monitoring-as-code/issues) and cannot find another that matches this one.
       options:
-        - label: I agree
+        - label: I have searched the [existing issues](https://github.com/HO-CTO/sre-monitoring-as-code/issues) and cannot find another that matches this one.
           required: true
           
   - type: textarea
