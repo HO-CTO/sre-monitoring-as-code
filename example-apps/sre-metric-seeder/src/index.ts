@@ -7,14 +7,18 @@ const sleep = async (durationInMillis: number) => new Promise(f => setTimeout(f,
 (async () => {
 
     let count = 0;
-    while(true) {
+    while (true) {
         console.log(`Running ${count++}`);
-        metricTypes.forEach(({name, serviceType, config}) => {
-            
-            const commandBuilder = getCommandBuilder(serviceType)
+        metricTypes.forEach(({ name, serviceType, config }) => {
 
-            // TODO: fix below line
-            // const commandsToInvoke:string[] = commandBuilder( config );
+            let commandBuilder = getCommandBuilder(serviceType)
+
+            // TODO: fix any on buildCommand.ts
+            const commandsToInvoke: string[] = commandBuilder(config);
+            
+            commandsToInvoke.forEach(element => {
+                mainCI(element)
+            });
         });
 
 
