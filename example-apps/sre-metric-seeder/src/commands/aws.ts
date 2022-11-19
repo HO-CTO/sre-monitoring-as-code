@@ -1,4 +1,4 @@
-import "../types"
+import "../types/types"
 
 interface AWSCommandBuilderInput {
     namespace: string;

@@ -1,3 +1,5 @@
+import "../types/types"
+
 interface HTTPCommandBuilderInput {
     uri: string;
     method: string;

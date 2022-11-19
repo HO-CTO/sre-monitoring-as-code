@@ -4,7 +4,7 @@ interface MetricType {
     config:  AWSMetricType | HTTPMetricType;
 }
 
-enum ServiceType {
+const enum ServiceType {
     AWS,
     HTTP,
 }
