@@ -566,6 +566,22 @@ The [Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwal
 
 The output of these commands can be seen in the Output view and selecting the Run On Save terminal window.
 
-# Testing
+## Release workflow
 
-TBC
+The Monitoring as Code framework periodically publishes new releases as new features are added and improvements are made. When a release is published, an automated workflow is triggered that will build a new docker container with the latest changes, tag the image and repository with appropriate semantic versioning and draft a new release in Github with automatically generated release notes.
+
+For this process to work effectively it is important to appropriately label feature branches with `bug`, `enhancement`, `documentation` etc. For a full list of supported tags see the documentation of the [release-drafter action here](https://github.com/release-drafter/release-drafter).
+
+Once you are ready to publish a new release, create a separate PR for the release, giving it an appropriate name e.g. "Release X.X.X" so it can be clearly identified in the Git history.
+You can use the `git commit -m "x.x.x" --allow-empty` command to push up an empty commit, specifically for the release pull request to ensure no other code is modified.
+
+Add a `major`, `minor` or `patch` label to the pull request. This will be used by the Github action to determine the next semantic version for the release. For more details see [semver-calculate-action](https://github.com/UKHomeOffice/semver-calculate-action).
+
+The pull request will need to go through the usual approval process (two approving reviews). Whilst this release pull request is open, it is worth taking the time to double check that all feature branches targeted for the release have appropriate labels added to their respective pull requests. Once approved, it can be merged in and the release process should run automatically on merge. You can inspect this by viewing the actions tab.
+
+Once the process finishes successfully you should see a draft release created, with the approrpiate version, in the [releases view](https://github.com/HO-CTO/sre-monitoring-as-code/releases).
+The release notes should be documented in the draft release.
+
+To publish the release, simply click on the button that says "Publish release".
+
+A newly built docker image should be available in the [packages section](https://github.com/orgs/HO-CTO/packages?repo_name=sre-monitoring-as-code) of the repository.
