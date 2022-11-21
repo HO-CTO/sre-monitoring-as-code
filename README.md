@@ -2,7 +2,7 @@
 ![Release workflow](https://img.shields.io/github/workflow/status/HO-CTO/sre-monitoring-as-code/Release?label=Release)
 ![Deploy Docs workflow](https://img.shields.io/github/workflow/status/HO-CTO/sre-monitoring-as-code/deploy-docs?label=Docs)
 ![Latest Release](https://img.shields.io/github/v/release/HO-CTO/sre-monitoring-as-code?display_name=tag&label=Latest%20Release)
-![License](https://img.shields.io/github/license/HO-CTO/sre-monitoring-as-code?label=Licence)
+![License](https://img.shields.io/github/license/HO-CTO/sre-monitoring-as-code?label=License)
 
 # sre-monitoring-as-code
 
