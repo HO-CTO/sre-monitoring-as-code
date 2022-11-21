@@ -1,0 +1,36 @@
+static:
+  - namespace: AWS/SQS
+    name: standard-queue-metrics
+    dimensions:
+      - name: QueueName
+        value: standard-queue
+    regions:
+      - eu-west-2
+    metrics:
+      - name: ApproximateNumberOfMessagesVisible
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: ApproximateAgeOfOldestMessage
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: NumberOfMessagesSent
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: NumberOfMessagesDeleted
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+    customTags:
+      - key: Environment
+        value: localstack

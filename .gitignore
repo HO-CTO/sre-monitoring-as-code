@@ -24,7 +24,7 @@ local/prometheus/rule_configs/*-rules.yaml
 local/grafana/provisioning/dashboards/*/
 
 # YACE config substitution file
-local/yace/config/newconfig.yml
+local/yace/config/config.yml
 
 # Alertmanager config substitution file
 local/alertmanager/config/newconfig.yaml

@@ -1,0 +1,42 @@
+static:
+  - namespace: AWS/ES
+    name: my-id
+    regions:
+      - eu-west-2
+    metrics:
+      - name: SearchLatency
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: SearchRate
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 2xx
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 3xx
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 4xx
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true
+      - name: 5xx
+        statistics:
+          - Average
+        period: 60
+        length: 120
+        nilToZero: true

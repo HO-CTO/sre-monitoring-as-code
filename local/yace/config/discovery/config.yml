@@ -30,7 +30,7 @@ discovery:
       # AWS resource tag filtering
       searchTags:
         - key: Environment
-          value: 'localhost2'
+          value: '@@YACE_ENVIRONMENT_TAG@@'
       # List of metric definitions
       metrics:
         # CloudWatch metric name
@@ -70,7 +70,7 @@ discovery:
       length: 120
       searchTags:
         - key: Environment
-          value: 'localhost2'
+          value: '@@YACE_ENVIRONMENT_TAG@@'
       metrics:
         - name: SearchLatency
           statistics:
@@ -121,7 +121,7 @@ discovery:
       length: 120
       searchTags:
         - key: Environment
-          value: 'localhost2'
+          value: '@@YACE_ENVIRONMENT_TAG@@'
       metrics:
         - name: ReadLatency
           statistics:
