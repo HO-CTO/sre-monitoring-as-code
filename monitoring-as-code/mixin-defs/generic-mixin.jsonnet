@@ -80,6 +80,26 @@ local sliSpecList = {
         },
       },
     },
+    SLI05: {
+      title: 's3',
+      sliDescription: 's3',
+      period: '7d',
+      metricType: 'aws_s3',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        latency: {
+          counterSecondsTarget: 0.25,
+          intervalTarget: 90,
+        },
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
   b_pub_sub: {
     SLI01: {

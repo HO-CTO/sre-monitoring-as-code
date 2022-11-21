@@ -515,6 +515,43 @@
       targetMetrics: {},
     },
   },
+  aws_s3: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'namespace',
+        product: 'job',
+      },
+      metrics: {
+        averageLatency: 'aws_s3_total_request_latency_average',
+        sum4xx: 'aws_s3_4xx_errors_sum',
+        sum5xx: 'aws_s3_5xx_errors_sum',
+        requestsSum: 'aws_s3_all_requests_sum',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
+        description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          code4xx: 'sum4xx',
+          code5xx: 'sum5xx',
+          codeAll: 'requestsSum',
+        },
+      },
+      latency: {
+        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
+        description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        targetMetrics: {
+          target: 'averageLatency',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   aws_es: {
     metricTypeConfig: {
       selectorLabels: {
