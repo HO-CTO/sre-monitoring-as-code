@@ -579,7 +579,9 @@ Add a `major`, `minor` or `patch` label to the pull request. This will be used b
 
 The pull request will need to go through the usual approval process (two approving reviews). Whilst this release pull request is open, it is worth taking the time to double check that all feature branches targeted for the release have appropriate labels added to their respective pull requests. Once approved, it can be merged in and the release process should run automatically on merge. You can inspect this by viewing the actions tab.
 
-Once the process finishes successfully you should see a draft release created, with the approrpiate version, in the [releases view](https://github.com/HO-CTO/sre-monitoring-as-code/releases).
+However, in certain cases there times when a hotfix is needed. The hotfix pull request may have a label. Usually a `patch` label. The pull request will still go through the normal processes and kick off the release process.
+
+Once the process finishes successfully you should see a draft release created, with the appropriate version, in the [releases view](https://github.com/HO-CTO/sre-monitoring-as-code/releases).
 The release notes should be documented in the draft release.
 
 To publish the release, simply click on the button that says "Publish release".
