@@ -12,7 +12,7 @@ RUN jb init && \
   jb install https://github.com/grafana/grafonnet-lib/grafonnet && \
   jb install https://github.com/grafana/jsonnet-libs/grafana-builder
 
-FROM alpine:3.17.0 AS runner
+FROM alpine:3.17 AS runner
 
 RUN apk -U upgrade
 
