@@ -55,7 +55,7 @@ jobs:
             MAC_VERSION='#${{ github.event.number }}'
           outputs: type=docker,dest=/tmp/${{ inputs.repositoryName }}.tar
       - name: Upload artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: ${{ inputs.repositoryName }}
           path: /tmp/${{ inputs.repositoryName }}.tar
