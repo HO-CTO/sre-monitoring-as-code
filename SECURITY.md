@@ -6,9 +6,9 @@ This is the security notice for all HomeOffice repositories. The notice explains
 
 ## Reporting a Vulnerability
 
-HomeOffice is an advocate of responsible vulnerability disclosure. If you’ve found a vulnerability, we would like to know so we can fix it. This notice provides details for how you can let us know about vulnerabilities, or alternatively you can view our [security.txt](security.txt) file which contains quick links to contact us.
+HomeOffice is an advocate of responsible vulnerability disclosure. If you’ve found a vulnerability, we would like to know so we can fix it. This notice provides details for how you can let us know about vulnerabilities, or alternatively you can view our [security.txt](https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/security.txt) file which contains quick links to contact us.
 
-You can report a vulnerability to GDS through our vulnerability disclosure programme at [HackerOne](https://hackerone.com/<>/embedded_submissions/new). Alternatively, you can send an email to <email goes here>; if you do this you may get a response from <ticketing system>, which is our ticketing system.
+You can report a vulnerability to GDS through our vulnerability disclosure programme at [HackerOne](https://hackerone.com/<>/embedded_submissions/new). Alternatively, you can send an email to [SASSRETeam@digital.homeoffice.gov.uk]; if you do this you may get a response from our ticketing system.
 
 When reporting a vulnerability to us, please include:
 - the website, page or repository where the vulnerability can be observed
@@ -25,7 +25,7 @@ If you are not sure if the vulnerability is genuine and exploitable, or you have
 - something you think could be improved - for example, missing security headers
 - TLS configuration weaknesses - for example weak cipher suite support or the presence of TLS1.0 support
 
-Then you can still [reach out via email](SASSRETeam@digital.homeoffice.gov.uk) or using the [GOV.UK contact form](https://www.gov.uk/contact/govuk).
+Then you can still [reach out via email](Mailto:SASSRETeam@digital.homeoffice.gov.uk) or using the [GOV.UK contact form](https://www.gov.uk/contact/govuk).
 
 ## Guidelines for reporting a vulnerability
 When you are investigating and reporting the vulnerability on a HomeOffice domain or subdomain, you must not:
@@ -42,11 +42,11 @@ When you are investigating and reporting the vulnerability on a HomeOffice domai
 Only submit reports about exploitable vulnerabilities through HackerOne.
 
 ## Bug bounty
-Unfortunately, HomeOffice doesn't offer a paid bug bounty programme. HomeOffice will make efforts to show appreciation to people who take the time and effort to disclose vulnerabilities responsibly. We do have [an acknowledgements page for legitimate issues found by researchers](<acknowledgement-page).
+Unfortunately, HomeOffice doesn't offer a paid bug bounty programme. HomeOffice will make efforts to show appreciation to people who take the time and effort to disclose vulnerabilities responsibly.
 
 # Code of Conduct
 
-HomeOffice have a contributors code of conduct, which you can find here: [CODE_OF_CONDUCT.md]
+HomeOffice have a contributors code of conduct, which you can find here: [CODE_OF_CONDUCT.md](https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/CODE_OF_CONDUCT.md)
 
 ---
 
