@@ -54,6 +54,6 @@ UKHomeOffice have a contributors code of conduct, which you can find here: [CODE
 - <https://www.ncsc.gov.uk/information/vulnerability-reporting>
 - <https://github.com/Trewaters/security-README>
 
-[<disclosure-email-address>]: mailto:SASSRETeam@digital.UKHomeOffice.gov.uk
+[email-address]: mailto:SASSRETeam@digital.UKHomeOffice.gov.uk
 [CODE_OF_CONDUCT.md]: https://github.com/HO-CTO/sre-monitoring-as-code/blob/main/CODE_OF_CONDUCT.md
 [OWASP category]: https://www.owasp.org/index.php/Category:OWASP_Top_Ten_2017_Project
