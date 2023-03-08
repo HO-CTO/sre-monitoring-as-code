@@ -1,5 +1,5 @@
 # Builder image to download binaries
-FROM golang:1.20.1-alpine3.16 AS builder
+FROM golang:1.20.2-alpine3.16 AS builder
 
 # Download git, jsonnet and jsonnet-bundler
 RUN apk add --no-cache git=2.36.5-r0 && \
