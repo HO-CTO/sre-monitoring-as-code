@@ -1,4 +1,3 @@
-Contact: https://www.gov.uk/contact/govuk
 Contact: mailto:SASSRETeam@digital.UKHomeOffice.gov.uk
 
 Hiring: https://www.civilservicejobs.service.gov.uk/
