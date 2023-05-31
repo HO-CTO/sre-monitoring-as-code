@@ -1,9 +1,9 @@
 # Builder image to download binaries
-FROM golang:1.20.1-alpine3.16 AS builder
+FROM golang:1.20.4-alpine3.16 AS builder
 
 # Download git, jsonnet and jsonnet-bundler
 RUN apk add --no-cache git=2.36.5-r0 && \
-  go install github.com/google/go-jsonnet/cmd/jsonnet@v0.17.0 && \
+  go install github.com/google/go-jsonnet/cmd/jsonnet@v0.19.1 && \
   go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.5.1
 
 WORKDIR /go/grafonnet
@@ -12,7 +12,7 @@ RUN jb init && \
   jb install https://github.com/grafana/grafonnet-lib/grafonnet && \
   jb install https://github.com/grafana/jsonnet-libs/grafana-builder
 
-FROM alpine:3.17.2 AS runner
+FROM alpine:3.18.0 AS runner
 
 RUN apk -U upgrade
 
