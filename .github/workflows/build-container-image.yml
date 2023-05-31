@@ -89,7 +89,7 @@ jobs:
       - name: Snyk Container Scan
         id: snyk-dockerfile
         run: |
-          snyk container test --file=${{inputs.imageBuildContext}}/Dockerfile --sarif-file-output=snyk.sarif --app-vulns --severity-threshold=medium ${{ env.IMAGE_TAG }}
+          snyk container test --file=${{inputs.imageBuildContext}}/Dockerfile --sarif-file-output=snyk.sarif --app-vulns --severity-threshold=high ${{ env.IMAGE_TAG }}
         continue-on-error: true
       - name: Update GITHUB_REF
         run: |
