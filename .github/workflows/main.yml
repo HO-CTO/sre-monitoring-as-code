@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Post to a Slack channel
         id: slack
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.24.0
         if: ${{ failure() }}
         with:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
