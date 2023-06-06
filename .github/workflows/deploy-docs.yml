@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Export drawio files to png files
-        uses: rlespinasse/drawio-export-action@v2.5.1
+        uses: rlespinasse/drawio-export-action@v2.5.2
         with:
           path: docs
           format: png
