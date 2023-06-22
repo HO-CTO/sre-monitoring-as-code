@@ -18,6 +18,11 @@ monitoring-as-code/output/grafana-dashboards
 monitoring-as-code/output/prometheus-rules
 monitoring-as-code/_input
 monitoring-as-code/_output
+monitoring-as-code/mixin-defs/gitlab-mixin.jsonnet
+monitoring-as-code/mixin-defs/global-mixin.jsonnet
+monitoring-as-code/mixin-defs/exampleapp-mixin.jsonnet
+monitoring-as-code/mixin-defs/ledsproperty-mixin.jsonnet
+monitoring-as-code/src/dashboards/detail-dashboard2.libsonnet
 
 # Prometheus rules and Grafana dashboards
 local/prometheus/rule_configs/*-rules.yaml

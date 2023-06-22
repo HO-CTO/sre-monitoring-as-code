@@ -23,6 +23,7 @@ jobs:
       promtoolImageName: sre-promtool
       promtoolVersion: 2.38.0
       user: ho-cto
+      tag: $${{ github.sha }}
     secrets: inherit
 
   notify-alerts:
