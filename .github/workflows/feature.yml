@@ -37,7 +37,7 @@ jobs:
       promtoolImageName: sre-promtool
       promtoolVersion: 2.38.0
       user: ho-cto
-      tag: $${{ github.sha }}
+      tag: ${{ github.sha }}
     secrets: inherit
 
   container-image-push:

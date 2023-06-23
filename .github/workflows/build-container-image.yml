@@ -26,10 +26,12 @@ on:
         type: string
       tag:
         required: true
+        type: string
         description: 'The tag to use for the docker image'
       tag_latest:
         default: false
         required: false
+        type: string
         description: 'Should tag latest on the docker image'
 
 jobs:
