@@ -87,7 +87,7 @@ jobs:
         run: |
           docker load --input /tmp/${{ inputs.repositoryName }}.tar
           docker image ls
-          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep ${{ inputs.repositoryName }})" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep -m1 ${{ inputs.repositoryName }})" >> $GITHUB_ENV
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -133,7 +133,7 @@ jobs:
       - name: Load Docker image
         run: |
           docker load --input /tmp/${{ inputs.repositoryName }}.tar
-          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep sre-monitoring-as-code)" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep -m1 ${{ inputs.repositoryName }})" >> $GITHUB_ENV
       - name: echo image tag
         run: echo "${{ env.IMAGE_TAG }}"
       - name: Run monitoring mixin
