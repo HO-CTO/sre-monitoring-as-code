@@ -43,6 +43,8 @@ jobs:
       promtoolImageName: sre-promtool
       promtoolVersion: 2.38.0
       user: ho-cto
+      tag: ${{needs.calculate-semver.outputs.version}}
+      tag_latest: ${{ github.base_ref == 'main' }}
     secrets: inherit
 
   container-image-push:

@@ -24,6 +24,13 @@ on:
       user:
         required: true
         type: string
+      tag:
+        required: true
+        description: 'The tag to use for the docker image'
+      tag_latest:
+        default: false
+        required: false
+        description: 'Should tag latest on the docker image'
 
 jobs:
   build:
@@ -41,7 +48,8 @@ jobs:
         with:
           images: ${{ inputs.imageRegistry }}/${{ inputs.imageName }}
           tags: |
-            type=raw,value=${{ github.sha }}
+            type=raw,value=${{ inputs.tag }}
+            type=raw,value=latest,enable=${{ inputs.tag_latest || false }}
       - name: Build container
         uses: docker/build-push-action@v4.1.1
         with:
@@ -52,7 +60,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             PACKAGE_TOKEN=${{ secrets.GITHUB_TOKEN }}
-            MAC_VERSION='#${{ github.event.number }}'
+            MAC_VERSION=${{needs.calculate-semver.outputs.version}}
           outputs: type=docker,dest=/tmp/${{ inputs.repositoryName }}.tar
       - name: Upload artifact
         uses: actions/upload-artifact@v3.1.2
