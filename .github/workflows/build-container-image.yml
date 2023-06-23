@@ -87,7 +87,7 @@ jobs:
         run: |
           docker load --input /tmp/${{ inputs.repositoryName }}.tar
           docker image ls
-          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep ${{ inputs.repositoryName }})" >> $GITHUB_ENV
+          echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{ steps.meta.outputs.tags }}' | grep ${{ inputs.repositoryName }})" >> $GITHUB_ENV
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:

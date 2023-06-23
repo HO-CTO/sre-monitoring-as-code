@@ -2,7 +2,7 @@ name: 'Release'
 
 on:
   pull_request:
-    types: [ closed ]
+    types: [ labeled, opened, reopened, synchronize ]
 
 env:
   REGISTRY: ghcr.io
