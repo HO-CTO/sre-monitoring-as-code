@@ -322,6 +322,22 @@ local sliSpecList = {
         },
       },
     },
+    SLI17: {
+      title: 'avail 2 denom',
+      sliDescription: 'avail 2 denom',
+      period: '30d',
+      metricType: 'aws_work_spaces_available',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 

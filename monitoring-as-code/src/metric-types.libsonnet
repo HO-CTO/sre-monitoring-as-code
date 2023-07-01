@@ -589,6 +589,33 @@
       targetMetrics: {},
     },
   },
+  aws_work_spaces_available: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'namespace',
+        product: 'job',
+      },
+      metrics: {
+        failure: 'aws_work_spaces_unhealthy',
+        success: 'aws_work_spaces_available',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availabilty-using-two-denominator-metrics.libsonnet'),
+        description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          failure: 'failure',
+          success: 'success',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   template: {
     metricTypeConfig: {
       selectorLabels: {
