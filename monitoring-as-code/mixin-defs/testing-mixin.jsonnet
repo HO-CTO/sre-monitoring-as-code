@@ -322,6 +322,23 @@ local sliSpecList = {
         },
       },
     },
+    SLI17: {
+      title: 'wks available',
+      sliDescription: 'wks available',
+      period: '30d',
+      metricType: 'aws_workspaces_availability',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+        resource: 'd.*',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 

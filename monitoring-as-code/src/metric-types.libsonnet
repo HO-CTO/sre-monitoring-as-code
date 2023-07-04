@@ -589,6 +589,36 @@
       targetMetrics: {},
     },
   },
+  aws_workspaces_availability: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+        resource: 'dimension_DirectoryId',
+      },
+      metrics: {
+        unhealthy: 'aws_work_spaces_unhealthy_sum',
+        maintenance: 'aws_work_spaces_maintenance_sum',
+        available: 'aws_work_spaces_available_sum',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availability-for-aws-workspaces.libsonnet'),
+        description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          unhealthy: 'unhealthy',
+          maintenance: 'maintenance',
+          available: 'available',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   template: {
     metricTypeConfig: {
       selectorLabels: {
