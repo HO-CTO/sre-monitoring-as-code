@@ -322,6 +322,22 @@ local sliSpecList = {
         },
       },
     },
+    SLI17: {
+      title: 'gitlab test',
+      sliDescription: 'gitlab test',
+      period: '30d',
+      metricType: 'gitlab_test',
+      evalInterval: '5m',
+      selectors: {
+        product: 'test',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 
