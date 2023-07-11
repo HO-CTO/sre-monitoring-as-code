@@ -64,7 +64,7 @@ jobs:
         working-directory: ./docs
         run: bundle exec middleman build
       - name: Publish
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           PATH: ./public
 
