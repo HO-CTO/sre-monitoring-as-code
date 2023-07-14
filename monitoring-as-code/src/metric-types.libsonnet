@@ -29,14 +29,14 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
+        library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
           bucket: 'bucket',
@@ -70,14 +70,14 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
+        library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
           bucket: 'bucket',
@@ -111,14 +111,14 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
+        library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
           bucket: 'bucket',
@@ -150,7 +150,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
@@ -180,7 +180,7 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
+        library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
           bucket: 'bucket',
@@ -210,7 +210,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
@@ -240,14 +240,14 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-label.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           target: 'count',
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/histogram-quantile-latency.libsonnet'),
+        library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
           bucket: 'bucket',
@@ -283,7 +283,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           code4xx: 'count4xx',
@@ -292,7 +292,7 @@
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/max-latency-using-cloudwatch-percentile-metric.libsonnet'),
+        library: (import 'sli-value-libraries/latency-gauge-using-max-of-cloudwatch-percentile-metric.libsonnet'),
         description: 'Target latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
         targetMetrics: {
           p90: 'responseTimeP90',
@@ -329,7 +329,7 @@
     },
     sliTypesConfig: {
       freshness: {
-        library: (import 'sli-value-libraries/average-freshness-using-queue-metric.libsonnet'),
+        library: (import 'sli-value-libraries/freshness-gauge-for-queues-using-single-metric-and-secs-target.libsonnet'),
         description: 'Age of oldest message in SQS queue should be less than %(metricTarget)s seconds for %(sliDescription)s',
         targetMetrics: {
           oldestMessage: 'oldestMessage',
@@ -337,7 +337,7 @@
         },
       },
       correctness: {
-        library: (import 'sli-value-libraries/average-correctness-using-queue-metric.libsonnet'),
+        library: (import 'sli-value-libraries/correctness-gauge-for-queues-using-standard-and-dead-letter-queue-metrics.libsonnet'),
         description: 'There should be no messages in the DLQ for %(sliDescription)s',
         targetMetrics: {
           visibleMessages: 'messagesVisible',
@@ -369,7 +369,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-failure-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-1-failure-metric-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           failure: 'totalFailures',
@@ -395,7 +395,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'duration',
@@ -420,7 +420,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'duration',
@@ -447,21 +447,21 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
+        library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',
         },
       },
       iops: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageIops',
         },
       },
       throughput: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageThroughput',
@@ -488,21 +488,21 @@
     },
     sliTypesConfig: {
       latency: {
-        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
+        library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',
         },
       },
       iops: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageIops',
         },
       },
       throughput: {
-        library: (import 'sli-value-libraries/average-using-single-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageThroughput',
@@ -530,7 +530,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           code4xx: 'sum4xx',
@@ -539,7 +539,7 @@
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
+        library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',
@@ -567,7 +567,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-bad-request-metrics.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           code4xx: 'sum4xx',
@@ -576,7 +576,7 @@
         },
       },
       latency: {
-        library: (import 'sli-value-libraries/average-latency-using-seconds-target-metric.libsonnet'),
+        library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageLatency',
@@ -602,7 +602,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/proportion-of-errors-using-success-metric.libsonnet'),
+        library: (import 'sli-value-libraries/availability-counter-using-1-success-metric-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           success: 'totalSuccess',
