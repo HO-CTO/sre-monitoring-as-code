@@ -395,7 +395,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'duration',
@@ -420,7 +420,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'duration',
@@ -454,14 +454,14 @@
         },
       },
       iops: {
-        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageIops',
         },
       },
       throughput: {
-        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageThroughput',
@@ -495,14 +495,14 @@
         },
       },
       iops: {
-        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageIops',
         },
       },
       throughput: {
-        library: (import 'sli-value-libraries/availabilty-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
         targetMetrics: {
           target: 'averageThroughput',
@@ -607,6 +607,36 @@
         targetMetrics: {
           success: 'totalSuccess',
           successAndFailure: 'total',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
+  aws_workspaces_availability: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+        resource: 'dimension_DirectoryId',
+      },
+      metrics: {
+        failure1: 'aws_work_spaces_unhealthy_sum',
+        failure2: 'aws_work_spaces_maintenance_sum',
+        success: 'aws_work_spaces_available_sum',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-3-metrics-dem.libsonnet'),
+        description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        targetMetrics: {
+          failure1: 'failure1',
+          failure2: 'failure2',
+          success: 'success',
         },
       },
     },
