@@ -646,6 +646,34 @@
       targetMetrics: {},
     },
   },
+  aws_workspaces_connection_attempts: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+        resource: 'dimension_DirectoryId',
+      },
+      metrics: {
+        failure: 'aws_work_spaces_connection_failure_sum',
+        total: 'aws_work_spaces_connection_attempt_sum',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availability-gauge-using-1-failure-metric-for-num-and-1-total-metric-for-dem.libsonnet'),
+        description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        targetMetrics: {
+          failure: 'failure',
+          total: 'total',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   template: {
     metricTypeConfig: {
       selectorLabels: {

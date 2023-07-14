@@ -355,6 +355,23 @@ local sliSpecList = {
         },
       },
     },
+    SLI19: {
+      title: 'wks connections',
+      sliDescription: 'wks connections',
+      period: '30d',
+      metricType: 'aws_workspaces_connection_attempts',
+      evalInterval: '5m',
+      selectors: {
+        product: '.*',
+        resource: 'd.*',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 

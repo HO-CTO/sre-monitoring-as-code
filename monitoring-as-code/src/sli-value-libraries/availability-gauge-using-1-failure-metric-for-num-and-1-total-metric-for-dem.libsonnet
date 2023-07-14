@@ -2,9 +2,8 @@
 // target metric samples
 
 // Target metrics:
-// failure1 - Metric representing the first selected failure metric
-// failure2 - Metric representing the second selected failure metric
-// success - Metric representing the success metric
+// failure - Metric representing the failure metric
+// total - Metric representing the total metric
 
 // MaC imports
 local sliValueLibraryFunctions = import '../util/sli-value-library-functions.libsonnet';
@@ -31,25 +30,14 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            (
-            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]))
-            +
-            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]))
-            )
+            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]))
             /
-            (
-            sum by(%(selectorLabels)s) (avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]))
-            +
-            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]))
-            +
-            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]))
-            )
+            sum by(%(selectorLabels)s) (avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
-        failureMetric1: targetMetrics.failure1,
-        failureMetric2: targetMetrics.failure2,
-        successMetric: targetMetrics.success,
+        failureMetric: targetMetrics.failure,
+        totalMetric: targetMetrics.total,
         selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
         environmentSelectorLabel: selectorLabels.environment,
         productSelectorLabel: selectorLabels.product,
@@ -84,15 +72,9 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        +
-        sum(avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
       ||| % {
-        failureMetric1: targetMetrics.failure1,
-        failureMetric2: targetMetrics.failure2,
-        successMetric: targetMetrics.success,
+        totalMetric: targetMetrics.total,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -101,12 +83,9 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
       ||| % {
-        failureMetric1: targetMetrics.failure1,
-        failureMetric2: targetMetrics.failure2,
+        failureMetric: targetMetrics.failure,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
@@ -115,23 +94,12 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        (
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        )
+        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
         /
-        (
-        sum(avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        +
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        )
+        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
       ||| % {
-        failureMetric1: targetMetrics.failure1,
-        failureMetric2: targetMetrics.failure2,
-        successMetric: targetMetrics.success,
+        failureMetric: targetMetrics.failure,
+        totalMetric: targetMetrics.total,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
