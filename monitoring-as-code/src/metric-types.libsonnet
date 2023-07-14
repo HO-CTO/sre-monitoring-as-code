@@ -589,6 +589,33 @@
       targetMetrics: {},
     },
   },
+  gitlab_test: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'namespace',
+        product: 'job',
+      },
+      metrics: {
+        totalSuccess: 'gitlab_test_metric_success',
+        total: 'gitlab_test_metric_total',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/proportion-of-errors-using-success-metric.libsonnet'),
+        description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          success: 'totalSuccess',
+          successAndFailure: 'total',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   template: {
     metricTypeConfig: {
       selectorLabels: {
