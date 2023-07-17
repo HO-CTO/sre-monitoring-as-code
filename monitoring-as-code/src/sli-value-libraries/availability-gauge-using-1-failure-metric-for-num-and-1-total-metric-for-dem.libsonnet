@@ -1,11 +1,9 @@
-// Divides the count of target metric samples above latency target by the overall count of samples
-// target metric samples taken from average-using-single-metric
+// Divides the sum of sum over time of target metric samples by the sum of count over time of
+// target metric samples
 
 // Target metrics:
-// target - Metric to get the average value of over evaluation interval
-
-// Additional config:
-// counterSecondsTarget in SLI spec
+// failure - Metric representing the failure metric
+// total - Metric representing the total metric
 
 // MaC imports
 local sliValueLibraryFunctions = import '../util/sli-value-library-functions.libsonnet';
@@ -32,14 +30,14 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            avg by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]))
             /
-            count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
-        targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        failureMetric: targetMetrics.failure,
+        totalMetric: targetMetrics.total,
         selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
         environmentSelectorLabel: selectorLabels.environment,
         productSelectorLabel: selectorLabels.product,
@@ -70,42 +68,49 @@ local createGraphPanel(sliSpec) =
     },
     min=0,
     fill=0,
+    formatY2='percentunit',
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
+        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
       ||| % {
-        targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        totalMetric: targetMetrics.total,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg latency',
+      legendFormat='total',
     ),
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
-        /
-        count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
+        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
       ||| % {
-        targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        failureMetric: targetMetrics.failure,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where latency > %s seconds' % sliSpec.counterSecondsTarget,
-    )
+      legendFormat='failures',
+    ),
+  ).addTarget(
+    prometheus.target(
+      |||
+        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        /
+        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+      ||| % {
+        failureMetric: targetMetrics.failure,
+        totalMetric: targetMetrics.total,
+        selectors: std.join(',', dashboardSelectors),
+        evalInterval: sliSpec.evalInterval,
+      },
+      legendFormat='failure average',
+    ),
   ).addSeriesOverride(
     {
-      alias: '/avg period where latency > %s seconds/' % sliSpec.counterSecondsTarget,
+      alias: '/error rate/',
+      yaxis: 2,
       color: 'red',
-    },
-  ).addSeriesOverride(
-    {
-      alias: '/avg latancy/',
-      color: 'green',
-    },
+    }
   );
 
 // File exports
