@@ -674,6 +674,31 @@
       targetMetrics: {},
     },
   },
+  aws_cwagent: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+      },
+      metrics: {
+        averageSaturation: 'aws_cw_agent_mem_used_percent_average',
+      },
+    },
+    sliTypesConfig: {
+      saturation: {
+        library: (import 'sli-value-libraries/saturation-gauge-with-useage-metric-and-percent-target.libsonnet'),
+        description: 'The average saturation of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        targetMetrics: {
+          target: 'averageSaturation',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   template: {
     metricTypeConfig: {
       selectorLabels: {

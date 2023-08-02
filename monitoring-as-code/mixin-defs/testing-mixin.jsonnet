@@ -372,6 +372,23 @@ local sliSpecList = {
         },
       },
     },
+    SLI20: {
+      title: 'cwa saturation',
+      sliDescription: 'cwagent',
+      period: '30d',
+      metricType: 'aws_cwagent',
+      evalInterval: '5m',
+      selectors: {
+        product: 'test',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        saturation: {
+          counterPercentTarget: 90,
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 
