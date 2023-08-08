@@ -79,7 +79,7 @@ local updateSliSpecList(config, passedSliSpecList) =
     for journeyKey in std.objectFields(passedSliSpecList)
   };
 
-// Adds the current SLI type, metric target, counter seconds target, counter percent target and latency percentile to the SLI spec.
+// Adds the current SLI type, metric target, counter seconds target, counter percent target, counter integer target and latency percentile to the SLI spec.
 // @param sliType The current SLI type
 // @param sliSpec The spec for the SLI having its elements created
 // @returns The SLI spec object but with updated SLI type and supplementary target and percentile metadata.
@@ -95,9 +95,10 @@ local updateSliSpec(sliType, sliSpec) =
         then (100 - sliSpec.sliTypes[sliType].intervalTarget) / 100
         else (100 - sliSpec.sloTarget) / 100,
 
-    // CounterSecondsTarget and CounterPercentTarget are applied within sli_value expressions and as such does not used for standard elements
+    // CounterSecondsTarget, CounterPercentTarget and CounterIntegerTarget are applied within sli_value expressions and as such does not used for standard elements
     counterSecondsTarget: sliSpec.sliTypes[sliType].counterSecondsTarget,
     counterPercentTarget: sliSpec.sliTypes[sliType].counterPercentTarget,
+    counterIntegerTarget: sliSpec.sliTypes[sliType].counterIntegerTarget,
     latencyPercentile: (sliSpec.sliTypes[sliType].percentile / 100),
     sliType: sliType,
   };

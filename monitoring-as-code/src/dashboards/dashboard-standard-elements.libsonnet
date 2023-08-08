@@ -95,7 +95,7 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
       { color: 'grey', value: null },
       { color: 'red', value: 0 },
       { color: 'orange', value: sliSpec.sloTarget / 100 },
-      { color: 'green', value: sliSpec.sloTarget / 98 },
+      { color: 'green', value: sliSpec.sloTarget / 99 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
 

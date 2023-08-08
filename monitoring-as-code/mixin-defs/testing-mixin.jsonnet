@@ -389,6 +389,39 @@ local sliSpecList = {
         },
       },
     },
+    SLI21: {
+      title: 'ec2 status check',
+      sliDescription: 'ec2 status check',
+      period: '30d',
+      metricType: 'aws_ec2_status_check',
+      evalInterval: '5m',
+      selectors: {
+        product: 'test',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          counterIntegerTarget: 1,
+          intervalTarget: 90,
+        },
+      },
+    },
+    SLI22: {
+      title: 'asg inservice',
+      sliDescription: 'asg inservice instances',
+      period: '30d',
+      metricType: 'aws_autoscaling_group_in_service_instance',
+      evalInterval: '5m',
+      selectors: {
+        product: 'test',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          intervalTarget: 90,
+        },
+      },
+    },
   },
 };
 
