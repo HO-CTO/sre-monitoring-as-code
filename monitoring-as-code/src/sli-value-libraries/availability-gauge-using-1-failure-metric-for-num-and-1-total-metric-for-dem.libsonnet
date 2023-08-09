@@ -30,9 +30,9 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s])>=0)
             /
-            sum by(%(selectorLabels)s) (avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s])>=0)
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
@@ -72,7 +72,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         totalMetric: targetMetrics.total,
         selectors: std.join(',', dashboardSelectors),
@@ -83,7 +83,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         failureMetric: targetMetrics.failure,
         selectors: std.join(',', dashboardSelectors),
@@ -94,9 +94,9 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         /
-        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(totalMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         failureMetric: targetMetrics.failure,
         totalMetric: targetMetrics.total,

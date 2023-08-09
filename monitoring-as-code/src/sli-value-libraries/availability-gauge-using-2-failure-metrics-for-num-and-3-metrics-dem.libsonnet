@@ -35,7 +35,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
             sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]))
             +
             sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]))
-            )
+            >=0)
             /
             (
             sum by(%(selectorLabels)s) (avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]))
@@ -43,7 +43,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
             sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]))
             +
             sum by(%(selectorLabels)s) (avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]))
-            )
+            >=0)
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
@@ -84,11 +84,11 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         +
-        sum(avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         failureMetric1: targetMetrics.failure1,
         failureMetric2: targetMetrics.failure2,
@@ -101,9 +101,9 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         failureMetric1: targetMetrics.failure1,
         failureMetric2: targetMetrics.failure2,
@@ -116,17 +116,17 @@ local createGraphPanel(sliSpec) =
     prometheus.target(
       |||
         (
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         )
         /
         (
-        sum(avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(successMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         +
-        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric1)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         +
-        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(failureMetric2)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         )
       ||| % {
         failureMetric1: targetMetrics.failure1,
