@@ -106,7 +106,7 @@ local createGraphPanel(sliSpec) =
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where inservice instances < desired instances',
+      alias: '/avg period where inservice instances < desired instances/',
       color: 'red',
     },
   ).addSeriesOverride(

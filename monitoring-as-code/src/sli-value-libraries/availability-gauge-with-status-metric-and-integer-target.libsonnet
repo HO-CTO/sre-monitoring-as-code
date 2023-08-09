@@ -98,12 +98,12 @@ local createGraphPanel(sliSpec) =
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where status failures > %s' % sliSpec.counterIntegerTarget,
+      alias: '/avg period where status failures > %s /' % sliSpec.counterIntegerTarget,
       color: 'red',
     },
   ).addSeriesOverride(
     {
-      alias: '/avg saturation/',
+      alias: '/avg availability/',
       color: 'green',
     },
   );
