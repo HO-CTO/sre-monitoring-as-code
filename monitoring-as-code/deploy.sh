@@ -12,7 +12,7 @@ LOCAL_PATH="$PWD"/../local/
 rm -rf "$PWD"/output/*/
 
 # Set array of mixins which will be executed
-set -- overview generic monitoring testing
+set -- monitoring
 
 # Loop through mixin array
 for mixin in "$@";
@@ -23,7 +23,7 @@ for mixin in "$@";
    docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -d -i input -o output;
   else
    #Executes docker image to create dashboards and rules for all mixins other than overview
-   docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -rd -i input -o output;
+   docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -rd -i input -o output -a np '${ENV}';
   fi
 
   # Copy Grafana dashboards to monitoring local

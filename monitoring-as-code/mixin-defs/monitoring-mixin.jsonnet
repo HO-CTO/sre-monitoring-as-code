@@ -13,7 +13,7 @@ local config = {
   maxAlertSeverity: 'P1',
   configurationItem: 'Prometheus, Grafana and Thanos',
   alertingSlackChannel: 'sas-monitoring-test',
-  grafanaUrl: 'http://localhost:3000',
+  grafanaUrl: 'http://lecp:3000',
   alertmanagerUrl: 'http://localhost:9093',
 };
 
