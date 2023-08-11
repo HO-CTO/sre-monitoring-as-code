@@ -109,16 +109,14 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
         local alertName = std.join('_', [std.strReplace(macConfig.macDashboardPrefix.uid, '-', '_'), config.product, journeyKey, sliKey, sliSpec.sliType, 'ErrorBudgetBurn']),
         local severity = getSeverity(errorBudgetBurnWindow, config, sliSpec),
         local alertTitle = createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey),
-        local silenceUrl = if std.objectHas(config, 'alertmanagerUrl') then config.alertmanagerUrl else config.grafanaUrl,
-
-        local grafsilencePath = '/alerting/silence/new?alertmanager=alertmanager&matcher=alertname=%(alertName)s' % {
-            alertName: alertName,
-          },
+        local grafSilencePath = '/alerting/silence/new?alertmanager=alertmanager&matcher=alertname=%(alertName)s' % {
+          alertName: alertName,
+        },
         local amSilencePath = '#/silences/new?filter={alertname%%3D%%22%(alertName)s%%22, journey%%3D%%22%(journey)s%%22, service%%3D%%22%(service)s%%22}' % {
-            alertName: alertName,
-            journey: journeyKey,
-            service: config.product,
-          },
+          alertName: alertName,
+          journey: journeyKey,
+          service: config.product,
+        },
 
         local alertPayloadConfig = getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey),
         local alertPayload = createAlertPayload(alertPayloadConfig),
@@ -149,8 +147,8 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
           },
           // looking to amend
           silenceurl: '%(silenceUrl)s/%(silencePath)s' % {
-            silenceUrl: silenceUrl,
-            silencePath: if std.objectHas(config, alertmanagerUrl) then amSilencePath else grafSilencePath,
+            silenceUrl: config.silenceUrl,
+            silencePath: if std.objectHas(config, 'alertmanagerUrl') then amSilencePath else grafSilencePath,
             alertName: alertName,
             journey: journeyKey,
             service: config.product,
