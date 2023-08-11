@@ -109,7 +109,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
         local alertName = std.join('_', [std.strReplace(macConfig.macDashboardPrefix.uid, '-', '_'), config.product, journeyKey, sliKey, sliSpec.sliType, 'ErrorBudgetBurn']),
         local severity = getSeverity(errorBudgetBurnWindow, config, sliSpec),
         local alertTitle = createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey),
-        local grafSilencePath = '/alerting/silence/new?alertmanager=alertmanager&matcher=alertname=%(alertName)s' % {
+        local grafSilencePath = 'alerting/silence/new?alertmanager=alertmanager&matcher=alertname=%(alertName)s' % {
           alertName: alertName,
         },
         local amSilencePath = '#/silences/new?filter={alertname%%3D%%22%(alertName)s%%22, journey%%3D%%22%(journey)s%%22, service%%3D%%22%(service)s%%22}' % {
