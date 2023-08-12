@@ -145,7 +145,6 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
             journeyUid: std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]),
             environment: if std.objectHas(config, 'generic') && config.generic then '' else '?var-environment=%s' % config.environment,
           },
-          // looking to amend
           silenceurl: '%(silenceUrl)s/%(silencePath)s' % {
             silenceUrl: config.silenceUrl,
             silencePath: if std.objectHas(config, 'alertmanagerUrl') then amSilencePath else grafSilencePath,
