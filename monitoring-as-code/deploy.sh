@@ -12,7 +12,7 @@ LOCAL_PATH="$PWD"/../local/
 rm -rf "$PWD"/output/*/
 
 # Set array of mixins which will be executed
-set -- monitoring
+set -- overview generic monitoring testing
 
 # Loop through mixin array
 for mixin in "$@";
