@@ -69,18 +69,18 @@ local createGraphPanel(sliSpec) =
       evalInterval: sliSpec.evalInterval,
     },
     min=0,
-    fill=0,
+    fill=4,
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0))
+        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0)) == bool 0
       ||| % {
         targetMetric: targetMetrics.target,
         counterIntegerTarget: sliSpec.counterIntegerTarget,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg saturation',
+      legendFormat='avg success',
     ),
   ).addTarget(
     prometheus.target(
@@ -98,12 +98,12 @@ local createGraphPanel(sliSpec) =
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where status failures > %s /' % sliSpec.counterIntegerTarget,
+      alias: '/avg period where status failures > %s/' % sliSpec.counterIntegerTarget,
       color: 'red',
     },
   ).addSeriesOverride(
     {
-      alias: '/avg availability/',
+      alias: '/avg success/',
       color: 'green',
     },
   );
