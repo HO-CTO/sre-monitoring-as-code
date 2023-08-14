@@ -66,7 +66,7 @@ mkdir "$PWD"/_input
 cp "$input_path"/"$mixin"-mixin.jsonnet "$PWD"/_input/mixin.jsonnet
 
 # Errors if account is not np, pr or localhost
-(echo "$account" | grep -v -Eq "^(np|pr|localhost)$") &&
+(echo "$account" | grep -v -Eq "^(np|pr|localhost|green)$") &&
   echo "Invalid account type" >&2 &&
   exit 1
 

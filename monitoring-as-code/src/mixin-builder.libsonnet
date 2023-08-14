@@ -32,7 +32,8 @@ local updateConfig(passedConfig) =
     account: account,
     macVersion: macVersion,
     grafanaUrl: getUrl('grafana', passedConfig.grafanaUrl, account),
-    alertmanagerUrl: getUrl('alertmanager', passedConfig.alertmanagerUrl, account),
+    // looking to amend
+    silenceUrl: if std.objectHas(passedConfig, 'alertmanagerUrl') then getUrl('alertmanager', passedConfig.alertmanagerUrl, account) else getUrl('grafana', passedConfig.grafanaUrl, account),
     templates: dashboardFunctions.createServiceTemplates(passedConfig),
   };
 
