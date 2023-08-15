@@ -32,7 +32,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            avg by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
             count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
@@ -73,7 +73,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
+        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
       ||| % {
         targetMetric: targetMetrics.target,
         counterPercentTarget: sliSpec.counterPercentTarget,
@@ -85,7 +85,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
         count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
