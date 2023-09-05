@@ -115,6 +115,7 @@ fi
 
 # Transfer Prometheus rules and Grafana dashboards to output path
 cp -a "$PWD"/_output/. "$output_path"
+chmod u+x "$output_path"
 
 # Remove temporary directories
 rm -rf "$PWD"/_input
