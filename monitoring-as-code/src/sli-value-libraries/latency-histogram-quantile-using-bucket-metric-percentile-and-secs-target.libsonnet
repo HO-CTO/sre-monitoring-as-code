@@ -67,7 +67,7 @@ local createGraphPanel(sliSpec) =
       selectors: std.strReplace(std.join(', ', sliValueLibraryFunctions.getSelectors(metricConfig, sliSpec)), '~', '\\~'),
       evalInterval: sliSpec.evalInterval,
     },
-    fill=0,
+    fill=4,
     thresholds=[
       {
         value: sliSpec.metricTarget,

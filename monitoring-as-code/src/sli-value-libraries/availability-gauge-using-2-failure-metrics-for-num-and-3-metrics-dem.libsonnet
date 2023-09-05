@@ -79,7 +79,7 @@ local createGraphPanel(sliSpec) =
       evalInterval: sliSpec.evalInterval,
     },
     min=0,
-    fill=0,
+    fill=4,
     formatY2='percentunit',
   ).addTarget(
     prometheus.target(

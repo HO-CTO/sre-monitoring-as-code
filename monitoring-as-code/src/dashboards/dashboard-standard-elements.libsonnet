@@ -95,7 +95,7 @@ local createAvailabilityPanel(sloTargetLegend, sliSpec) =
       { color: 'grey', value: null },
       { color: 'red', value: 0 },
       { color: 'orange', value: sliSpec.sloTarget / 100 },
-      { color: 'green', value: sliSpec.sloTarget / 98 },
+      { color: 'green', value: sliSpec.sloTarget / 99 },
     ],
   ) + { options+: { textMode: 'Value and name' } };
 
@@ -189,7 +189,7 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, av
       { color: 'red', value: -99 },  // minus numbers will now be red instead of grey
       { color: 'red', value: 0 },
       { color: 'orange', value: sloTargetLegend / 100 },
-      { color: 'green', value: sloTargetLegend / 98 },
+      { color: 'green', value: sloTargetLegend / 99 },
 
     ],
   ) + { options+: { textMode: 'Value and name' } } + {
@@ -223,7 +223,7 @@ local createAveragedSliTypesPanel(sloTargetLegend, sliSpec, avgSloStatusExpr, av
                     { color: 'green', value: 0.5 },
 
                     // { color: 'orange', value: sloTargetLegend / 100 },
-                    // { color: 'green', value: sloTargetLegend / 98 },
+                    // { color: 'green', value: sloTargetLegend / 99 },
                     // { color: 'orange', value: debug.debug(sloTargetLegend) },
 
                   ],

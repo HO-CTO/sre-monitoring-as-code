@@ -674,6 +674,83 @@
       targetMetrics: {},
     },
   },
+  aws_cwagent: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+      },
+      metrics: {
+        averageSaturation: 'aws_cw_agent_mem_used_percent_average',
+      },
+    },
+    sliTypesConfig: {
+      saturation: {
+        library: (import 'sli-value-libraries/saturation-gauge-with-useage-metric-and-percent-target.libsonnet'),
+        description: 'The average saturation of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        targetMetrics: {
+          target: 'averageSaturation',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
+  aws_ec2_status_check: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+      },
+      metrics: {
+        averageStatus: 'aws_ec2_status_check_failed_sum',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availability-gauge-with-status-metric-and-integer-target.libsonnet'),
+        description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          target: 'averageStatus',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
+  aws_autoscaling_group_in_service_instance: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+      },
+      metrics: {
+        desired: 'aws_autoscaling_group_desired_capacity_average',
+        inservice: 'aws_autoscaling_group_in_service_instance_average',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availability-gauge-using-inservice-and-desired-instance-metrics.libsonnet'),
+        description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          desired: 'desired',
+          inservice: 'inservice',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
   template: {
     metricTypeConfig: {
       selectorLabels: {
@@ -696,9 +773,7 @@
     detailDashboardConfig: {
       standardTemplates: [],
       elements: [],
-      targetMetrics: {
-
-      },
+      targetMetrics: {},
     },
   },
 }

@@ -1,11 +1,11 @@
-// Divides the count of target metric samples above latency target by the overall count of samples
+// Divides the Count where inservice instances do not match desired instances by the overall count of samples
 // target metric samples taken from average-using-single-metric
 
 // Target metrics:
 // target - Metric to get the average value of over evaluation interval
 
 // Additional config:
-// counterSecondsTarget in SLI spec
+// counterIntegerTarget in SLI spec
 
 // MaC imports
 local sliValueLibraryFunctions = import '../util/sli-value-library-functions.libsonnet';
@@ -32,14 +32,18 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            avg by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            (
+            sum by(%(selectorLabels)s) (avg_over_time(%(desiredMetric)s{%(selectors)s}[%(evalInterval)s]))
+            -
+            sum by(%(selectorLabels)s) (avg_over_time(%(inserviceMetric)s{%(selectors)s}[%(evalInterval)s]))
+            ) >= 1
             /
-            count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
+            count by(%(selectorLabels)s) (count_over_time(%(desiredMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
-        targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        desiredMetric: targetMetrics.desired,
+        inserviceMetric: targetMetrics.inservice,
         selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
         environmentSelectorLabel: selectorLabels.environment,
         productSelectorLabel: selectorLabels.product,
@@ -73,37 +77,41 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
+        sum(avg_over_time(%(inserviceMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0))
       ||| % {
-        targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        desiredMetric: targetMetrics.desired,
+        inserviceMetric: targetMetrics.inservice,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg latency',
+      legendFormat='avg inservice instances',
     ),
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        (
+        sum(avg_over_time(%(inserviceMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0))
+        -
+        sum(avg_over_time(%(desiredMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0))
+        ) >= 1
         /
-        count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
+        count(count_over_time(%(desiredMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0))
       ||| % {
-        targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        desiredMetric: targetMetrics.desired,
+        inserviceMetric: targetMetrics.inservice,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where latency > %s seconds' % sliSpec.counterSecondsTarget,
+      legendFormat='avg period where inservice instances < desired instances'
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where latency > %s seconds/' % sliSpec.counterSecondsTarget,
+      alias: '/avg period where inservice instances < desired instances/',
       color: 'red',
     },
   ).addSeriesOverride(
     {
-      alias: '/avg latancy/',
+      alias: '/avg inservice instances/',
       color: 'green',
     },
   );

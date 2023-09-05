@@ -1,11 +1,11 @@
-// Divides the count of target metric samples above latency target by the overall count of samples
+// Divides the count of target metric samples above saturation target by the overall count of samples
 // target metric samples taken from average-using-single-metric
 
 // Target metrics:
 // target - Metric to get the average value of over evaluation interval
 
 // Additional config:
-// counterSecondsTarget in SLI spec
+// counterPercentTarget in SLI spec
 
 // MaC imports
 local sliValueLibraryFunctions = import '../util/sli-value-library-functions.libsonnet';
@@ -32,14 +32,14 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            avg by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
             count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
         targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        counterPercentTarget: sliSpec.counterPercentTarget,
         selectorLabels: std.join(', ', std.objectValues(selectorLabels)),
         environmentSelectorLabel: selectorLabels.environment,
         productSelectorLabel: selectorLabels.product,
@@ -73,37 +73,37 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
+        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
       ||| % {
         targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        counterPercentTarget: sliSpec.counterPercentTarget,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg latency',
+      legendFormat='avg saturation',
     ),
   ).addTarget(
     prometheus.target(
       |||
-        avg(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterSecondsTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
         count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
         targetMetric: targetMetrics.target,
-        counterSecondsTarget: sliSpec.counterSecondsTarget,
+        counterPercentTarget: sliSpec.counterPercentTarget,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where latency > %s seconds' % sliSpec.counterSecondsTarget,
+      legendFormat='avg period where saturation > %s percentage' % sliSpec.counterPercentTarget,
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where latency > %s seconds/' % sliSpec.counterSecondsTarget,
+      alias: '/avg period where saturation > %s percentage/' % sliSpec.counterPercentTarget,
       color: 'red',
     },
   ).addSeriesOverride(
     {
-      alias: '/avg latancy/',
+      alias: '/avg saturation/',
       color: 'green',
     },
   );
