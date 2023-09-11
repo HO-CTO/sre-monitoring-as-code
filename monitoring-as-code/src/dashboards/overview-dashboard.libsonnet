@@ -400,6 +400,16 @@ local createOverviewDashboard(config) =
             multi=true,
             label='Environment',
           )
+        ).addTemplate(
+          template.new(
+            name='aws_account',
+            datasource='prometheus',
+            query='label_values(sli_value{sli_environment=~"$environment"}, aws_account)',
+            refresh='time',
+            includeAll=true,
+            multi=true,
+            label='AWS Account',
+          )
         ).addPanel(
           dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.overView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
         ).addPanels(std.prune(panels)),
