@@ -85,6 +85,7 @@ local createAlertPayload(alertPayloadConfig) =
   {
     [alertPayloadTemplateField]: macConfig.alertPayloadTemplate[alertPayloadTemplateField] % alertPayloadConfig
     for alertPayloadTemplateField in std.objectFields(macConfig.alertPayloadTemplate)
+    if alertPayloadTemplateField != 'aws_account' || std.objectHas(alertPayloadConfig, 'config.awsAccount')
   };
 
 // Creates a string of the alert payload as a list of bullet points

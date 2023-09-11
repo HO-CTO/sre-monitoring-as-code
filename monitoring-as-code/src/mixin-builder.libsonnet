@@ -51,7 +51,11 @@ local updateSliSpecList(config, passedSliSpecList) =
           journey: journeyKey,
           mac_version: config.macVersion,
           metric_type: passedSliSpecList[journeyKey][sliKey].metricType,
-        },
+        }
+        +
+        if std.objectHas(config, 'awsAccount') then {
+          aws_account: config.awsAccount,
+        } else {},
         dashboardSliLabelSelectors:
           |||
             service="%(service)s", sli="%(sli)s", journey="%(journey)s", metric_type="%(metricType)s",
