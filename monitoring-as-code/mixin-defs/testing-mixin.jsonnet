@@ -9,6 +9,7 @@ local config = {
   alertingSlackChannel: 'test slack channel',
   grafanaUrl: 'testGrafanaUrl',
   alertmanagerUrl: 'testAlertManagerUrl',
+  awsAccount: 'test account',
 };
 
 local sliSpecList = {
