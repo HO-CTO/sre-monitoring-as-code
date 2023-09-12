@@ -61,7 +61,7 @@ local alertPayloadTemplate = {
   raw_event_payload: '"journey":"%(journeyKey)s","sli":"%(sliKey)s","mac_version":"%(config.macVersion)s","monitoring_slackchannel":"%(config.alertingSlackChannel)s","configuration_item":"%(configurationItem)s"',
   assignment_group: '%(config.servicenowAssignmentGroup)s',
   runbook_id: '%(runbookUrl)s',
-  aws_account: '%(config.awsAccount)s'
+  aws_account: '%(config.awsAccount)s',
 };
 
 // File exports
