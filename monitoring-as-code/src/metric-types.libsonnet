@@ -776,4 +776,29 @@
       targetMetrics: {},
     },
   },
+  aws_cwsynthetics_success_check: {
+    metricTypeConfig: {
+      selectorLabels: {
+        environment: 'environment',
+        product: 'job',
+      },
+      metrics: {
+        averageSuccess: 'aws_cloudwatchsynthetics_success_percent_average',
+      },
+    },
+    sliTypesConfig: {
+      availability: {
+        library: (import 'sli-value-libraries/availability-gauge-with-success-metric-and-integer-target.libsonnet'),
+        description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        targetMetrics: {
+          target: 'averageSuccess',
+        },
+      },
+    },
+    detailDashboardConfig: {
+      standardTemplates: [],
+      elements: [],
+      targetMetrics: {},
+    },
+  },
 }
