@@ -14,7 +14,7 @@ local stringFormattingFunctions = import '../util/string-formatting-functions.li
 local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 
 // PromQL selector for environment label
-local environmentLabelSelector = 'sli_environment=~"$environment"';
+local labelSelector = 'sli_environment=~"$environment", aws_account=~"$aws_account|"';
 
 // The panels for the overview dashboard
 local panels = [
@@ -24,8 +24,8 @@ local panels = [
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
-      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment) * 100' %
-      environmentLabelSelector,
+      'avg(avg_over_time(sli_percentage{%(labelSelector)s}[30d])) by (service, sli_environment) * 100' %
+      labelSelector,
       format='table',
       instant=true,
       legendFormat='SLO Status',
@@ -33,11 +33,11 @@ local panels = [
   ).addTarget(
     prometheus.target(
       |||
-        (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment) -
-        avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d] offset 30d)) by (service, sli_environment))
-        / (avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment)) * 100
+        (avg(avg_over_time(sli_percentage{%(labelSelector)s}[30d])) by (service, sli_environment) -
+        avg(avg_over_time(sli_percentage{%(labelSelector)s}[30d] offset 30d)) by (service, sli_environment))
+        / (avg(avg_over_time(sli_percentage{%(labelSelector)s}[30d])) by (service, sli_environment)) * 100
       ||| % {
-        environmentLabelSelector: environmentLabelSelector,
+        labelSelector: labelSelector,
       },
       format='table',
       instant=true,
@@ -45,16 +45,16 @@ local panels = [
     ),
   ).addTarget(
     prometheus.target(
-      'count by (service, sli_environment)(count_over_time((sli_value{%(environmentLabelSelector)s} < bool Inf)[30d:10m]))' %
-      environmentLabelSelector,
+      'count by (service, sli_environment)(count_over_time((sli_value{%(labelSelector)s} < bool Inf)[30d:10m]))' %
+      labelSelector,
       format='table',
       instant=true,
       legendFormat='SLO Coverage',
     ),
   ).addTarget(
     prometheus.target(
-      'count by (service, sli_environment)(rate(ALERTS{%(environmentLabelSelector)s,alertstate="firing"}[30d]))' %
-      environmentLabelSelector,
+      'count by (service, sli_environment)(rate(ALERTS{%(labelSelector)s,alertstate="firing"}[30d]))' %
+      labelSelector,
       format='table',
       instant=true,
       legendFormat='Fired Alerts',
@@ -161,8 +161,8 @@ local panels = [
     datasource='prometheus',
   ).addTarget(
     prometheus.target(
-      'avg(avg_over_time(sli_percentage{%(environmentLabelSelector)s}[30d])) by (service, sli_environment, sli_type) * 100' %
-      environmentLabelSelector,
+      'avg(avg_over_time(sli_percentage{%(labelSelector)s}[30d])) by (service, sli_environment, sli_type) * 100' %
+      labelSelector,
       format='time_series',
       instant=true,
       legendFormat='SLO Status',
@@ -399,6 +399,16 @@ local createOverviewDashboard(config) =
             includeAll=true,
             multi=true,
             label='Environment',
+          )
+        ).addTemplate(
+          template.new(
+            name='aws_account',
+            datasource='prometheus',
+            query='label_values(sli_value{sli_environment=~"$environment"}, aws_account)',
+            refresh='time',
+            includeAll=true,
+            multi=true,
+            label='AWS Account',
           )
         ).addPanel(
           dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.overView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
