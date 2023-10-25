@@ -422,6 +422,22 @@ local sliSpecList = {
         },
       },
     },
+    SLI23: {
+      title: 'cw synth success',
+      sliDescription: 'cw synth success',
+      period: '30d',
+      metricType: 'aws_cwsynthetics_success_check',
+      evalInterval: '5m',
+      selectors: {
+        product: 'test',
+      },
+      sloTarget: 90,
+      sliTypes: {
+        availability: {
+          counterIntegerTarget: 100,
+        },
+      },
+    },
   },
 };
 
