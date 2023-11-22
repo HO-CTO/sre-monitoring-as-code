@@ -32,7 +32,7 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
       expr: |||
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
-            sum by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]))
+            max by(%(selectorLabels)s) (avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]))
             /
             count by(%(selectorLabels)s) (count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
           ),
@@ -73,19 +73,19 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
+        max(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) > 0 or vector(0))
       ||| % {
         targetMetric: targetMetrics.target,
         counterPercentTarget: sliSpec.counterPercentTarget,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg saturation',
+      legendFormat='maximum saturation',
     ),
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
+        max(avg_over_time((%(targetMetric)s{%(selectors)s} > bool %(counterPercentTarget)s)[%(evalInterval)s:%(evalInterval)s]) or vector(0))
         /
         count(count_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]))
       ||| % {
@@ -94,16 +94,16 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where saturation > %s percentage' % sliSpec.counterPercentTarget,
+      legendFormat='avg period where maximum saturation > %s percentage' % sliSpec.counterPercentTarget,
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where saturation > %s percentage/' % sliSpec.counterPercentTarget,
+      alias: '/avg period where maximum saturation > %s percentage/' % sliSpec.counterPercentTarget,
       color: 'red',
     },
   ).addSeriesOverride(
     {
-      alias: '/avg saturation/',
+      alias: '/maximum saturation/',
       color: 'green',
     },
   );
