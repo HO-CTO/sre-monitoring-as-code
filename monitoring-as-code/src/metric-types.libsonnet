@@ -530,7 +530,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/availability-counter-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           code4xx: 'sum4xx',
@@ -567,7 +567,7 @@
     },
     sliTypesConfig: {
       availability: {
-        library: (import 'sli-value-libraries/availability-counter-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
+        library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
         targetMetrics: {
           code4xx: 'sum4xx',
