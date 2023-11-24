@@ -32,9 +32,11 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
             (
-            sum by(%(selectorLabels)s) (avg_over_time(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s])
+            or 0 * %(codeAllMetric)s{%(selectors)s})
             +
-            sum by(%(selectorLabels)s) (avg_over_time(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s]))
+            sum by(%(selectorLabels)s) (avg_over_time(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s])
+            or 0 * %(codeAllMetric)s{%(selectors)s})
             >=0)
             /
             (
