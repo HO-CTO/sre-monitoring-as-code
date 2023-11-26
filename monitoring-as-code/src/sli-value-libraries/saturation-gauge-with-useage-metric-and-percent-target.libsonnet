@@ -105,11 +105,11 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where maximum saturation > %s percentage' % sliSpec.counterPercentTarget,
+      legendFormat='avg period where saturation > %s percent' % sliSpec.counterPercentTarget,
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where maximum saturation > %s percentage/' % sliSpec.counterPercentTarget,
+      alias: '/avg period where saturation > %s percent/' % sliSpec.counterPercentTarget,
       yaxis: 2,
       color: 'red',
 
