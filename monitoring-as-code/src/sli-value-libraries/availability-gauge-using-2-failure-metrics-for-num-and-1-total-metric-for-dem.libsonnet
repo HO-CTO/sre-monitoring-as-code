@@ -32,20 +32,16 @@ local createSliValueRule(sliSpec, sliMetadata, config) =
         sum without (%(selectorLabels)s) (label_replace(label_replace(
           (
             (
-              sum by(%(selectorLabels)s) (
-                rate(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s])
-                or
-                0 * %(codeAllMetric)s{%(selectors)s}
-              )
-              + 
-              sum by(%(selectorLabels)s) (
-                rate(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s])
-                or
-                0 * %(codeAllMetric)s{%(selectors)s}
-              )
-            )
+            sum by(%(selectorLabels)s) (avg_over_time(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s])
+            or 0 * %(codeAllMetric)s{%(selectors)s})
+            +
+            sum by(%(selectorLabels)s) (avg_over_time(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s])
+            or 0 * %(codeAllMetric)s{%(selectors)s})
+            >=0)
             /
-            sum by(%(selectorLabels)s) (rate(%(codeAllMetric)s{%(selectors)s}[%(evalInterval)s]))
+            (
+            sum by(%(selectorLabels)s) (avg_over_time(%(codeAllMetric)s{%(selectors)s}[%(evalInterval)s]))
+            >=0)
           ),
         "sli_environment", "$1", "%(environmentSelectorLabel)s", "(.*)"), "sli_product", "$1", "%(productSelectorLabel)s", "(.*)"))
       ||| % {
@@ -97,38 +93,40 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(rate(%(codeAllMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(codeAllMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         codeAllMetric: targetMetrics.codeAll,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='requests per second',
+      legendFormat='average requests',
     ),
   ).addTarget(
     prometheus.target(
       |||
-        sum(rate(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-        + 
-        sum(rate(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
+        +
+        sum(avg_over_time(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
       ||| % {
         code4xxMetric: targetMetrics.code4xx,
         code5xxMetric: targetMetrics.code5xx,
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='errors per second',
+      legendFormat='average errors',
     )
   ).addTarget(
     prometheus.target(
       |||
         (
-          sum(rate(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
-          + 
-          sum(rate(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s]) or vector(0))
+        sum(avg_over_time(%(code4xxMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
+        +
+        sum(avg_over_time(%(code5xxMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
         )
         /
-        sum(rate(%(codeAllMetric)s{%(selectors)s}[%(evalInterval)s]))
+        (
+        sum(avg_over_time(%(codeAllMetric)s{%(selectors)s}[%(evalInterval)s]) >=0 or vector(0))
+        )
       ||| % {
         code4xxMetric: targetMetrics.code4xx,
         code5xxMetric: targetMetrics.code5xx,

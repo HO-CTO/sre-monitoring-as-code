@@ -136,6 +136,8 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
         },
         labels: {
           ci_type: 'CMDB_CI_Service_Auto',
+          configuration_item: config.configurationItem,
+          primary_impact_service: config.applicationServiceName,
           title: alertTitle,
           wait_for: '%(for)s' % errorBudgetBurnWindow,
           factor: std.toString(errorBudgetBurnWindow.factor),
