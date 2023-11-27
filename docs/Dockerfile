@@ -1,4 +1,4 @@
-FROM alpine:3.18.2
+FROM alpine:3.18.3
 
 RUN \
   apk --update add build-base git graphviz libffi-dev libxml2-dev libxslt-dev \
