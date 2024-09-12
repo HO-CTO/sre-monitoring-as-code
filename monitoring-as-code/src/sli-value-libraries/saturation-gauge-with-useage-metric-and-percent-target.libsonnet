@@ -70,6 +70,17 @@ local createGraphPanel(sliSpec) =
     },
     min=0,
     fill=4,
+    formatY2='percentunit',
+    thresholds=[
+      {
+        value: sliSpec.metricTarget,
+        colorMode: 'critical',
+        op: 'gt',
+        line: true,
+        fill: false,
+        yaxis: 'right',
+      },
+    ],
   ).addTarget(
     prometheus.target(
       |||
@@ -94,12 +105,14 @@ local createGraphPanel(sliSpec) =
         selectors: std.join(',', dashboardSelectors),
         evalInterval: sliSpec.evalInterval,
       },
-      legendFormat='avg period where maximum saturation > %s percentage' % sliSpec.counterPercentTarget,
+      legendFormat='avg period where saturation > %s percent' % sliSpec.counterPercentTarget,
     )
   ).addSeriesOverride(
     {
-      alias: '/avg period where maximum saturation > %s percentage/' % sliSpec.counterPercentTarget,
+      alias: '/avg period where saturation > %s percent/' % sliSpec.counterPercentTarget,
+      yaxis: 2,
       color: 'red',
+
     },
   ).addSeriesOverride(
     {
