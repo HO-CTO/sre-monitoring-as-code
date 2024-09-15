@@ -301,7 +301,7 @@ local createDetailDashboard(journeyKey, config, links, sliSpecList) =
   dashboard.new(
     title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, config.product, journeyKey, 'detail'])),
     uid=std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey, 'detail']),
-    tags=[config.product, 'mac-version: %s' % config.macVersion, journeyKey, 'detail-view'],
+    tags=std.split(dashboardFunctions.createDashboardTags(config), ",") + ['journey:'+journeyKey, 'view:detail'],
     schemaVersion=18,
     editable=true,
     time_from='now-3h',

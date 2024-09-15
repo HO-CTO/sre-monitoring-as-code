@@ -179,7 +179,7 @@ local createProductDashboard(config, sliList, links) =
       dashboard.new(
         title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, config.product])),
         uid=std.join('-', [macConfig.macDashboardPrefix.uid, config.product]),
-        tags=[config.product, 'mac-version: %s' % config.macVersion, 'product-view'],
+        tags=std.split(dashboardFunctions.createDashboardTags(config), ",") + ['view:product'],
         schemaVersion=18,
         editable=true,
         time_from='now-3h',

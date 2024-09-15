@@ -62,6 +62,7 @@ local alertPayloadTemplate = {
   assignment_group: '%(config.servicenowAssignmentGroup)s',
   runbook_id: '%(runbookUrl)s',
   aws_account: '%(config.awsAccount)s',
+  owner: '%(config.owner)s',
 };
 
 // File exports

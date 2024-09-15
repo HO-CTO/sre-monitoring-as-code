@@ -4,6 +4,7 @@ local mixinFunctions = import '../src/lib/mixin-functions.libsonnet';
 // Define product name and technow details
 local config = {
   product: 'generic',
+  owner: 'enablement team',
   applicationServiceName: '',
   servicenowAssignmentGroup: '',
   // Alerts set to test only - remove/adjust once ready for alerts for production
