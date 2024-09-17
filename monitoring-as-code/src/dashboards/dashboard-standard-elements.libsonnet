@@ -27,11 +27,11 @@ local createDocsTextPanel(dashboardName) =
 // Creates a common set of Grafana dashboard tags for dashboard discovery.
 // @param config The global config for the product having its standard tags created.
 // @returns string of comma seperated dashboard tags.
-local createDashboardTags(config) = 
-  "product:%(product)s,owner:%(owner)s,mac-version:%(macVersion)s" % {
-  product: config.product,
-  owner: config.owner,
-  macVersion: config.macVersion,
+local createDashboardTags(config) =
+  'product:%(product)s,owner:%(owner)s,mac-version:%(macVersion)s' % {
+    product: config.product,
+    owner: config.owner,
+    macVersion: config.macVersion,
   };
 
 // Creates the description for an SLI

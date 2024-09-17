@@ -63,7 +63,7 @@ local createJourneyDashboards(config, sliList, links) =
       dashboard.new(
         title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, config.product, journeyKey])),
         uid=std.join('-', [macConfig.macDashboardPrefix.uid, config.product, journeyKey]),
-        tags=std.split(dashboardFunctions.createDashboardTags(config), ",") + ['journey:'+journeyKey, 'view:journey'],
+        tags=std.split(dashboardFunctions.createDashboardTags(config), ',') + ['journey:' + journeyKey, 'view:journey'],
         schemaVersion=18,
         editable=true,
         time_from='now-3h',
