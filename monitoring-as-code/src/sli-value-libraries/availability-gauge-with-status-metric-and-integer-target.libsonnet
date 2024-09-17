@@ -73,7 +73,7 @@ local createGraphPanel(sliSpec) =
   ).addTarget(
     prometheus.target(
       |||
-        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) == bool 0) or vector(0)
+        sum(avg_over_time(%(targetMetric)s{%(selectors)s}[%(evalInterval)s]) >= 0 or vector(0)) == bool 0
       ||| % {
         targetMetric: targetMetrics.target,
         counterIntegerTarget: sliSpec.counterIntegerTarget,
