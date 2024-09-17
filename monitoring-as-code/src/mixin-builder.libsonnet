@@ -34,6 +34,7 @@ local updateConfig(passedConfig) =
     grafanaUrl: getUrl('grafana', passedConfig.grafanaUrl, account),
     // looking to amend
     silenceUrl: if std.objectHas(passedConfig, 'alertmanagerUrl') then getUrl('alertmanager', passedConfig.alertmanagerUrl, account) else getUrl('grafana', passedConfig.grafanaUrl, account),
+    owner: if std.objectHas(passedConfig, 'owner') then passedConfig.owner else passedConfig.servicenowAssignmentGroup,
     templates: dashboardFunctions.createServiceTemplates(passedConfig),
   };
 
@@ -47,6 +48,7 @@ local updateSliSpecList(config, passedSliSpecList) =
       [sliKey]+: {
         sliLabels: {
                      service: config.product,
+                     owner: config.owner,
                      sli: sliKey,
                      journey: journeyKey,
                      mac_version: config.macVersion,
