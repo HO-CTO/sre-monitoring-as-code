@@ -11,13 +11,8 @@ local macConfig = import '../mac-config.libsonnet';
 // @returns The string of the alerts severity
 local getSeverity(errorBudgetBurnWindow, config, sliSpec) =
   // If maxAlertSeverity is set to test at either service or SLO level, set severity to test
-  if std.objectHas(config, 'maxAlertSeverity') && config.maxAlertSeverity == 'test' ||
-     std.objectHas(sliSpec, 'maxAlertSeverity') && sliSpec.maxAlertSeverity == 'test' then 'test'
-  // If maxAlertSeverity is set to warning at either service or SLO level and window severity is critical, set severity to warning
-  else if std.objectHas(config, 'maxAlertSeverity') && config.maxAlertSeverity == 'warning' ||
-          std.objectHas(sliSpec, 'maxAlertSeverity') && sliSpec.maxAlertSeverity == 'warning' &&
-          errorBudgetBurnWindow.severity == 'critical' then 'warning'
-  // otherwise use the window severity
+  if std.objectHas(sliSpec, 'maxAlertSeverity') then sliSpec.maxAlertSeverity + errorBudgetBurnWindow.tier
+  else if std.objectHas(config, 'maxAlertSeverity') then config.maxAlertSeverity + errorBudgetBurnWindow.tier
   else errorBudgetBurnWindow.severity;
 
 // Creates the title for an alert
@@ -30,7 +25,7 @@ local getSeverity(errorBudgetBurnWindow, config, sliSpec) =
 local createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey) =
   '%(severity)s ALERT! %(environment)s - %(service)s %(slo)s - Percentage of time %(description)s' % {
     service: config.product,
-    severity: std.asciiUpper(errorBudgetBurnWindow.severity),
+    severity: getSeverity(errorBudgetBurnWindow, config, sliSpec),
     environment: if std.objectHas(config, 'generic') && config.generic then 'generic' else config.environment,
     description: sliSpec.title,
     factor: errorBudgetBurnWindow.factor,
@@ -69,7 +64,9 @@ local getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWind
     sliKey: sliKey,
     journeyKey: journeyKey,
     exhaustionDays: std.parseInt(std.rstripChars(sliSpec.period, 'd')) / errorBudgetBurnWindow.factor,
-    runbookUrl: if std.objectHas(config, 'runbookUrl') then config.runbookUrl else 'no runbook',
+    runbookUrl: if std.objectHas(sliSpec, 'runbookUrl') then sliSpec.runbookUrl
+    else if std.objectHas(config, 'runbookUrl') then config.runbookUrl
+    else 'no runbook',
     configurationItem: if std.objectHas(sliSpec, 'configurationItem') then sliSpec.configurationItem else config.configurationItem,
   }
   +
@@ -141,6 +138,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
           title: alertTitle,
           wait_for: '%(for)s' % errorBudgetBurnWindow,
           factor: std.toString(errorBudgetBurnWindow.factor),
+          event_notification: std.toString(errorBudgetBurnWindow.notification), 
         } + alertPayload,
         annotations: {
           dashboard: '%(grafanaUrl)s/d/%(journeyUid)s%(environment)s' % {
@@ -170,3 +168,4 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
   createBurnRateAlerts(config, sliSpec, sliKey, journeyKey):
     createBurnRateAlerts(config, sliSpec, sliKey, journeyKey),
 }
+

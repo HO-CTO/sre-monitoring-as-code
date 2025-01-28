@@ -11,9 +11,9 @@ local config = {
   applicationServiceName: 'Monitoring and Logging Components',
   servicenowAssignmentGroup: 'HO_PLATFORM',
   // Alerts set to test only - remove/adjust once ready for alerts for production
-  maxAlertSeverity: 'P1',
+  maxAlertSeverity: 1,
   configurationItem: 'Prometheus, Grafana and Thanos',
-  alertingSlackChannel: 'sas-monitoring-test',
+  channelRoom: 'sas-monitoring-test',
   grafanaUrl: 'http://localhost:3000',
   alertmanagerUrl: 'http://localhost:9093',
 };

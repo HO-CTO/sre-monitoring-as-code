@@ -32,9 +32,9 @@ local detailDashboardElements = {
 
 // The list of error budget burn rate windows used for alerts
 local burnRateWindowList = [
-  { severity: '1', 'for': '2m', long: '1h', short: '5m', factor: 14.4 },
-  { severity: '2', 'for': '2m', long: '6h', short: '30m', factor: 6 },
-  { severity: '4', 'for': '3h', long: '3d', short: '6h', factor: 1 },
+  { severity: 1, tier: 0, 'for': '2m', long: '1h', short: '5m', factor: 14.4, notification: 'ServiceNow' },
+  { severity: 2, tier: 1, 'for': '2m', long: '6h', short: '30m', factor: 6, notification: 'RocketChat' },
+  { severity: 3, tier: 2, 'for': '3h', long: '3d', short: '6h', factor: 1, notification: 'RocketChat' },
 ];
 
 // The template for error budget burn rule names
@@ -58,11 +58,12 @@ local alertPayloadTemplate = {
   event_type: '%(sliSpec.sliType)s',
   message_key: 'Prometheus_%(config.applicationServiceName)s_%(sliSpec.sliType)s_%(config.applicationServiceName)s',
   event_severity: '%(severity)s',
-  raw_event_payload: '"journey":"%(journeyKey)s","sli":"%(sliKey)s","mac_version":"%(config.macVersion)s","monitoring_slackchannel":"%(config.alertingSlackChannel)s","configuration_item":"%(configurationItem)s"',
+  raw_event_payload: '"journey":"%(journeyKey)s","sli":"%(sliKey)s","mac_version":"%(config.macVersion)s","monitoring_slackchannel":"%(config.channelRoom)s","configuration_item":"%(configurationItem)s"',
   assignment_group: '%(config.servicenowAssignmentGroup)s',
   runbook_id: '%(runbookUrl)s',
   aws_account: '%(config.awsAccount)s',
   owner: '%(config.owner)s',
+  event_channel_room: '%(config.channelRoom)s',
 };
 
 // File exports
@@ -77,3 +78,4 @@ local alertPayloadTemplate = {
   localhostUrls: localhostUrls,
   alertPayloadTemplate: alertPayloadTemplate,
 }
+
