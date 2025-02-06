@@ -1,4 +1,4 @@
-// This file is for generating the overview dashboard which shows an overview of the SLI
+// This file is for generating the summary view dashboard which shows an  summary view of the SLI
 // performances of all of the services being monitored
 
 // Grafana imports
@@ -16,7 +16,7 @@ local dashboardFunctions = import './dashboard-standard-elements.libsonnet';
 // PromQL selector for environment label
 local labelSelector = 'sli_environment=~"$environment", aws_account=~"$aws_account|"';
 
-// The panels for the overview dashboard
+// The panels for the summary view dashboard
 local panels = [
 
   tablePanel.new(
@@ -354,19 +354,19 @@ local panels = [
   } } + { gridPos: { w: 24, h: 10 } },
 ];
 
-// Creates the overview dashboard containing two tables: one which shows overall SLI performance
+// Creates the  summary view dashboard containing two tables: one which shows overall SLI performance
 // for each service and how many SLIs they have and one which shows the SLI performance of
 // different SLI types for each service
 // @param config The config defined in the platform mixin file
-// @returns The JSON defining the overview dashboard
-local createOverviewDashboard(config) =
+// @returns The JSON defining the summary view dashboard
+local createSummaryDashboard(config) =
   {
     grafanaDashboards+: {
-      [std.join('-', [macConfig.macDashboardPrefix.uid, 'overview']) + '.json']:
+      [std.join('-', [macConfig.macDashboardPrefix.uid, 'summary']) + '.json']:
         dashboard.new(
-          title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, 'overview'])),
-          uid=std.join('-', [macConfig.macDashboardPrefix.uid, 'overview']),
-          tags=['mac-version: %s' % config.macVersion, 'overview'],
+          title=stringFormattingFunctions.capitaliseFirstLetters(std.join(' / ', [macConfig.macDashboardPrefix.title, 'summary'])),
+          uid=std.join('-', [macConfig.macDashboardPrefix.uid, 'summary']),
+          tags=['mac-version: %s' % config.macVersion, 'summary'],
           schemaVersion=18,
           editable=true,
           time_from='now-3h',
@@ -377,16 +377,16 @@ local createOverviewDashboard(config) =
               asDropdown: false,
               icon: 'dashboard',
               includeVars: true,
-              tags: ['overview'],
-              title: 'overview',
+              tags: ['view:summary'],
+              title: 'view:summary',
               type: 'dashboards',
             },
             {
               asDropdown: true,
               icon: 'dashboard',
               includeVars: false,
-              tags: ['product-view'],
-              title: 'product-view',
+              tags: ['view:product'],
+              title: 'view:product',
               type: 'dashboards',
             },
           ]
@@ -411,12 +411,12 @@ local createOverviewDashboard(config) =
             label='AWS Account',
           )
         ).addPanel(
-          dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.overView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
+          dashboardFunctions.createDocsTextPanel(macConfig.dashboardDocs.summaryView), gridPos={ h: 4, w: 24, x: 0, y: 0 }
         ).addPanels(std.prune(panels)),
     },
   };
 
 // File exports
 {
-  createOverviewDashboard(config): createOverviewDashboard(config),
+  createSummaryDashboard(config): createSummaryDashboard(config),
 }

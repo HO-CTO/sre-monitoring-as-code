@@ -31,6 +31,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP Request Error Rate',
         targetMetrics: {
           target: 'count',
         },
@@ -38,6 +39,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        alertTitle: 'High HTTP Request Latency',
         targetMetrics: {
           bucket: 'bucket',
           sum: 'sum',
@@ -72,6 +74,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP Request Error Rate',
         targetMetrics: {
           target: 'count',
         },
@@ -79,6 +82,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        alertTitle: 'High HTTP Request Latency',
         targetMetrics: {
           bucket: 'bucket',
           sum: 'sum',
@@ -113,6 +117,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP Request Error Rate',
         targetMetrics: {
           target: 'count',
         },
@@ -120,6 +125,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        alertTitle: 'High HTTP Request Latency',
         targetMetrics: {
           bucket: 'bucket',
           sum: 'sum',
@@ -152,6 +158,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP Request Error Rate',
         targetMetrics: {
           target: 'count',
         },
@@ -182,6 +189,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        alertTitle: 'High HTTP Request Latency',
         targetMetrics: {
           bucket: 'bucket',
           sum: 'sum',
@@ -212,6 +220,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP Request Error Rate',
         targetMetrics: {
           target: 'count',
         },
@@ -242,6 +251,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-single-metric-for-both-num-and-dem-filtered-by-status-label.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP Request Error Rate',
         targetMetrics: {
           target: 'count',
         },
@@ -249,6 +259,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-histogram-quantile-using-bucket-metric-percentile-and-secs-target.libsonnet'),
         description: 'Request latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        alertTitle: 'High HTTP Request Latency',
         targetMetrics: {
           bucket: 'bucket',
           sum: 'sum',
@@ -285,6 +296,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High HTTP equest Error Rate',
         targetMetrics: {
           code4xx: 'count4xx',
           code5xx: 'count5xx',
@@ -294,6 +306,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-gauge-using-max-of-cloudwatch-percentile-metric.libsonnet'),
         description: 'Target latency for %(sliDescription)s should be below %(metricTarget)0.1fs for the %(latencyPercentile)0.0fth percentile',
+        alertTitle: 'High HTTP Request Latency',
         targetMetrics: {
           p90: 'responseTimeP90',
           p95: 'responseTimeP95',
@@ -331,6 +344,7 @@
       freshness: {
         library: (import 'sli-value-libraries/freshness-gauge-for-queues-using-single-metric-and-secs-target.libsonnet'),
         description: 'Age of oldest message in SQS queue should be less than %(metricTarget)s seconds for %(sliDescription)s',
+        alertTitle: 'Saturated SQS Message Queue',
         targetMetrics: {
           oldestMessage: 'oldestMessage',
           deletedMessages: 'messagesDeleted',
@@ -339,6 +353,7 @@
       correctness: {
         library: (import 'sli-value-libraries/correctness-gauge-for-queues-using-standard-and-dead-letter-queue-metrics.libsonnet'),
         description: 'There should be no messages in the DLQ for %(sliDescription)s',
+        alertTitle: 'High Error Rate in SQS Message Queue',
         targetMetrics: {
           visibleMessages: 'messagesVisible',
           oldestMessage: 'oldestMessage',
@@ -371,6 +386,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-1-failure-metric-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High Compaction Error Rate',
         targetMetrics: {
           failure: 'totalFailures',
           successAndFailure: 'total',
@@ -397,6 +413,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'Node Outage',
         targetMetrics: {
           target: 'duration',
         },
@@ -422,6 +439,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High Scrape Request Latency',
         targetMetrics: {
           target: 'duration',
         },
@@ -449,6 +467,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High RDS Read Latency',
         targetMetrics: {
           target: 'averageLatency',
         },
@@ -456,6 +475,7 @@
       iops: {
         library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High RDS Read IOPS',
         targetMetrics: {
           target: 'averageIops',
         },
@@ -463,6 +483,7 @@
       throughput: {
         library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High RDS Read Throughput',
         targetMetrics: {
           target: 'averageThroughput',
         },
@@ -490,6 +511,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High RDS Write Latency',
         targetMetrics: {
           target: 'averageLatency',
         },
@@ -497,6 +519,7 @@
       iops: {
         library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average IOPS of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High RDS Write IOPS',
         targetMetrics: {
           target: 'averageIops',
         },
@@ -504,6 +527,7 @@
       throughput: {
         library: (import 'sli-value-libraries/availability-gauge-using-single-metric-for-both-num-and-dem.libsonnet'),
         description: 'The average throughput of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High RDS Write Throughput',
         targetMetrics: {
           target: 'averageThroughput',
         },
@@ -532,6 +556,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High S3 Request Error Rate',
         targetMetrics: {
           code4xx: 'sum4xx',
           code5xx: 'sum5xx',
@@ -541,6 +566,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High S3 Request Latency',
         targetMetrics: {
           target: 'averageLatency',
         },
@@ -569,6 +595,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High ES Request Errors',
         targetMetrics: {
           code4xx: 'sum4xx',
           code5xx: 'sum5xx',
@@ -578,6 +605,7 @@
       latency: {
         library: (import 'sli-value-libraries/latency-gauge-using-secs-metric-and-secs-target.libsonnet'),
         description: 'The average latency of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High S3 Request Latency',
         targetMetrics: {
           target: 'averageLatency',
         },
@@ -604,6 +632,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-counter-using-1-success-metric-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The rate of %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High GitLab Error Rate',
         targetMetrics: {
           success: 'totalSuccess',
           successAndFailure: 'total',
@@ -633,6 +662,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-2-failure-metrics-for-num-and-3-metrics-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High Number of Unhealthy WorkSpaces',
         targetMetrics: {
           failure1: 'failure1',
           failure2: 'failure2',
@@ -662,6 +692,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-1-failure-metric-for-num-and-1-total-metric-for-dem.libsonnet'),
         description: 'The average of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High Connection Failures',
         targetMetrics: {
           failure: 'failure',
           total: 'total',
@@ -688,6 +719,7 @@
       saturation: {
         library: (import 'sli-value-libraries/saturation-gauge-with-useage-metric-and-percent-target.libsonnet'),
         description: 'The average saturation of %(sliDescription)s should be %(comparison)s %(metricTarget)0.1f',
+        alertTitle: 'High Memory Utilisation',
         targetMetrics: {
           target: 'averageSaturation',
         },
@@ -713,6 +745,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-with-status-metric-and-integer-target.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'Failed EC2 Status Check',
         targetMetrics: {
           target: 'averageStatus',
         },
@@ -739,6 +772,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-using-inservice-and-desired-instance-metrics.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'Node Outage',
         targetMetrics: {
           desired: 'desired',
           inservice: 'inservice',
@@ -765,6 +799,7 @@
       sliType: {
         library: '',
         description: '',
+        alertTitle: '',
         targetMetrics: {
 
         },
@@ -790,6 +825,7 @@
       availability: {
         library: (import 'sli-value-libraries/availability-gauge-with-success-metric-and-integer-target.libsonnet'),
         description: 'Error rate for %(sliDescription)s should be below %(metric_target_percent)0.1f%%',
+        alertTitle: 'High Synthetic Canary Request Error Rate',
         targetMetrics: {
           target: 'averageSuccess',
         },

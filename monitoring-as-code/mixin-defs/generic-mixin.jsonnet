@@ -8,9 +8,9 @@ local config = {
   applicationServiceName: '',
   servicenowAssignmentGroup: '',
   // Alerts set to test only - remove/adjust once ready for alerts for production
-  maxAlertSeverity: 'P1',
+  maxAlertSeverity: 1,
   configurationItem: '',
-  alertingSlackChannel: '',
+  channelRoom: '',
   grafanaUrl: 'http://localhost:3000',
   alertmanagerUrl: 'http://localhost:9093',
   generic: true,

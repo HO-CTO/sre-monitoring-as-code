@@ -6,7 +6,7 @@ local dashboardFunctions = import './lib/dashboard-functions.libsonnet';
 local sliElementFunctions = import './lib/sli-element-functions.libsonnet';
 local macConfig = import './mac-config.libsonnet';
 
-local sliTitleCharLimit = 17;
+local sliTitleCharLimit = 24;
 
 // Gets a url depending on the type of account
 // @param urlType The type of url (Grafana or Alertmanager)
@@ -163,32 +163,32 @@ local createLinks(config) =
       asDropdown: false,
       icon: 'dashboard',
       includeVars: true,
-      tags: ['overview'],
-      title: 'Overview',
+      tags: ['view:summary'],
+      title: 'view:summary',
       type: 'dashboards',
     },
     {
       asDropdown: false,
       icon: 'dashboard',
       includeVars: true,
-      tags: [config.product, 'product-view'],
-      title: 'product-view',
+      tags: [config.product, 'view:product'],
+      title: 'view:product',
       type: 'dashboards',
     },
     {
       asDropdown: true,
       icon: 'dashboard',
       includeVars: true,
-      tags: [config.product, 'journey-view'],
-      title: 'journey-view',
+      tags: [config.product, 'view:journey'],
+      title: 'view:journey',
       type: 'dashboards',
     },
     {
       asDropdown: true,
       icon: 'dashboard',
       includeVars: true,
-      tags: [config.product, 'detail-view'],
-      title: 'detail-view',
+      tags: [config.product, 'view:detail'],
+      title: 'view:detail',
       type: 'dashboards',
     },
   ];
