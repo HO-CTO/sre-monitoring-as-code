@@ -17,10 +17,10 @@ local getSeverity(errorBudgetBurnWindow, config, sliSpec) =
   else errorBudgetBurnWindow.severity;
 
 // Gets a criticality depending on the type of alert severity
-// @param severity The severity of the alert 
+// @param severity The severity of the alert
 // @returns The criticality string "P?"
 local getCriticality(severity) =
-    macConfig.criticality['P' + severity];
+  macConfig.criticality['P' + severity];
 
 // Creates the title for an alert
 // @param errorBudgetBurnWindow The current burn rate window

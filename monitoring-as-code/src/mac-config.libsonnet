@@ -42,7 +42,7 @@ local criticality = {
   P1: 'Critical',
   P2: 'High',
   P3: 'Moderate',
-  P4: 'Low'
+  P4: 'Low',
 };
 
 // The template for error budget burn rule names
