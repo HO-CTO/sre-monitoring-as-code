@@ -65,7 +65,7 @@ jobs:
             MAC_VERSION=${{needs.calculate-semver.outputs.version}}
           outputs: type=docker,dest=/tmp/${{ inputs.repositoryName }}.tar
       - name: Upload artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.repositoryName }}
           path: /tmp/${{ inputs.repositoryName }}.tar
