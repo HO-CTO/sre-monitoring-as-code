@@ -12,17 +12,17 @@ LOCAL_PATH="$PWD"/../local/
 rm -rf "$PWD"/output/*/
 
 # Set array of mixins which will be executed
-set -- overview generic monitoring testing
+set -- summary generic monitoring testing
 
 # Loop through mixin array
 for mixin in "$@";
   do
 
-  if [ "$mixin" = "overview" ]; then
+  if [ "$mixin" = "summary" ]; then
    #Executes docker image to create dashboards for overview mixin
    docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -d -i input -o output;
   else
-   #Executes docker image to create dashboards and rules for all mixins other than overview
+   #Executes docker image to create dashboards and rules for all mixins other than summary
    docker run --mount type=bind,source="$PWD"/output,target=/output --mount type=bind,source="$PWD"/mixin-defs,target=/input -it sre-monitoring-as-code:latest -m "$mixin" -rd -i input -o output;
   fi
 

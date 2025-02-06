@@ -1,4 +1,4 @@
-// This file is for generating the product dashboard which shows an overview of all of the SLI
+// This file is for generating the product dashboard which shows a summary of all of the SLI
 // performances for a service
 
 // Grafana imports

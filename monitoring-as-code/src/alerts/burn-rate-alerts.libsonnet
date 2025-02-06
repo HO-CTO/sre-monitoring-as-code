@@ -2,6 +2,7 @@
 
 // MaC imports
 local macConfig = import '../mac-config.libsonnet';
+local stringFormattingFunctions = import '../util/string-formatting-functions.libsonnet';
 
 // Gets the severity of the burn rate window depending on what max alert severity has been set to
 // in config
@@ -15,6 +16,12 @@ local getSeverity(errorBudgetBurnWindow, config, sliSpec) =
   else if std.objectHas(config, 'maxAlertSeverity') then config.maxAlertSeverity + errorBudgetBurnWindow.tier
   else errorBudgetBurnWindow.severity;
 
+// Gets a criticality depending on the type of alert severity
+// @param severity The severity of the alert 
+// @returns The criticality string "P?"
+local getCriticality(severity) =
+    macConfig.criticality['P' + severity];
+
 // Creates the title for an alert
 // @param errorBudgetBurnWindow The current burn rate window
 // @param config The config for the service defined in the mixin file
@@ -23,11 +30,12 @@ local getSeverity(errorBudgetBurnWindow, config, sliSpec) =
 // @param journeyKey The key of the journey containing the SLI having rules generated
 // @returns The alert title as a string
 local createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey) =
-  '%(severity)s ALERT! %(environment)s - %(service)s %(slo)s - Percentage of time %(description)s' % {
+  'Alert - P%(severity)s (%(criticality)s) - %(environment)s %(service)s - %(description)s (%(slo)s)' % {
     service: config.product,
     severity: getSeverity(errorBudgetBurnWindow, config, sliSpec),
+    criticality: getCriticality(getSeverity(errorBudgetBurnWindow, config, sliSpec)),
     environment: if std.objectHas(config, 'generic') && config.generic then 'generic' else config.environment,
-    description: sliSpec.title,
+    description: macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].alertTitle,
     factor: errorBudgetBurnWindow.factor,
     journey: journeyKey,
     slo: sliKey,
@@ -106,7 +114,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
       {
         local alertName = std.join('_', [std.strReplace(macConfig.macDashboardPrefix.uid, '-', '_'), config.product, journeyKey, sliKey, sliSpec.sliType, 'ErrorBudgetBurn']),
         local severity = getSeverity(errorBudgetBurnWindow, config, sliSpec),
-        local alertTitle = createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey),
+        local alertTitle = stringFormattingFunctions.capitaliseFirstLetters(createAlertTitle(errorBudgetBurnWindow, config, sliSpec, sliKey, journeyKey)),
         local grafSilencePath = 'alerting/silence/new?alertmanager=alertmanager&matcher=alertname=%(alertName)s' % {
           alertName: alertName,
         },
@@ -138,7 +146,7 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
           title: alertTitle,
           wait_for: '%(for)s' % errorBudgetBurnWindow,
           factor: std.toString(errorBudgetBurnWindow.factor),
-          event_notification: std.toString(errorBudgetBurnWindow.notification), 
+          event_notification: std.toString(errorBudgetBurnWindow.notification),
         } + alertPayload,
         annotations: {
           dashboard: '%(grafanaUrl)s/d/%(journeyUid)s%(environment)s' % {
@@ -168,4 +176,3 @@ local createBurnRateAlerts(config, sliSpec, sliKey, journeyKey) =
   createBurnRateAlerts(config, sliSpec, sliKey, journeyKey):
     createBurnRateAlerts(config, sliSpec, sliKey, journeyKey),
 }
-

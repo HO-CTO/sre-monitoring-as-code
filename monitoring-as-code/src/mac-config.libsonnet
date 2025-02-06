@@ -15,7 +15,7 @@ local macDashboardPrefix = {
 
 // Dashboard documentation to be added to text panel. Content to be written as markdown.
 local dashboardDocs = {
-  overView: '#### Overview\n\n**Purpose:** Observability of all products and tenants running on a platform.\n\n**Directions for use:** An aggregated SLO Status is presented in table panels by Product. The first table displays the aggregated SLO Status with supplementary data regarding traffic and alerts. The second table displays the SLO Status grouped by SLI type. The dashboard can be filtered by Environment.',
+  summaryView: '#### Summary View\n\n**Purpose:** Observability of all products and tenants running on a platform.\n\n**Directions for use:** An aggregated SLO Status is presented in table panels by Product. The first table displays the aggregated SLO Status with supplementary data regarding traffic and alerts. The second table displays the SLO Status grouped by SLI type. The dashboard can be filtered by Environment.',
   productView: '#### Product View\n\n**Purpose:** Observability of all the user journeys running on an individual product.\n\n**Directions for use:** Distinct user journeys are presented as row panels. SLIs are presented as stat panels indicating the SLO Status, Error Budget and SLO target as set in the mixin definition file. Colour thresholds have been set to highlight and identify issues. SLI Types (such as Availability and Latency) are aggregated into a single SLI Stat Panel. The dashboard can be filtered by Environment.',
   journeyView: '#### User Journey View\n\n**Purpose:** Observability of all the SLIs in a single user journey.\n\n**Directions for use:** SLIs are presented in a series of 3 core panels: (1) a stat panel showing SLO Status, (2) an error budget burn graph and (3) a request/error graph. SLIs types relating to the same source metric are grouped under a single SLI Row Panel. Colour thresholds indicate the SLO Status. The dashboard can be filtered by Error Budget Period and Environment.',
   detailView: '#### Detail View\n\n**Purpose:** Observability of all whitebox and blackbox metrics which contribute to SLIs and Service Health. For troubleshooting.\n\n**Directions for use:** TBC.',
@@ -33,9 +33,17 @@ local detailDashboardElements = {
 // The list of error budget burn rate windows used for alerts
 local burnRateWindowList = [
   { severity: 1, tier: 0, 'for': '2m', long: '1h', short: '5m', factor: 14.4, notification: 'ServiceNow' },
-  { severity: 2, tier: 1, 'for': '2m', long: '6h', short: '30m', factor: 6, notification: 'RocketChat' },
+  { severity: 2, tier: 1, 'for': '2m', long: '6h', short: '30m', factor: 6, notification: 'ServiceNow' },
   { severity: 3, tier: 2, 'for': '3h', long: '3d', short: '6h', factor: 1, notification: 'RocketChat' },
 ];
+
+// The criticality mapp aligning with SNoW
+local criticality = {
+  P1: 'Critical',
+  P2: 'High',
+  P3: 'Moderate',
+  P4: 'Low'
+};
 
 // The template for error budget burn rule names
 local burnRateRuleNameTemplate = 'slo_burnrate:%s';
@@ -76,6 +84,6 @@ local alertPayloadTemplate = {
   burnRateWindowList: burnRateWindowList,
   burnRateRuleNameTemplate: burnRateRuleNameTemplate,
   localhostUrls: localhostUrls,
+  criticality: criticality,
   alertPayloadTemplate: alertPayloadTemplate,
 }
-

@@ -21,7 +21,7 @@ local config = {
 local sliSpecList = {
   grafana: {
     SLI01: {
-      title: 'home page',
+      title: 'EC2 Status Check Failed',
       sliDescription: 'Attempted requests to the Grafana home page',
       period: '7d',
       metricType: 'grafana_http_request_duration_seconds',
