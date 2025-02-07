@@ -14,6 +14,8 @@
       sliType: {
         library: '',
         description: '',
+        alertTitle: '',
+        impact: '',
         targetMetrics: {
 
         },

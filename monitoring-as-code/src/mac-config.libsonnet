@@ -61,7 +61,7 @@ local alertPayloadTemplate = {
   node_id: '%(config.applicationServiceName)s',
   resource_id: '%(config.applicationServiceName)s',
   event_short_desc: '%(sliSpec.title)s',
-  event_description: '%(sliKey)s (%(journeyKey)s journey) is likely to exhaust error budget in less than %(exhaustionDays).2f days',
+  event_description: '%(impact)s %(description)s',
   metric_name: '%(sliSpec.sliType)s',
   event_type: '%(sliSpec.sliType)s',
   message_key: 'Prometheus_%(config.applicationServiceName)s_%(sliSpec.sliType)s_%(config.applicationServiceName)s',

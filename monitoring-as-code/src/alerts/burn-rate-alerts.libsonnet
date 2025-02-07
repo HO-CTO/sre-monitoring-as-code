@@ -71,6 +71,17 @@ local getAlertPayloadConfig(alertName, severity, alertTitle, errorBudgetBurnWind
     alertTitle: alertTitle,
     sliKey: sliKey,
     journeyKey: journeyKey,
+    impact: macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].impact % {
+    product: stringFormattingFunctions.capitaliseFirstLetters(config.product),
+    journey: stringFormattingFunctions.capitaliseFirstLetters(journeyKey),
+    },
+    description: macConfig.metricTypes[sliSpec.metricType].sliTypesConfig[sliSpec.sliType].description % {
+    sliDescription: sliSpec.sliDescription,
+    metricTarget: sliSpec.metricTarget,
+    metric_target_percent: sliSpec.metricTarget * 100,
+    latencyPercentile: sliSpec.latencyPercentile * 100,
+    comparison: if std.objectHas(sliSpec, 'comparison') then sliSpec.comparison else '<',
+    },
     exhaustionDays: std.parseInt(std.rstripChars(sliSpec.period, 'd')) / errorBudgetBurnWindow.factor,
     runbookUrl: if std.objectHas(sliSpec, 'runbookUrl') then sliSpec.runbookUrl
     else if std.objectHas(config, 'runbookUrl') then config.runbookUrl
