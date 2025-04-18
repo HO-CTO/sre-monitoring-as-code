@@ -76,7 +76,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
         id: deployment
         with:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
