@@ -26,7 +26,7 @@ jobs:
           mode: singular
       - name: Calculate SemVer value
         id: calculate
-        uses: UKHomeOffice/semver-calculate-action@v1
+        uses: UKHomeOffice/semver-calculate-action@v2
         with:
           increment: ${{ steps.label.outputs.matchedLabels }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
