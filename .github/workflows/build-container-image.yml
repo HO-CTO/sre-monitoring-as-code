@@ -89,7 +89,7 @@ jobs:
           docker image ls
           echo "IMAGE_TAG=$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep -m1 ${{ inputs.repositoryName }})" >> $GITHUB_ENV
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 18.10.0
       - name: Setup Snyk
